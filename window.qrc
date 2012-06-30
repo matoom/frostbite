@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/window">
+        <file>images/highlight.png</file>
+        <file>images/connect.png</file>
+        <file>images/disconnect.png</file>
+        <file>images/color.png</file>
+    </qresource>
+</RCC>

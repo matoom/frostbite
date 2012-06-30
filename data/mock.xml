@@ -1,0 +1,647 @@
+Please wait for connection to game server.
+GSw000100000150095
+
+<c>_STATE CHATMODE OFF
+<mode id="GAME"/>
+
+Welcome to DragonRealms (R) v2.00
+Copyright 2011 Simutronics Corp.
+All Rights Reserved
+<mode id="GAME"/>
+<streamWindow id="main" title="Story" location="center" target="drop" resident="true"/>
+<streamWindow id='inv' title='My Inventory' target='wear' ifClosed='' resident='true'/><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+  a midnight-black herb pouch pinioned with blood-red iera flowers
+  a jet black leather thigh quiver
+  a tattered black cloak
+  a locksmith's toolbelt fashioned from darkened leather
+  a platinum kyanite gwethdesuan
+  a simple belt knife
+  a small weathered pack
+  a canvas sack
+  a midnight black crossbow
+  a lumpy bundle
+<popStream/>
+<exposeContainer id='stow'/><container id='stow' title="My Pack" target='#158767691' location='right' save='' resident='true'/><clearContainer id="stow"/><inv id='stow'>In the pack:</inv><inv id='stow'> a brown pouch</inv><inv id='stow'> a blue gem pouch</inv><inv id='stow'> a black gem pouch</inv><inv id='stow'> a red gem pouch</inv><inv id='stow'> a suede gem pouch</inv><openDialog type='dynamic' id='minivitals' title='Stats' location='statBar'><dialogData id='minivitals'></dialogData></openDialog>
+<dialogData id='minivitals'><skin id='healthSkin' name='healthBar' controls='health' left='0%' top='0%' width='25%' height='100%'/><progressBar id='health' value='100' text='health 100%' left='0%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><skin id='spiritSkin' name='spiritBar' controls='spirit' left='50%' top='0%' width='25%' height='100%'/><progressBar id='spirit' value='100' text='spirit 100%' left='50%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='100' text='fatigue 100%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><progressBar id='concentration' value='100' text='concentration 100%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<streamWindow id="familiar" title="Familiar" location="center" resident="true" styleIfClosed="watching"/>
+<streamWindow id="thoughts" title="Thoughts" location="center" resident="true" styleIfClosed="thought" timestamp="on"/>
+<streamWindow id="logons" title="Arrivals" location="left" resident="true" nameFilterOption="true" timestamp="on"/>
+<streamWindow id="death" title="Deaths" location="left" resident="true" nameFilterOption="true" timestamp="on"/>
+<streamWindow id="assess" title="Assess" location="right" resident="true"/>
+<streamWindow id='conversation' title='Conversation' location='center' resident='true' ifClosed='' timestamp='on'/>
+<streamWindow id='whispers' title='Whispers' location='center' resident='true' timestamp='on' ifClosed='conversation'/>
+<streamWindow id='talk' title='Talk' location='center' resident='true' timestamp='on' ifClosed='conversation'/>
+<streamWindow id='experience' title='Field Experience' location='center' target='drop' ifClosed='' resident='true'/><clearStream id='experience'/><pushStream id='experience'/><output class='mono'/>
+<compDef id='exp Shield Usage'></compDef>
+<compDef id='exp Leather Armor'></compDef>
+<compDef id='exp Light Chain'></compDef>
+<compDef id='exp Heavy Chain'></compDef>
+<compDef id='exp Light Plate'></compDef>
+<compDef id='exp Heavy Plate'></compDef>
+<compDef id='exp Cloth Armor'></compDef>
+<compDef id='exp Bone Armor'></compDef>
+<compDef id='exp Parry Ability'></compDef>
+<compDef id='exp Multi Opponent'></compDef>
+<compDef id='exp Light Edged'></compDef>
+<compDef id='exp Medium Edged'></compDef>
+<compDef id='exp Heavy Edged'></compDef>
+<compDef id='exp Twohanded Edged'></compDef>
+<compDef id='exp Light Blunt'></compDef>
+<compDef id='exp Medium Blunt'></compDef>
+<compDef id='exp Heavy Blunt'></compDef>
+<compDef id='exp Twohanded Blunt'></compDef>
+<compDef id='exp Slings'></compDef>
+<compDef id='exp Staff Sling'></compDef>
+<compDef id='exp Short Bow'></compDef>
+<compDef id='exp Long Bow'></compDef>
+<compDef id='exp Composite Bow'></compDef>
+<compDef id='exp Light Crossbow'></compDef>
+<compDef id='exp Heavy Crossbow'></compDef>
+<compDef id='exp Short Staff'></compDef>
+<compDef id='exp Quarter Staff'></compDef>
+<compDef id='exp Pikes'></compDef>
+<compDef id='exp Halberds'></compDef>
+<compDef id='exp Light Thrown'></compDef>
+<compDef id='exp Heavy Thrown'></compDef>
+<compDef id='exp Brawling'></compDef>
+<compDef id='exp Offhand Weapon'></compDef>
+<compDef id='exp Inner Magic'></compDef>
+<compDef id='exp Harness Ability'></compDef>
+<compDef id='exp Power Perceive'></compDef>
+<compDef id='exp Arcana'></compDef>
+<compDef id='exp Targeted Magic'></compDef>
+<compDef id='exp Evasion'></compDef>
+<compDef id='exp Climbing'></compDef>
+<compDef id='exp Perception'></compDef>
+<compDef id='exp Scouting'></compDef>
+<compDef id='exp Hiding'></compDef>
+<compDef id='exp Lockpicking'></compDef>
+<compDef id='exp Disarm Traps'></compDef>
+<compDef id='exp Stalking'></compDef>
+<compDef id='exp Stealing'></compDef>
+<compDef id='exp First Aid'></compDef>
+<compDef id='exp Foraging'></compDef>
+<compDef id='exp Escaping'></compDef>
+<compDef id='exp Backstab'></compDef>
+<compDef id='exp Skinning'></compDef>
+<compDef id='exp Swimming'></compDef>
+<compDef id='exp Scholarship'></compDef>
+<compDef id='exp Mechanical Lore'></compDef>
+<compDef id='exp Musical Theory'></compDef>
+<compDef id='exp Appraisal'></compDef>
+<compDef id='exp Teaching'></compDef>
+<compDef id='exp Trading'></compDef>
+<compDef id='exp Animal Lore'></compDef>
+<compDef id='exp Percussions'></compDef>
+<compDef id='exp Strings'></compDef>
+<compDef id='exp Winds'></compDef>
+<compDef id='exp Vocals'></compDef>
+<compDef id='exp Empathy'></compDef>
+<compDef id='exp Astrology'></compDef>
+
+<compDef id='exp mindstate'></compDef>
+<output class=''/>
+<popStream id='experience'/>
+<component id='exp Shield Usage'></component>
+<component id='exp Leather Armor'></component>
+<component id='exp Light Chain'></component>
+<component id='exp Heavy Chain'></component>
+<component id='exp Light Plate'></component>
+<component id='exp Heavy Plate'></component>
+<component id='exp Cloth Armor'></component>
+<component id='exp Bone Armor'></component>
+<component id='exp Parry Ability'></component>
+<component id='exp Multi Opponent'></component>
+<component id='exp Light Edged'></component>
+<component id='exp Medium Edged'></component>
+<component id='exp Heavy Edged'></component>
+<component id='exp Twohanded Edged'></component>
+<component id='exp Light Blunt'></component>
+<component id='exp Medium Blunt'></component>
+<component id='exp Heavy Blunt'></component>
+<component id='exp Twohanded Blunt'></component>
+<component id='exp Slings'></component>
+<component id='exp Staff Sling'></component>
+<component id='exp Short Bow'></component>
+<component id='exp Long Bow'></component>
+<component id='exp Composite Bow'></component>
+<component id='exp Light Crossbow'></component>
+<component id='exp Heavy Crossbow'></component>
+<component id='exp Short Staff'></component>
+<component id='exp Quarter Staff'></component>
+<component id='exp Pikes'></component>
+<component id='exp Halberds'></component>
+<component id='exp Light Thrown'></component>
+<component id='exp Heavy Thrown'></component>
+<component id='exp Brawling'></component>
+<component id='exp Offhand Weapon'></component>
+<component id='exp Inner Magic'></component>
+<component id='exp Harness Ability'></component>
+<component id='exp Power Perceive'></component>
+<component id='exp Arcana'></component>
+<component id='exp Targeted Magic'></component>
+<component id='exp Evasion'></component>
+<component id='exp Climbing'>        Climbing:  222 53% cogitating   </component>
+<component id='exp Perception'></component>
+<component id='exp Scouting'></component>
+<component id='exp Hiding'></component>
+<component id='exp Lockpicking'></component>
+<component id='exp Disarm Traps'></component>
+<component id='exp Stalking'></component>
+<component id='exp Stealing'>        Stealing:  200 99% engaged      </component>
+<component id='exp First Aid'></component>
+<component id='exp Foraging'></component>
+<component id='exp Escaping'></component>
+<component id='exp Backstab'></component>
+<component id='exp Skinning'></component>
+<component id='exp Swimming'></component>
+<component id='exp Scholarship'></component>
+<component id='exp Mechanical Lore'></component>
+<component id='exp Musical Theory'></component>
+<component id='exp Appraisal'></component>
+<component id='exp Teaching'></component>
+<component id='exp Trading'></component>
+<component id='exp Animal Lore'></component>
+<component id='exp Percussions'>     Percussions:   96 06% ruminating   </component>
+<component id='exp Strings'></component>
+<component id='exp Winds'></component>
+<component id='exp Vocals'></component>
+<component id='exp Empathy'></component>
+<component id='exp Astrology'></component>
+<streamWindow id='group' title='Group' location='center' resident='true' ifClosed='' />
+<streamWindow id='atmospherics' title='Atmospherics' location='center' resident='true' timestamp='on' ifClosed='main'/>
+<streamWindow id='ooc' title='OOC' location='center' resident='true' timestamp='on' ifClosed=''/>
+<openDialog id='quick-simu' location='quickBar' title='Information'><dialogData id='quick-simu' clear='true'><link id='1' value='Game Info' cmd='url:/dr/info/' /><link id='2' value='Calendar' cmd='url:/bounce/redirect.asp?URL=http://forums.play.net/calendar?game=dragonrealms' /><link id='3' value='Forums' cmd='bbs' echo='bbs' /><link id='4' value='News' cmd='news' echo='news' /><link id='5' value='Policy' cmd='policy' echo='policy' /><link id='6' value='Premium' cmd='url:/dr/premium/' /><link id='7' value='Platinum' cmd='url:/dr/platinum/' /><link id='8' value='SimuCon' cmd='url:/bounce/redirect.asp?URL=http://www.simucon.com' /><link id='9' value='Box Office' cmd='url:/dr/boxoffice.asp' /></dialogData></openDialog>
+<openDialog id='quick-char' location='quickBar' title='Character'><dialogData id='quick-char' clear='true'><link id='1' value='Info' cmd='info' echo='info' /><link id='2' value='Exp' cmd='exp' echo='exp' /><link id='3' value='Store' cmd='store window' echo='store window' /><link id='4' value='Look [self]' cmd='look Legolas' echo='look Legolas' /><link id='5' value='Look' cmd='look' echo='look' /><link id='6' value='Profile' cmd='profile /edit' echo='profile /edit' /><link id='9' value='Health' cmd='health' echo='health' /><link id='10' value='Wealth' cmd='wealth' echo='wealth' /></dialogData></openDialog>
+<openDialog id='quick-blank' location='quickBar' title='Blank'><dialogData id='quick-blank' clear='true'></dialogData></openDialog>
+<switchQuickBar id='quick-char'/>
+<app char="Legolas" game="DR" title="[DR: Legolas] StormFront"/>
+<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/><indicator id="IconSITTING" visible="n"/><indicator id="IconSTANDING" visible="y"/><indicator id="IconSTUNNED" visible="y"/><indicator id="IconHIDDEN" visible="n"/><indicator id="IconINVISIBLE" visible="n"/><indicator id="IconDEAD" visible="n"/><indicator id="IconWEBBED" visible="n"/><indicator id="IconJOINED" visible="y"/><spell>None</spell><left>Empty</left><right>Empty</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+  a midnight-black herb pouch pinioned with blood-red iera flowers
+  a jet black leather thigh quiver
+  a tattered black cloak
+  a locksmith's toolbelt fashioned from darkened leather
+  a platinum kyanite gwethdesuan
+  a simple belt knife
+  a small weathered pack
+  a canvas sack
+  a midnight black crossbow
+  a lumpy bundle
+<popStream/>
+<dialogData id='minivitals'><skin id='healthSkin' name='healthBar' controls='health' left='0%' top='0%' width='25%' height='100%'/><progressBar id='health' value='100' text='health 100%' left='0%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><progressBar id='spirit' value='100' text='spirit 100%' left='50%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='100' text='fatigue 100%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><progressBar id='concentration' value='100' text='concentration 100%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<streamWindow id='room' title='Room' subtitle=" - w_Legolas" location='center' target='drop' ifClosed='' resident='true'/>
+<clearStream id='room'/>
+<pushStream id='room'/>
+<compDef id='room desc'/>  <compDef id='room creatures'/><compDef id='room objs'/>
+<compDef id='room players'/>
+<compDef id='room exits'/>
+<compDef id='room extra'/>
+<popStream id='room'/>
+<nav/>
+<streamWindow id='main' title='Story' subtitle=" - [Northeast Wilds, Outside Northeast Gate]" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [Northeast Wilds, Outside Northeast Gate]" location='center' target='drop' ifClosed='' resident='true'/>
+<component id='room desc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</component>
+<component id='room objs'>You also see a stick, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.</component>
+<component id='room players'></component>
+<component id='room exits'>Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.</component>
+<component id='room extra'></component>
+<output class="mono"/>
+
+----------------------------------------------------------------------------
+   Last login :  Sunday, December 25, 2011 at 02:49:26
+       Logoff :  Sunday, December 25, 2011 at 03:05:43
+----------------------------------------------------------------------------
+
+<output class=""/>
+<resource picture="0"/><style id="roomName" />[Northeast Wilds, Outside Northeast Gate]
+<style id=""/><preset id='roomDesc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</preset>  You also see a stick, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.
+Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><pushStream id="logons"/> * Florist Legolas joins the adventure.
+<popStream/><prompt time="1324803946">&gt;</prompt>
+look
+<resource picture="0"/><style id="roomName" />[Northeast Wilds, Outside Northeast Gate]
+<style id=""/><preset id='roomDesc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</preset>  You also see a stick, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.
+Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><prompt time="1324803954">&gt;</prompt>
+<output class="mono"/>
+<pushBold/>*********************IMPORTANT!***********************
+<popBold/>Closing the STORMFRONT front end does NOT necessarily mean your
+Character will be dropped from the game!  To ensure
+that your character is disconnected type QUIT or EXIT!
+<pushBold/>*********************IMPORTANT!***********************
+<popBold/><output class=""/>
+<prompt time="1324803956">&gt;</prompt>
+<pushBold/>******************************************************
+*** Please check <d>NEWS NEXT</d> for unread <d>NEWS</d> items. ***
+******************************************************
+<popBold/><prompt time="1324803966">&gt;</prompt>
+l in my pack
+In the weathered pack you see a brown pouch, a blue gem pouch, a black gem pouch, a red gem pouch and a suede gem pouch.
+<prompt time="1324803970">&gt;</prompt>
+look
+<resource picture="0"/><style id="roomName" />[Northeast Wilds, Outside Northeast Gate]
+<style id=""/><preset id='roomDesc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</preset>  You also see a stick, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.
+Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><prompt time="1324803980">&gt;</prompt>
+An ironwood caravan pulled by sleek white gollum arrives from the north.
+<component id='room objs'>You also see an ironwood caravan pulled by sleek white gollum with several things on it, a stick, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.</component>
+<component id='room players'>Also here: Faramir.</component>
+<prompt time="1324803988">&gt;</prompt>
+The ironwood caravan stops and waits, having arrived at its destination.
+<prompt time="1324803992">&gt;</prompt>
+Faramir pokes a piece of paper, and realizing it has no value whatsoever, tosses it away.
+<prompt time="1324803992">&gt;</prompt>
+Faramir passes on an order to his driver and the ironwood caravan waits.
+<component id='room players'>Also here: Faramir.</component>
+<prompt time="1324803993">&gt;</prompt>
+Faramir went through the Northeast Gate.
+<component id='room players'></component>
+<prompt time="1324803993">&gt;</prompt>
+Faramir just arrived.
+<component id='room players'>Also here: Faramir.</component>
+<prompt time="1324803996">&gt;</prompt>
+Faramir went through the Northeast Gate.
+<component id='room players'></component>
+<prompt time="1324803996">&gt;</prompt>
+Faramir just arrived.
+<component id='room players'>Also here: Faramir.</component>
+<prompt time="1324803999">&gt;</prompt>
+Faramir starts to climb up the battlement wall, but finds it too difficult.
+<prompt time="1324803999">&gt;</prompt>
+<pushStream id="logons"/> * Kertig Heart Gimli Bluefletch just sauntered into the adventure with an annoying tune on his lips.
+<popStream/><prompt time="1324813729">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='67' text='concentration 67%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1324813731">&gt;</prompt>
+<pushStream id="logons"/> * Spider Kisser Nazgul Armiarma joins the adventure.
+<popStream/><prompt time="1324813732">&gt;</prompt>
+
+You are a fellow thief, Florist Legolas of Elanthia, a Halfling.
+You have a missing tooth and blue eyes.  Your grey hair is short and fine, and is worn loose.  You have dark skin.
+You are a daydreamer.
+You are clean shaven.
+You have a tattoo of a skull and crossbones on your neck.
+You are in good shape.
+
+You are wearing a midnight-black herb pouch pinioned with blood-red iera flowers, a jet black leather thigh quiver, a tattered black cloak, a locksmith's toolbelt fashioned from darkened leather, a platinum kyanite gwethdesuan, a simple belt knife, a small weathered pack, a canvas sack, a midnight black crossbow and a lumpy bundle.
+
+<prompt time="1324816375">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='90' text='concentration 90%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1324816381">&gt;</prompt>
+Galadriel carefully makes another fold in her paper.
+<prompt time="1324816381">&gt;</prompt>
+Galadriel drops her branch in a bucket of viscous gloop.
+<prompt time="1324816382">&gt;</prompt>
+<output class="mono"/>
+
+Circle: 51
+Showing all skills with field experience.
+
+          SKILL: Rank/Percent towards next rank/Amount learning/Mindstate Fraction
+        Climbing:    876 50% deliberative  (11/34)      Perception:    123 29% dabbling       (1/34)
+          Hiding:    110 82% perusing       (2/34)        Stalking:    710 23% learning       (3/34)
+        Stealing:    601 97% rapt          (30/34)        Foraging:    282 89% analyzing     (18/34)
+ Mechanical Lore:    125 11% analyzing     (18/34)       Appraisal:    883 08% dabbling       (1/34)
+
+Total Ranks Displayed: 12
+Time Development Points: 50  Favors: 7  Deaths: 14  Departs: 2
+Overall state of mind: clear
+EXP HELP for more information
+<output class=""/>
+<component id='room players'></component>
+<prompt time="1324895949">&gt;</prompt>
+<component id='room players'></component>
+<prompt time="1324895955">&gt;</prompt>
+<streamWindow id="assess" title="Assess" location="right" resident="true"/><clearStream id="assess"/><pushStream id="assess"/> You assess your combat situation...
+
+<popStream/>
+<prompt time="1324895955">&gt;</prompt>
+A town guard walks in, glancing about with a false look of boredom on his face.
+<component id='room objs'>You also see a town guard, the Western Gate, the Guard House and some stone stairs leading to the top of the town wall.</component>
+<prompt time="1324895957">&gt;</prompt>
+<pushStream id="logons"/> * Galadriel retires from the adventure for now.
+<popStream/><prompt time="1324895960">&gt;</prompt>
+<component id='room players'></component>
+<prompt time="1324895961">&gt;</prompt>
+<nav/>
+<streamWindow id='main' title='Story' subtitle=" - [Mycthengelde, Flatlands]" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [Mycthengelde, Flatlands]" location='center' target='drop' ifClosed='' resident='true'/>
+<component id='room desc'>Well-worn paths lead through a grove of trees to a gate in The Crossing's western wall.  Now and again you hear birds calling to one another in the branches, or the bustling of a merchant's cart as it makes its way past.  A handful of adventurers nod at you in greeting as they make their way into town.  An aromatic mix of wildflowers mingles with wyndwood, oak and juniper trees as the grove stretches north and south, while to the west, you can see grassy flatlands through a small clearing.</component>
+<component id='room objs'>You also see a pile of rocks, a pile of rocks, a pile of rocks, a wooden sign printed in large block letters, the western gate, a narrow trail, a town wall and a path that heads westward toward the grasslands.</component>
+<component id='room players'></component>
+<component id='room exits'>Obvious paths: <d>northwest</d>.</component>
+<component id='room extra'></component>
+<resource picture="0"/><style id="roomName" />[Mycthengelde, Flatlands]
+<style id=""/><preset id='roomDesc'>Well-worn paths lead through a grove of trees to a gate in The Crossing's western wall.  Now and again you hear birds calling to one another in the branches, or the bustling of a merchant's cart as it makes its way past.  A handful of adventurers nod at you in greeting as they make their way into town.  An aromatic mix of wildflowers mingles with wyndwood, oak and juniper trees as the grove stretches north and south, while to the west, you can see grassy flatlands through a small clearing.</preset>  You also see a pile of rocks, a pile of rocks, a pile of rocks, a wooden sign printed in large block letters, the western gate, a narrow trail, a town wall and a path that heads westward toward the grasslands.
+Obvious paths: <d>northwest</d>.
+<compass><dir value="nw"/></compass><component id='room players'></component>
+<prompt time="1324895962">&gt;</prompt>
+<streamWindow id="assess" title="Assess" location="right" resident="true"/><clearStream id="assess"/><pushStream id="assess"/> You assess your combat situation...
+
+<popStream/>
+<prompt time="1324895965">&gt;</prompt>
+<component id='room players'></component>
+<prompt time="1324895967">&gt;</prompt>
+<component id='room players'></component>
+<prompt time="1324895973">&gt;</prompt>
+<component id='room players'></component>
+<prompt time="1324895979">&gt;</prompt>
+<output class="mono"/>
+<pushBold/>  Flag            Status  Behavior for this setting
+<popBold/><output class=""/>
+<output class="mono"/>
+  <d cmd="flag LogOn off">LogOn</d>              ON   Show logon messages.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag LogOff off">LogOff</d>             ON   Show logoff messages.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Disconnect on">Disconnect</d>         OFF  Do not show disconnection messages.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag ShowDeaths off">ShowDeaths</d>         ON   Show death messages when someone dies.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag RoomNames off">RoomNames</d>          ON   Display the name of the room in which you are located.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Description off">Description</d>        ON   Display room descriptions.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag RoomBrief on">RoomBrief</d>          OFF  Display the full text of the room description.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag BattleBrief on">BattleBrief</d>        OFF  Display normal battle descriptions.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag CombatBrief on">CombatBrief</d>        OFF  Display normal battle messages for yourself and others.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag MonsterBold on">MonsterBold</d>        OFF  Do not highlight monster names.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Inactivity off">Inactivity</d>         ON   Increase time before the system logs you off when inactive.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Portrait on">Portrait</d>           OFF  Do not view character portraits.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Dialogs on">Dialogs</d>            OFF  Do not display most dialog boxes.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Inventory off">Inventory</d>          ON   Display all inventory and container windows.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidJoiners on">AvoidJoiners</d>       OFF  Allow people to join your group.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidHolders on">AvoidHolders</d>       OFF  Allow people to hold your hand and adding you to their group.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidDancers on">AvoidDancers</d>       OFF  Allow people to dance with you, and add you to their group.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidWhispers on">AvoidWhispers</d>      OFF  Allow people to whisper to you.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidDraggers on">AvoidDraggers</d>      OFF  Allow people to drag your body.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidTeachers on">AvoidTeachers</d>      OFF  Allow people to teach you.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag AvoidSinging on">AvoidSinging</d>       OFF  Allow yourself to sing.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag NoHarnessShare on">NoHarnessShare</d>     OFF  Allow the shareing of harness with your group.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag HarnessWarning off">HarnessWarning</d>     ON   Receive notifications about harness limitations.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag HarnessVerbose off">HarnessVerbose</d>     ON   Receive detailed notifications about harness limitations.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag Autosneak on">Autosneak</d>          OFF  Do not automatically sneak from room to room when in hiding.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag BriefExp on">BriefExp</d>           OFF  Display verbose information in the Field Experience window in Stormfront.
+<output class=""/>
+<output class="mono"/>
+  <d cmd="flag ConciseThoughts on">ConciseThoughts</d>    OFF  Gweth messages will be longer.
+<output class=""/>
+<prompt time="1324908227">&gt;</prompt>
+<component id='exp First Aid'><preset id='whisper'>       First Aid:   40 06% perusing     </preset></component>
+<component id='exp Scholarship'><preset id='whisper'>     Scholarship:   87 13% dabbling     </preset></component>
+<component id='exp Teaching'><preset id='whisper'>        Teaching:   65 93% dabbling     </preset></component>
+Boromir expounds patiently and clearly to you on some nuances of First Aid that had heretofore escaped you.
+<prompt time="1324912569">&gt;</prompt>
+Samwise Gamgee came through the Northeast Gate.
+<component id='room players'>Also here: Samwise Gamgee, Boromir and Elrond.</component>
+<prompt time="1324912554">&gt;</prompt>
+<output class="mono"/>
+
+Name: Florist Legolas of Elanthia   Race: Halfling   Guild: Thief
+Gender: Male   Age: 42   Circle: 51
+You were born on the 30th day of the 1st month of Akroeg the Ram in the year of the Iron Toad, 361 years after the victory of Lanival the Redeemer.
+
+Your birthday is more than 1 months away.
+
+<preset id="thought">     Strength : 34 -</preset>     <preset id="thought">       Reflex : 12 -</preset>
+<preset id="speech">      Agility : 10 +</preset>          Charisma : 11
+<preset id="speech">   Discipline : 10 +</preset>            Wisdom : 58
+ Intelligence : 30             Stamina : 30
+
+Concentration : 121    Max : 225
+
+       Favors : 7
+         TDPs : 84
+  Encumbrance : None
+
+Wealth:
+  4 gold, 86 silver, 593 bronze, and 550 copper Kronars (19080 copper Kronars).
+  No Lirums.
+  No Dokoras.
+
+Debt:
+  No debt.
+
+<output class=""/>
+<prompt time="1324921292">&gt;</prompt>
+<right exist="162134941" noun="sharks">fuzzy sharks</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+  a midnight-black herb pouch pinioned with blood-red iera flowers
+  a jet black leather thigh quiver
+  a tattered black cloak
+  a locksmith's toolbelt fashioned from darkened leather
+  a platinum kyanite gwethdesuan
+  a simple belt knife
+  a small weathered pack
+  a canvas sack
+  a midnight black crossbow
+  a lumpy bundle
+<popStream/>
+
+<indicator id='IconHIDDEN' visible='y'/><clearContainer id="stow"/><inv id='stow'>In the pack:</inv><inv id='stow'> a broken rune</inv><inv id='stow'> a red gem pouch</inv><inv id='stow'> a brown pouch</inv><inv id='stow'> an ivory-hilted jambiya</inv><inv id='stow'> a blue gem pouch</inv><inv id='stow'> a black gem pouch</inv><inv id='stow'> a suede gem pouch</inv>You come out of hiding.
+
+You get some bright blue fuzzy sharks with pointy leather teeth from inside your weathered pack.
+<component id='room players'></component>
+<prompt time="1324928998">&gt;</prompt>
+<clearContainer id="stow"/><inv id='stow'>In the pack:</inv><inv id='stow'> some bright blue fuzzy sharks with pointy leather teeth</inv><inv id='stow'> a broken rune</inv><inv id='stow'> a red gem pouch</inv><inv id='stow'> a brown pouch</inv><inv id='stow'> an ivory-hilted jambiya</inv><inv id='stow'> a blue gem pouch</inv><inv id='stow'> a black gem pouch</inv><inv id='stow'> a suede gem pouch</inv>You put your sharks in your weathered pack.
+<prompt time="1324932528">&gt;</prompt>
+Frodo continues to practice his climbing skills.
+<prompt time="1325063533">&gt;</prompt>
+Gandalf begins to fiddle with a plain ironwood caddy using a stout lockpick.
+A soft click comes from the caddy.
+<component id='room players'>Also here: Gandalf and Frodo.</component>
+<prompt time="1325063536">&gt;</prompt>
+Gandalf finishes humming a quiet lament.
+<prompt time="1325063537">&gt;</prompt>
+<output class="mono"/>
+Your body feels at full strength.
+Your spirit feels full of life.
+You have no significant injuries.
+
+<output class=""/>
+<prompt time="1325063537">&gt;</prompt>
+<streamWindow id="assess" title="Assess" location="right" resident="true"/><clearStream id="assess"/><pushStream id="assess"/> You assess your combat situation...
+
+<popStream/>
+<prompt time="1325063543">&gt;</prompt>
+<component id='room players'>Also here: Gandalf and Frodo.</component>
+<prompt time="1325063551">&gt;</prompt>
+<resource picture="0"/><style id="roomName" />[Northeast Wilds, Outside Northeast Gate]
+<style id=""/><preset id='roomDesc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</preset>  You also see some muljin sap, a pile of rocks, a spotted rabbit that is sitting, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.
+Also here: Gandalf and Frodo.
+Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><prompt time="1325063560">&gt;</prompt>
+Gandalf begins to fiddle with a plain ironwood caddy using a stout lockpick.
+<component id='room players'>Also here: Gandalf and Frodo.</component>
+<prompt time="1325063560">&gt;</prompt>
+Frodo finishes humming a spritely polka.
+<prompt time="1325063561">&gt;</prompt>
+Frodo stops practicing his climbing skills.
+<prompt time="1325063565">&gt;</prompt>
+<pushStream id="logons"/> * Saruman returns home from a hard day of adventuring.
+<popStream/><prompt time="1325091156">&gt;</prompt>
+<pushStream id="talk"/><preset id='speech'>You say</preset>, "A spotted rabbit that is sitting."
+<popStream/><preset id='speech'>You say</preset>, "A spotted rabbit that is sitting"
+<prompt time="1325091160">&gt;</prompt>
+Your feet are finally dry.
+<prompt time="1325091170">&gt;</prompt>
+<prompt time="1325173142">&gt;</prompt>
+<component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
+<roundTime value='1325173145'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='98' text='fatigue 98%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+&lt; You kick your foot at a musk hog.  A musk hog fails to evade, taking the full blow.  <pushBold/>The foot lands a massive strike that blasts hard into the left arm and causes purple welts to appear almost immediately, lightly stunning it.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173142">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173144">&gt;</prompt>
+<component id='exp Appraisal'></component>
+<prompt time="1325173144">&gt;</prompt>
+<component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
+<roundTime value='1325173148'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='97' text='fatigue 97%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+&lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173145">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173146">&gt;</prompt>
+&lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173145">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173146">&gt;</prompt>
+A musk hog hisses viciously and lunges at you!
+* Moving inexpertly, a musk hog charges wide at you.  You evade.
+[You're incredibly balanced and overwhelming your opponent.]
+<prompt time="1325173146">&gt;</prompt>
+<pushStream id="logons"/> * Aragorn returns home from a hard day of adventuring.
+<popStream/><prompt time="1325173146">&gt;</prompt>
+<dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='100' text='fatigue 100%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><progressBar id='concentration' value='46' text='concentration 46%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<component id='room players'></component>
+<prompt time="1325173148">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173148">&gt;</prompt>
+A musk hog hisses viciously and lunges at you!
+* Inexpertly, a musk hog lowers its head, snorting angrily and charges at you.  You evade.
+[You're incredibly balanced and overwhelming your opponent.]
+<prompt time="1325173148">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173150">&gt;</prompt>
+You retreat back to pole range.
+<prompt time="1325173151">&gt;</prompt>
+You retreat from combat.
+<prompt time="1325173151">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173152">&gt;</prompt>
+The musk hog begins to advance on you!
+The musk hog is still a distance away from you and is closing steadily.
+<prompt time="1325173152">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='46' text='concentration 46%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<component id='room players'></component>
+<prompt time="1325173154">&gt;</prompt>
+The musk hog begins to advance on you!
+The musk hog is still a distance away from you and is closing steadily.
+<prompt time="1325173154">&gt;</prompt>
+<roundTime value='1325173156'/><indicator id='IconHIDDEN' visible='y'/>You melt into the background, convinced that your attempt to hide went unobserved.
+Roundtime: 2 sec.
+<component id='room players'></component>
+<prompt time="1325173154">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173156">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173158">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='46' text='concentration 46%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<component id='room players'></component>
+<prompt time="1325173160">&gt;</prompt>
+Appearing to have lost sight of its target, a musk hog stops advancing.
+<prompt time="1325173160">&gt;</prompt>
+<pushStream id="logons"/> * Aragorn just found a shadow to hide out in.
+<popStream/><prompt time="1325269272">&gt;</prompt>
+You know how to focus your mind in the following ways...
+
+ - Subtlety:
+
+    Darken
+      |-- Dampen
+      |
+      |-- Strike
+      |
+      |-- Silence
+
+ - Finesse:
+
+    Hasten
+      |
+      |
+      |-- Plunder
+
+ - Potence:
+
+    Focus
+      |-- Sight
+      |
+      |-- Prowess
+      |      |-- Steady
+      |
+      |-- Calm
+
+[KHRI {START|STOP} {khri1} {khri2} {khri3} {khri4} {khri5} {khri6} {khri7}]
+<prompt time="1325269272">&gt;</prompt>
+Treebeard continues to braid his vines.
+<prompt time="1325269273">&gt;</prompt>
+<resource picture="0"/><style id="roomName" />[Northeast Wilds, Outside Northeast Gate]
+<style id=""/><preset id='roomDesc'>You are before the Northeast Gate of the Crossing, surrounded by wayfarers and adventurers also in mid-journey.  Above, guardsmen stare down from the thick stone wall that encloses the city, wary for hostile visitors.  Whether they travel to destinations in town or farther west, or to the north and east, they all appear to be seeking something beyond themselves.</preset>  You also see some muljin sap, a pile of rocks, a spotted rabbit that is sitting, a narrow footpath, the Northeast Gate, a bucket of viscous gloop and a weathered roadsign.
+Also here: Gandalf and Frodo.
+Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><prompt time="1325063560">&gt;</prompt>
+<prompt time="1325269273">&gt;</prompt>

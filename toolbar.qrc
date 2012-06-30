@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/axe.png</file>
+        <file>images/bow.png</file>
+        <file>images/shield.png</file>
+        <file>images/sword.png</file>
+        <file>images/tree.png</file>
+        <file>images/web.png</file>
+        <file>images/bag.png</file>
+        <file>images/lhand.png</file>
+        <file>images/rhand.png</file>
+        <file>images/invisible.png</file>
+        <file>images/xsword.png</file>
+        <file>images/xshield.png</file>
+        <file>images/xbow.png</file>
+        <file>images/frost.png</file>
+        <file>images/sitting.png</file>
+        <file>images/kneeling.png</file>
+        <file>images/standing.png</file>
+        <file>images/bleeding.png</file>
+        <file>images/stars.png</file>
+        <file>images/concentration.png</file>
+        <file>images/fatigue.png</file>
+        <file>images/spirit.png</file>
+        <file>images/health_100.png</file>
+        <file>images/prone.png</file>
+        <file>images/death.png</file>
+        <file>images/bg.png</file>
+        <file>images/close.png</file>
+        <file>images/minus.png</file>
+        <file>images/group.png</file>
+    </qresource>
+</RCC>

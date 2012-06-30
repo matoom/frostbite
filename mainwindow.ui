@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1091</width>
+    <height>554</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>The Frostbite Client</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="toolbar.qrc">
+    <normaloff>:/images/frost.png</normaloff>:/images/frost.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#mainToolBar {
+/*     background-color: beige;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;*/
+    min-width: 10em;
+/*   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                                  stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+*/
+/*	 background-repeat: repeat-xy;*/
+}
+
+QWidget#cmdLine {
+    min-width: 50em;
+    padding: 6px;
+	padding-top: 10px;
+}
+/*
+QWidget#gameWindow {	
+border-color: rgb(0, 170, 0);
+    border-width: 2px;
+     border-style: solid;
+
+
+ 	background-image: url(:/images/compass.png);
+	background-color: white;
+    background-attachment: fixed;
+	background-position:  right bottom;
+	background-repeat: no-repeat;
+}
+*/
+
+QToolButton { 
+	 border: 1px solid rgb(190, 190, 190); 
+	 margin-left:-1px;
+	 margin-top:-1px; 
+}
+
+QToolButton:hover {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #dadbde, stop: 1 #f6f7fa);
+}
+
+QToolButton:pressed {
+	border: 1px solid rgb(190, 190, 190); 
+	margin-right:-1px;
+	margin-bottom:-1px; 
+}
+
+ QDockWidget {
+    titlebar-normal-icon:  url(&quot;:/images/minus.png&quot;);
+	titlebar-close-icon: url(&quot;:/images/close.png&quot;);
+	color: #e0e0e0;
+    font: 7pt &quot;Microsoft JhengHei&quot;;
+ }
+
+ QDockWidget::close-button, QDockWidget::float-button {
+	background: #3b3b3b;
+    border-radius: 3px;
+	border: 1px solid #3b3b3b;
+	icon-size: 7px;
+	margin: 0px;
+ }
+
+ QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+    border-radius: 3px;
+	border: 1px solid #e0e0e0;
+ }
+
+ QDockWidget::title {
+    text-align: left;
+    background: gray;
+    background-image: url(:/images/bg.png);
+	padding: 0px;
+    padding-left: 5px;
+	padding-top: 2px;
+ }</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QVBoxLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="mainLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1091</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>File</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuConfiguration">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Configuration</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
+    </property>
+    <addaction name="actionText_Highlight"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuConfiguration"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="windowTitle">
+    <string>Toolbar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="window.qrc">
+     <normaloff>:/window/images/connect.png</normaloff>:/window/images/connect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="icon">
+    <iconset resource="window.qrc">
+     <normaloff>:/window/images/disconnect.png</normaloff>:/window/images/disconnect.png</iconset>
+   </property>
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="actionText_Highlight">
+   <property name="icon">
+    <iconset resource="window.qrc">
+     <normaloff>:/window/images/highlight.png</normaloff>:/window/images/highlight.png</iconset>
+   </property>
+   <property name="text">
+    <string>Highlight</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="toolbar.qrc"/>
+  <include location="window.qrc"/>
+ </resources>
+ <connections/>
+</ui>
