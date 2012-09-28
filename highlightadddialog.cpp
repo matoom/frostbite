@@ -14,17 +14,27 @@ HighlightAddDialog::HighlightAddDialog(HighlightTextTab *textTab, QWidget *paren
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 }
 
+void HighlightAddDialog::showEvent(QShowEvent * event) {
+    ui->textLine->setFocus();
+}
+
 QComboBox* HighlightAddDialog::getGroupSelect() {
     return ui->groupSelect;
 }
 
 void HighlightAddDialog::okPressed() {
-    //saveChanges();
+    QString group = ui->groupSelect->currentText();
+    QString text = ui->textLine->text();
 
-    qDebug() << "ADD::";
-    HighlightSettingsEntry he = HighlightSettingsEntry("", "kurk", "combat",QColor(0, 0, 0), "play.wav", 20, "overwrite", 1);
+    HighlightSettingsEntry entry = HighlightSettingsEntry(NULL, text, group,
+        QColor(255, 255, 255), NULL, NULL, NULL, NULL, NULL, QBitArray(3));
 
-    settings->addParameter(he);
+    settings->addParameter("TextHighlight", entry);
+
+    textTab->reloadHighlightList();
+
+    ui->textLine->setText("");
+
     this->accept();
 }
 

@@ -35,7 +35,10 @@ SOURCES += main.cpp\
     highlightgeneraltab.cpp \
     highlightadddialog.cpp \
     highlightsettingsentry.cpp \
-    highlightsettings.cpp
+    highlightsettings.cpp \
+    highlighteditdialog.cpp \
+    highlightalerttab.cpp \
+    audioplayer.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -64,12 +67,16 @@ HEADERS  += mainwindow.h \
     highlightgeneraltab.h \
     highlightadddialog.h \
     highlightsettingsentry.h \
-    highlightsettings.h
+    highlightsettings.h \
+    highlighteditdialog.h \
+    highlightalerttab.h \
+    audioplayer.h
 
 FORMS    += mainwindow.ui \
     connectdialog.ui \
     highlightdialog.ui \
-    highlightadddialog.ui
+    highlightadddialog.ui \
+    highlighteditdialog.ui
 
 RESOURCES += \
     toolbar.qrc \
@@ -80,7 +87,6 @@ RC_FILE = resources.rc
 
 OTHER_FILES += \
     resources.rc
-
 
 
 

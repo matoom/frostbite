@@ -10,11 +10,13 @@
 
 #include <highlightgeneraltab.h>
 #include <highlighttexttab.h>
+#include <highlightalerttab.h>
 
 class MainWindow;
 class ClientSettings;
 class HighlightGeneralTab;
 class HighlightTextTab;
+class HighlightAlertTab;
 
 namespace Ui {
     class HighlightDialog;
@@ -29,16 +31,44 @@ public:
 
     /* general tab items */
     QListWidget* getGeneralList();
-    //QLineEdit* getGeneralDelayLine();
     QGroupBox* getGeneralAlertGroup();
     QComboBox* getGeneralFileSelect();
+    QPushButton* getGeneralPlayButton();
 
     /* text tab items */
     QPushButton* getTextAddButton();
-    QListWidget *getTextList();
-    QComboBox *getTextFileSelect();
-    //QLineEdit* getTextDelayLine();
-    QGroupBox* getTextAlertGroup();
+    QPushButton* getTextRemoveButton();
+    QListWidget* getTextList();
+    QComboBox* getTextFileSelect();
+    QPushButton* getTextPlayButton();
+    QComboBox* getTextActionSelect();
+    QGroupBox* getTextTimerGroup();
+    QLineEdit* getTextTimerValue();
+    QGroupBox* getTextAlertGroup();    
+    QCheckBox* getTextEntireRow();
+    QCheckBox* getTextPartialMatch();
+    QCheckBox* getTextStartingWith();
+    QComboBox* getTextHighlightGroup();
+
+    /* text tab items */
+    QGroupBox* getBleedingGroup();
+    QPushButton* getBleedingPlayButton();
+    QComboBox* getBleedingPlaySelect();
+    QGroupBox* getStunGroup();
+    QPushButton* getStunPlayButton();
+    QComboBox* getStunSelect();
+    QGroupBox* getHealthGroup();
+    QPushButton* getHealthPlayButton();
+    QComboBox* getHealthSelect();
+    QSlider* getHealthSlider();
+    QLabel* getHealthSliderText();
+    QGroupBox* getDeathGroup();
+    QPushButton* getDeathPlayButton();
+    QComboBox* getDeathSelect();
+    QGroupBox* getWebbedGroup();
+    QPushButton* getWebbedPlayButton();
+    QComboBox* getWebbedSelect();
+
 
     /* highlight dialog items */
     QPushButton* getApplyButton();
@@ -50,6 +80,7 @@ private:
     ClientSettings *settings;
     HighlightGeneralTab *generalTab;
     HighlightTextTab *textTab;
+    HighlightAlertTab *alertTab;
 
 private slots:
     void okPressed();

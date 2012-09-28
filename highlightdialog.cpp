@@ -9,48 +9,7 @@ HighlightDialog::HighlightDialog(QWidget *parent) : QDialog(parent), ui(new Ui::
 
     generalTab = new HighlightGeneralTab(this);
     textTab = new HighlightTextTab(this);
-
-    //http://www.qtcentre.org/threads/40725-QColorDialog
-    //ui->colorButton->setPalette(QColorDialog::getColor(Qt::green));
-    //this->defaultPalette();
-
-    /*QHash<QString, QVariant> alert;
-    QHash<QString, QVariant> item1;
-    item1.insert("name", "[Room titles]");
-    item1.insert("color", QColor(255, 255, 255, 255));    
-    alert.insert("file", "chimes.wav");
-    alert.insert("delay", 200);
-    item1.insert("alert", alert);
-    //item1.insert("flags", HighLight::EntireRow);
-    generalHighlights.insert("RoomName", item1);
-
-    item1.insert("name", "Game Messages");
-    item1.insert("color", QColor(255, 255, 0, 255));
-    item1.insert("alert", NULL);
-    //item1.insert("flags", HighLight::SingleWord);
-    generalHighlights.insert("GameMessage", item1);
-
-    item1.insert("name", "Someone says ..");
-    item1.insert("color", QColor(0, 255, 0, 255));
-    alert.insert("file", "Windows Pop-up Blocked.wav");
-    alert.insert("delay", 0);
-    item1.insert("alert", alert);
-    //item1.insert("flags", HighLight::PartialMatches | HighLight::EntireRow);
-    generalHighlights.insert("Say" ,item1);
-
-    item1.insert("name", "Also see..");
-    item1.insert("color", QColor(0, 255, 255, 255));
-    item1.insert("alert", NULL);
-    //item1.insert("flags", HighLight::EntireRow);
-    generalHighlights.insert("AlsoSee", item1);
-
-    item1.insert("name", "Also here..");
-    item1.insert("color", QColor(255, 255, 0, 255));
-    item1.insert("alert", NULL);
-    //item1.insert("flags", HighLight::EntireRow | HighLight::StartingWith);
-    generalHighlights.insert("AlsoHere", item1);*/
-
-    //this->loadSettings();
+    alertTab = new HighlightAlertTab(this);
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
@@ -61,16 +20,16 @@ QListWidget* HighlightDialog::getGeneralList() {
     return ui->gList;
 }
 
-/*QLineEdit* HighlightDialog::getGeneralDelayLine() {
-    return ui->gDelay;
-}*/
-
 QGroupBox* HighlightDialog::getGeneralAlertGroup() {
     return ui->gAlertGroup;
 }
 
 QComboBox* HighlightDialog::getGeneralFileSelect() {
     return ui->gFileSelect;
+}
+
+QPushButton* HighlightDialog::getGeneralPlayButton() {
+        return ui->gPlay;
 }
 
 QPushButton* HighlightDialog::getApplyButton() {
@@ -81,24 +40,126 @@ QPushButton* HighlightDialog::getTextAddButton() {
     return ui->tAdd;
 }
 
+QPushButton* HighlightDialog::getTextRemoveButton() {
+    return ui->tRemove;
+}
+
 QListWidget* HighlightDialog::getTextList() {
     return ui->tList;
+}
+
+QComboBox* HighlightDialog::getTextHighlightGroup() {
+    return ui->tGroup;
 }
 
 QComboBox* HighlightDialog::getTextFileSelect() {
     return ui->tFileSelect;
 }
 
-/*QLineEdit* HighlightDialog::getTextDelayLine(){
-    return ui->tAlertDelay;
-}*/
+QPushButton* HighlightDialog::getTextPlayButton() {
+    return ui->tPlay;
+}
+
+QComboBox* HighlightDialog::getTextActionSelect(){
+    return ui->tActionSelect;
+}
+
+QGroupBox* HighlightDialog::getTextTimerGroup(){
+    return ui->tTimerGroup;
+}
+
+QLineEdit* HighlightDialog::getTextTimerValue(){
+    return ui->tTimerValue;
+}
 
 QGroupBox* HighlightDialog::getTextAlertGroup(){
     return ui->tAlertGroup;
 }
 
+QCheckBox* HighlightDialog::getTextEntireRow(){
+    return ui->tEntireRow;
+}
+
+QCheckBox* HighlightDialog::getTextPartialMatch(){
+    return ui->tPartialMatch;
+}
+
+QCheckBox* HighlightDialog::getTextStartingWith(){
+    return ui->tStartingWith;
+}
+
+QGroupBox* HighlightDialog::getBleedingGroup(){
+    return ui->bleedingGroup;
+}
+
+QPushButton* HighlightDialog::getBleedingPlayButton(){
+    return ui->bleedingPlayButton;
+}
+
+QComboBox* HighlightDialog::getBleedingPlaySelect(){
+    return ui->bleedingPlaySelect;
+}
+
+QGroupBox* HighlightDialog::getStunGroup(){
+    return ui->stunGroup;
+}
+
+QPushButton* HighlightDialog::getStunPlayButton(){
+    return ui->stunPlayButton;
+}
+
+QComboBox* HighlightDialog::getStunSelect(){
+    return ui->stunPlaySelect;
+}
+
+QGroupBox* HighlightDialog::getHealthGroup(){
+    return ui->healthGroup;
+}
+
+QPushButton* HighlightDialog::getHealthPlayButton(){
+    return ui->healthPlayButton;
+}
+
+QComboBox* HighlightDialog::getHealthSelect(){
+    return ui->healthPlaySelect;
+}
+
+QSlider* HighlightDialog::getHealthSlider(){
+    return ui->healthSlider;
+}
+
+QLabel* HighlightDialog::getHealthSliderText(){
+    return ui->healthSliderText;
+}
+
+QGroupBox* HighlightDialog::getDeathGroup(){
+    return ui->deathGroup;
+}
+
+QPushButton* HighlightDialog::getDeathPlayButton(){
+    return ui->deathPlayButton;
+}
+
+QComboBox* HighlightDialog::getDeathSelect(){
+    return ui->deathPlaySelect;
+}
+
+QGroupBox* HighlightDialog::getWebbedGroup(){
+    return ui->webbedGroup;
+}
+
+QPushButton* HighlightDialog::getWebbedPlayButton() {
+    return ui->webbedPlayButton;
+}
+
+QComboBox* HighlightDialog::getWebbedSelect(){
+    return ui->webbedPlaySelect;
+}
+
 void HighlightDialog::okPressed() {
     generalTab->saveChanges();
+    textTab->saveChanges();
+    alertTab->saveChanges();
 
     ui->applyButton->setEnabled(false);
 
@@ -107,6 +168,8 @@ void HighlightDialog::okPressed() {
 
 void HighlightDialog::cancelPressed() {
     generalTab->cancelChanges();
+    textTab->cancelChanges();
+    alertTab->cancelChanges();
 
     ui->applyButton->setEnabled(false);
 
@@ -115,6 +178,8 @@ void HighlightDialog::cancelPressed() {
 
 void HighlightDialog::applyPressed() {
     generalTab->saveChanges();
+    textTab->saveChanges();
+    alertTab->saveChanges();
 
     ui->applyButton->setEnabled(false);
 }

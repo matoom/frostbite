@@ -5,9 +5,12 @@
 #include <QWidget>
 
 #include <highlightdialog.h>
-#include <clientsettings.h>
+#include <highlightsettings.h>
+#include <audioplayer.h>
 
 class HighlightDialog;
+class HighlightSettings;
+class AudioPlayer;
 
 class HighlightGeneralTab : public QObject {
     Q_OBJECT
@@ -21,15 +24,16 @@ public:
 
 private:
     HighlightDialog *highlightDialog;
-    ClientSettings *settings;
+    HighlightSettings *settings;
+    AudioPlayer *audioPlayer;
 
     QHash<QString, QHash<QString, QVariant> > highlightList;
     QList<QString> generalChangeList;
 
     QListWidget* listWidget;
     QGroupBox* alertGroup;
-    //QLineEdit* delayLine;
     QComboBox* fileSelect;
+    QPushButton* playButton;
     QPushButton* applyButton;
 
     QAction *colorAct;
@@ -39,11 +43,12 @@ private:
     void initContextMenu();
     void loadSettings();
     void prepareList();
-    void updateControls(QString key);
-    void updateListColor(QString key);
+    void updateControls(QListWidgetItem*);
+    void clearControls();
+    //void updateListColor(QString key);
     void registerChange(QString currentItemKey);
     void updateAlertSettings(QString key, QVariant value);
-    void readSoundFiles();
+    void initFileSelect();
     void updateSelectedItemColor(QListWidgetItem *current);
     QHash<QString, QVariant> readSettings(QString id, QString name, QColor color);
 
@@ -51,10 +56,10 @@ signals:
 
 private slots:
     void colorDialog();
+    void playSound();
     void itemSelected(QListWidgetItem* current, QListWidgetItem* previous);
     void fileSelected(const QString& text);
     void alertClicked(bool on);
-    //void delayUpdated(const QString& text);
     void listWidgetMenuRequested(const QPoint &point);
 };
 

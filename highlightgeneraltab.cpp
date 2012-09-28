@@ -2,16 +2,19 @@
 
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
-    settings = ClientSettings::Instance();
+    settings = HighlightSettings::Instance();
+    audioPlayer = AudioPlayer::Instance();
 
     listWidget = highlightDialog->getGeneralList();
     alertGroup = highlightDialog->getGeneralAlertGroup();
     fileSelect = highlightDialog->getGeneralFileSelect();
+    playButton = highlightDialog->getGeneralPlayButton();
+
     applyButton = highlightDialog->getApplyButton();
 
     this->loadSettings();
     this->prepareList();
-    this->readSoundFiles();
+    this->initFileSelect();
     this->initContextMenu();
 
     listWidget->setStyleSheet("QListWidget {background-color: black;}");
@@ -22,7 +25,16 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
             this, SLOT(listWidgetMenuRequested(const QPoint &)));
     connect(alertGroup, SIGNAL(clicked(bool)), this, SLOT(alertClicked(bool)));
     connect(fileSelect, SIGNAL(activated(const QString&)), this,
-            SLOT(fileSelected(const QString&)));
+            SLOT(fileSelected(const QString&)));    
+    connect(playButton, SIGNAL(clicked()), this, SLOT(playSound()));
+}
+
+void HighlightGeneralTab::loadSettings() {
+    highlightList.insert("roomName", readSettings("roomName", "[Room titles]", QColor(255, 255, 255, 255)));
+    highlightList.insert("gameMessage", readSettings("gameMessage", "Game Messages", QColor(255, 255, 0, 255)));
+    highlightList.insert("say", readSettings("say", "Someone says ..", QColor(0, 255, 0, 255)));
+    highlightList.insert("alsoSee", readSettings("alsoSee", "Also see..", QColor(0, 255, 255, 255)));
+    highlightList.insert("alsoHere", readSettings("alsoHere", "Also here..", QColor(255, 255, 0, 255)));
 }
 
 void HighlightGeneralTab::initContextMenu() {
@@ -37,7 +49,7 @@ void HighlightGeneralTab::initContextMenu() {
 }
 
 void HighlightGeneralTab::colorDialog() {
-    QColor color = QColorDialog::getColor(listWidget->currentItem()->textColor(), listWidget, tr("Title"));
+    QColor color = QColorDialog::getColor(listWidget->currentItem()->textColor(), listWidget, tr("Select color"));
 
     if (color.isValid()) {
         QString currentItemKey = listWidget->currentItem()->data(Qt::UserRole).toString();
@@ -54,13 +66,12 @@ void HighlightGeneralTab::listWidgetMenuRequested(const QPoint &point) {
     menu->exec(globalPos);
 }
 
-void HighlightGeneralTab::readSoundFiles() {
-    QStringList filter;
-    filter << "*.wav";
+void HighlightGeneralTab::initFileSelect() {
+    fileSelect->addItems(audioPlayer->getAudioList());
+}
 
-    QDir myDir(QDir::currentPath() + "/sound");
-    QStringList list = myDir.entryList(filter, QDir::Files, QDir::Name);
-    fileSelect->addItems(list);
+void HighlightGeneralTab::playSound() {
+    audioPlayer->play(fileSelect->currentText());
 }
 
 void HighlightGeneralTab::prepareList() {
@@ -75,27 +86,20 @@ void HighlightGeneralTab::prepareList() {
 }
 
 QHash<QString, QVariant> HighlightGeneralTab::readSettings(QString id, QString name, QColor color) {
-    QHash<QString, QVariant> itemSettings;
-    itemSettings = settings->getParameter("GeneralHighlights/" + id, NULL).toHash();
+    QString nameSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/name", "").toString();
+    QColor colorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/color", NULL).value<QColor>();
+    QString alertSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/alert", "").toString();
 
     QHash<QString, QVariant> item;
     item.insert("name", name);
-    item.insert("color", itemSettings.value("color", color));
-    item.insert("alert", itemSettings.value("alert", NULL));
+    item.insert("color", colorSetting.isValid() ? colorSetting : color);
+    item.insert("alert", alertSetting);
 
-    if(itemSettings.isEmpty()) {
-        settings->setParameter("GeneralHighlights/" + id, item);
+    if(nameSetting.isEmpty()) {
+        settings->setSingleParameter("GeneralHighlight/" + id + "/name", name);
+        settings->setSingleParameter("GeneralHighlight/" + id + "/color", color);
     }
-
     return item;
-}
-
-void HighlightGeneralTab::loadSettings() {
-    highlightList.insert("RoomName", readSettings("RoomName", "[Room titles]", QColor(255, 255, 255, 255)));
-    highlightList.insert("GameMessage", readSettings("GameMessage", "Game Messages", QColor(255, 255, 0, 255)));
-    highlightList.insert("Say", readSettings("Say", "Someone says ..", QColor(0, 255, 0, 255)));
-    highlightList.insert("AlsoSee", readSettings("AlsoSee", "Also see..", QColor(0, 255, 255, 255)));
-    highlightList.insert("AlsoHere", readSettings("AlsoHere", "Also here..", QColor(255, 255, 0, 255)));
 }
 
 void HighlightGeneralTab::registerChange(QString currentItemKey) {
@@ -129,76 +133,86 @@ void HighlightGeneralTab::fileSelected(const QString& text) {
 }
 
 void HighlightGeneralTab::itemSelected(QListWidgetItem *current, QListWidgetItem *previous) {
-    if(previous) {
+    /*if(previous) {
         previous->setIcon(QIcon());
     }
-    current->setIcon(QIcon(":/nav/images/active/green/e.png"));
+    current->setIcon(QIcon(":/nav/images/active/green/e.png"));*/
 
     /* change highlight color to item color */
     updateSelectedItemColor(current);
 
     /* enable/disable controls for list item */
-    updateControls(current->data(Qt::UserRole).toString());
+    updateControls(current);
 }
 
 void HighlightGeneralTab::updateSelectedItemColor(QListWidgetItem *current) {
-    /* change highlight color to item color */
-    QPalette palette = listWidget->palette();
-    palette.setColor(QPalette::HighlightedText, current->textColor());
-    palette.setColor(QPalette::Highlight, Qt::transparent);
-    listWidget->setPalette(palette);
+    if(current != NULL) {
+        /* change highlight color to item color */
+        QPalette palette = listWidget->palette();
+        palette.setColor(QPalette::HighlightedText, current->textColor());
+        //palette.setColor(QPalette::Highlight, Qt::transparent);
+        listWidget->setPalette(palette);
+    }
 }
 
-void HighlightGeneralTab::updateListColor(QString key) {
+/*void HighlightGeneralTab::updateListColor(QString key) {
     for (int i = 0; i < listWidget->count(); i++) {
         if(listWidget->item(i)->data(Qt::UserRole) == key) {
             listWidget->item(i)->setTextColor(highlightList[key].value("color").value<QColor>());
             updateSelectedItemColor(listWidget->item(i));
         }
     }
-}
+}*/
 
-void HighlightGeneralTab::updateControls(QString key) {
-    QHash<QString, QVariant> itemSettings = highlightList.value(key);
-    QHash<QString, QVariant> alertSettings = itemSettings.value("alert").toHash();
+void HighlightGeneralTab::updateControls(QListWidgetItem *current) {
+    if(current != NULL) {
+        QString key = current->data(Qt::UserRole).toString();
+        QHash<QString, QVariant> itemSettings = highlightList.value(key);
+        QHash<QString, QVariant> alertSettings = itemSettings.value("alert").toHash();
 
-    if(!alertSettings.isEmpty()) {
-        alertGroup->setChecked(alertSettings.value("enabled").toBool());
+        if(!alertSettings.isEmpty()) {
+            alertGroup->setChecked(alertSettings.value("enabled").toBool());
 
-        int index = fileSelect->findText(alertSettings.value("file").toString());
-        if(index != -1) {
-            fileSelect->setCurrentIndex(index);
+            int index = fileSelect->findText(alertSettings.value("file").toString());
+            if(index != -1) {
+                fileSelect->setCurrentIndex(index);
+            } else {
+                fileSelect->setCurrentIndex(0);
+            }
         } else {
+            alertGroup->setChecked(false);
             fileSelect->setCurrentIndex(0);
         }
     } else {
-        alertGroup->setChecked(false);
-        fileSelect->setCurrentIndex(0);
+        this->clearControls();
     }
 }
 
+void HighlightGeneralTab::clearControls() {
+    alertGroup->setChecked(false);
+    alertGroup->setDisabled(true);
+}
+
 void HighlightGeneralTab::saveChanges() {
-    foreach(QString s, generalChangeList) {
-        settings->setParameter("GeneralHighlights/" + s, highlightList.value(s));
+    foreach(QString s, generalChangeList) {                
+        QHashIterator<QString, QVariant> i(highlightList.value(s));
+        while (i.hasNext()) {
+            i.next();
+            settings->setSingleParameter("GeneralHighlight/" + s + "/" + i.key(), i.value());
+        }
     }
 
     generalChangeList.clear();
 }
 
 void HighlightGeneralTab::cancelChanges() {
-    foreach(QString s, generalChangeList) {
-        QHash<QString, QVariant> itemSettings = settings->getParameter("GeneralHighlights/" + s, NULL).toHash();
+    if(!generalChangeList.isEmpty()) {
+        listWidget->clear();
+        this->loadSettings();
+        this->prepareList();
 
-        if(!itemSettings.isEmpty()) {
-            highlightList[s].insert("color", itemSettings.value("color"));
-            highlightList[s].insert("alert", itemSettings.value("alert").toHash());
-        }
-
-        updateControls(s);
-        updateListColor(s);
-    }        
-
-    generalChangeList.clear();
+        generalChangeList.clear();
+    }
 }
 
 HighlightGeneralTab::~HighlightGeneralTab() {

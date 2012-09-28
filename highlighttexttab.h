@@ -5,22 +5,19 @@
 
 #include <highlightdialog.h>
 #include <highlightadddialog.h>
+#include <highlighteditdialog.h>
 #include <highlightsettings.h>
 #include <highlightsettingsentry.h>
+#include <audioplayer.h>
 
 class HighlightDialog;
 class HighlightAddDialog;
+class HighlightEditDialog;
 class HighlightSettings;
-
-namespace HighLight {
-    enum Flags {SingleWord = 1,
-                EntireRow = 2,
-                PartialMatches = 4,
-                StartingWith = 8};
-}
+class AudioPlayer;
 
 namespace Group {
-    enum List {All, Names, Monsters, Travel, Combat, Various};
+    enum List {All, Names, Critters, Travel, Combat, Other};
 }
 
 class HighlightTextTab : public QObject {
@@ -28,26 +25,78 @@ class HighlightTextTab : public QObject {
 public:
     explicit HighlightTextTab(QObject *parent = 0);
 
+    void loadHighlightList();
+    void reloadHighlightList();
+    void saveChanges();
+    void cancelChanges();
+
 private:
     HighlightDialog *highlightDialog;
     HighlightAddDialog *highlightAddDialog;
-    HighlightSettings *settings;
+    HighlightEditDialog *highlightEditDialog;
+    HighlightSettings *highlightSettings;
+    AudioPlayer *audioPlayer;
 
-    QHash<QString, QHash<QString, QVariant> > highlightList;
+    QPushButton *addButton;
+    QPushButton *applyButton;
+    QPushButton *removeButton;
+    QGroupBox *alertBox;
+    QComboBox *alertFileSelect;
+    QPushButton *playButton;
+    QGroupBox *timerBox;
+    QComboBox  *timerActionSelect;
+    QLineEdit *timerValueLine;
+    QCheckBox *entireRowCheck;
+    QCheckBox *partialMatchCheck;
+    QCheckBox *startingWithCheck;
+    QComboBox *groupSelect;
 
-    QPushButton *add;
     QListWidget *listWidget;
     QDialog *addDialog;
     QComboBox *addGroupSelect;
+    QComboBox *editGroupSelect;
     QList<QString> groupNames;
+    QString group;
+    QList<QString> timerActionNames;
 
-    void initAddDialog();
-    void addHighlight();
+    QList<HighlightSettingsEntry> highlightList;
+    QList<int> changeList;
+
+    QAction *colorAct;
+    QAction *editAct;
+    QMenu *menu;
+
+    void initGroupSelect();
+    void initTimerActionSelect();
+    void initContextMenu();
+    void updateControls(QListWidgetItem*);
+    void clearControls();
+    void updateAlertControl(bool, QString);
+    void updateTimerControl(bool, int, QString);
+    void updateOptionsControl(QBitArray);
+    void registerChange();
+    void createListItem(int, QString, QColor);
+    void updateSelectedItemColor(QListWidgetItem*);
 
 signals:
 
 private slots:
-    void addHighlightDialog();
+    void showAddDialog();
+    void showEditDialog();
+    void removeHighlightItem();
+    void itemSelected(QListWidgetItem*, QListWidgetItem*);
+    void timerValueChanged();
+    void alertSelected(bool);
+    void alertFileSelected(const QString&);
+    void timerSelected(bool);
+    void timerActionSelected(const QString&);
+    void entireRowSelected(bool);
+    void partialMatchSelected(bool);
+    void startingWithSelected(bool);
+    void groupSelected(const QString&);
+    void listWidgetMenuRequested(const QPoint&);
+    void colorDialog();
+    void playSound();
 
 public slots:
 

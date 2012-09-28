@@ -28,6 +28,8 @@ private:
     HighlightTextTab *textTab;
     HighlightSettings *settings;
 
+    void showEvent(QShowEvent * event);
+
 private slots:
     void okPressed();
     void cancelPressed();

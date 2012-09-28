@@ -11,18 +11,19 @@ class HighlightSettings : QSettings {
 public:
     static HighlightSettings* Instance();
 
-    void setParameter(QString name, HighlightSettingsEntry entry);
-    QVariant getParameter(QString name, QVariant defaultValue);
+    void setSingleParameter(QString name, QVariant value);
+    QVariant getSingleParameter(QString name, QVariant defaultValue);
 
-    void addParameter(HighlightSettingsEntry entry);
+    void setParameter(QString, HighlightSettingsEntry entry);
+    void addParameter(QString, HighlightSettingsEntry entry);
+    QList<HighlightSettingsEntry> getSettings(QString);
+    void setSettings(QString, QList<HighlightSettingsEntry>);
 
 private:
     HighlightSettings();
     HighlightSettings(HighlightSettings const& copy);
     HighlightSettings& operator = (HighlightSettings const& copy);
     static HighlightSettings* m_pInstance;
-
-    int getLowestFreeId(QStringList list);
 };
 
 #endif // HIGHLIGHTSETTINGS_H

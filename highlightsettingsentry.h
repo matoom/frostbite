@@ -5,20 +5,29 @@
 #include <QVariant>
 #include <QList>
 #include <QColor>
+#include <QBitArray>
 
 class HighlightSettingsEntry {
 
 public:
-    HighlightSettingsEntry(const QString &id, const QString &value, const QString &group, const QColor &color,
-                           const QString &alert, const int &timer, const QString &timerAction, const int &options);
-    QString id;
+    HighlightSettingsEntry();
+
+    HighlightSettingsEntry(const int &id, const QString &value,
+        const QString &group, const QColor &color, const bool &alert, const QString &alertValue,
+        const bool &timer, const int &timerValue, const QString &timerAction, const QBitArray &options);
+
+    int id;
     QString value;
     QString group;
     QColor color;
-    QString alert;
-    int timer;
+    bool alert;
+    QString alertValue;
+    bool timer;
+    int timerValue;
     QString timerAction;
-    int options;
+    QBitArray options;
+
+    const QString toString();
 };
 
 typedef QList<HighlightSettingsEntry> SettingsEntryList;
