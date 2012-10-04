@@ -19,7 +19,6 @@ void AudioPlayer::loadAudioList() {
     filter << "*.wav";
 
     QDir myDir(QDir::currentPath() + "/sound");
-
     fileList = myDir.entryList(filter, QDir::Files, QDir::Name);
 }
 

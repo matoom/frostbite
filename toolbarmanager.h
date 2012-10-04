@@ -25,6 +25,11 @@ public:
     void updateWieldLeft(QString value);
     void updateWieldRight(QString value);
 
+    int getHealthValue();
+    int getConcentrationValue();
+    int getFatigueValue();
+    int getSpiritValue();
+
 private:
     MainWindow *mainWindow;
     VitalsIndicator *vitalsIndicator;

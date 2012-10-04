@@ -18,16 +18,16 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Conn
 }
 
 void ConnectDialog::loadData() {
-    this->ui->serverHost->setText(settings->getParameter("Connection/serverHost", "prime.dr.game.play.net").toString());
-    this->ui->serverPort->setText(settings->getParameter("Connection/serverPort", "4901").toString());
-    this->ui->key->setText(settings->getParameter("Connection/sessionKey", "").toString());
+    this->ui->serverHost->setText(settings->getParameter("Login/serverHost", "prime.dr.game.play.net").toString());
+    this->ui->serverPort->setText(settings->getParameter("Login/serverPort", "4901").toString());
+    this->ui->authHost->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());
+    this->ui->authPort->setText(settings->getParameter("Login/authPort", "7900").toString());
+    this->ui->user->setText(settings->getParameter("Login/user", "").toString());
 
-    this->ui->useProxy->setChecked(settings->getParameter("Connection/useProxy", false).toBool());
-
-    proxyEnabled(settings->getParameter("Connection/useProxy", false).toBool());
-
-    this->ui->proxyHost->setText(settings->getParameter("Connection/proxyHost", "").toString());
-    this->ui->proxyPort->setText(settings->getParameter("Connection/proxyPort", "").toString());
+    proxyEnabled(settings->getParameter("Login/useProxy", false).toBool());
+    this->ui->useProxy->setChecked(settings->getParameter("Login/useProxy", false).toBool());
+    this->ui->proxyHost->setText(settings->getParameter("Login/proxyHost", "").toString());
+    this->ui->proxyPort->setText(settings->getParameter("Login/proxyPort", "").toString());
 }
 
 void ConnectDialog::proxyState(int state) {
@@ -52,7 +52,8 @@ void ConnectDialog::proxyEnabled(bool state) {
 void ConnectDialog::connectStart() {
     this->saveSettings();
     // start connection code here
-    mainWindow->getConnectionManager()->connectToHost();
+    mainWindow->getConnectionManager()->initLoginSession(this->ui->user->text(),
+        this->ui->key->text());
 
     this->accept();
 }
@@ -62,13 +63,15 @@ void ConnectDialog::connectCancel() {
 }
 
 void ConnectDialog::saveSettings() {
-    settings->setParameter("Connection/serverHost", this->ui->serverHost->text());
-    settings->setParameter("Connection/serverPort", this->ui->serverPort->text());
-    settings->setParameter("Connection/sessionKey", this->ui->key->text());
+    settings->setParameter("Login/serverHost", this->ui->serverHost->text());
+    settings->setParameter("Login/serverPort", this->ui->serverPort->text());
+    settings->setParameter("Login/authHost", this->ui->authHost->text());
+    settings->setParameter("Login/authPort", this->ui->authPort->text());
+    settings->setParameter("Login/user", this->ui->user->text());
 
-    settings->setParameter("Connection/useProxy", this->ui->useProxy->isChecked());
-    settings->setParameter("Connection/proxyHost", this->ui->proxyHost->text());
-    settings->setParameter("Connection/proxyPort", this->ui->proxyPort->text());
+    settings->setParameter("Login/useProxy", this->ui->useProxy->isChecked());
+    settings->setParameter("Login/proxyHost", this->ui->proxyHost->text());
+    settings->setParameter("Login/proxyPort", this->ui->proxyPort->text());
 }
 
 void ConnectDialog::closeEvent(QCloseEvent *event) {

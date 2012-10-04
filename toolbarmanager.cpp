@@ -56,6 +56,22 @@ void ToolbarManager::updateStatus(QString visible, QString icon) {
     statusIndicator->updateStatus(visible, icon);
 }
 
+int ToolbarManager::getHealthValue() {
+    return vitalsIndicator->healthBar->value();
+}
+
+int ToolbarManager::getConcentrationValue() {
+    return vitalsIndicator->concentrationBar->value();
+}
+
+int ToolbarManager::getFatigueValue() {
+    return vitalsIndicator->fatigueBar->value();
+}
+
+int ToolbarManager::getSpiritValue() {
+    return vitalsIndicator->spiritBar->value();
+}
+
 void ToolbarManager::quickButtonAction() {
     QToolButton *button = (QToolButton *)sender();
 

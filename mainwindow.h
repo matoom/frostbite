@@ -10,6 +10,7 @@
 #include <clientsettings.h>
 #include <commandline.h>
 #include <menuhandler.h>
+#include <scriptservice.h>
 
 /* test*/
 #include <QtXml>
@@ -33,6 +34,7 @@ class ToolbarManager;
 class GameWindow;
 class CommandLine;
 class MenuHandler;
+class ScriptService;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -53,6 +55,7 @@ public:
     ToolbarManager* getToolbarManager();
     ConnectionManager* getConnectionManager();
     CommandLine* getCommandLine();
+    ScriptService* getScriptService();
 
 private:
     Ui::MainWindow *ui;
@@ -62,6 +65,7 @@ private:
     ClientSettings *settings;
     CommandLine *cmdLine;
     MenuHandler *menuHandler;
+    ScriptService *scriptService;
 
     void initSettings();
     void loadClient();

@@ -12,12 +12,13 @@ QPalette GenericWindow::palette() {
     return palette;
 }
 
-QTextEdit* GenericWindow::textBox(QDockWidget *dock) {
+QTextEdit* GenericWindow::textBox(QDockWidget *dock, QString name) {
     QTextEdit *textEdit = new QTextEdit(dock);
-    textEdit->setPlainText("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.");
+    textEdit->setObjectName(name + "Text");
+    textEdit->setPlainText("");
     textEdit->setPalette(this->palette());
     textEdit->setFontWeight(QFont::Normal);
-    textEdit->setFont(QFont("Fixedsys", 12));
+    textEdit->setFont(QFont("Consolas", 11));
     textEdit->setReadOnly(true);
 
     return textEdit;
@@ -25,10 +26,10 @@ QTextEdit* GenericWindow::textBox(QDockWidget *dock) {
 
 QDockWidget* GenericWindow::createWindow(const char* name) {
     QDockWidget *dock = new QDockWidget(QObject::tr(name), mw);
-    dock->setObjectName(name);
+    dock->setObjectName(QObject::tr(name) + "Dock");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
 
-    dock->setWidget(this->textBox(dock));
+    dock->setWidget(this->textBox(dock, name));
 
     return dock;
 }

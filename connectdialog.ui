@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
-    <height>154</height>
+    <width>429</width>
+    <height>204</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -52,14 +52,14 @@
              <property name="fieldGrowthPolicy">
               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
              </property>
-             <item row="0" column="0">
+             <item row="1" column="0">
               <widget class="QLabel" name="serverHostLabel">
                <property name="text">
                 <string>Host: </string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item row="1" column="1">
               <widget class="QLineEdit" name="serverHost">
                <property name="minimumSize">
                 <size>
@@ -69,20 +69,49 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="keyLabel">
+             <item row="2" column="0">
+              <widget class="QLabel" name="authLabel">
                <property name="text">
-                <string>Key: </string>
+                <string>Auth host:</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="authHost"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="userLabel">
+               <property name="text">
+                <string>User:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="user"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="keyLabel">
+               <property name="text">
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
               <widget class="QLineEdit" name="key">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
-                 <width>250</width>
+                 <width>200</width>
                  <height>0</height>
                 </size>
+               </property>
+               <property name="echoMode">
+                <enum>QLineEdit::Password</enum>
                </property>
               </widget>
              </item>
@@ -113,6 +142,29 @@
                  <width>35</width>
                  <height>16777215</height>
                 </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="authPort">
+               <property name="minimumSize">
+                <size>
+                 <width>35</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>35</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="authPortLabel">
+               <property name="text">
+                <string>Port:</string>
                </property>
               </widget>
              </item>

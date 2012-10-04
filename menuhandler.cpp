@@ -10,8 +10,7 @@ void MenuHandler::menuTriggered(QAction* action) {
     if(action->text() == "Connect") {
         connectDialog->show();
     } else if (action->text() == "Disconnect") {
-        mainWindow->getCommandLine()->setText("quit");
-        mainWindow->getCommandLine()->writeCommand();
+        mainWindow->getCommandLine()->writeCommand("quit");
     } else if(action->text() == "Highlight") {
         highlightDialog->show();
     } else if(action->text() == "Exit") {

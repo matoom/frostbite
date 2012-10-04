@@ -25,9 +25,9 @@ private:
     QStringList fileList;
 
 signals:
-    
+
 public slots:
-    
+
 };
 
 #endif // AUDIOPLAYER_H

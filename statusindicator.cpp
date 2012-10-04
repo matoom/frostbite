@@ -1,8 +1,7 @@
 #include "statusindicator.h"
 
 StatusIndicator::StatusIndicator(QObject *parent) : QObject(parent) {
-    stateDead = false;
-    stateStunned = false;
+
 }
 
 QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, bool show) {
@@ -65,6 +64,8 @@ void StatusIndicator::updateStatus(QString visible, QString icon) {
     } else if(icon == "IconSTUNNED") {
         this->setCondition(visibleToBool(visible), icon);
     } else if(icon == "IconDEAD") {
+        this->setCondition(visibleToBool(visible), icon);                
+    }else if(icon == "IconBLEEDING") {
         this->setCondition(visibleToBool(visible), icon);
     } else if(icon == "IconHIDDEN") {
         this->setHidden(visibleToBool(visible));
@@ -126,27 +127,15 @@ void StatusIndicator::setHidden(bool visible) {
 }
 
 void StatusIndicator::setCondition(bool visible, QString icon) {
-    if(visible) {
-        if(icon == "IconSTUNNED") {
-            stateStunned = true;
-        } else if(icon == "IconDEAD") {
-            stateDead = true;
-        }
-    } else if(!visible) {
-        if(icon == "IconSTUNNED") {
-            stateStunned = false;
-        } else if (icon == "IconDEAD") {
-            stateDead = false;
-        }
-    }
+    conditionState.insert(icon, visible);
 
-    if (stateStunned && stateDead) {
+    if(conditionState.value("IconDEAD")) {
         updateCondition("Dead", DEAD_ICO);
-    } else if (stateStunned) {
+    } else if(conditionState.value("IconSTUNNED")) {
         updateCondition("Stunned", STUNNED_ICO);
-    } else if(stateDead) {
-        updateCondition("Dead", DEAD_ICO);
-    }  else {
+    } else if(conditionState.value("IconBLEEDING")) {
+        updateCondition("Bleeding", BLEEDING_ICO);
+    } else {
         updateCondition("", NULL);
     }
 }

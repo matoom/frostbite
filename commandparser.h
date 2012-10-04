@@ -5,15 +5,18 @@
 #include <QDomNode>
 
 #include <mainwindow.h>
+#include <gamedatacontainer.h>
+#include <expmodel.h>
 
 class MainWindow;
 class WindowManager;
 class ToolbarManager;
 class CommandLine;
+class GameDataContainer;
 
 class CommandParser : public QObject {
-
     Q_OBJECT
+
 public:
     explicit CommandParser(QObject *parent = 0);
 
@@ -28,6 +31,7 @@ private:
     WindowManager *windowManager;
     ToolbarManager *toolbarManager;
     CommandLine *commandLine;
+    GameDataContainer *gameDataContainer;
 
     QString gameText;
     QDateTime time;

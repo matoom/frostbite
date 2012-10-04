@@ -31,7 +31,7 @@ private:
 
     bool visibleToBool(QString visible);
 
-    bool stateDead, stateStunned;
+    QHash<QString, bool> conditionState;
 
     QLabel *invisible;
     QLabel *immobile;

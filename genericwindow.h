@@ -19,10 +19,10 @@ public:
 
 private:
     QPalette palette();
-    QTextEdit* textBox(QDockWidget*);
+    QTextEdit* textBox(QDockWidget*, QString);
 
-    MainWindow *mw;
-
+    MainWindow *mw;    
+    QTextEdit *textEdit;
 };
 
 #endif // WINDOWFACTORY_H

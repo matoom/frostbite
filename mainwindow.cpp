@@ -58,13 +58,14 @@ void MainWindow::loadClient() {
     timer->setValue(100);
     timer->setMaximumHeight(2);
     timer->setTextVisible(false);
-
     ui->mainLayout->addWidget(timer);
 
     cmdLine = new CommandLine(this);
     ui->mainLayout->addWidget(cmdLine);
 
     cm = new ConnectionManager(this);
+
+    scriptService = new ScriptService(this);
 
     menuHandler = new MenuHandler(this);
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
@@ -84,6 +85,10 @@ ConnectionManager* MainWindow::getConnectionManager() {
 
 CommandLine* MainWindow::getCommandLine() {
     return cmdLine;
+}
+
+ScriptService* MainWindow::getScriptService() {
+    return scriptService;
 }
 
 void MainWindow::addWidgetMainLayout(QWidget* widget) {

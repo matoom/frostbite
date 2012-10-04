@@ -79,7 +79,7 @@ QPixmap RoundTimeDisplay::numericDisplay(int seconds) {
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    QColor color = getColorRange(seconds);
+    QColor color(159, 50, 50);
     painter.setBrush(color);
     painter.setPen(color);
 

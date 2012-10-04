@@ -2,6 +2,7 @@
 
 ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
+    eAuth = new EAuthService(this);
 
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
@@ -12,7 +13,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     windowManager = mainWindow->getWindowManager();
     settings = ClientSettings::Instance();
 
-    waitStartCommand = false;
+    waitStartCommand = true;
     debug = true;
 
     commandParser = new CommandParser(parent);
@@ -22,19 +23,23 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     }
 }
 
-void ConnectionManager::connectToHost() {
-    if(settings->getParameter("Connection/useProxy", false).toBool()) {
-        qDebug() << "first";
-        tcpSocket->connectToHost("192.168.1.68", 3128);
-        tcpSocket->write("CONNECT prime.dr.game.play.net:4901 HTTP/1.1\r\n");
-        tcpSocket->write("\r\n");
+void ConnectionManager::initLoginSession(QString user, QString key) {
+    eAuth->init(user, key);
+    eAuth->initiateSession();
+}
 
+void ConnectionManager::connectToHost(QString sessionKey) {
+    if(settings->getParameter("Connection/useProxy", false).toBool()) {
+        qDebug() << "USE PROXY";
+        /*tcpSocket->connectToHost("192.168.1.68", 3128);
+        tcpSocket->write("CONNECT prime.dr.game.play.net:4901 HTTP/1.1\r\n");
+        tcpSocket->write("\r\n");*/
     } else {
-        tcpSocket->connectToHost(settings->getParameter("Connection/serverHost", "").toString(),
-                                 settings->getParameter("Connection/serverPort", "").toInt());
+        tcpSocket->connectToHost(settings->getParameter("Login/serverHost", "").toString(),
+                                 settings->getParameter("Login/serverPort", "").toInt());
     }
 
-    tcpSocket->write(settings->getParameter("Connection/sessionKey", "").toByteArray() + "\r\n");
+    tcpSocket->write(sessionKey.toLocal8Bit() + "\r\n");
     tcpSocket->write("<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\r\n");
 
     /*<c>_STATE CHATMODE OFF
@@ -68,7 +73,7 @@ void ConnectionManager::socketReadyRead() {
         if(!debug) {
             if(waitStartCommand) {
                 if(buffer.endsWith("GSw000100000150095\r\n")) {
-                    this->writeCommand("<c>_STATE CHATMODE OFF\n");
+                    this->writeCommand("<c>_STATE CHATMODE OFF\n\n");
                     waitStartCommand = false;
                     buffer.chop(22);
                     buffer.append("\r\n\r\n");

@@ -10,16 +10,16 @@ GameWindow::GameWindow(QWidget *parent) : QTextEdit(parent) {
     this->setPalette(palette);
 
     this->setFontWeight(QFont::Normal);
-    this->setFont(QFont("Fixedsys", 12));
+    this->setFont(QFont("Consolas", 12));
     this->setReadOnly(true);
     this->document()->setMaximumBlockCount(5000);
-    this->document()->setDefaultStyleSheet("#body {color: #c0c0c0; font-family: fixedsys;}"
-                                           "#speech {color: #00ff00; font-family: fixedsys;}"
-                                           "#thought {color: #800000; font-family: fixedsys;}"
-                                           "#roomName {color: white; font-family: fixedsys;}"
-                                           "#youAlsoSee {color: #00ffff; font-family: fixedsys;}"
-                                           "#alsoHere {color: #ffff00; font-family: fixedsys;}"
-                                           "#bold {color: #ffff00; font-family: fixedsys;}}");
+    this->document()->setDefaultStyleSheet("#body {color: #c0c0c0; font-family: Consolas;}"
+                                           "#speech {color: #00ff00; font-family: Consolas;}"
+                                           "#thought {color: #800000; font-family: Consolas;}"
+                                           "#roomName {color: white; font-family: Consolas;}"
+                                           "#youAlsoSee {color: #00ffff; font-family: Consolas;}"
+                                           "#alsoHere {color: #ffff00; font-family: Consolas;}"
+                                           "#bold {color: #ffff00; font-family: Consolas;}}");
 
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(adjustRowMargin()));
 }

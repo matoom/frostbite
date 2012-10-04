@@ -38,7 +38,15 @@ SOURCES += main.cpp\
     highlightsettings.cpp \
     highlighteditdialog.cpp \
     highlightalerttab.cpp \
-    audioplayer.cpp
+    audioplayer.cpp \
+    eauthservice.cpp \
+    script.cpp \
+    scriptservice.cpp \
+    expmodel.cpp \
+    gamedatacontainer.cpp \
+    roommodel.cpp \
+    wieldmodel.cpp \
+    dataconverterservice.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -70,7 +78,15 @@ HEADERS  += mainwindow.h \
     highlightsettings.h \
     highlighteditdialog.h \
     highlightalerttab.h \
-    audioplayer.h
+    audioplayer.h \
+    eauthservice.h \
+    script.h \
+    scriptservice.h \
+    expmodel.h \
+    gamedatacontainer.h \
+    roommodel.h \
+    wieldmodel.h \
+    dataconverterservice.h
 
 FORMS    += mainwindow.ui \
     connectdialog.ui \
@@ -87,6 +103,25 @@ RC_FILE = resources.rc
 
 OTHER_FILES += \
     resources.rc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

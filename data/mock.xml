@@ -179,7 +179,7 @@ All Rights Reserved
 <openDialog id='quick-blank' location='quickBar' title='Blank'><dialogData id='quick-blank' clear='true'></dialogData></openDialog>
 <switchQuickBar id='quick-char'/>
 <app char="Legolas" game="DR" title="[DR: Legolas] StormFront"/>
-<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/><indicator id="IconSITTING" visible="n"/><indicator id="IconSTANDING" visible="y"/><indicator id="IconSTUNNED" visible="y"/><indicator id="IconHIDDEN" visible="n"/><indicator id="IconINVISIBLE" visible="n"/><indicator id="IconDEAD" visible="n"/><indicator id="IconWEBBED" visible="n"/><indicator id="IconJOINED" visible="y"/><spell>None</spell><left>Empty</left><right>Empty</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/><indicator id="IconSITTING" visible="n"/><indicator id="IconSTANDING" visible="y"/><indicator id="IconSTUNNED" visible="n"/><indicator id="IconHIDDEN" visible="n"/><indicator id="IconINVISIBLE" visible="n"/><indicator id="IconDEAD" visible="n"/><indicator id="IconWEBBED" visible="n"/><indicator id="IconJOINED" visible="y"/><spell>None</spell><left>Empty</left><right>Empty</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
   a midnight-black herb pouch pinioned with blood-red iera flowers
   a jet black leather thigh quiver
   a tattered black cloak
@@ -645,3 +645,9 @@ Also here: Gandalf and Frodo.
 Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
 <compass><dir value="n"/><dir value="e"/><dir value="se"/></compass><prompt time="1325063560">&gt;</prompt>
 <prompt time="1325269273">&gt;</prompt>
+<pushStream id="thoughts"/><preset id='thought'>Your mind hears Puff thinking, </preset>"Anyone out there need healing?"
+<popStream/><prompt time="1349285152">&gt;</prompt>
+<pushStream id="death"/> * Sauron was just struck down!
+<popStream/><prompt time="1349285072">&gt;</prompt>
+<indicator id='IconBLEEDING' visible='y'/>
+<prompt time="1326050511">&gt;</prompt>

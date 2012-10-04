@@ -22,6 +22,7 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
                 case Qt::Key_Escape:
                     commandLine->clear();
                     commandLine->historyCounter = -1;
+                    commandLine->stopScript();
                 break;
                 default:
                     return false;
@@ -32,56 +33,47 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
                 case Qt::Key_Home:
                     // NUMPAD 7
                     commandLine->clear();
-                    commandLine->setText("nw");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("nw");
                     break;
                 case Qt::Key_Up:
                     // NUMPAD 8
-                    commandLine->clear();
-                    commandLine->setText("n");
-                    commandLine->writeCommand();
+                    commandLine->clear();                    
+                    commandLine->writeCommand("n");
                     break;
                 case Qt::Key_PageUp:
                     // NUMPAD 9
                     commandLine->clear();
-                    commandLine->setText("ne");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("ne");
                     break;
                 case Qt::Key_Left:
                     // NUMPAD 4
                     commandLine->clear();
-                    commandLine->setText("w");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("w");
                     break;
                 case Qt::Key_Clear:
                     // NUMPAD 5
                     commandLine->clear();
-                    commandLine->setText("out");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("out");
                     break;
                 case Qt::Key_Right:
                     // NUMPAD 6
                     commandLine->clear();
-                    commandLine->setText("e");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("e");
                     break;
                 case Qt::Key_End:
                     // NUMPAD 1
                     commandLine->clear();
-                    commandLine->setText("sw");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("sw");
                     break;
                 case Qt::Key_Down:
                     // NUMPAD 2
                     commandLine->clear();
-                    commandLine->setText("s");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("s");
                     break;
                 case Qt::Key_PageDown:
                     // NUMPAD 3
                     commandLine->clear();
-                    commandLine->setText("se");
-                    commandLine->writeCommand();
+                    commandLine->writeCommand("se");
                     break;
                 default:
                     return false;

@@ -54,7 +54,7 @@ void CommandLine::focus() {
     this->setFocus();
 
     /* temp init timer */
-    roundtimeDisplay->setTimer((qrand()%10) + 1);
+    //roundtimeDisplay->setTimer((qrand()%10) + 1);
 }
 
 void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay) {
@@ -76,7 +76,6 @@ void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDispl
     this->setPalette(pal);
 }
 
-
 void CommandLine::addHistory() {
     if(history.isEmpty()) {
         history.prepend(this->text());
@@ -92,8 +91,8 @@ void CommandLine::addHistory() {
     historyCounter = -1;
 }
 
-void CommandLine::writeCommand() {
-    mainWindow->getConnectionManager()->writeCommand(this->text());
+void CommandLine::writeCommand(QString text) {
+    mainWindow->getConnectionManager()->writeCommand(text);
 
     QTextCursor cursor(windowManager->getGameWindow()->textCursor());
     cursor.movePosition(QTextCursor::End);
@@ -103,9 +102,9 @@ void CommandLine::writeCommand() {
     if(cursor.selectedText() == ">") {
         cursor.movePosition(QTextCursor::EndOfLine);
         windowManager->getGameWindow()->setTextCursor(cursor);
-        windowManager->getGameWindow()->insertPlainText(this->text());
+        windowManager->getGameWindow()->insertPlainText(text);
     } else {
-        windowManager->getGameWindow()->append(this->text());
+        windowManager->getGameWindow()->append(text);
     }
 
     this->clear();
@@ -115,9 +114,27 @@ void CommandLine::sendCommand() {
     if (!this->text().isEmpty()){
         /* add command to history */
         this->addHistory();
-        /* write command to tcp socket and game window */
-        this->writeCommand();
+        /* look for client commands */
+        if(!this->filterCommand(this->text())) {
+            /* write command to tcp socket and game window */
+            this->writeCommand(this->text());
+        }
     }
+}
+
+bool CommandLine::filterCommand(QString text) {
+    if(text.startsWith(".")){
+        if(text.size() > 1 && text.size() < MAX_FILENAME_SIZE) {
+            mainWindow->getScriptService()->runScript(text.mid(1));
+            this->clear();
+            return true;
+        }
+    }
+    return false;
+}
+
+void CommandLine::stopScript() {
+    mainWindow->getScriptService()->stopScript();
 }
 
 CommandLine::~CommandLine() {

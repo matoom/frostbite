@@ -7,11 +7,13 @@
 #include <genericwindow.h>
 #include <gamewindow.h>
 #include <navigationdisplay.h>
+#include <gamedatacontainer.h>
 
 class MainWindow;
 class GameWindow;
 class GenericWindow;
 class NavigationDisplay;
+class GameDataContainer;
 
 class WindowManager : public QObject {
     Q_OBJECT
@@ -26,6 +28,12 @@ public:
     void writePromptGameWindow(QByteArray);
     void writeGameWindow(QByteArray);
     void updateNavigationDisplay(QList<QString>);
+    void updateExpWindow();
+    void updateRoomWindow();
+    void updateDeathsWindow(QString);
+    void updateRoomWindowTitle(QString);
+    void updateThoughtsWindow(QString);
+    void updateArrivalsWindow(QString);
 
 public slots:
 
@@ -35,10 +43,13 @@ private:
     MainWindow *mainWindow;
     QTextEdit *gameWindow;
     NavigationDisplay *navigationDisplay;
+    GameDataContainer *gameDataContainer;
 
-    QDockWidget *room;
-    QDockWidget *arrival;
-    QDockWidget *thoughts;
+    QDockWidget *roomWindow;
+    QDockWidget *arrivalsWindow;
+    QDockWidget *thoughtsWindow;
+    QDockWidget *expWindow;
+    QDockWidget *deathsWindow;
 };
 
 #endif // WINDOWMANAGER_H

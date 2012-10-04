@@ -5,6 +5,7 @@ CommandParser::CommandParser(QObject *parent) : QObject(parent) {
     windowManager = mainWindow->getWindowManager();
     toolbarManager = mainWindow->getToolbarManager();
     commandLine = mainWindow->getCommandLine();
+    gameDataContainer = GameDataContainer::Instance();
 
     pushStream = false;
     mono = false;
@@ -115,24 +116,75 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             toolbarManager->updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
         }  else if(e.tagName() == "indicator") {
             /* filter player status indicator */
+            //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
             toolbarManager->updateStatus(e.attribute("visible"), e.attribute("id"));
         } else if(e.tagName() == "left") {
-            /* filter player wielding in right hand */
-            toolbarManager->updateWieldLeft(e.text());
-        } else if(e.tagName() == "right") {
             /* filter player wielding in left hand */
+            //<right exist="162134941" noun="sharks">fuzzy sharks</right>
+            toolbarManager->updateWieldLeft(e.text());
+            /* persist wield data in memory */
+            WieldModel* wield = gameDataContainer->getWield();
+            wield->setLeft(e.text());
+            wield->setLeftNoun(e.attribute("noun"));
+        } else if(e.tagName() == "right") {
+            /* filter player wielding in right hand */
             toolbarManager->updateWieldRight(e.text());
+            /* persist wield data in memory */
+            WieldModel* wield = gameDataContainer->getWield();
+            wield->setRight(e.text());
+            wield->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
             //qDebug() << "############### SPELL ###############";
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
-            mainWindow->setMainTitle(e.attribute("subtitle"));
+            QString title = e.attribute("subtitle");
+            mainWindow->setMainTitle(title);
+
+            RoomModel* room = gameDataContainer->getRoom();
+            room->setName(title.mid(3));
+            windowManager->updateRoomWindowTitle(title);
+        } else if(e.tagName() == "component") {
+            if(e.attribute("id").startsWith("exp")) {
+                QString text = e.text();
+                if(!text.isEmpty()) {
+                    gameDataContainer->setExpField(new ExpModel(text));
+                } else {
+                    QString id = e.attribute("id").mid(4);
+                    gameDataContainer->removeExpField(id);
+                }
+                windowManager->updateExpWindow();
+            } else if(e.attribute("id").startsWith("room")) {
+                RoomModel* room = gameDataContainer->getRoom();
+
+                QString id = e.attribute("id");
+                if(id.endsWith("desc")) {
+                    room->setDesc(e.text());
+                } else if (id.endsWith("objs")) {
+                    room->setObjs(e.text());
+                } else if (id.endsWith("players")) {
+                    room->setPlayers(e.text());
+                } else if (id.endsWith("exits")) {
+                    room->setExits(e.text());
+                } else if (id.endsWith("extra")) {
+                    room->setExtra(e.text());
+                }
+                windowManager->updateRoomWindow();
+            }
         } else if(e.tagName() == "pushStream") {
             pushStream = true;
             if(e.attribute("id") == "assess") {
                 pushStream = false;
             } else {
                 pushStream = true;
+            }
+
+            if(e.attribute("id") == "logons") {
+                windowManager->updateArrivalsWindow(root.text());
+            } else if(e.attribute("id") == "thoughts") {
+                windowManager->updateThoughtsWindow(root.text().trimmed() +
+                    " [" + QTime::currentTime().toString() + "]\n");
+            } else if(e.attribute("id") == "death") {
+                windowManager->updateDeathsWindow(root.text());
             }
         } else if (e.tagName() == "popStream") {
             pushStream = false;
@@ -168,6 +220,7 @@ void CommandParser::writeGameText(QByteArray rawData) {
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
             windowManager->writeGameWindow(line.toLocal8Bit());
         }
+
     } else if(gameText != "") {
         gameText.prepend("<span style=\"white-space:pre;\" id=\"body\">");
         gameText.append("</span>");
