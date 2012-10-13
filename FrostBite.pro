@@ -46,7 +46,13 @@ SOURCES += main.cpp\
     gamedatacontainer.cpp \
     roommodel.cpp \
     wieldmodel.cpp \
-    dataconverterservice.cpp
+    dataconverterservice.cpp \
+    highlighter.cpp \
+    timerbar.cpp \
+    macrodialog.cpp \
+    macrosettings.cpp \
+    macrothread.cpp \
+    macroservice.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -86,13 +92,21 @@ HEADERS  += mainwindow.h \
     gamedatacontainer.h \
     roommodel.h \
     wieldmodel.h \
-    dataconverterservice.h
+    dataconverterservice.h \
+    highlighter.h \
+    timerbar.h \
+    macrodialog.h \
+    macrosettings.h \
+    macrothread.h \
+    macroservice.h \
+    defaultvalues.h
 
 FORMS    += mainwindow.ui \
     connectdialog.ui \
     highlightdialog.ui \
     highlightadddialog.ui \
-    highlighteditdialog.ui
+    highlighteditdialog.ui \
+    macrodialog.ui
 
 RESOURCES += \
     toolbar.qrc \
@@ -103,6 +117,13 @@ RC_FILE = resources.rc
 
 OTHER_FILES += \
     resources.rc
+
+
+
+
+
+
+
 
 
 

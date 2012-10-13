@@ -11,6 +11,7 @@
 #include <commandline.h>
 #include <menuhandler.h>
 #include <scriptservice.h>
+#include <timerbar.h>
 
 /* test*/
 #include <QtXml>
@@ -35,6 +36,7 @@ class GameWindow;
 class CommandLine;
 class MenuHandler;
 class ScriptService;
+class TimerBar;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -56,16 +58,18 @@ public:
     ConnectionManager* getConnectionManager();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
+    TimerBar* getTimerBar();
 
 private:
-    Ui::MainWindow *ui;
-    WindowManager *wm;
-    ToolbarManager *tbm;
-    ConnectionManager *cm;    
-    ClientSettings *settings;
-    CommandLine *cmdLine;
-    MenuHandler *menuHandler;
-    ScriptService *scriptService;
+    Ui::MainWindow* ui;
+    WindowManager* windowManager;
+    ToolbarManager* tbm;
+    ConnectionManager* cm;
+    ClientSettings* settings;
+    CommandLine* cmdLine;
+    MenuHandler* menuHandler;
+    ScriptService* scriptService;
+    TimerBar* timerBar;
 
     void initSettings();
     void loadClient();

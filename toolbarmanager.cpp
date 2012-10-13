@@ -32,6 +32,10 @@ void ToolbarManager::updateWieldRight(QString value) {
     wieldRight->textLabel->setText(value);
 }
 
+QHash<QString, bool> ToolbarManager::getStatus() {
+    return statusIndicator->getFullStatus();
+}
+
 void ToolbarManager::updateVitals(QString name, QString value) {
     if(name == "health") {
         vitalsIndicator->healthBar->setValue(value.toInt());

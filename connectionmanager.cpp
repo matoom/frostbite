@@ -81,7 +81,6 @@ void ConnectionManager::socketReadyRead() {
                     return;
                 }
             }
-
             qDebug() << buffer;
             commandParser->process(buffer);
         } else {

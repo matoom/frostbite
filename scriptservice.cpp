@@ -9,9 +9,17 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     dataConverterService = DataConverterService::Instance();
 
     script = new Script(this);
+    terminateFlag = false;
 }
 
-void ScriptService::runScript(QString fileName) {
+bool ScriptService::isScriptActive() {
+    return script->isRunning();
+}
+
+void ScriptService::runScript(QString input) {
+    QList<QString> args = input.split(" ");
+    QString fileName = args.takeFirst();
+
     QStringList filter;
     filter << "*.rb";
 
@@ -20,29 +28,45 @@ void ScriptService::runScript(QString fileName) {
 
     if(fileList.contains(fileName + ".rb")) {
         if(!script->isRunning()) {
-            windowManager->writeGameWindow("Executing script: " + fileName.toLocal8Bit() + ".rb, Press ESC to abort.");
+            windowManager->writeGameWindow("[Executing script: " + fileName.toLocal8Bit() + ".rb, Press ESC to abort.]");
             timer.start();
-            script->execute(fileName);
+            terminateFlag = false;
+            script->execute(fileName, args);
         } else {
-            windowManager->writeGameWindow("Script already executing.");
+            windowManager->writeGameWindow("[Script already executing.]");
         }
     } else {
-        windowManager->writeGameWindow("Script not found.");
+        windowManager->writeGameWindow("[Script not found.]");
     }
 }
 
-void ScriptService::stopScript() {
+void ScriptService::terminateScript() {
     if(script->isRunning()) {
         script->killScript();
-        windowManager->writeGameWindow("Script terminated after " +
-            dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + " seconds.");
-        timer.invalidate();
+        windowManager->writeGameWindow("[Script terminated after " +
+            dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+        terminateFlag = false;
+    }
+}
+
+void ScriptService::abortScript() {
+    if(script->isRunning()) {
+        if(!terminateFlag) {
+            script->sendMessage("exit#\n");
+            windowManager->writeGameWindow("[Script aborted after " +
+                dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+            terminateFlag = true;
+        } else {
+            this->terminateScript();
+        }
     }
 }
 
 void ScriptService::scriptFinished() {
-    windowManager->writeGameWindow("Script finished executing after " +
-        dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + " seconds.");
+    windowManager->writeGameWindow("[Script finished, Execution time - " +
+        dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+    timer.invalidate();
+    terminateFlag = false;
 }
 
 void ScriptService::writeGameWindow(QByteArray command) {
@@ -66,6 +90,19 @@ void ScriptService::processCommand(QByteArray msg) {
                     QString::number(toolbarManager->getConcentrationValue()).toLocal8Bit() + "|" +
                     QString::number(toolbarManager->getFatigueValue()).toLocal8Bit() + "|" +
                     QString::number(toolbarManager->getSpiritValue()).toLocal8Bit() + "\n");
+            } else if (line.startsWith("get_status#")) {
+                QHash<QString, bool> status = toolbarManager->getStatus();
+                script->sendMessage("status#" + QString(status.value("kneeling")).toLocal8Bit() +
+                    QString(status.value("prone")).toLocal8Bit() +
+                    QString(status.value("sitting")).toLocal8Bit() +
+                    QString(status.value("standing")).toLocal8Bit() +
+                    QString(status.value("stunned")).toLocal8Bit() +
+                    QString(status.value("dead")).toLocal8Bit() +
+                    QString(status.value("bleeding")).toLocal8Bit() +
+                    QString(status.value("hidden")).toLocal8Bit() +
+                    QString(status.value("invisible")).toLocal8Bit() +
+                    QString(status.value("webbed")).toLocal8Bit() +
+                    QString(status.value("joined")).toLocal8Bit() + "\n");
             } else if (line.startsWith("get_exp#")) {
                 ExpModel *exp = gameDataContainer->getExpField(line.mid(8).trimmed().toLower());
                 if(exp != NULL) {

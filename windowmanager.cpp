@@ -5,10 +5,33 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     genericWindow = new GenericWindow(parent);
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
+    clientSettings = ClientSettings::Instance();
+    highlighter = new Highlighter(parent);
+    settings = HighlightSettings::Instance();
 }
 
 QTextEdit* WindowManager::getGameWindow() {
     return this->gameWindow;
+}
+
+QString WindowManager::getColor(QString name, QString defaultValue) {
+    return settings->getSingleParameter("GeneralHighlight/" + name + "/color", defaultValue).value<QColor>().name();
+}
+
+void WindowManager::updateWindowStyle() {
+    QString style = "#_BODY {color: " + QString(BODY_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_SPEECH {color: " + getColor("speech", SPEECH_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_BONUS {color: #00ff00; font-family: Consolas;}"
+        "#_PENALTY {color: #800000; font-family: Consolas;}"
+        "#_THINKING {color: " + getColor("thinking", THINKING_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_ROOM_NAME {color: " + getColor("roomName", ROOM_NAME_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_BOLD {color: " + getColor("gameMessage", GAME_MESSAGE_COLOR_HEX) + "; font-family: Consolas;}";
+
+    ((QTextEdit*)deathsWindow->widget())->document()->setDefaultStyleSheet(style);
+    ((QTextEdit*)thoughtsWindow->widget())->document()->setDefaultStyleSheet(style);
+    ((QTextEdit*)arrivalsWindow->widget())->document()->setDefaultStyleSheet(style);
+    ((QTextEdit*)roomWindow->widget())->document()->setDefaultStyleSheet(style);
+    ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
 
 void WindowManager::loadWindows() {
@@ -18,6 +41,12 @@ void WindowManager::loadWindows() {
     roomWindow = genericWindow->createWindow("Room");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, roomWindow);
     //qDebug() << ((QTextEdit*)roomWindow->widget())->toPlainText();
+
+    /*QSizePolicy policy = roomWindow->sizePolicy();
+    policy.setHorizontalPolicy(QSizePolicy::Fixed);
+    policy.setVerticalPolicy(QSizePolicy::Fixed);*/
+
+    //roomWindow->size();
 
     arrivalsWindow = genericWindow->createWindow("Arrivals");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, arrivalsWindow);
@@ -30,6 +59,33 @@ void WindowManager::loadWindows() {
 
     expWindow = genericWindow->createWindow("Experience");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
+
+    if(!clientSettings->hasValue("MainWindow/state")) {
+        mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
+        mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
+    }
+
+    this->updateWindowStyle();
+}
+
+QDockWidget* WindowManager::getRoomWindow() {
+    return this->roomWindow;
+}
+
+QDockWidget* WindowManager::getArrivalsWindow() {
+    return this->arrivalsWindow;
+}
+
+QDockWidget* WindowManager::getThoughtsWindow() {
+    return this->thoughtsWindow;
+}
+
+QDockWidget* WindowManager::getExpWindow() {
+    return this->expWindow;
+}
+
+QDockWidget* WindowManager::getDeathsWindow() {
+    return this->deathsWindow;
 }
 
 void WindowManager::updateNavigationDisplay(QList<QString> directions) {
@@ -65,31 +121,41 @@ void WindowManager::updateExpWindow() {
 
     QString expString = "";
     foreach (ExpModel *value, exp) {
-        expString += value->getExpString() + "\n";
-        text->setPlainText(expString);
+        expString += highlighter->highlight(value->getExpString() + "\n");
     }
+
+    text->clear();
+    text->append("<span style=\"white-space:pre;\" id=\"body\">" + expString + "</span>");
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
     QTextEdit *text = (QTextEdit*)deathsWindow->widget();
-    text->append(deathText.trimmed());
+    text->append("<span style=\"white-space:pre;\" id=\"body\">" + deathText.trimmed() + "</span>");
 }
 
 void WindowManager::updateThoughtsWindow(QString thoughtText) {
     QTextEdit *text = (QTextEdit*)thoughtsWindow->widget();
-    text->append(thoughtText.trimmed());
+    text->append("<span style=\"white-space:pre;\" id=\"body\">" + thoughtText.trimmed() + "</span>");
 }
 
 void WindowManager::updateArrivalsWindow(QString arrivalText) {
     QTextEdit *text = (QTextEdit*)arrivalsWindow->widget();
-    text->append(arrivalText.trimmed());
+    text->append("<span style=\"white-space:pre;\" id=\"body\">" + arrivalText.trimmed() + "</span>");
 }
 
 void WindowManager::updateRoomWindow() {
     QTextEdit *text = (QTextEdit*)roomWindow->widget();
-    RoomModel* room = gameDataContainer->getRoom();
-    text->setPlainText(room->getDesc() + "\n" + room->getObjs() + "\n" + room->getPlayers() + room->getExits());
-    text->verticalScrollBar()->triggerAction(QAbstractSlider::SliderToMaximum);
+    RoomModel* room = gameDataContainer->getRoom();    
+
+    QString roomText = "<span style=\"white-space:pre;\" id=\"body\">";
+    roomText += highlighter->highlight(room->getDesc() + "\n");
+    roomText += room->getObjs().isEmpty() ? "" : highlighter->highlight(room->getObjs() + "\n");
+    roomText += room->getPlayers().isEmpty() ? "" : highlighter->highlight(room->getPlayers() + "\n");
+    roomText += room->getExits().isEmpty() ? "" : highlighter->highlight(room->getExits() + "\n");
+    roomText += "</span>";
+
+    text->clear();
+    text->append(roomText);
 }
 
 void WindowManager::updateRoomWindowTitle(QString title) {
@@ -113,7 +179,7 @@ void WindowManager::writeGameWindow(QByteArray text) {
     // if script is running
     //mainWindow->getScriptService()->writeOutgoingMessage("game_text#" + text);
 
-    //qDebug() << text;
+    //qDebug() text;
 
     gameWindow->append(text);
 }

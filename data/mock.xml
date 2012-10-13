@@ -651,3 +651,19 @@ Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
 <popStream/><prompt time="1349285072">&gt;</prompt>
 <indicator id='IconBLEEDING' visible='y'/>
 <prompt time="1326050511">&gt;</prompt>
+<component id='room objs'>You also see <pushBold/>a musk hog<popBold/>.</component>
+<prompt time="1349973730">&gt;</prompt>
+<component id='exp Light Crossbow'><d cmd='skill Light Crossbow'>     LX</d>:  394 62%  [14/34]</component>
+<component id='exp First Aid'><preset id='whisper'>       First Aid:   40 06% perusing     </preset></component>
+<resource picture="0"/><style id="roomName" />[Grassland Road, Meadow]
+<style id=""/><preset id='roomDesc'>Tall sharp blades of switch grass rustle and whisper in the breeze.  Here and there small clumps of wild sweet cicely grow in the meadow, filling the air with a spicy scent.</preset>  You also see <pushBold/>a musk hog<popBold/>.
+Obvious paths: <d>east</d>, <d>west</d>.
+<compass><dir value="e"/><dir value="w"/></compass><prompt time="1349975183">&gt;</prompt>
+<pushStream id="atmospherics"/>The horse-drawn carriage's driver pulls on his reigns, slowing it to a complete stop.  He slowly assists his passengers off and begins scanning the crowd for more.
+<popStream/>
+<pushStream id="atmospherics"/>
+The Dwarven driver says, "I'm leaving shortly, returning to the ferry to Riverhaven.  If you would<popStream/><pushStream id="atmospherics"/> like to accompany me for a safe trip there, just join me."  The Dwarven driver smiles.
+<popStream/><pushStream id="atmospherics"/>[JOIN MULE-DRAWN WAGON before it leaves if you would like to go to the ferry to Riverhaven.]
+<popStream/>
+<pushStream id="thoughts"/><preset id='thought'>[Frodo] </preset>"Is a Trader available to come sell a few pouches for me?"
+<popStream/><prompt time="1349974644">&gt;</prompt>

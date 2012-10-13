@@ -69,9 +69,10 @@ public:
     QPushButton* getWebbedPlayButton();
     QComboBox* getWebbedSelect();
 
-
     /* highlight dialog items */
     QPushButton* getApplyButton();
+
+    void reloadWindowStyles();
 
 private:
     Ui::HighlightDialog *ui;

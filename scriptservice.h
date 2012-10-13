@@ -16,6 +16,7 @@ class Script;
 class GameDataContainer;
 class DataConverterService;
 
+
 class ScriptService : public QObject {
     Q_OBJECT
 
@@ -26,8 +27,10 @@ public:
     void writeGameWindow(QByteArray);
     void processCommand(QByteArray);
     void runScript(QString);
-    void stopScript();
+    void terminateScript();
+    void abortScript();
     void scriptFinished();
+    bool isScriptActive();
 
 private:
     MainWindow* mainWindow;
@@ -38,6 +41,7 @@ private:
     GameDataContainer* gameDataContainer;
     DataConverterService* dataConverterService;
     QElapsedTimer timer;
+    bool terminateFlag;
 
 public slots:
 

@@ -156,6 +156,7 @@ QToolButton:pressed {
      <bool>false</bool>
     </property>
     <addaction name="actionText_Highlight"/>
+    <addaction name="actionMacros"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -229,6 +230,15 @@ QToolButton:pressed {
    </property>
    <property name="text">
     <string>Highlight</string>
+   </property>
+  </action>
+  <action name="actionMacros">
+   <property name="icon">
+    <iconset resource="window.qrc">
+     <normaloff>:/window/images/keyboard.png</normaloff>:/window/images/keyboard.png</iconset>
+   </property>
+   <property name="text">
+    <string>Macros</string>
    </property>
   </action>
  </widget>

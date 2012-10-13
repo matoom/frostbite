@@ -3,6 +3,8 @@
 
 #include <QSettings>
 #include <QApplication>
+#include <QDockWidget>
+#include <QDebug>
 
 class ClientSettings : QSettings {
 
@@ -12,11 +14,13 @@ public:
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue);
 
+    bool hasValue(QString);
+
 private:
     ClientSettings();
     ClientSettings(ClientSettings const& copy);
     ClientSettings& operator = (ClientSettings const& copy);
-    static ClientSettings* m_pInstance;
+    static ClientSettings* m_pInstance;        
 };
 
 #endif // CLIENTSETTINGS_H

@@ -16,9 +16,10 @@ public:
     QWidget *create();
 
     void updateStatus(QString visible, QString icon);
+    QHash<QString, bool> getFullStatus();
 
 private:
-    QLabel *playerStatusLabel(const char*, const char*, bool);
+    QLabel *playerStatusLabel(const char*, const char*, bool);    
     void updatePosture(const char*, QString );
     void updateCondition(const char*, QString);
 
@@ -32,6 +33,7 @@ private:
     bool visibleToBool(QString visible);
 
     QHash<QString, bool> conditionState;
+    QHash<QString, bool> fullStatus;
 
     QLabel *invisible;
     QLabel *immobile;

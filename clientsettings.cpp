@@ -21,3 +21,7 @@ void ClientSettings::setParameter(QString name, QVariant value) {
 QVariant ClientSettings::getParameter(QString name, QVariant defaultValue) {
     return value(name, defaultValue);
 }
+
+bool ClientSettings::hasValue(QString value) {
+    return contains(value);
+}

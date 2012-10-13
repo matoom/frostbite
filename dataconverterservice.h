@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QHash>
+#include <QStringList>
 
 class DataConverterService : public QObject {
     Q_OBJECT
@@ -12,6 +13,7 @@ public:
     static DataConverterService* Instance();
 
     int expStateToNumeric(QString);
+    QString expNumericToState(int);
     QString msToMMSS(int);
 
 private:
@@ -21,7 +23,7 @@ private:
     static DataConverterService* m_pInstance;
 
     void populateExpStates();
-    QHash<QString, int> expStates;
+    QStringList mindStates;
 
 signals:
     

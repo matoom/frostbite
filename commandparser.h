@@ -7,12 +7,14 @@
 #include <mainwindow.h>
 #include <gamedatacontainer.h>
 #include <expmodel.h>
+#include <highlighter.h>
 
 class MainWindow;
 class WindowManager;
 class ToolbarManager;
 class CommandLine;
 class GameDataContainer;
+class Highlighter;
 
 class CommandParser : public QObject {
     Q_OBJECT
@@ -27,13 +29,15 @@ private:
     bool filterPlainText(QDomElement, QDomNode);
     void filterDataTags(QDomElement, QDomNode);
 
-    MainWindow *mainWindow;
-    WindowManager *windowManager;
-    ToolbarManager *toolbarManager;
-    CommandLine *commandLine;
-    GameDataContainer *gameDataContainer;
+    MainWindow* mainWindow;
+    WindowManager* windowManager;
+    ToolbarManager* toolbarManager;
+    CommandLine* commandLine;
+    GameDataContainer* gameDataContainer;
+    Highlighter* highlighter;
 
     QString gameText;
+    QString scriptText;
     QDateTime time;
     QDateTime roundTime;
 
@@ -44,6 +48,9 @@ private:
 
     void processGameData(QByteArray);
     void writeGameText(QByteArray);
+    void writeScript(QByteArray);
+    void fixMonoTags(QString&);
+    QString stripTags(QString);
 
 signals:
 

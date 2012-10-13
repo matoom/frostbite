@@ -20,11 +20,14 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
                                "margin-left: -1px;"
                                "margin-right: -1px;"
                                "margin-top: -1;");
-
     return statusLabel;
 }
 
-QWidget *StatusIndicator::create() {
+QHash<QString, bool> StatusIndicator::getFullStatus() {
+    return fullStatus;
+}
+
+QWidget* StatusIndicator::create() {
     QWidget *widget = new QWidget;
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     hLayout->setContentsMargins(25, 10, 25, 10);
@@ -52,29 +55,42 @@ QWidget *StatusIndicator::create() {
     return widget;
 }
 
-void StatusIndicator::updateStatus(QString visible, QString icon) {
+void StatusIndicator::updateStatus(QString visibleString, QString icon) {
+    bool visible = visibleToBool(visibleString);
+
     if(icon == "IconKNEELING") {
-        this->setPosture(visibleToBool(visible), icon);
+        fullStatus.insert("kneeling", visible);
+        this->setPosture(visible, icon);
     } else if(icon == "IconPRONE") {
-        this->setPosture(visibleToBool(visible), icon);
+        fullStatus.insert("prone", visible);
+        this->setPosture(visible, icon);
     } else if(icon == "IconSITTING") {
-        this->setPosture(visibleToBool(visible), icon);
+        fullStatus.insert("sitting", visible);
+        this->setPosture(visible, icon);
     } else if(icon == "IconSTANDING") {
-        this->setPosture(visibleToBool(visible), icon);
+        fullStatus.insert("standing", visible);
+        this->setPosture(visible, icon);
     } else if(icon == "IconSTUNNED") {
-        this->setCondition(visibleToBool(visible), icon);
+        fullStatus.insert("stunned", visible);
+        this->setCondition(visible, icon);
     } else if(icon == "IconDEAD") {
-        this->setCondition(visibleToBool(visible), icon);                
+        fullStatus.insert("dead", visible);
+        this->setCondition(visible, icon);
     }else if(icon == "IconBLEEDING") {
-        this->setCondition(visibleToBool(visible), icon);
+        fullStatus.insert("bleeding", visible);
+        this->setCondition(visible, icon);
     } else if(icon == "IconHIDDEN") {
-        this->setHidden(visibleToBool(visible));
+        fullStatus.insert("hidden", visible);
+        this->setHidden(visible);
     } else if(icon == "IconINVISIBLE") {
-        this->setInvisible(visibleToBool(visible));
+        fullStatus.insert("invisible", visible);
+        this->setInvisible(visible);
     } else if(icon == "IconWEBBED") {
-        this->setImmobile(visibleToBool(visible));
+        fullStatus.insert("webbed", visible);
+        this->setImmobile(visible);
     } else if(icon == "IconJOINED") {
-        this->setJoined(visibleToBool(visible));
+        fullStatus.insert("joined", visible);
+        this->setJoined(visible);
     }
 }
 

@@ -3,6 +3,7 @@
 CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     mainWindow = (MainWindow*)parent;
     roundtimeDisplay = new RoundTimeDisplay(parent);
+    macroService = new MacroService(parent);
     windowManager = mainWindow->getWindowManager();
 
     historyCounter = -1;
@@ -52,9 +53,6 @@ void CommandLine::resizeEvent(QResizeEvent *event) {
 
 void CommandLine::focus() {
     this->setFocus();
-
-    /* temp init timer */
-    //roundtimeDisplay->setTimer((qrand()%10) + 1);
 }
 
 void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay) {
@@ -110,6 +108,16 @@ void CommandLine::writeCommand(QString text) {
     this->clear();
 }
 
+void CommandLine::moveCursor(int pos) {
+    this->setCursorPosition(pos);
+    /*QTextCursor cursor = textEdit->textCursor();
+    textEdit->setTextCursor(this->cursor());*/
+}
+
+bool CommandLine::runMacro(QString cmd) {
+    return macroService->execute(cmd);
+}
+
 void CommandLine::sendCommand() {
     if (!this->text().isEmpty()){
         /* add command to history */
@@ -134,7 +142,7 @@ bool CommandLine::filterCommand(QString text) {
 }
 
 void CommandLine::stopScript() {
-    mainWindow->getScriptService()->stopScript();
+    mainWindow->getScriptService()->abortScript();
 }
 
 CommandLine::~CommandLine() {

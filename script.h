@@ -17,7 +17,7 @@ public:
     Script(QObject *parent = 0);
     ~Script();
 
-    void execute(QString);
+    void execute(QString, QList<QString>);
     void killScript();
     bool isRunning();
     void sendMessage(QByteArray);    

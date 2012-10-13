@@ -156,6 +156,10 @@ QComboBox* HighlightDialog::getWebbedSelect(){
     return ui->webbedPlaySelect;
 }
 
+void HighlightDialog::reloadWindowStyles() {
+    mainWindow->getWindowManager()->updateWindowStyle();
+}
+
 void HighlightDialog::okPressed() {
     generalTab->saveChanges();
     textTab->saveChanges();

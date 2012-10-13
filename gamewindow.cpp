@@ -3,23 +3,16 @@
 GameWindow::GameWindow(QWidget *parent) : QTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
     windowManager = mainWindow->getWindowManager();
+    settings = HighlightSettings::Instance();
 
     QPalette palette;
     palette.setColor(QPalette::Text, QColor(192, 192, 192));
-
     this->setPalette(palette);
 
     this->setFontWeight(QFont::Normal);
     this->setFont(QFont("Consolas", 12));
     this->setReadOnly(true);
-    this->document()->setMaximumBlockCount(5000);
-    this->document()->setDefaultStyleSheet("#body {color: #c0c0c0; font-family: Consolas;}"
-                                           "#speech {color: #00ff00; font-family: Consolas;}"
-                                           "#thought {color: #800000; font-family: Consolas;}"
-                                           "#roomName {color: white; font-family: Consolas;}"
-                                           "#youAlsoSee {color: #00ffff; font-family: Consolas;}"
-                                           "#alsoHere {color: #ffff00; font-family: Consolas;}"
-                                           "#bold {color: #ffff00; font-family: Consolas;}}");
+    this->document()->setMaximumBlockCount(1000);
 
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(adjustRowMargin()));
 }
@@ -57,7 +50,6 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *event) {
         this->copySelected();
         mainWindow->getCommandLine()->focus();
     }
-
     QTextEdit::mousePressEvent(event);
 }
 

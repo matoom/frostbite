@@ -21,9 +21,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 void MainWindow::appSetup() {
+    //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
     /* load client window state */
     settings = ClientSettings::Instance();
-    restoreState(settings->getParameter("MainWindow", NULL).toByteArray());
+    restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
+    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
 
     /* start maximized */
     setWindowState(Qt::WindowMaximized);
@@ -39,26 +42,23 @@ void MainWindow::initSettings() {
     ui->centralWidget->setPalette(palette);
 
     /* set gameWindow background to transparent to show compass */
-    palette = wm->getGameWindow()->palette();
+    palette = windowManager->getGameWindow()->palette();
     palette.setColor(QPalette::Base, Qt::transparent);
-    wm->getGameWindow()->viewport()->setPalette(palette);
+    windowManager->getGameWindow()->viewport()->setPalette(palette);
 
     /* set focus to command line at startup */
     cmdLine->setFocus();
 }
 
 void MainWindow::loadClient() {
-    wm = new WindowManager(this);
-    wm->loadWindows();
+    windowManager = new WindowManager(this);
+    windowManager->loadWindows();
 
     tbm = new ToolbarManager(this);
     tbm->loadToolbar();
 
-    QProgressBar *timer = new QProgressBar();
-    timer->setValue(100);
-    timer->setMaximumHeight(2);
-    timer->setTextVisible(false);
-    ui->mainLayout->addWidget(timer);
+    timerBar = new TimerBar(this);
+    timerBar->loadProgressbar();
 
     cmdLine = new CommandLine(this);
     ui->mainLayout->addWidget(cmdLine);
@@ -72,7 +72,7 @@ void MainWindow::loadClient() {
 }
 
 WindowManager* MainWindow::getWindowManager() {
-    return wm;
+    return windowManager;
 }
 
 ToolbarManager* MainWindow::getToolbarManager() {
@@ -91,6 +91,10 @@ ScriptService* MainWindow::getScriptService() {
     return scriptService;
 }
 
+TimerBar* MainWindow::getTimerBar() {
+    return this->timerBar;
+}
+
 void MainWindow::addWidgetMainLayout(QWidget* widget) {
     ui->mainLayout->addWidget(widget);
 }
@@ -100,7 +104,11 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
     action->setText(action->text() + " window");
     ui->menuWindow->addAction(action);
 
-    addDockWidget(area, dock);
+    if(settings->hasValue("MainWindow/state")) {
+        restoreDockWidget(dock);
+    } else {
+        addDockWidget(area, dock);
+    }
 }
 
 void MainWindow::addToolbarWidget(QWidget *widget) {
@@ -128,7 +136,8 @@ void MainWindow::setMainTitle(QString roomName) {
 
 void MainWindow::closeEvent(QCloseEvent *event){
     /* save client window state */
-    settings->setParameter("MainWindow", saveState());
+    settings->setParameter("MainWindow/state", saveState());
+    settings->setParameter("MainWindow/geometry", saveGeometry());
 }
 
 MainWindow::~MainWindow() {
@@ -136,7 +145,8 @@ MainWindow::~MainWindow() {
     delete settings;
     delete ui;
     delete tbm;
-    delete wm;
+    delete windowManager;
     delete cmdLine;
     delete menuHandler;
+    delete timerBar;
 }

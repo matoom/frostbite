@@ -15,18 +15,16 @@ QPalette GenericWindow::palette() {
 QTextEdit* GenericWindow::textBox(QDockWidget *dock, QString name) {
     QTextEdit *textEdit = new QTextEdit(dock);
     textEdit->setObjectName(name + "Text");
-    textEdit->setPlainText("");
     textEdit->setPalette(this->palette());
     textEdit->setFontWeight(QFont::Normal);
     textEdit->setFont(QFont("Consolas", 11));
-    textEdit->setReadOnly(true);
 
     return textEdit;
 }
 
 QDockWidget* GenericWindow::createWindow(const char* name) {
     QDockWidget *dock = new QDockWidget(QObject::tr(name), mw);
-    dock->setObjectName(QObject::tr(name) + "Dock");
+    dock->setObjectName(QObject::tr(name) + "Window");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
 
     dock->setWidget(this->textBox(dock, name));

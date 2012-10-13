@@ -13,7 +13,7 @@ class GameDataContainer : public QObject {
 public:
     static GameDataContainer* Instance();
 
-    void setExpField(ExpModel*);
+    void setExpField(QString, ExpModel*);
     ExpModel* getExpField(QString name);
     QHash<QString, ExpModel*> getExp();
     void removeExpField(QString);

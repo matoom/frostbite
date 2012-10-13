@@ -18,12 +18,12 @@ bool Script::isRunning() {
     return running;
 }
 
-void Script::execute(QString fileName) {
+void Script::execute(QString fileName, QList<QString> userArgs) {
     QString path = QDir::currentPath() + "/scripts/lib/main.rb";
     QString file = QDir::currentPath() + "/scripts/" + fileName + ".rb";
 
     QStringList arguments;
-    arguments << "-w" << path << file;
+    arguments << "-w" << path << file << userArgs;
 
     QString program = "ruby";
 

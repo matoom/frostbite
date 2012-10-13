@@ -1,9 +1,10 @@
 #include "expmodel.h"
 
-ExpModel::ExpModel(QString expString, QObject *parent) : QObject(parent) {
+ExpModel::ExpModel(bool brief, QString expString, QObject *parent) : QObject(parent) {
     this->dataConverterService = DataConverterService::Instance();
     this->expString = expString;
-    this->extractValues();
+    this->brief = brief;
+    this->extractValues();    
 }
 
 void ExpModel::extractValues() {
@@ -11,14 +12,27 @@ void ExpModel::extractValues() {
 
     if(exp.size() == 2) {
         this->name = exp.at(0);
-        QStringList expValues = exp.at(1).trimmed().split(" ");
+        QStringList expValues = exp.at(1).trimmed().split(" ", QString::SkipEmptyParts);
         if(expValues.size() == 3) {
             this->rank = expValues.at(0).toInt();
             this->rankProgression = expValues.at(1);
-            this->state = expValues.at(2);
-            this->numericState = dataConverterService->expStateToNumeric(this->state);
+
+            if(brief) {
+                int value = briefNumeric(expValues.at(2));
+                this->state = dataConverterService->expNumericToState(value);
+                this->numericState = value;
+            } else {
+                this->state = expValues.at(2);
+                this->numericState = dataConverterService->expStateToNumeric(this->state);
+            }
         }
     }
+}
+
+int ExpModel::briefNumeric(QString text) {
+    QRegExp rx("(\\d+)");
+    rx.indexIn(text, 0);
+    return rx.cap(1).toInt();
 }
 
 QString ExpModel::getName() {
@@ -48,5 +62,6 @@ QString ExpModel::getExpString() {
 QString ExpModel::toString() {
     return "ExpModel:[ name => " + this->name  +
             ", rank => " + QString::number(this->rank)  +
-            ", state => " + this->state + " ]";
+            ", state => " + this->state +
+            ", numericState => " + this->numericState + " ]";
 }

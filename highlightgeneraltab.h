@@ -7,6 +7,7 @@
 #include <highlightdialog.h>
 #include <highlightsettings.h>
 #include <audioplayer.h>
+#include <defaultvalues.h>
 
 class HighlightDialog;
 class HighlightSettings;

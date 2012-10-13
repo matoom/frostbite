@@ -7,6 +7,8 @@
 
 #include <mainwindow.h>
 #include <windowmanager.h>
+#include <highlightsettings.h>
+#include <defaultvalues.h>
 
 class MainWindow;
 class WindowManager;
@@ -25,8 +27,9 @@ private:
 
     void copySelected();
 
-    MainWindow *mainWindow;
-    WindowManager *windowManager;
+    MainWindow* mainWindow;
+    WindowManager* windowManager;
+    HighlightSettings* settings;
 
 signals:
 

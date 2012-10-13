@@ -3,9 +3,10 @@
 CommandParser::CommandParser(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowManager = mainWindow->getWindowManager();
-    toolbarManager = mainWindow->getToolbarManager();
+    toolbarManager = mainWindow->getToolbarManager();    
     commandLine = mainWindow->getCommandLine();
     gameDataContainer = GameDataContainer::Instance();
+    highlighter = new Highlighter(parent);
 
     pushStream = false;
     mono = false;
@@ -49,26 +50,18 @@ bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
     if(!mono && !pushStream) {
         /* Process game text with start tag only */
         if(e.tagName() == "style" && e.attribute("id") == "roomName") {
-            gameText += "<span id=\"roomName\">" + root.text() + "</span>";
+            gameText += "<SPAN ID=\"_ROOM_NAME\">" + root.text() + "</SPAN>";
             return false;
         /* All plain text without tags */
         } else if(n.isText()) {
-            if(n.toText().data().startsWith("  You also see")) {
-                gameText += "<span id=\"youAlsoSee\">" + n.toText().data() + "</span>";
-                return false;
-            } else if (n.toText().data().startsWith("Also here: ")) {
-                gameText += "<span id=\"alsoHere\">" + n.toText().data() + "</span>";
-                return false;
-            } else {
-                /* Compensates for QDomText discarding HTML entities  */
-                QString textData = n.toText().data();
-                textData.replace("<", "&lt;");
+            // Compensates for QDomText discarding HTML entities
+            QString textData = n.toText().data();
+            textData.replace("<", "&lt;");
 
-                if(bold) {
-                    gameText += "<span id=\"bold\">" + textData + "</span>";
-                } else {
-                    gameText += textData;
-                }
+            if(bold) {
+                gameText += "<SPAN ID=\"_BOLD\">" + textData + "</SPAN>";
+            } else {
+                gameText += textData;
             }
         /* Process game text between tags */
         } else if(e.tagName() == "d") {
@@ -76,12 +69,16 @@ bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
             gameText += e.text();
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
-            gameText += "<span id=\"speech\">" + e.text() + "</span>";
-        } else if(e.tagName() == "preset" && e.attribute("id") == "thought") {
-            gameText += "<span id=\"thought\">" + e.text() + "</span>";
+            gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
         }
-    }
-
+    } /*else if (mono) {
+        // strip all tags from flags text
+        if(e.tagName() == "d" && e.attribute("cmd").startsWith("flag")) {
+            stripTags = true;
+        } else {
+            stripTags = false;
+        }
+    }*/
     return true;
 }
 
@@ -96,7 +93,9 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 commandLine->getRoundtimeDisplay()->setTimer(time.secsTo(roundTime));
                 initRoundtime = false;
             }
-            windowManager->writePromptGameWindow(root.text().trimmed().toUtf8());
+            /* write prompt */
+            windowManager->writePromptGameWindow(root.text().trimmed().toUtf8());            
+            mainWindow->getScriptService()->writeOutgoingMessage(root.text().trimmed().toUtf8());
         } else if(e.tagName() == "compass") {
             /* filter compass */
             QList<QString> directions;
@@ -114,10 +113,14 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
             toolbarManager->updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
+            highlighter->alert(vitalsElement.attribute("id"), vitalsElement.attribute("value").toInt());
         }  else if(e.tagName() == "indicator") {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
             toolbarManager->updateStatus(e.attribute("visible"), e.attribute("id"));
+            if(e.attribute("visible") == "y") {
+                highlighter->alert(e.attribute("id"));
+            }
         } else if(e.tagName() == "left") {
             /* filter player wielding in left hand */
             //<right exist="162134941" noun="sharks">fuzzy sharks</right>
@@ -146,10 +149,14 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "component") {
             if(e.attribute("id").startsWith("exp")) {
                 QString text = e.text();
+                QString id = e.attribute("id").mid(4);
                 if(!text.isEmpty()) {
-                    gameDataContainer->setExpField(new ExpModel(text));
-                } else {
-                    QString id = e.attribute("id").mid(4);
+                    if(e.firstChildElement("d").isNull()) {
+                        gameDataContainer->setExpField(id, new ExpModel(false, text));
+                    } else {
+                        gameDataContainer->setExpField(id, new ExpModel(true, text));
+                    }
+                } else {                    
                     gameDataContainer->removeExpField(id);
                 }
                 windowManager->updateExpWindow();
@@ -179,18 +186,23 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             }
 
             if(e.attribute("id") == "logons") {
-                windowManager->updateArrivalsWindow(root.text());
+                windowManager->updateArrivalsWindow(highlighter->highlight(root.text()));
             } else if(e.attribute("id") == "thoughts") {
-                windowManager->updateThoughtsWindow(root.text().trimmed() +
-                    " [" + QTime::currentTime().toString() + "]\n");
+                QString thought = root.text().trimmed();
+                thought.insert(thought.indexOf("\""), "</SPAN>");
+                thought.prepend("<SPAN ID=\"_THINKING\">");
+                windowManager->updateThoughtsWindow(highlighter->highlight(thought +
+                    " [" + QTime::currentTime().toString() + "]\n"));
             } else if(e.attribute("id") == "death") {
-                windowManager->updateDeathsWindow(root.text());
+                windowManager->updateDeathsWindow(highlighter->highlight(root.text()));
+            } else if(e.attribute("id") == "atmospherics") {
+                gameText += root.text();
             }
         } else if (e.tagName() == "popStream") {
             pushStream = false;
         } else if(e.tagName() == "output") {
-            if(e.attribute("class") == "mono") {
-                mono = true;
+            if(e.attribute("class") == "mono") {                
+                mono = true;                
             } else {
                 mono = false;
             }
@@ -202,7 +214,7 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
     }
 }
 
-void CommandParser::writeGameText(QByteArray rawData) {
+void CommandParser::writeGameText(QByteArray rawData) {    
     if (rawData.size() == 1) {
         windowManager->writeGameWindow("");
     } else if (mono && !pushStream) {
@@ -210,23 +222,66 @@ void CommandParser::writeGameText(QByteArray rawData) {
         before tags are not recognized as text */
         QString line = rawData;
 
-        if(bold) {
-            line.prepend("<span style=\"white-space:pre;\" id=\"bold\">");
-        } else {
-            line.prepend("<span style=\"white-space:pre;\" id=\"body\">");
-        }
-        line.append("</span>");
+        this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            windowManager->writeGameWindow(line.toLocal8Bit());
-        }
+            line = highlighter->highlight(line);
 
+            if(bold) {
+                line.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BOLD\">");
+            } else {
+                line.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">");
+            }
+            line.append("</SPAN>");
+
+            windowManager->writeGameWindow(line.toLocal8Bit());
+            this->writeScript(line.toLocal8Bit());
+        }
     } else if(gameText != "") {
-        gameText.prepend("<span style=\"white-space:pre;\" id=\"body\">");
-        gameText.append("</span>");
+        gameText = highlighter->highlight(gameText);
+        gameText.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">");
+        gameText.append("</SPAN>");
 
         windowManager->writeGameWindow(gameText.toLocal8Bit());
+        this->writeScript(gameText.toLocal8Bit());
     }
+}
+
+// custom parsing for mono tags
+void CommandParser::fixMonoTags(QString& line) {
+    // fix style ids
+    if(line.contains("preset id=\"thought\"")) {
+        line.replace("preset id=\"thought\"", "PRESET ID=\"_PENALTY\"");
+    } else if(line.contains("preset id=\"speech\"")) {
+        line.replace("preset id=\"speech\"", "PRESET ID=\"_BONUS\"");
+    } else if(line.startsWith("  <d cmd=\"flag")) {
+        line = stripTags("<temp>" + line + "</temp>");
+        if(line.endsWith('\n')) {
+            line.chop(1);
+        }
+    }
+}
+
+QString CommandParser::stripTags(QString line) {
+    QXmlStreamReader xml(line);
+    QString textString;
+    while (!xml.atEnd()) {
+        if ( xml.readNext() == QXmlStreamReader::Characters ) {
+            textString += xml.text();
+        }
+    }
+    return textString;
+}
+
+void CommandParser::writeScript(QByteArray rawData) {
+    QXmlStreamReader xml(rawData);
+    QString textString;
+    while (!xml.atEnd()) {
+        if ( xml.readNext() == QXmlStreamReader::Characters ) {
+            textString += xml.text();
+        }
+    }
+    mainWindow->getScriptService()->writeOutgoingMessage("game_text#" + textString.toLocal8Bit());
 }
 
 void CommandParser::processMock() {

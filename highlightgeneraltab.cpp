@@ -30,11 +30,10 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
 }
 
 void HighlightGeneralTab::loadSettings() {
-    highlightList.insert("roomName", readSettings("roomName", "[Room titles]", QColor(255, 255, 255, 255)));
-    highlightList.insert("gameMessage", readSettings("gameMessage", "Game Messages", QColor(255, 255, 0, 255)));
-    highlightList.insert("say", readSettings("say", "Someone says ..", QColor(0, 255, 0, 255)));
-    highlightList.insert("alsoSee", readSettings("alsoSee", "Also see..", QColor(0, 255, 255, 255)));
-    highlightList.insert("alsoHere", readSettings("alsoHere", "Also here..", QColor(255, 255, 0, 255)));
+    highlightList.insert("roomName", readSettings("roomName", "[Room titles]", QColor(ROOM_NAME_COLOR_HEX)));
+    highlightList.insert("gameMessage", readSettings("gameMessage", "Game Messages", QColor(GAME_MESSAGE_COLOR_HEX)));
+    highlightList.insert("speech", readSettings("speech", "Someone says, ..", QColor(SPEECH_COLOR_HEX)));
+    highlightList.insert("thinking", readSettings("thinking", "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
 }
 
 void HighlightGeneralTab::initContextMenu() {
@@ -155,15 +154,6 @@ void HighlightGeneralTab::updateSelectedItemColor(QListWidgetItem *current) {
     }
 }
 
-/*void HighlightGeneralTab::updateListColor(QString key) {
-    for (int i = 0; i < listWidget->count(); i++) {
-        if(listWidget->item(i)->data(Qt::UserRole) == key) {
-            listWidget->item(i)->setTextColor(highlightList[key].value("color").value<QColor>());
-            updateSelectedItemColor(listWidget->item(i));
-        }
-    }
-}*/
-
 void HighlightGeneralTab::updateControls(QListWidgetItem *current) {
     if(current != NULL) {
         QString key = current->data(Qt::UserRole).toString();
@@ -194,15 +184,18 @@ void HighlightGeneralTab::clearControls() {
 }
 
 void HighlightGeneralTab::saveChanges() {
-    foreach(QString s, generalChangeList) {                
-        QHashIterator<QString, QVariant> i(highlightList.value(s));
-        while (i.hasNext()) {
-            i.next();
-            settings->setSingleParameter("GeneralHighlight/" + s + "/" + i.key(), i.value());
+    if(!generalChangeList.isEmpty()) {
+        foreach(QString s, generalChangeList) {
+            QHashIterator<QString, QVariant> i(highlightList.value(s));
+            while (i.hasNext()) {
+                i.next();
+                settings->setSingleParameter("GeneralHighlight/" + s + "/" + i.key(), i.value());
+            }
         }
-    }
 
-    generalChangeList.clear();
+        highlightDialog->reloadWindowStyles();
+        generalChangeList.clear();
+    }
 }
 
 void HighlightGeneralTab::cancelChanges() {

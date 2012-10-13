@@ -30,6 +30,8 @@ public:
     int getFatigueValue();
     int getSpiritValue();
 
+    QHash<QString, bool> getStatus();
+
 private:
     MainWindow *mainWindow;
     VitalsIndicator *vitalsIndicator;

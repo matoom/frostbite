@@ -71,6 +71,12 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
     } else if (error == QAbstractSocket::NetworkError) {
         errorMessage = "Connection timed out.";
     }
+
+
+    /*QNativeSocketEngine::write() was not called in QAbstractSocket::ConnectedState
+    QAbstractSocket::NetworkError*/
+    //QAbstractSocket::RemoteHostClosedError
+
     qDebug() << error;
 }
 

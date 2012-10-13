@@ -8,6 +8,7 @@
 #include <mainwindow.h>
 #include <connectdialog.h>
 #include <highlightdialog.h>
+#include <macrodialog.h>
 
 class ConnectDialog;
 class MainWindow;
@@ -24,6 +25,7 @@ private:
     MainWindow *mainWindow;
     ConnectDialog *connectDialog;
     HighlightDialog *highlightDialog;
+    MacroDialog* macroDialog;
 
 signals:
 

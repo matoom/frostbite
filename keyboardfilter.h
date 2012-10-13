@@ -5,7 +5,10 @@
 #include <QKeyEvent>
 #include <QDebug>
 
+#include <macrosettings.h>
+
 class CommandLine;
+class MacroSettings;
 
 class KeyboardFilter : public QObject {
     Q_OBJECT
@@ -17,7 +20,8 @@ protected:
     bool eventFilter(QObject *Object, QEvent *Event);
 
 private:
-    CommandLine *commandLine;
+    CommandLine* commandLine;
+    MacroSettings* macroSettings;
 
 };
 

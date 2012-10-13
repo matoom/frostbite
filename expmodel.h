@@ -17,17 +17,9 @@ class ExpModel : public QObject {
     Q_OBJECT
 
 public:
-    ExpModel(QString expString, QObject *parent = 0);
+    ExpModel(bool, QString expString, QObject *parent = 0);
 
     DataConverterService *dataConverterService;
-
-    QString name;
-    int rank;
-    QString rankProgression;
-    QString state;
-    int numericState;
-
-    QString expString;
 
     QString getName();
     int getRank();
@@ -39,7 +31,17 @@ public:
     QString toString();
 
 private:
+    bool brief;
+    QString name;
+    int rank;
+    QString rankProgression;
+    QString state;
+    int numericState;
+
+    QString expString;
+
     void extractValues();
+    int briefNumeric(QString);
 
 signals:
     

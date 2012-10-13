@@ -15,8 +15,8 @@ GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
     wield = new WieldModel();
 }
 
-void GameDataContainer::setExpField(ExpModel* expModel) {
-    exp.insert(expModel->getName().toLower(), expModel);
+void GameDataContainer::setExpField(QString name, ExpModel* expModel) {
+    exp.insert(name, expModel);
 }
 
 void GameDataContainer::removeExpField(QString name) {
