@@ -30,6 +30,7 @@ public:
     void terminateScript();
     void abortScript();
     void scriptFinished();
+    void scriptEnded();
     bool isScriptActive();
 
 private:

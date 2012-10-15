@@ -6,7 +6,7 @@ NavigationDisplay::NavigationDisplay(QObject *parent) : QObject(parent) {
     /* preload images to memory */
     this->loadImages();
 
-    dir << "up" << "nw" << "n" << "ne" << "out" << "w" << "null" << "e" << "down" << "sw" << "s" << "se";
+    dir << "up" << "nw" << "n" << "ne" << "out" << "w" << "ap" << "e" << "down" << "sw" << "s" << "se";
     state << false << false << false << false << false << false << false << false << false << false << false << false;
 }
 
@@ -19,6 +19,10 @@ void NavigationDisplay::updateState(QList<QString> directions) {
             state[i] = false;
         }
     }
+}
+
+void NavigationDisplay::setAutoPilot(bool enable) {
+    state[6] = enable;
 }
 
 void NavigationDisplay::loadImages() {

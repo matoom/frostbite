@@ -1,3 +1,5 @@
+require "#{File.dirname(__FILE__)}/models.rb"
+
 $args = []
 ARGV.each do |arg|
   $args << arg
@@ -6,220 +8,20 @@ ARGV.clear
 
 STDOUT.sync = true
 
-$_data_queue = []
-$_end = false
-
 @_file = $args.shift
-@_exp = nil
-@_room = nil
-@_wield = nil
-@_vitals = nil
-@_status = nil
 
-class Wield
-  # @!attribute left
-  #   @return [String] description of the item held in left hand
-  # @!attribute left_noun
-  #   @return [String] game operated noun for left hand
-  # @!attribute right
-  #   @return [String] description of the item held in right hand
-  # @!attribute right_noun
-  #   @return [String] game operated noun for right hand
-  attr_accessor :left, :left_noun, :right, :right_noun
+$_data_queue = []
+$_exp, $_room, $_wield, $_vitals, $_status, $_inventory, $_container = "", "", "", "", "", "", ""
 
-  def initialize(wield_string)
-    process_values(wield_string.chomp)
-  end
-
-  # Extracts values from given string.
-  #
-  # @param [String] wield_string data string.
-  # @return [Void]
-  def process_values(wield_string)
-    wield_values = wield_string.split("|")
-
-    @left = wield_values[0]
-    @left_noun = wield_values[1]
-    @right = wield_values[2]
-    @right_noun = wield_values[3]
-  end
-end
-
-class Exp
-  # @!attribute rank
-  #   @return [Int] rank of skill
-  # @!attribute progress
-  #   @return [String] current progression of the rank
-  # @!attribute state
-  #   @return [String] current skill state
-  # @!attribute numeric_state
-  #   @return [Int] current skill state as numeric value
-  attr_accessor :rank, :progress, :state, :numeric_state
-
-  def initialize(exp_string)
-    process_values(exp_string.chomp)
-  end
-
-  # Extracts values from given string.
-  #
-  # @param [String] exp experience data.
-  # @return [Void]
-  def process_values(exp)
-    exp_values = exp.split("|")
-
-    @rank = exp_values[1].to_i
-    @progress = exp_values[2]
-    @state = exp_values[3]
-    @numeric_state = exp_values[4].to_i
-  end
-end
-
-class Room
-  # @!attribute description
-  #   @return [String] room description
-  # @!attribute objects
-  #   @return [String] ojects in the room
-  # @!attribute players
-  #   @return [String] players in the room
-  # @!attribute exits
-  #   @return [String] exits in the room
-  attr_accessor :description, :objects, :players, :exits
-
-  def initialize(room_string)
-    room_values = room_string.chomp.split("|")
-
-    @description = room_values[0]
-    @objects = room_values[1]
-    @players = room_values[2]
-    @exits = room_values[3]
-  end
-
-  # Counts objects.
-  #
-  # @param [String] value oject name.
-  # @return [Int] count of found objects in room.
-  def count_objects(value)
-    @objects.scan(value).length
-  end
-end
-
-
-class Vitals
-  # @!attribute health
-  #   @return [Int] health value
-  # @!attribute concentration
-  #   @return [Int] concentration value
-  # @!attribute fatigue
-  #   @return [Int] fatigue value
-  # @!attribute spirit
-  #   @return [Int] spirit value
-  attr_accessor :health, :concentration, :fatigue, :spirit
-
-  def initialize(vitals_string)
-    vitals_values = vitals_string.chomp.split("|")
-
-    @health = vitals_values[0]
-    @concentration = vitals_values[1]
-    @fatigue = vitals_values[2]
-    @spirit = vitals_values[3]
-  end
-end
-
-class Status
-  # @!attribute kneeling
-  #   @return [bool] is kneeling
-  # @!attribute prone
-  #   @return [bool] is prone
-  # @!attribute sitting
-  #   @return [bool] is sitting
-  # @!attribute standing
-  #   @return [bool] is standing
-  # @!attribute stunned
-  #   @return [bool] is stunned
-  # @!attribute dead
-  #   @return [bool] is dead
-  # @!attribute bleeding
-  #   @return [bool] is bleeding
-  # @!attribute hidden
-  #   @return [bool] is hidden
-  # @!attribute invisible
-  #   @return [bool] is invisible
-  # @!attribute webbed
-  #   @return [bool] is webbed
-  # @!attribute joined
-  #   @return [bool] is joined
-  attr_accessor :kneeling, :prone, :sitting, :standing, :stunned,
-                :dead, :bleeding, :hidden, :invisible, :webbed, :joined
-
-  def initialize(status_string)
-    status_values = status_string.chomp.unpack('H*').first.scan(/../)
-
-    @kneeling = status_values[0].to_i
-    @prone = status_values[1].to_i
-    @sitting = status_values[2].to_i
-    @standing = status_values[3].to_i
-    @stunned = status_values[4].to_i
-    @dead = status_values[5].to_i
-    @bleeding = status_values[6].to_i
-    @hidden = status_values[7].to_i
-    @invisible = status_values[8].to_i
-    @webbed = status_values[9].to_i
-    @joined = status_values[10].to_i
-  end
-end
-
-# @api private
-class CommandThread
-   def run
-      while line = gets
-        if line.start_with? "game_text#"
-          line.slice! "game_text#"
-          $_data_queue << line
-        elsif line.start_with? "exit#"
-          $_end = true
-          Kernel::abort
-        end
-      end
-   end
-end
+@current_rt = 0
 
 @_command_thread = Thread.new { CommandThread.new.run }
-
-# Stops command thread
-# @param
-# @return [Void]
-# @api private
-def stop_command_thread
-  if @_command_thread.alive?
-    Thread.kill(@_command_thread)
-  end
-end
-
-# Start command thread to intercept incoming commands
-# @param
-# @return [Void]
-# @api private
-def start_command_thread
-  if !@_command_thread.alive? && !$_end
-    @_command_thread = Thread.new { CommandThread.new.run }
-  end
-end
-
-
-# Ends command thread and aborts the script
-# @param
-# @return [Void]
-# @api private
-def exit_script
-  $_end = true
-  abort
-end
 
 # Waits for roundtime in game text and pauses for the duration.
 #
 # @param
 # @return [void]
-# @example using wait_for_roundtime in script
+# @example Wait for the duration of the round time before executing next command.
 #   put hide
 #   wait_for_roundtime
 #   put unhide
@@ -227,10 +29,12 @@ def wait_for_roundtime
   $_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
-      #Roundtime: 4 sec.
-      #Roundtime:  12 seconds.
-      if $_data_queue.at(i).match(/^Roundtime:  \d+ seconds.$/)
-        sleep $_data_queue.at(i)[/\d+/].to_i
+      if $_data_queue.at(i).match(/^Roundtime:/)
+        total_rt = $_data_queue.at(i)[/\d+/].to_i
+        total_rt.downto(0) do |current_rt|
+          @current_rt = current_rt
+          sleep 1
+        end
         return
       end
       $_data_queue.delete_at(i)
@@ -243,7 +47,7 @@ end
 #
 # @param [String] pattern regex pattern.
 # @return [void]
-def match_wait(pattern)
+def wait_for(pattern)
   $_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
@@ -251,6 +55,44 @@ def match_wait(pattern)
         return
       end
       $_data_queue.delete_at(i)
+    end
+    sleep 0.01
+  end
+end
+
+# Matches multiple regex patterns with game text
+# and returns the name of the matching pattern.
+#
+# @param [Hash] pattern list of regex patterns and names
+# @return [Symbol] pattern name
+# @example Using multiple match patterns to make decisions in script.
+#   match = {:retry => "...wait", :next => "you open"}
+#   result = match_wait match
+#   result #=> :retry or :next
+#   if result = :next
+#     echo "next"
+#   end
+def match_wait(pattern)
+  $_data_queue.clear
+  match_found = false
+  match = ""
+  (0..1000000).each do
+    $_data_queue.each_index do |i|
+      unless match_found
+        pattern.each_pair do |k, v|
+          if $_data_queue.at(i).match(v)
+            match = k
+            match_found = true
+          end
+        end
+      end
+      if $_data_queue.at(i).match(/^Roundtime:/)
+        sleep $_data_queue.at(i)[/\d+/].to_i
+      end
+      $_data_queue.delete_at(i)
+    end
+    if match_found
+      return match
     end
     sleep 0.01
   end
@@ -269,20 +111,20 @@ end
 #
 # @param [String] value command.
 # @return [void]
-# @example using move in script
+# @example Using move command in script.
 #   move n
 #   move e
 #   move go gate
 def move(value)
   put value
-  match_wait(/^\[.*?\]$/)
+  wait_for(/^\[.*?\]$/)
 end
 
 # Waits for a prompt character after a command is issued.
 #
 # @param
 # @return [void]
-# @example using wait in script
+# @example Using wait in script to run consecutive commands.
 #   put remove my shield
 #   wait
 #   put wear my shield
@@ -294,8 +136,11 @@ end
 
 # Sends a message to client main window.
 #
-# @param [String] value message.
+# @param [#to_s] value message.
 # @return [void]
+# @example Echoing into client main window.
+#   echo "hello"
+#   echo 1
 def echo(value)
   puts "echo#" + value.to_s
   STDOUT.flush
@@ -305,23 +150,19 @@ end
 #
 # @param [String] value field name.
 # @return [Exp] Exp object.
-# @example using exp data in script
+# @example Using exp data in script.
 #   get_exp("climbing").inspect #=> #<Exp:0x2b051b0 @rank=222, @progress="53%", @state="cogitating", @numeric_state=25>
 #
 #   if get_exp("climbing").numeric_state == 34
 #     exit
 #   end
 def get_exp(value)
-  stop_command_thread
+  $_exp.clear
   puts "get_exp#" + value
   STDOUT.flush
-  while line = gets
-    if line.start_with? "exp#"
-      line.slice! "exp#"
-      start_command_thread
-      return Exp.new(line)
-    elsif line.start_with? "exit#"
-      exit_script
+  while true
+    unless $_exp.empty?
+      return Exp.new($_exp)
     end
   end
 end
@@ -330,23 +171,19 @@ end
 #
 # @param
 # @return [Room] Room object.
-# @example using room data in script
+# @example Using room data in script.
 #   get_room.inspect #=> #<Room:0x2aee140 @description="Well-worn paths ...", @objects="You also see a musk hog, a musk hog which appears dead and a musk hog.", @players="", @exits="Obvious paths: northwest.">
 #
 #   if get_room.count_objects "hog" > 2
 #     put "attack"
 #   end
 def get_room
-  stop_command_thread
+  $_room.clear
   puts "get_room#"
   STDOUT.flush
-  while line = gets
-    if line.start_with? "room#"
-      line.slice! "room#"
-      start_command_thread
-      return Room.new(line)
-    elsif line.start_with? "exit#"
-      exit_script
+  while true
+    unless $_room.empty?
+      return Room.new($_room)
     end
   end
 end
@@ -355,21 +192,17 @@ end
 #
 # @param
 # @return [Wield] Wield object.
-# @example using wield data in script
+# @example Using wield data in script.
 #   get_wield.inspect #=> #<Wield:0x2ac99c0 @left="Empty", @left_noun="", @right="fuzzy sharks", @right_noun="sharks">
 #
 #   put "put my #{get_wield.right} in my backpack"
 def get_wield
-  stop_command_thread
+  $_wield.clear
   puts "get_wield#"
   STDOUT.flush
-  while line = gets
-    if line.start_with? "wield#"
-      line.slice! "wield#"
-      start_command_thread
-      return Wield.new(line)
-    elsif line.start_with? "exit#"
-      exit_script
+  while true
+    unless $_wield.empty?
+      return Wield.new($_wield)
     end
   end
 end
@@ -378,23 +211,19 @@ end
 #
 # @param
 # @return [Vitals] Vitals object.
-# @example using vitals data in script
+# @example Using vitals data in script.
 #   get_vitals.inspect #=> #<Vitals:0x3aa328 @health="100", @concentration="46", @fatigue="100", @spirit="100">
 #
 #   if get_vitals.health < 100
 #     put retreat
 #   end
 def get_vitals
-  stop_command_thread
+  $_vitals.clear
   puts "get_vitals#"
   STDOUT.flush
-  while line = gets
-    if line.start_with? "vitals#"
-      line.slice! "vitals#"
-      start_command_thread
-      return Vitals.new(line)
-    elsif line.start_with? "exit#"
-      exit_script
+  while true
+    unless $_vitals.empty?
+      return Vitals.new($_vitals)
     end
   end
 end
@@ -403,38 +232,83 @@ end
 #
 # @param
 # @return [Status] Status object.
-# @example using status data in script
+# @example Using status data in script.
 #   get_status.inspect #=> #<Status:0x3a9d10 @kneeling=0, @prone=0, @sitting=0, @standing=1, @stunned=1, @dead=0, @bleeding=1, @hidden=1, @invisible=0, @webbed=0, @joined=1>
 #
 #   if get_status.hidden
 #     put unhide
 #   end
 def get_status
-  stop_command_thread
+  $_status.clear
   puts "get_status#"
   STDOUT.flush
-  while line = gets
-    if line.start_with? "status#"
-      line.slice! "status#"
-      start_command_thread
-      return Status.new(line)
-    elsif line.start_with? "exit#"
-      exit_script
+  while true
+    unless $_status.empty?
+      return Status.new($_status)
+    end
+  end
+end
+
+
+# Gets inventory list from client.
+#
+# @param
+# @return [Status] Status object.
+def get_inventory
+  $_inventory.clear
+  puts "get_inventory#"
+  STDOUT.flush
+  while true
+    unless $_inventory.empty?
+      return Inventory.new($_inventory)
+    end
+  end
+end
+
+# Gets items in main stow container from client.
+#
+# @param
+# @return [Container] Container object.
+def get_container
+  $_container.clear
+  puts "get_container#"
+  STDOUT.flush
+  while true
+    unless $_container.empty?
+      return Container.new($_container)
     end
   end
 end
 
 # Pauses for given time.
 #
-# @param [#to_i] value sleep time in seconds
+# @param [Integer, Float] value sleep time in seconds
 # @return [Void]
 def pause(value)
-  sleep value.to_i
+  sleep value
+end
+
+# Current match round time -- can be used in
+# secondary threads while main thread is stuck in round time
+#
+# @param
+# @return [Integer] current round time value
+# @example Script is interrupted during round time.
+#   def finally_do
+#     sleep get_match_rt
+#     put "stow right"
+#   end
+def get_match_rt
+  @current_rt
 end
 
 at_exit do
   if defined? finally_do
+    unless @_command_thread.alive?
+      @_command_thread = Thread.new { CommandThread.new.run }
+    end
     finally_do
+    Kernel::exit!
   end
 end
 

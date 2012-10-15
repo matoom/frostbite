@@ -16,7 +16,15 @@ GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
 }
 
 void GameDataContainer::setExpField(QString name, ExpModel* expModel) {
-    exp.insert(name, expModel);
+    exp.insert(name.toLower(), expModel);
+}
+
+void GameDataContainer::setContainer(QStringList container) {
+    this->container = container;
+}
+
+void GameDataContainer::setInventory(QStringList inventory) {
+    this->inventory = inventory;
 }
 
 void GameDataContainer::removeExpField(QString name) {
@@ -26,7 +34,7 @@ void GameDataContainer::removeExpField(QString name) {
 }
 
 ExpModel* GameDataContainer::getExpField(QString name) {
-    return exp.value(name);
+    return exp.value(name.toLower());
 }
 
 QHash<QString, ExpModel*> GameDataContainer::getExp() {
@@ -40,3 +48,12 @@ RoomModel* GameDataContainer::getRoom() {
 WieldModel* GameDataContainer::getWield() {
     return this->wield;
 }
+
+QStringList GameDataContainer::getInventory() {
+    return this->inventory;
+}
+
+QStringList GameDataContainer::getContainer() {
+    return this->container;
+}
+

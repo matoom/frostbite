@@ -1,9 +1,3 @@
-=begin
-def finally_do
-  echo "CLEAN UP HERE"
-end
-=end
-
 exp = get_exp "climbing"
 echo exp.inspect
 
@@ -20,14 +14,10 @@ echo vitals.inspect
 status = get_status
 echo status.inspect
 
-=begin
-for i in 0..5
-	put "n"
-	sleep 1
-  if i == 4
-    puts exp("skinning").inspect
-  end
-end
-=end
+inv = get_inventory
+echo inv.inspect
+
+cont = get_container
+echo cont.inspect
 
 echo "END"

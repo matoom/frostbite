@@ -30,19 +30,21 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
 }
 
 void HighlightGeneralTab::loadSettings() {
-    highlightList.insert("roomName", readSettings("roomName", "[Room titles]", QColor(ROOM_NAME_COLOR_HEX)));
-    highlightList.insert("gameMessage", readSettings("gameMessage", "Game Messages", QColor(GAME_MESSAGE_COLOR_HEX)));
-    highlightList.insert("speech", readSettings("speech", "Someone says, ..", QColor(SPEECH_COLOR_HEX)));
-    highlightList.insert("thinking", readSettings("thinking", "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
+    highlightList.insert(ROOM_NAME, readSettings(ROOM_NAME, "[Room titles]", QColor(ROOM_NAME_COLOR_HEX)));
+    highlightList.insert(GAME_MESSAGE, readSettings(GAME_MESSAGE, "Game Messages", QColor(GAME_MESSAGE_COLOR_HEX)));
+    highlightList.insert(SPEECH, readSettings(SPEECH, "Someone says, ..", QColor(SPEECH_COLOR_HEX)));
+    highlightList.insert(THINKING, readSettings(THINKING, "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
+    highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BONUS_COLOR_HEX)));
+    highlightList.insert(PENALTY, readSettings(PENALTY, "Stat penalty", QColor(PENALTY_COLOR_HEX)));
 }
 
 void HighlightGeneralTab::initContextMenu() {
     menu = new QMenu(listWidget);
-    colorAct = new QAction(QIcon(":/images/open.png"), tr("&Change Color..."), listWidget);
+    colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
-    editAct = new QAction(QIcon(":/images/open.png"), tr("&Edit..."), listWidget);
+    editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
     menu->addAction(editAct);
     editAct->setEnabled(false);
 }
@@ -73,13 +75,14 @@ void HighlightGeneralTab::playSound() {
     audioPlayer->play(fileSelect->currentText());
 }
 
-void HighlightGeneralTab::prepareList() {
-    QHash<QString, QHash<QString, QVariant> >::const_iterator i = highlightList.constBegin();
+void HighlightGeneralTab::prepareList() {    
+    QMap<QString, QHash<QString, QVariant> >::const_iterator i = highlightList.constBegin();
     while (i != highlightList.constEnd()) {
-        QListWidgetItem *newItem = new QListWidgetItem(tr(i.value().value("name").toByteArray().data()), listWidget);
+        QListWidgetItem *newItem = new QListWidgetItem(QIcon(":/window/images/icon_ph.png"),
+            tr(i.value().value("name").toByteArray().data()), listWidget);
         newItem->setData(Qt::UserRole, i.key());
         newItem->setTextColor(i.value().value("color").value<QColor>());
-        newItem->setFont(QFont("Fixedsys", 12));
+        newItem->setFont(QFont("Consolas", 12));
         ++i;
     }
 }
@@ -132,10 +135,8 @@ void HighlightGeneralTab::fileSelected(const QString& text) {
 }
 
 void HighlightGeneralTab::itemSelected(QListWidgetItem *current, QListWidgetItem *previous) {
-    /*if(previous) {
-        previous->setIcon(QIcon());
-    }
-    current->setIcon(QIcon(":/nav/images/active/green/e.png"));*/
+    /* change highlight selected item icon */
+    updateIcon(current, previous);
 
     /* change highlight color to item color */
     updateSelectedItemColor(current);
@@ -149,8 +150,17 @@ void HighlightGeneralTab::updateSelectedItemColor(QListWidgetItem *current) {
         /* change highlight color to item color */
         QPalette palette = listWidget->palette();
         palette.setColor(QPalette::HighlightedText, current->textColor());
-        //palette.setColor(QPalette::Highlight, Qt::transparent);
+        palette.setColor(QPalette::Highlight, Qt::transparent);
         listWidget->setPalette(palette);
+    }
+}
+
+void HighlightGeneralTab::updateIcon(QListWidgetItem *current, QListWidgetItem *previous) {
+    if(current) {
+        if(previous) {
+            previous->setIcon(QIcon(":/window/images/icon_ph.png"));
+        }
+        current->setIcon(QIcon(":/window/images/arrow_right.png"));
     }
 }
 

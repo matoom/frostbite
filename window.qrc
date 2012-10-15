@@ -5,5 +5,9 @@
         <file>images/keyboard.png</file>
         <file>images/connect.png</file>
         <file>images/disconnect.png</file>
+        <file>images/edit.png</file>
+        <file>images/right_arrow.png</file>
+        <file>images/icon_ph.png</file>
+        <file>images/arrow_right.png</file>
     </qresource>
 </RCC>

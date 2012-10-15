@@ -15,6 +15,7 @@
 
 #define LHAND_ICO ":/images/lhand.png"
 #define RHAND_ICO ":/images/rhand.png"
+#define SPELL_SCROLL_ICO ":/images/spell_scroll.png"
 
 #define SWORD_ICO ":/images/sword.png"
 #define BOW_ICO ":/images/bow.png"

@@ -32,19 +32,22 @@ public:
     void writePromptGameWindow(QByteArray);
     void writeGameWindow(QByteArray);
     void updateNavigationDisplay(QList<QString>);
+    void scriptRunning(bool);
     void updateExpWindow();
     void updateRoomWindow();
+    void updateConversationsWindow(QString);
     void updateDeathsWindow(QString);
     void updateRoomWindowTitle(QString);
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);
     void updateWindowStyle();
 
-    QDockWidget *getRoomWindow();
-    QDockWidget *getArrivalsWindow();
-    QDockWidget *getThoughtsWindow();
-    QDockWidget *getExpWindow();
-    QDockWidget *getDeathsWindow();
+    QDockWidget* getRoomWindow();
+    QDockWidget* getArrivalsWindow();
+    QDockWidget* getThoughtsWindow();
+    QDockWidget* getExpWindow();
+    QDockWidget* getDeathsWindow();
+    QDockWidget* getConversationsWindow();
 
 public slots:
 
@@ -59,11 +62,12 @@ private:
     Highlighter* highlighter;
     HighlightSettings* settings;
 
-    QDockWidget *roomWindow;
-    QDockWidget *arrivalsWindow;
-    QDockWidget *thoughtsWindow;
-    QDockWidget *expWindow;
-    QDockWidget *deathsWindow;
+    QDockWidget* roomWindow;
+    QDockWidget* arrivalsWindow;
+    QDockWidget* thoughtsWindow;
+    QDockWidget* expWindow;
+    QDockWidget* deathsWindow;
+    QDockWidget* conversationsWindow;
 
     QString getColor(QString, QString);
 };

@@ -667,3 +667,25 @@ The Dwarven driver says, "I'm leaving shortly, returning to the ferry to Riverha
 <popStream/>
 <pushStream id="thoughts"/><preset id='thought'>[Frodo] </preset>"Is a Trader available to come sell a few pouches for me?"
 <popStream/><prompt time="1349974644">&gt;</prompt>
+    <right exist="162134941" noun="sharks">fuzzy sharks</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+  a lumpy bundle
+  an origami-paper envelope
+  a heavy burlap haversack
+  a simple belt knife
+  a sturdy troll-skin herb pouch
+  a silver kyanite gwethdesuan
+  a hooded safecracker's shroud
+  a worn grey hitman's backpack with fraying straps
+  a locksmith's toolbelt fashioned from darkened leather
+  a jet black leather thigh quiver
+  a midnight black crossbow
+  a lumium ring balaclava
+  some lumium ring gloves
+  a crocodile-skin shield
+  a thick shalswar-hide coat
+  some insulated sealed pants with a reinforced design
+<popStream/>
+<clearContainer id="stow"/><inv id='stow'>In the backpack:</inv><inv id='stow'> a rock</inv><inv id='stow'> a brown pouch</inv><inv id='stow'> a misshaped brass chest</inv><inv id='stow'> a mud-stained steel chest</inv><inv id='stow'> a blue gem pouch</inv><inv id='stow'> some solid lead turnips painted with smiling faces</inv><inv id='stow'> a short sword</inv><inv id='stow'> a rotting deobar crate</inv><inv id='stow'> a tempered dao</inv><inv id='stow'> a steel hand axe</inv><inv id='stow'> a black gem pouch</inv><inv id='stow'> a red gem pouch</inv>You put your rock in your hitman's backpack.
+<prompt time="1350207832">&gt;</prompt>
+<pushStream id="logons"/> * Healer Atrie Clawmender joins the adventure.
+<popStream/><prompt time="1350207834">&gt;</prompt>

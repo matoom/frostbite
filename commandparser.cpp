@@ -9,6 +9,7 @@ CommandParser::CommandParser(QObject *parent) : QObject(parent) {
     highlighter = new Highlighter(parent);
 
     pushStream = false;
+    inv = false;
     mono = false;
     bold = false;
     initRoundtime = false;
@@ -40,7 +41,10 @@ void CommandParser::processGameData(QByteArray data) {
         n = n.nextSibling();
     }
 
-    /* Write game text */
+    /* process pushstream data over multiple lines */
+    processPushStream(rawData);
+
+    /* Write game text and raw data */
     writeGameText(rawData);
 }
 
@@ -71,14 +75,7 @@ bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
             gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
         }
-    } /*else if (mono) {
-        // strip all tags from flags text
-        if(e.tagName() == "d" && e.attribute("cmd").startsWith("flag")) {
-            stripTags = true;
-        } else {
-            stripTags = false;
-        }
-    }*/
+    }
     return true;
 }
 
@@ -105,6 +102,14 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 compassNode = compassNode.nextSibling();
             }
             windowManager->updateNavigationDisplay(directions);
+        } else if (e.tagName() == "clearContainer") {
+            QStringList container;
+            QDomElement invElem = root.firstChildElement("inv");
+            while(!invElem.isNull()) {
+                container << invElem.text().trimmed();
+                invElem = invElem.nextSiblingElement("inv");
+            }
+            gameDataContainer->setContainer(container);
         } else if(e.tagName() == "roundTime") {
             roundTime.setTime_t(e.attribute("value").toInt() - 1);
             initRoundtime = true;
@@ -137,7 +142,7 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             wield->setRight(e.text());
             wield->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
-            //qDebug() << "############### SPELL ###############";
+            toolbarManager->updateSpell(e.text());
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
             QString title = e.attribute("subtitle");
@@ -181,8 +186,6 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             pushStream = true;
             if(e.attribute("id") == "assess") {
                 pushStream = false;
-            } else {
-                pushStream = true;
             }
 
             if(e.attribute("id") == "logons") {
@@ -197,9 +200,16 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 windowManager->updateDeathsWindow(highlighter->highlight(root.text()));
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();
+            } else if(e.attribute("id") == "inv") {
+                inv = true;
             }
         } else if (e.tagName() == "popStream") {
             pushStream = false;
+            if(inv) {
+                gameDataContainer->setInventory(inventory);
+                inventory.clear();
+                inv = false;
+            }
         } else if(e.tagName() == "output") {
             if(e.attribute("class") == "mono") {                
                 mono = true;                
@@ -214,7 +224,22 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
     }
 }
 
-void CommandParser::writeGameText(QByteArray rawData) {    
+void CommandParser::processPushStream(QByteArray rawData) {
+    QString tag = "";
+    if(pushStream) {
+        if(inv) {
+            tag = "<pushStream id='inv'/>";
+            int index = rawData.indexOf(tag);
+            if(index != -1) {
+                inventory << rawData.mid(index + tag.length()).trimmed();
+            } else {
+                inventory << rawData.trimmed();
+            }
+        }
+    }
+}
+
+void CommandParser::writeGameText(QByteArray rawData) {
     if (rawData.size() == 1) {
         windowManager->writeGameWindow("");
     } else if (mono && !pushStream) {

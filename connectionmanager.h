@@ -28,6 +28,7 @@ public:
 
     void initLoginSession(QString, QString);
     void writeCommand(QString);
+    void showError(QString);
 
 public slots:
     void socketReadyRead();

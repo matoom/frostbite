@@ -14,6 +14,7 @@ QPalette GenericWindow::palette() {
 
 QTextEdit* GenericWindow::textBox(QDockWidget *dock, QString name) {
     QTextEdit *textEdit = new QTextEdit(dock);
+    textEdit->setReadOnly(true);
     textEdit->setObjectName(name + "Text");
     textEdit->setPalette(this->palette());
     textEdit->setFontWeight(QFont::Normal);

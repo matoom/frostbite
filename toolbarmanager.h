@@ -7,6 +7,7 @@
 #include <vitalsindicator.h>
 #include <statusindicator.h>
 #include <wieldindicator.h>
+#include <spellindicator.h>
 #include <quickbuttondisplay.h>
 
 class MainWindow;
@@ -24,6 +25,7 @@ public:
     void updateStatus(QString visible, QString icon);
     void updateWieldLeft(QString value);
     void updateWieldRight(QString value);
+    void updateSpell(QString);
 
     int getHealthValue();
     int getConcentrationValue();
@@ -33,12 +35,13 @@ public:
     QHash<QString, bool> getStatus();
 
 private:
-    MainWindow *mainWindow;
-    VitalsIndicator *vitalsIndicator;
-    StatusIndicator *statusIndicator;
-    QuickButtonDisplay *quickButtonDisplay;
-    WieldIndicator *wieldLeft;
-    WieldIndicator *wieldRight;
+    MainWindow* mainWindow;
+    VitalsIndicator* vitalsIndicator;
+    StatusIndicator* statusIndicator;
+    QuickButtonDisplay* quickButtonDisplay;
+    WieldIndicator* wieldLeft;
+    WieldIndicator* wieldRight;
+    SpellIndicator* spell;
 
 public slots:
     void quickButtonAction();

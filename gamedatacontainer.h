@@ -14,11 +14,15 @@ public:
     static GameDataContainer* Instance();
 
     void setExpField(QString, ExpModel*);
+    void setContainer(QStringList);
+    void setInventory(QStringList);
     ExpModel* getExpField(QString name);
     QHash<QString, ExpModel*> getExp();
     void removeExpField(QString);
     RoomModel* getRoom();
     WieldModel* getWield();
+    QStringList getInventory();
+    QStringList getContainer();
 
 private:
     GameDataContainer(QObject *parent = 0);
@@ -29,6 +33,8 @@ private:
     QHash<QString, ExpModel*> exp;
     RoomModel* room;
     WieldModel* wield;
+    QStringList container;
+    QStringList inventory;
 
 signals:
     

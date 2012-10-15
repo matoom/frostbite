@@ -20,6 +20,11 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
                                "margin-left: -1px;"
                                "margin-right: -1px;"
                                "margin-top: -1;");
+
+    /*statusLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
+                             //"background: white;"
+                             "border-radius: 5px;}");*/
+
     return statusLabel;
 }
 

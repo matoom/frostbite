@@ -22,7 +22,10 @@ void EAuthService::initiateSession() {
     int port = settings->getParameter("Login/authPort", "").toInt();
 
     tcpSocket->connectToHost(host, port);
-    tcpSocket->write("K\n");
+
+    if(tcpSocket->state() == QAbstractSocket::ConnectedState) {
+        tcpSocket->write("K\n");
+    }
 }
 
 /* @source: http://warlockclient.wikia.com/wiki/EAccess_Protocol */
@@ -38,13 +41,13 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
     return final;
 }
 
-void EAuthService::nogotiateSession(QByteArray buffer) {
+void EAuthService::negotiateSession(QByteArray buffer) {
     if(buffer.startsWith("A\t")) {
         QList<QByteArray> keyList = buffer.split('\t');
 
         int index = keyList.indexOf("KEY");
         if(index != -1) {
-            sessionKeyRecieved(keyList.at(index + 1));
+            emit sessionKeyRecieved(keyList.at(index + 1));
         }
 
     } else {
@@ -54,30 +57,29 @@ void EAuthService::nogotiateSession(QByteArray buffer) {
             QString response = "A\t" + user.toUpper() + "\t" + QString::fromLocal8Bit(hash) + "\n";
             tcpSocket->write(response.toLocal8Bit());
         } else {
-            errorMessage = "Unable to get session key.";
+            connectionManager->showError("Unable to obtain session key.");
         }
     }
 }
 
 void EAuthService::socketReadyRead() {
-    this->nogotiateSession(tcpSocket->readAll());
+    this->negotiateSession(tcpSocket->readAll());
 }
 
 void EAuthService::socketError(QAbstractSocket::SocketError error) {
     if(error == QAbstractSocket::RemoteHostClosedError) {
-        errorMessage = "Disconnected from server.";
+        connectionManager->showError("Disconnected from server.");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
-        errorMessage = "Unable to connect to server. Please check your internet connection and try again later.";
+        connectionManager->showError("Unable to connect to server. Please check your internet connection and try again later.");
     } else if (error == QAbstractSocket::NetworkError) {
-        errorMessage = "Connection timed out.";
+        connectionManager->showError("Connection timed out.");
     }
-
 
     /*QNativeSocketEngine::write() was not called in QAbstractSocket::ConnectedState
     QAbstractSocket::NetworkError*/
     //QAbstractSocket::RemoteHostClosedError
 
-    qDebug() << error;
+    qDebug() << "EAUTH: " <<  error;
 }
 
 

@@ -28,6 +28,7 @@ void ScriptService::runScript(QString input) {
 
     if(fileList.contains(fileName + ".rb")) {
         if(!script->isRunning()) {
+            windowManager->scriptRunning(true);
             windowManager->writeGameWindow("[Executing script: " + fileName.toLocal8Bit() + ".rb, Press ESC to abort.]");
             timer.start();
             terminateFlag = false;
@@ -69,6 +70,10 @@ void ScriptService::scriptFinished() {
     terminateFlag = false;
 }
 
+void ScriptService::scriptEnded() {
+    windowManager->scriptRunning(false);
+}
+
 void ScriptService::writeGameWindow(QByteArray command) {
     windowManager->writeGameWindow(command);
 }
@@ -93,18 +98,13 @@ void ScriptService::processCommand(QByteArray msg) {
             } else if (line.startsWith("get_status#")) {
                 QHash<QString, bool> status = toolbarManager->getStatus();
                 script->sendMessage("status#" + QString(status.value("kneeling")).toLocal8Bit() +
-                    QString(status.value("prone")).toLocal8Bit() +
-                    QString(status.value("sitting")).toLocal8Bit() +
-                    QString(status.value("standing")).toLocal8Bit() +
-                    QString(status.value("stunned")).toLocal8Bit() +
-                    QString(status.value("dead")).toLocal8Bit() +
-                    QString(status.value("bleeding")).toLocal8Bit() +
-                    QString(status.value("hidden")).toLocal8Bit() +
-                    QString(status.value("invisible")).toLocal8Bit() +
-                    QString(status.value("webbed")).toLocal8Bit() +
-                    QString(status.value("joined")).toLocal8Bit() + "\n");
+                    QString(status.value("prone")).toLocal8Bit() + QString(status.value("sitting")).toLocal8Bit() +
+                    QString(status.value("standing")).toLocal8Bit() + QString(status.value("stunned")).toLocal8Bit() +
+                    QString(status.value("dead")).toLocal8Bit() + QString(status.value("bleeding")).toLocal8Bit() +
+                    QString(status.value("hidden")).toLocal8Bit() + QString(status.value("invisible")).toLocal8Bit() +
+                    QString(status.value("webbed")).toLocal8Bit() + QString(status.value("joined")).toLocal8Bit() + "\n");
             } else if (line.startsWith("get_exp#")) {
-                ExpModel *exp = gameDataContainer->getExpField(line.mid(8).trimmed().toLower());
+                ExpModel *exp = gameDataContainer->getExpField(line.mid(8).trimmed());
                 if(exp != NULL) {
                     script->sendMessage("exp#" + exp->getName().toLocal8Bit() + "|" +
                         QString::number(exp->getRank()).toLocal8Bit() + "|" + exp->getRankProgression().toLocal8Bit() + "|" +
@@ -120,6 +120,12 @@ void ScriptService::processCommand(QByteArray msg) {
                 WieldModel* wield = gameDataContainer->getWield();
                 script->sendMessage("wield#" + wield->getLeft().toLocal8Bit() + "|" + wield->getLeftNoun().toLocal8Bit() + "|" +
                     wield->getRight().toLocal8Bit() + "|" + wield->getRightNoun().toLocal8Bit() + "\n");
+            } else if (line.startsWith("get_inventory#")) {
+                QStringList inventoryList = gameDataContainer->getInventory();
+                script->sendMessage("inventory#" + inventoryList.join("|").toLocal8Bit() + "\n");
+            } else if (line.startsWith("get_container#")) {
+                QStringList containerList = gameDataContainer->getContainer();
+                script->sendMessage("container#" + containerList.join("|").toLocal8Bit() + "\n");
             } else if (line.startsWith("echo#")) {
                 windowManager->writeGameWindow(line.mid(5).trimmed());
             }

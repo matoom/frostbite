@@ -16,7 +16,7 @@ public:
 
     QPixmap paint();
     void updateState(QList<QString>);
-
+    void setAutoPilot(bool);
 
 private:
     WindowManager* wm;

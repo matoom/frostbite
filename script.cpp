@@ -63,6 +63,8 @@ void Script::finish(int exit) {
     if(exit == 0) {
         scriptService->scriptFinished();
     }
+    scriptService->scriptEnded();
+
     running = false;
 }
 

@@ -77,6 +77,7 @@ private:
     void registerChange();
     void createListItem(int, QString, QColor);
     void updateSelectedItemColor(QListWidgetItem*);
+    void updateIcon(QListWidgetItem*, QListWidgetItem*);
 
 signals:
 

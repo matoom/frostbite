@@ -29,8 +29,9 @@ void ConnectionManager::initLoginSession(QString user, QString key) {
 }
 
 void ConnectionManager::connectToHost(QString sessionKey) {
+    qDebug() << "connect TO HOST";
+
     if(settings->getParameter("Connection/useProxy", false).toBool()) {
-        qDebug() << "USE PROXY";
         /*tcpSocket->connectToHost("192.168.1.68", 3128);
         tcpSocket->write("CONNECT prime.dr.game.play.net:4901 HTTP/1.1\r\n");
         tcpSocket->write("\r\n");*/
@@ -98,32 +99,24 @@ void ConnectionManager::writeCommand(QString cmd) {
 void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
     if(error == QAbstractSocket::RemoteHostClosedError) {
         //QMessageBox::information(mainWindow, tr("Message"), tr("Disconnected from server."), QMessageBox::Ok, 0);
-
-        windowManager->writeGameWindow("\n\n"
-        "*\n"
-        "* Connection to the game has been dropped.\n"
-        "*\n"
-        "\n\n");
+        this->showError("Disconnected from server.");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
         //QMessageBox::information(mainWindow, tr("Message"), tr("Unable to connect to server. Please check your internet connection and try again later."), QMessageBox::Ok, 0);
-
-        windowManager->writeGameWindow("\n\n"
-        "*\n"
-        "* Unable to connect to server.\n"
-        "*\n"
-        "\n\n");
-
+        this->showError("Unable to connect to server. Please check your internet connection and try again later.");
     } else if (error == QAbstractSocket::NetworkError) {
         //QMessageBox::information(mainWindow, tr("Message"), tr("Connection timed out."), QMessageBox::Ok, 0);
-
-        windowManager->writeGameWindow("\n\n"
-        "*\n"
-        "* Connection timed out.\n"
-        "*\n"
-        "\n\n");
+        this->showError("Connection timed out.");
     }
 
-    qDebug() << error;
+    qDebug() << "CONNECTION: " << error;
+}
+
+void ConnectionManager::showError(QString message) {
+    windowManager->writeGameWindow("\n\n"
+        "*\n"
+        "* " + message.toLocal8Bit() + "\n"
+        "*\n"
+        "\n\n");
 }
 
 ConnectionManager::~ConnectionManager() {

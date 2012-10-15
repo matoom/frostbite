@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->statusBar->hide();
 
     /* ping indicatior */
+
     /*QLabel *m_statusRight = new QLabel("200ms", this);
     m_statusRight->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 

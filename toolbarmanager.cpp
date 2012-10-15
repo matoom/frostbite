@@ -8,11 +8,15 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     quickButtonDisplay = new QuickButtonDisplay(this);
     wieldLeft = new WieldIndicator(this, LHAND_ICO);
     wieldRight = new WieldIndicator(this, RHAND_ICO);
+    spell = new SpellIndicator(this);
 }
 
 void ToolbarManager::loadToolbar() {
-    mainWindow->addToolbarWidget(wieldLeft->create());
+    QWidget* wieldLeftWidget = wieldLeft->create();
+    wieldLeftWidget->setContentsMargins(QMargins(20, 0, 0, 0));
+    mainWindow->addToolbarWidget(wieldLeftWidget);
     mainWindow->addToolbarWidget(wieldRight->create());
+    mainWindow->addToolbarWidget(spell->create());
     mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(statusIndicator->create());
@@ -30,6 +34,10 @@ void ToolbarManager::updateWieldLeft(QString value) {
 
 void ToolbarManager::updateWieldRight(QString value) {
     wieldRight->textLabel->setText(value);
+}
+
+void ToolbarManager::updateSpell(QString toolTip) {
+    spell->imageLabel->setToolTip(toolTip);
 }
 
 QHash<QString, bool> ToolbarManager::getStatus() {

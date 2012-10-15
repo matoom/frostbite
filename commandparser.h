@@ -35,6 +35,7 @@ private:
     CommandLine* commandLine;
     GameDataContainer* gameDataContainer;
     Highlighter* highlighter;
+    QStringList inventory;
 
     QString gameText;
     QString scriptText;
@@ -42,11 +43,13 @@ private:
     QDateTime roundTime;
 
     bool pushStream;
+    bool inv;
     bool mono;
     bool bold;
     bool initRoundtime;
 
     void processGameData(QByteArray);
+    void processPushStream(QByteArray);
     void writeGameText(QByteArray);
     void writeScript(QByteArray);
     void fixMonoTags(QString&);

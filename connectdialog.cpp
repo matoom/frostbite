@@ -15,6 +15,12 @@ ConnectDialog::ConnectDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Conn
     connect(this->ui->useProxy, SIGNAL(stateChanged(int)), this, SLOT(proxyState(int)));
     connect(this->ui->connectButton, SIGNAL(clicked()), this, SLOT(connectStart()));
     connect(this->ui->cancelButton, SIGNAL(clicked()), this, SLOT(connectCancel()));
+
+    if(this->ui->user->text().isEmpty()) {
+        this->ui->user->setFocus();
+    } else {
+        this->ui->key->setFocus();
+    }
 }
 
 void ConnectDialog::loadData() {

@@ -118,12 +118,6 @@
            <property name="acceptDrops">
             <bool>false</bool>
            </property>
-           <property name="iconSize">
-            <size>
-             <width>15</width>
-             <height>15</height>
-            </size>
-           </property>
            <property name="viewMode">
             <enum>QListView::ListMode</enum>
            </property>
@@ -134,6 +128,9 @@
          </item>
          <item>
           <widget class="QGroupBox" name="gAlertGroup">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="title">
             <string>Alert</string>
            </property>

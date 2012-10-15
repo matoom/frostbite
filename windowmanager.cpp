@@ -20,17 +20,18 @@ QString WindowManager::getColor(QString name, QString defaultValue) {
 
 void WindowManager::updateWindowStyle() {
     QString style = "#_BODY {color: " + QString(BODY_COLOR_HEX) + "; font-family: Consolas;}"
-        "#_SPEECH {color: " + getColor("speech", SPEECH_COLOR_HEX) + "; font-family: Consolas;}"
-        "#_BONUS {color: #00ff00; font-family: Consolas;}"
-        "#_PENALTY {color: #800000; font-family: Consolas;}"
-        "#_THINKING {color: " + getColor("thinking", THINKING_COLOR_HEX) + "; font-family: Consolas;}"
-        "#_ROOM_NAME {color: " + getColor("roomName", ROOM_NAME_COLOR_HEX) + "; font-family: Consolas;}"
-        "#_BOLD {color: " + getColor("gameMessage", GAME_MESSAGE_COLOR_HEX) + "; font-family: Consolas;}";
+        "#_SPEECH {color: " + getColor(SPEECH, SPEECH_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_BONUS {color: " + getColor(BONUS, BONUS_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_PENALTY {color: " + getColor(PENALTY, PENALTY_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_THINKING {color: " + getColor(THINKING, THINKING_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_ROOM_NAME {color: " + getColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + "; font-family: Consolas;}"
+        "#_BOLD {color: " + getColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + "; font-family: Consolas;}";
 
     ((QTextEdit*)deathsWindow->widget())->document()->setDefaultStyleSheet(style);
     ((QTextEdit*)thoughtsWindow->widget())->document()->setDefaultStyleSheet(style);
     ((QTextEdit*)arrivalsWindow->widget())->document()->setDefaultStyleSheet(style);
     ((QTextEdit*)roomWindow->widget())->document()->setDefaultStyleSheet(style);
+    ((QTextEdit*)conversationsWindow->widget())->document()->setDefaultStyleSheet(style);
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
 
@@ -60,11 +61,14 @@ void WindowManager::loadWindows() {
     expWindow = genericWindow->createWindow("Experience");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
 
+    conversationsWindow = genericWindow->createWindow("Conversations");
+    mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
+
     if(!clientSettings->hasValue("MainWindow/state")) {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
         mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
+        mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);
     }
-
     this->updateWindowStyle();
 }
 
@@ -88,8 +92,17 @@ QDockWidget* WindowManager::getDeathsWindow() {
     return this->deathsWindow;
 }
 
+QDockWidget* WindowManager::getConversationsWindow() {
+    return this->conversationsWindow;
+}
+
 void WindowManager::updateNavigationDisplay(QList<QString> directions) {
     navigationDisplay->updateState(directions);
+    this->paintNavigationDisplay();
+}
+
+void  WindowManager::scriptRunning(bool state) {
+    navigationDisplay->setAutoPilot(state);
     this->paintNavigationDisplay();
 }
 
@@ -98,7 +111,6 @@ void WindowManager::paintNavigationDisplay() {
     QPixmap image = navigationDisplay->paint();
 
     QPalette palette;
-
     QPixmap collage(gameWindow->width(), gameWindow->height());
     collage.fill(Qt::transparent);
 
@@ -126,6 +138,11 @@ void WindowManager::updateExpWindow() {
 
     text->clear();
     text->append("<span style=\"white-space:pre;\" id=\"body\">" + expString + "</span>");
+}
+
+void WindowManager::updateConversationsWindow(QString conversationText) {
+    QTextEdit *text = (QTextEdit*)conversationsWindow->widget();
+    text->append("<span style=\"white-space:pre;\" id=\"body\">" + conversationText.trimmed() + "</span>");
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
@@ -172,15 +189,10 @@ void WindowManager::writePromptGameWindow(QByteArray text) {
         cursor.select(QTextCursor::BlockUnderCursor);
         cursor.removeSelectedText();
     }
-    gameWindow->append(text);
+    gameWindow->append("<span style=\"white-space:pre;\" id=\"body\">" + text + "</span>");
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {
-    // if script is running
-    //mainWindow->getScriptService()->writeOutgoingMessage("game_text#" + text);
-
-    //qDebug() text;
-
     gameWindow->append(text);
 }
 
@@ -192,4 +204,5 @@ WindowManager::~WindowManager() {
     delete arrivalsWindow;
     delete thoughtsWindow;
     delete deathsWindow;
+    delete conversationsWindow;
 }

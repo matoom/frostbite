@@ -24,11 +24,12 @@ public:
     QComboBox* getGroupSelect();
 
 private:
-    Ui::HighlightAddDialog *ui;
-    HighlightTextTab *textTab;
-    HighlightSettings *settings;
+    Ui::HighlightAddDialog* ui;
+    HighlightTextTab* textTab;
+    HighlightSettings* settings;
+    QDialog* parenDialog;
 
-    void showEvent(QShowEvent * event);
+    void showEvent(QShowEvent* event);
 
 private slots:
     void okPressed();

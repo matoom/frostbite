@@ -6,15 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
+    <width>428</width>
     <height>204</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>428</width>
+    <height>204</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>428</width>
+    <height>204</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Connect</string>
@@ -34,6 +46,9 @@
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -175,6 +190,9 @@
         </layout>
        </widget>
        <widget class="QWidget" name="proxyTab">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <attribute name="title">
          <string>Proxy</string>
         </attribute>
@@ -303,6 +321,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>serverHost</tabstop>
+  <tabstop>serverPort</tabstop>
+  <tabstop>authHost</tabstop>
+  <tabstop>authPort</tabstop>
+  <tabstop>user</tabstop>
+  <tabstop>key</tabstop>
+  <tabstop>connectButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>useProxy</tabstop>
+  <tabstop>proxyHost</tabstop>
+  <tabstop>proxyPort</tabstop>
+ </tabstops>
  <resources>
   <include location="window.qrc"/>
  </resources>

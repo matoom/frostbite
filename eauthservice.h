@@ -33,7 +33,7 @@ private:
     QString errorMessage;
 
     char* sge_encrypt_password(char *passwd, char *hash);
-    void nogotiateSession(QByteArray);
+    void negotiateSession(QByteArray);
 
 signals:
      void sessionKeyRecieved(QString);

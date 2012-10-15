@@ -68,7 +68,6 @@ QPixmap RoundTimeDisplay::segmentDisplay(int seconds) {
         painter.drawRect(QRect(x, 4, 25, 3));
         x += 30;
     }
-
     return collage;
 }
 

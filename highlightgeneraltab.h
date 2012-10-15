@@ -28,7 +28,7 @@ private:
     HighlightSettings *settings;
     AudioPlayer *audioPlayer;
 
-    QHash<QString, QHash<QString, QVariant> > highlightList;
+    QMap<QString, QHash<QString, QVariant> > highlightList;
     QList<QString> generalChangeList;
 
     QListWidget* listWidget;
@@ -51,6 +51,7 @@ private:
     void updateAlertSettings(QString key, QVariant value);
     void initFileSelect();
     void updateSelectedItemColor(QListWidgetItem *current);
+    void updateIcon(QListWidgetItem*, QListWidgetItem*);
     QHash<QString, QVariant> readSettings(QString id, QString name, QColor color);
 
 signals:

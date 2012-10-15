@@ -73,11 +73,11 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 
 void HighlightTextTab::initContextMenu() {
     menu = new QMenu(listWidget);
-    colorAct = new QAction(QIcon(":/images/open.png"), tr("&Change Color..."), listWidget);
+    colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
-    editAct = new QAction(QIcon(":/images/open.png"), tr("&Edit..."), listWidget);
+    editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
     menu->addAction(editAct);
     connect(editAct, SIGNAL(triggered()), this, SLOT(showEditDialog()));
 }
@@ -104,12 +104,21 @@ void HighlightTextTab::colorDialog() {
     }
 }
 
+void HighlightTextTab::updateIcon(QListWidgetItem *current, QListWidgetItem *previous) {
+    if(current) {
+        if(previous) {
+            previous->setIcon(QIcon(":/window/images/icon_ph.png"));
+        }
+        current->setIcon(QIcon(":/window/images/arrow_right.png"));
+    }
+}
+
 void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
     if(current != NULL) {
         /* change highlight color to item color */
         QPalette palette = listWidget->palette();
         palette.setColor(QPalette::HighlightedText, current->textColor());
-        //palette.setColor(QPalette::Highlight, Qt::transparent);
+        palette.setColor(QPalette::Highlight, Qt::transparent);
         listWidget->setPalette(palette);
     }
 }
@@ -130,10 +139,10 @@ void HighlightTextTab::loadHighlightList() {
 }
 
 void HighlightTextTab::createListItem(int id, QString value, QColor color) {
-    QListWidgetItem *newItem = new QListWidgetItem(value, listWidget);
+    QListWidgetItem *newItem = new QListWidgetItem(QIcon(":/window/images/icon_ph.png"), value, listWidget);
     newItem->setData(Qt::UserRole, id);
     newItem->setTextColor(color);
-    newItem->setFont(QFont("Fixedsys", 12));
+    newItem->setFont(QFont("Consolas", 12));
 }
 
 void HighlightTextTab::reloadHighlightList() {    
@@ -142,6 +151,9 @@ void HighlightTextTab::reloadHighlightList() {
 }
 
 void HighlightTextTab::itemSelected(QListWidgetItem *current, QListWidgetItem *previous) {
+    /* change highlight selected item icon */
+    updateIcon(current, previous);
+
     /* change highlight color to item color */
     updateSelectedItemColor(current);
 

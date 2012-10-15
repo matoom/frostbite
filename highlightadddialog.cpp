@@ -4,6 +4,8 @@
 HighlightAddDialog::HighlightAddDialog(HighlightTextTab *textTab, QWidget *parent) :
     QDialog(parent), ui(new Ui::HighlightAddDialog) {
 
+    parenDialog = (QDialog*)parent;
+
     settings = HighlightSettings::Instance();
 
     this->textTab = textTab;
@@ -14,7 +16,10 @@ HighlightAddDialog::HighlightAddDialog(HighlightTextTab *textTab, QWidget *paren
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 }
 
-void HighlightAddDialog::showEvent(QShowEvent * event) {
+void HighlightAddDialog::showEvent(QShowEvent* event) {
+    QDialog::showEvent(event);
+    this->move(parenDialog->x() + (parenDialog->height() / 4),
+               parenDialog->y() + (parenDialog->width() / 4));
     ui->textLine->setFocus();
 }
 

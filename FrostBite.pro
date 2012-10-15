@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     macrodialog.cpp \
     macrosettings.cpp \
     macrothread.cpp \
-    macroservice.cpp
+    macroservice.cpp \
+    spellindicator.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -99,7 +100,8 @@ HEADERS  += mainwindow.h \
     macrosettings.h \
     macrothread.h \
     macroservice.h \
-    defaultvalues.h
+    defaultvalues.h \
+    spellindicator.h
 
 FORMS    += mainwindow.ui \
     connectdialog.ui \
@@ -117,6 +119,8 @@ RC_FILE = resources.rc
 
 OTHER_FILES += \
     resources.rc
+
+
 
 
 

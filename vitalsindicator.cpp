@@ -30,6 +30,18 @@ QWidget* VitalsIndicator::create() {
     healthBar = vitalsProgress("health", HEALTH_BG_100, 100);
     hLayout->addWidget(healthBar);
 
+    /*QFrame* bgFrame = new QFrame();
+    bgFrame->setFixedWidth(22);
+    bgFrame->setStyleSheet("margin-bottom: 0px;"
+                           "margin-top: 5px;"
+                           "background-image: url(:/images/health.png);"
+                           "background-repeat: no-repeat;");
+    QHBoxLayout *bgFLay = new QHBoxLayout(bgFrame);
+    //bgFLay->addWidget(healthBar);
+
+    hLayout->addWidget(bgFrame);*/
+
+
     concentrationBar = vitalsProgress("concentration", CONCENTRATION_BG, 100);
     hLayout->addWidget(concentrationBar);
 

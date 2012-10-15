@@ -46,9 +46,12 @@ QHash<QString, QStringList> MacroService::processCommands(QString macroString) {
     QByteArray bytes(macroString.toLocal8Bit());
     for(int i = 0; i < bytes.length(); i++){
         if(bytes.at(i) == '$') {
-            if(i < bytes.length()) {
-                macro["actions"] << QString(bytes.at(i + 1));
+            if(i < bytes.length() - 1) {
+                if(i < bytes.length()) {
+                    macro["actions"] << QString(bytes.at(i + 1));
+                }
             }
+
         }
     }
     return macro;

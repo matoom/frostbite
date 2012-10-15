@@ -110,8 +110,6 @@ void CommandLine::writeCommand(QString text) {
 
 void CommandLine::moveCursor(int pos) {
     this->setCursorPosition(pos);
-    /*QTextCursor cursor = textEdit->textCursor();
-    textEdit->setTextCursor(this->cursor());*/
 }
 
 bool CommandLine::runMacro(QString cmd) {
