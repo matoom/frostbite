@@ -5,6 +5,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     connectDialog = new ConnectDialog(qobject_cast<QWidget *>(parent));
     highlightDialog = new HighlightDialog(qobject_cast<QWidget *>(parent));
     macroDialog = new MacroDialog(qobject_cast<QWidget *>(parent));
+    appearanceDialog = new AppearanceDialog(qobject_cast<QWidget *>(parent));
 }
 
 void MenuHandler::menuTriggered(QAction* action) {
@@ -16,6 +17,8 @@ void MenuHandler::menuTriggered(QAction* action) {
         highlightDialog->show();
     } else if (action->text() == "Macros") {
         macroDialog->show();
+    } else if (action->text() == "Appearance") {
+        appearanceDialog->show();
     } else if(action->text() == "Exit") {
         mainWindow->close();
     }
@@ -24,6 +27,7 @@ void MenuHandler::menuTriggered(QAction* action) {
 }
 
 MenuHandler::~MenuHandler() {
+    delete appearanceDialog;
     delete connectDialog;
     delete highlightDialog;
 }

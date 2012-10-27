@@ -8,20 +8,15 @@ QLabel *WieldIndicator::wieldTextLabel(const char* text) {
     textLabel = new QLabel;
     textLabel->setObjectName("text");
     textLabel->setFixedWidth(150);
+    textLabel->setFixedHeight(34);
     textLabel->setWordWrap(true);
     textLabel->setAlignment(Qt::AlignCenter);
-    /*textLabel->setStyleSheet("color: #1c4b68;"
-                             "font: 10pt \"MS UI Gothic\";"
-                             "font-weight: normal;"
-                             "border: 1px solid rgb(190, 190, 190);"
-                             "margin-left: -1px;"
-                             "margin-top: -1;"
-                             "border-bottom-right-radius: 10px");*/
 
-    textLabel->setStyleSheet("color: #1c4b68;"
+    textLabel->setStyleSheet("color: #d7d7d7;"
                              "font: 10pt \"MS UI Gothic\";"
                              "font-weight: normal;"
-                             //"background: #d0d0d0;"
+                             "background: #383533;"
+                             "background-image: url(:/images/frame_bg.png);"
                              "border: 1px solid rgb(190, 190, 190);"
                              "border-bottom-right-radius: 10px");
 
@@ -34,19 +29,6 @@ QLabel *WieldIndicator::wieldImageLabel(const char* img) {
     imageLabel = new QLabel;
     imageLabel->setObjectName("image");
     imageLabel->setAlignment(Qt::AlignCenter);
-    /*imageLabel->setStyleSheet("border:1px solid rgb(190, 190, 190);"
-                              "padding-right: 5px;"
-                              "margin-left: -1px;"
-                              "margin-top: -1;");*/
-
-    imageLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
-                             //"background: #d0d0d0;"
-                             "padding-right: 5px;"
-                             "padding-left: 5px;"
-                              "margin-left: -1px;"
-                              "margin-top: -1;"
-                             "border-bottom-right-radius: 5px}");
-
     imageLabel->setPixmap(QPixmap::fromImage(QImage(img)));
 
     return imageLabel;

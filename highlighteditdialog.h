@@ -30,6 +30,8 @@ private:
     HighlightSettings *settings;
     HighlightSettingsEntry entry;
 
+    QDialog* parenDialog;
+
     void showEvent(QShowEvent*);
 
 private slots:

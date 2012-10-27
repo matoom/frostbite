@@ -15,7 +15,15 @@
 
 #define LHAND_ICO ":/images/lhand.png"
 #define RHAND_ICO ":/images/rhand.png"
-#define SPELL_SCROLL_ICO ":/images/spell_scroll.png"
+#define BOOK_ICO ":/images/book.png"
+
+#define BUTTON_AXE_ICO ":/images/button_axe.png"
+#define BUTTON_BOW_ICO ":/images/button_bow.png"
+#define BUTTON_SHIELD_ICO ":/images/button_shield.png"
+#define BUTTON_BAG_ICO ":/images/button_bag.png"
+#define BUTTON_XAXE_ICO ":/images/button_xaxe.png"
+#define BUTTON_XBOW_ICO ":/images/button_xbow.png"
+#define BUTTON_XSHIELD_ICO ":/images/button_xshield.png"
 
 #define SWORD_ICO ":/images/sword.png"
 #define BOW_ICO ":/images/bow.png"
@@ -26,6 +34,7 @@
 #define XSHIELD_ICO ":/images/xshield.png"
 
 #define HEALTH_BG_100 ":/images/health_100.png"
+#define HEALTH ":/images/health.png"
 #define CONCENTRATION_BG ":/images/concentration.png"
 #define FATIGUE_BG ":/images/fatigue.png"
 #define SPIRIT_BG ":/images/spirit.png"

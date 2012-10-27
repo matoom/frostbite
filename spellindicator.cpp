@@ -10,7 +10,8 @@ QLabel* SpellIndicator::wieldImageLabel(const char* img) {
     imageLabel->setObjectName("image");
     imageLabel->setAlignment(Qt::AlignCenter);
     imageLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
-                             //"background: white;"
+                             "background: #383533;"
+                             "background-image: url(:/images/frame_bg.png);"
                              "padding-right: 5px;"
                              "padding-left: 5px;"
                              "border-radius: 5px}");
@@ -25,7 +26,7 @@ QWidget* SpellIndicator::create() {
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     hLayout->setContentsMargins(0, 10, 20, 10);
 
-    hLayout->addWidget(this->wieldImageLabel(SPELL_SCROLL_ICO));
+    hLayout->addWidget(this->wieldImageLabel(BOOK_ICO));
     widget->setLayout(hLayout);
 
     return widget;

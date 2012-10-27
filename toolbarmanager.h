@@ -9,9 +9,11 @@
 #include <wieldindicator.h>
 #include <spellindicator.h>
 #include <quickbuttondisplay.h>
+#include <quickbuttoneditdialog.h>
 
 class MainWindow;
 class QuickButtonDisplay;
+class QuickButtonEditDialog;
 
 class ToolbarManager : public QObject {
     Q_OBJECT
@@ -39,6 +41,7 @@ private:
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     QuickButtonDisplay* quickButtonDisplay;
+    QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;
     WieldIndicator* wieldRight;
     SpellIndicator* spell;

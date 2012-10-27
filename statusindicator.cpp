@@ -16,14 +16,11 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
 
     statusLabel->setAlignment(Qt::AlignCenter);
     statusLabel->setFixedWidth(32);
-    statusLabel->setStyleSheet("border: 1px solid rgb(190, 190, 190);"
-                               "margin-left: -1px;"
-                               "margin-right: -1px;"
-                               "margin-top: -1;");
 
-    /*statusLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
-                             //"background: white;"
-                             "border-radius: 5px;}");*/
+    statusLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
+                             "background: #383533;"                             
+                             "background-image: url(:/images/frame_bg.png);"
+                             "border-radius: 5px;}");
 
     return statusLabel;
 }

@@ -7,7 +7,7 @@
 
 #include <mainwindow.h>
 #include <windowmanager.h>
-#include <highlightsettings.h>
+#include <clientsettings.h>
 #include <defaultvalues.h>
 
 class MainWindow;
@@ -26,10 +26,11 @@ private:
     void wheelEvent(QWheelEvent  *event);
 
     void copySelected();
+    void loadSettings();
 
     MainWindow* mainWindow;
     WindowManager* windowManager;
-    HighlightSettings* settings;
+    ClientSettings* settings;
 
 signals:
 

@@ -14,7 +14,8 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     settings = ClientSettings::Instance();
 
     waitStartCommand = true;
-    debug = true;
+
+    debug = false;
 
     commandParser = new CommandParser(parent);
 
@@ -29,8 +30,6 @@ void ConnectionManager::initLoginSession(QString user, QString key) {
 }
 
 void ConnectionManager::connectToHost(QString sessionKey) {
-    qDebug() << "connect TO HOST";
-
     if(settings->getParameter("Connection/useProxy", false).toBool()) {
         /*tcpSocket->connectToHost("192.168.1.68", 3128);
         tcpSocket->write("CONNECT prime.dr.game.play.net:4901 HTTP/1.1\r\n");
@@ -82,7 +81,7 @@ void ConnectionManager::socketReadyRead() {
                     return;
                 }
             }
-            qDebug() << buffer;
+            //qDebug() << buffer;
             commandParser->process(buffer);
         } else {
             windowManager->writeGameWindow(buffer.data());

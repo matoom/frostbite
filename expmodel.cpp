@@ -61,7 +61,7 @@ QString ExpModel::getExpString() {
 
 QString ExpModel::toString() {
     return "ExpModel:[ name => " + this->name  +
-            ", rank => " + QString::number(this->rank)  +
-            ", state => " + this->state +
-            ", numericState => " + QString::number(this->numericState) + " ]";
+           ", rank => " + QString::number(this->rank)  +
+           ", state => " + this->state +
+           ", numericState => " + QString::number(this->numericState) + " ]";
 }

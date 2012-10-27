@@ -9,10 +9,12 @@
 #include <connectdialog.h>
 #include <highlightdialog.h>
 #include <macrodialog.h>
+#include <appearancedialog.h>
 
 class ConnectDialog;
 class MainWindow;
 class HighlightDialog;
+class AppearanceDialog;
 
 class MenuHandler : public QObject {
     Q_OBJECT
@@ -26,6 +28,7 @@ private:
     ConnectDialog *connectDialog;
     HighlightDialog *highlightDialog;
     MacroDialog* macroDialog;
+    AppearanceDialog* appearanceDialog;
 
 signals:
 

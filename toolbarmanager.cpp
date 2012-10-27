@@ -12,18 +12,25 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
 }
 
 void ToolbarManager::loadToolbar() {
+    mainWindow->setToolbarAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
+
     QWidget* wieldLeftWidget = wieldLeft->create();
     wieldLeftWidget->setContentsMargins(QMargins(20, 0, 0, 0));
     mainWindow->addToolbarWidget(wieldLeftWidget);
     mainWindow->addToolbarWidget(wieldRight->create());
     mainWindow->addToolbarWidget(spell->create());
-    mainWindow->addToolbarSeparator();
+    //mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(statusIndicator->create());
-    mainWindow->addToolbarSeparator();
+    //mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(quickButtonDisplay->create());
-    mainWindow->addToolbarSeparator();
+    //mainWindow->addToolbarSeparator();
+
+    /*QWidget* spacerWidget = new QWidget;
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacerWidget->setVisible(true);
+    mainWindow->addToolbarWidget(spacerWidget);*/
 
     mainWindow->addToolbarWidget(vitalsIndicator->create());
 }

@@ -10,19 +10,27 @@ MacroService::MacroService(QObject *parent) : QObject(parent) {
     connect(macroThread, SIGNAL(setText(QString)), this, SLOT(setText(QString)));
     connect(macroThread, SIGNAL(setCursor(int)), this, SLOT(setCursor(int)));
     connect(macroThread, SIGNAL(writeCommand(QString)), this, SLOT(writeCommand(QString)));
+    connect(this, SIGNAL(exit()), macroThread, SLOT(stopThread()));
 }
 
 bool MacroService::execute(QString macroString) {
-    if(!macroString.isEmpty()) {
+    if(!macroString.isEmpty()) {        
         int time = macroSettings->getParameter("sequence/time", 1000).toInt();
         emit init(this->processCommands(macroString), time);
 
         if(!macroThread->isRunning()) {
-            macroThread->run();
+            macroThread->start();
         }
         return true;
     }
     return false;
+}
+
+void MacroService::abortSequence() {
+    if(macroThread->isRunning()) {
+        emit exit();
+        mainWindow->getWindowManager()->writeGameWindow("[Sequence terminated.]");
+    }
 }
 
 void MacroService::setText(QString text) {
@@ -47,11 +55,8 @@ QHash<QString, QStringList> MacroService::processCommands(QString macroString) {
     for(int i = 0; i < bytes.length(); i++){
         if(bytes.at(i) == '$') {
             if(i < bytes.length() - 1) {
-                if(i < bytes.length()) {
-                    macro["actions"] << QString(bytes.at(i + 1));
-                }
+                macro["actions"] << QString(bytes.at(i + 1));
             }
-
         }
     }
     return macro;

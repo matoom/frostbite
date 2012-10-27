@@ -306,11 +306,11 @@ void CommandParser::writeScript(QByteArray rawData) {
             textString += xml.text();
         }
     }
-    mainWindow->getScriptService()->writeOutgoingMessage("game_text#" + textString.toLocal8Bit());
+    mainWindow->getScriptService()->writeOutgoingMessage("game_text#" + textString.toLocal8Bit() + "\n");
 }
 
 void CommandParser::processMock() {
-    QFile file("C:/Projects/FrostBite/data/mock.xml");
+    QFile file(MOCK_DATA_PATH);
 
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug("Unable to open mock data file!");

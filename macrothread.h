@@ -17,6 +17,7 @@ public:
 private:
     QHash<QString, QStringList> macro;
     int sequenceTime;
+    bool abort;
 
 signals:
     void setText(QString);
@@ -24,6 +25,7 @@ signals:
     void writeCommand(QString);
 
 public slots:
+    void stopThread();
     void init(QHash<QString, QStringList>, int);
 
 };

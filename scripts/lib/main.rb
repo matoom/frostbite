@@ -307,6 +307,7 @@ at_exit do
     unless @_command_thread.alive?
       @_command_thread = Thread.new { CommandThread.new.run }
     end
+    sleep get_match_rt
     finally_do
     Kernel::exit!
   end

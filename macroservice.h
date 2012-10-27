@@ -23,6 +23,7 @@ public:
     ~MacroService();
     
     bool execute(QString);
+    void abortSequence();
 
 private:
     MainWindow* mainWindow;
@@ -33,6 +34,7 @@ private:
 
 signals:
     void init(QHash<QString, QStringList>, int);
+    void exit();
     
 public slots:
     void setText(QString);

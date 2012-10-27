@@ -83,22 +83,22 @@ void Highlighter::alert(QString eventName, int value) {
                 healthAlert = true;
             }
         }
-    } else if (eventName == "IconDEAD") {
+    } else if(eventName == "IconDEAD") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/death/enabled", false).toBool();
         if(enabled) {
             audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/death/file", "").toString());
         }
-    } else if (eventName == "IconSTUNNED") {
+    } else if(eventName == "IconSTUNNED") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/stun/enabled", false).toBool();
         if(enabled) {
             audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/stun/file", "").toString());
         }
-    } else if (eventName == "IconBLEEDING") {
+    } else if(eventName == "IconBLEEDING") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/bleeding/enabled", false).toBool();
         if(enabled) {
             audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/bleeding/file", "").toString());
         }
-    } else if (eventName == "IconWEBBED") {
+    } else if(eventName == "IconWEBBED") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/webbed/enabled", false).toBool();
         if(enabled) {
             audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/webbed/file", "").toString());

@@ -41,6 +41,10 @@ public:
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);
     void updateWindowStyle();
+    void setGameWindowFont(QFont);
+    void setGameWindowFontColor(QColor);    
+    void setDockFont(QFont);
+    void setDockColor(QColor, QColor);    
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -49,8 +53,12 @@ public:
     QDockWidget* getDeathsWindow();
     QDockWidget* getConversationsWindow();
 
+    bool thoughtsVisible;
+
 public slots:
 
+private slots:
+    void thoughtsVisibility(bool);
 
 private:
     GenericWindow* genericWindow;
@@ -68,6 +76,7 @@ private:
     QDockWidget* expWindow;
     QDockWidget* deathsWindow;
     QDockWidget* conversationsWindow;
+    QList<QDockWidget*> dockWindows;
 
     QString getColor(QString, QString);
 };

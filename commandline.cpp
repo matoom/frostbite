@@ -5,6 +5,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     roundtimeDisplay = new RoundTimeDisplay(parent);
     macroService = new MacroService(parent);
     windowManager = mainWindow->getWindowManager();
+    wordCompleter = new WordCompleter(this);
 
     historyCounter = -1;
 
@@ -16,6 +17,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
                         "padding-top: 10px;}");
 
     connect(this, SIGNAL(returnPressed()), this, SLOT(sendCommand()));
+    connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(resetCompleter(const QString&)));
 
     this->installEventFilter(&keyboardFilter);
 }
@@ -108,6 +110,16 @@ void CommandLine::writeCommand(QString text) {
     this->clear();
 }
 
+void CommandLine::completeCommand() {
+    if(!this->text().isEmpty()) {
+        this->setText(wordCompleter->complete(this->text()));
+    }
+}
+
+void CommandLine::resetCompleter(const QString&) {
+   wordCompleter->match = true;
+}
+
 void CommandLine::moveCursor(int pos) {
     this->setCursorPosition(pos);
 }
@@ -139,8 +151,12 @@ bool CommandLine::filterCommand(QString text) {
     return false;
 }
 
-void CommandLine::stopScript() {
+void CommandLine::abortScript() {
     mainWindow->getScriptService()->abortScript();
+}
+
+void CommandLine::abortSequence() {
+    macroService->abortSequence();
 }
 
 CommandLine::~CommandLine() {

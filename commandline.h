@@ -8,11 +8,14 @@
 #include <keyboardfilter.h>
 #include <macroservice.h>
 
+#include <wordcompleter.h>
+
 #define MAX_HISTORY_SIZE 50
 #define MAX_FILENAME_SIZE 30
 
 class RoundTimeDisplay;
 class MacroService;
+class WordCompleter;
 
 class CommandLine : public QLineEdit {
     Q_OBJECT
@@ -25,12 +28,14 @@ public:
     void insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay);
     RoundTimeDisplay* getRoundtimeDisplay();
 
-    void stopScript();
+    void abortScript();
+    void abortSequence();
 
     void historyBack();
     void historyForward();
     void writeCommand(QString);
     void moveCursor(int);
+    void completeCommand();
     bool runMacro(QString);
 
     int historyCounter;
@@ -40,6 +45,7 @@ private:
     RoundTimeDisplay* roundtimeDisplay;
     WindowManager* windowManager;
     MacroService* macroService;
+    WordCompleter* wordCompleter;
     KeyboardFilter keyboardFilter;
 
     void resizeEvent(QResizeEvent  *event);
@@ -51,6 +57,9 @@ private:
 
 public slots:
     virtual void sendCommand();
+
+private slots:
+    void resetCompleter(const QString&);
 
 };
 

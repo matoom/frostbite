@@ -27,7 +27,12 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
                     case Qt::Key_Escape:
                         commandLine->clear();
                         commandLine->historyCounter = -1;
-                        commandLine->stopScript();
+                        commandLine->abortScript();
+                        commandLine->abortSequence();
+                    break;
+                    case Qt::Key_Tab:
+                        commandLine->completeCommand();
+                        return true;
                     break;
                     default:
                         QString cmd = macroSettings->getParameter("function/" +

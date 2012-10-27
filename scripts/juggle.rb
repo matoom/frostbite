@@ -4,12 +4,11 @@ if $args.empty?
 end
 
 def finally_do
-  sleep get_match_rt
   put "put my #{$args.first} in my backpack"
 end
 
 10.times do
-  put "juggle my " + $args.first
+  put "juggle my " + $args.join(" ")
   wait_for_roundtime
 end
 

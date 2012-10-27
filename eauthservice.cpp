@@ -23,8 +23,8 @@ void EAuthService::initiateSession() {
 
     tcpSocket->connectToHost(host, port);
 
-    if(tcpSocket->state() == QAbstractSocket::ConnectedState) {
-        tcpSocket->write("K\n");
+    if(tcpSocket->state() == QAbstractSocket::HostLookupState) {
+        tcpSocket->write("K\n");                
     }
 }
 
@@ -42,14 +42,25 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
 }
 
 void EAuthService::negotiateSession(QByteArray buffer) {
+    qDebug() << "eauth-negotiate: " << buffer;
     if(buffer.startsWith("A\t")) {
-        QList<QByteArray> keyList = buffer.split('\t');
+        QList<QByteArray> answerList = buffer.split('\t');
 
-        int index = keyList.indexOf("KEY");
-        if(index != -1) {
-            emit sessionKeyRecieved(keyList.at(index + 1));
+        if(answerList.size() == 3) {
+            //A..REJECT
+            if(answerList.last().trimmed() == "REJECT") {
+                connectionManager->showError("Account unavailable due to billing problems.");
+                tcpSocket->disconnect();
+            } else if(answerList.last().trimmed() == "PASSWORD") {
+                connectionManager->showError("Incorrect password.");
+            }
+        } else if(answerList.size() == 5) {
+            //A.CHARNAME.KEY.235cc51c4f94afa7cc49e376411f828e.JOE SCHMOE
+            int index = answerList.indexOf("KEY");
+            if(index != -1) {
+                emit sessionKeyRecieved(answerList.at(index + 1));
+            }
         }
-
     } else {
         if (buffer.size() == 33) {
             char* hash = sge_encrypt_password(key.toLocal8Bit().data(), buffer.data());

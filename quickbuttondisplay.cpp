@@ -2,40 +2,132 @@
 
 QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
     toolbarManager = (ToolbarManager*)parent;
+    settings = ClientSettings::Instance();
+    editDialog = new QuickButtonEditDialog();
 }
 
-QToolButton *QuickButtonDisplay::actionButton(const char* obName, const char* icon, const char* value) {
-    QToolButton *toolButton = new QToolButton();
+QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* icon, QString value) {
+    QToolButton* toolButton = new QToolButton();
     toolButton->setIconSize(QSize(32, 32));
-    toolButton->setObjectName(obName);
+    toolButton->setObjectName(objName);
     toolButton->setIcon(QIcon(icon));
-    toolButton->setText(QString(value));
-    toolButton->setToolTip(QObject::tr(value));
+    toolButton->setText(value);
+    toolButton->setToolTip(value);
     toolButton->setCursor(Qt::PointingHandCursor);
+    toolButton->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    /*QAction *buttonAction = new QAction(toolButton);
-    buttonAction->setData(value);
-    toolButton->addAction(buttonAction);*/
+    toolButton->setStyleSheet("QToolButton {"
+                              "background: #242024;"
+                              "}");
 
-    connect(toolButton, SIGNAL(clicked()), toolbarManager, SLOT(quickButtonAction()));
+    connect(toolButton, SIGNAL(clicked()),
+            toolbarManager, SLOT(quickButtonAction()));
 
     return toolButton;
 }
 
-QWidget *QuickButtonDisplay::create() {
-    QWidget *widget = new QWidget;
-    QHBoxLayout *hLayout = new QHBoxLayout(widget);
+QWidget* QuickButtonDisplay::create() {
+    buttonWidget = new QWidget;
+    hLayout = new QHBoxLayout(buttonWidget);
     hLayout->setContentsMargins(25, 0, 25, 0);
 
-    hLayout->addWidget(actionButton("sword", SWORD_ICO, "take my sword from my pack"));
-    hLayout->addWidget(actionButton("bow", BOW_ICO, "take my bow from my pack"));
-    hLayout->addWidget(actionButton("shield", SHIELD_ICO, "remove my shield"));
-    hLayout->addWidget(actionButton("bag", BAG_ICO, "look in my pack"));
-    hLayout->addWidget(actionButton("xsword", XSWORD_ICO, "put my sword i my pack"));
-    hLayout->addWidget(actionButton("xbow", XBOW_ICO, "put my bow in my pack"));
-    hLayout->addWidget(actionButton("xshield", XSHIELD_ICO, "wear my shield"));
+    sword = actionButton("sword", BUTTON_AXE_ICO,
+        settings->getParameter("QuickButton/sword", "").toString());
+    hLayout->addWidget(sword);
+    connect(sword, SIGNAL(customContextMenuRequested(const QPoint&)),
+            this, SLOT(swordButtonEdit(const QPoint&)));
 
-    widget->setLayout(hLayout);
+    bow = actionButton("bow", BUTTON_BOW_ICO,
+        settings->getParameter("QuickButton/bow", "").toString());
+    hLayout->addWidget(bow);
+    connect(bow, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(bowButtonEdit(const QPoint&)));
 
-    return widget;
+    shield = actionButton("shield", BUTTON_SHIELD_ICO,
+        settings->getParameter("QuickButton/shield", "").toString());
+    hLayout->addWidget(shield);
+    connect(shield, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(shieldButtonEdit(const QPoint&)));
+
+    bag = actionButton("bag", BUTTON_BAG_ICO,
+        settings->getParameter("QuickButton/bag", "").toString());
+    hLayout->addWidget(bag);
+    connect(bag, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(bagButtonEdit(const QPoint&)));
+
+    xsword = actionButton("xsword", BUTTON_XAXE_ICO,
+        settings->getParameter("QuickButton/xsword", "").toString());
+    hLayout->addWidget(xsword);
+    connect(xsword, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(xswordButtonEdit(const QPoint&)));
+
+    xbow = actionButton("xbow", BUTTON_XBOW_ICO,
+        settings->getParameter("QuickButton/xbow", "").toString());
+    hLayout->addWidget(xbow);
+    connect(xbow, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(xbowButtonEdit(const QPoint&)));
+
+    xshield = actionButton("xshield", BUTTON_XSHIELD_ICO,
+        settings->getParameter("QuickButton/xshield", "").toString());
+    hLayout->addWidget(xshield);
+    connect(xshield, SIGNAL(customContextMenuRequested(const QPoint &)),
+            this, SLOT(xshieldButtonEdit(const QPoint&)));
+
+    buttonWidget->setLayout(hLayout);
+
+    return buttonWidget;
+}
+
+void QuickButtonDisplay::swordButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(sword->pos()));
+    editDialog->updateButton(sword);
+    editDialog->show();
+}
+
+void QuickButtonDisplay::bowButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(bow->pos()));
+    editDialog->updateButton(bow);
+    editDialog->show();
+}
+
+void QuickButtonDisplay::shieldButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(shield->pos()));
+    editDialog->updateButton(shield);
+    editDialog->show();
+}
+
+void QuickButtonDisplay::bagButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(bag->pos()));
+    editDialog->updateButton(bag);
+    editDialog->show();
+}
+
+void QuickButtonDisplay::xswordButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(xsword->pos()));
+    editDialog->updateButton(xsword);
+    editDialog->show();
+}
+
+void QuickButtonDisplay::xbowButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(xbow->pos()));
+    editDialog->updateButton(xbow);
+    editDialog->show();    
+}
+
+void QuickButtonDisplay::xshieldButtonEdit(const QPoint&) {
+    editDialog->updateLocation(buttonWidget->mapToGlobal(xshield->pos()));
+    editDialog->updateButton(xshield);
+    editDialog->show();
+}
+
+QuickButtonDisplay::~QuickButtonDisplay() {
+    delete sword;
+    delete bow;
+    delete shield;
+    delete bag;
+    delete xsword;
+    delete xbow;
+    delete xshield;
+    delete hLayout;
+    delete buttonWidget;
 }

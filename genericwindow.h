@@ -6,6 +6,7 @@
 #include <QTextEdit>
 
 #include <mainwindow.h>
+#include <clientsettings.h>
 
 class MainWindow;
 
@@ -19,9 +20,11 @@ public:
 
 private:
     QPalette palette();
-    QTextEdit* textBox(QDockWidget*, QString);
+    QTextEdit* textBox(QDockWidget*, QString);    
 
-    MainWindow *mw;    
+    MainWindow* mw;
+    ClientSettings* settings;
+
     QTextEdit *textEdit;
 };
 

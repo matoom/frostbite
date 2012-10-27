@@ -17,6 +17,9 @@
    <iconset resource="window.qrc">
     <normaloff>:/window/images/color.png</normaloff>:/window/images/color.png</iconset>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>

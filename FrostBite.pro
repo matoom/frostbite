@@ -53,7 +53,10 @@ SOURCES += main.cpp\
     macrosettings.cpp \
     macrothread.cpp \
     macroservice.cpp \
-    spellindicator.cpp
+    spellindicator.cpp \
+    wordcompleter.cpp \
+    quickbuttoneditdialog.cpp \
+    appearancedialog.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -101,14 +104,20 @@ HEADERS  += mainwindow.h \
     macrothread.h \
     macroservice.h \
     defaultvalues.h \
-    spellindicator.h
+    spellindicator.h \
+    environment.h \
+    wordcompleter.h \
+    quickbuttoneditdialog.h \
+    appearancedialog.h
 
 FORMS    += mainwindow.ui \
     connectdialog.ui \
     highlightdialog.ui \
     highlightadddialog.ui \
     highlighteditdialog.ui \
-    macrodialog.ui
+    macrodialog.ui \
+    quickbuttoneditdialog.ui \
+    appearancedialog.ui
 
 RESOURCES += \
     toolbar.qrc \

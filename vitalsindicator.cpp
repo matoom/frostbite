@@ -4,56 +4,61 @@ VitalsIndicator::VitalsIndicator(QObject *parent) : QObject(parent) {
 
 }
 
-QProgressBar *VitalsIndicator::vitalsProgress(const char* obName, const char* img, qint8 value) {
-    QProgressBar *progressBar = new QProgressBar;
-    progressBar->setObjectName(obName);
-    progressBar->setOrientation(Qt::Vertical);
-    progressBar->setTextVisible(false);
-    progressBar->setFixedWidth(15);
-    progressBar->setFixedHeight(30);
-    progressBar->setStyleSheet("QProgressBar::chunk {"
-                               "background-image: url(" + QString(img) + ");"
-                               "background-position: bottom 100%;"
-                               "background-repeat: no-repeat;"
-                               "}");
-    progressBar->setValue(value);
-    progressBar->setToolTip(QString::number(value) + "%");
+QProgressBar* VitalsIndicator::vitalsProgress(const char* obName, const char* img, qint8 value) {
+    QProgressBar* bar = new QProgressBar;
+    bar->setObjectName(obName);
+    bar->setOrientation(Qt::Vertical);
+    bar->setTextVisible(false);
+    bar->setFixedWidth(15);
+    bar->setFixedHeight(30);
+    bar->setStyleSheet("QProgressBar::chunk {"
+                       "background-image: url(" + QString(img) + ");"
+                       "background-position: bottom 100%;"
+                       "background-repeat: no-repeat;"
+                       "}");
+    bar->setValue(value);
+    bar->setToolTip(QString::number(value) + "%");
 
-    return progressBar;
+    return bar;
+}
+
+QFrame* VitalsIndicator::vitalsFrame(QProgressBar* bar) {
+    QFrame* bgFrame = new QFrame();
+    bgFrame->setStyleSheet("QFrame {"
+                           "margin: -7px;"
+                           "background-image: url(:/images/vitals_frame.png);"
+                           "background-position: center center;"
+                           "background-repeat: no-repeat;}");
+    QHBoxLayout* bgFLay = new QHBoxLayout(bgFrame);
+    bgFLay->addWidget(bar);
+
+    return bgFrame;
 }
 
 QWidget* VitalsIndicator::create() {
-    QWidget *widget = new QWidget;
-    QHBoxLayout *hLayout = new QHBoxLayout(widget);
+    vitalsWidget = new QWidget;
+    QHBoxLayout* hLayout = new QHBoxLayout(vitalsWidget);
     hLayout->setContentsMargins(25, 0, 25, 0);
 
-    healthBar = vitalsProgress("health", HEALTH_BG_100, 100);
-    hLayout->addWidget(healthBar);
-
-    /*QFrame* bgFrame = new QFrame();
-    bgFrame->setFixedWidth(22);
-    bgFrame->setStyleSheet("margin-bottom: 0px;"
-                           "margin-top: 5px;"
-                           "background-image: url(:/images/health.png);"
-                           "background-repeat: no-repeat;");
-    QHBoxLayout *bgFLay = new QHBoxLayout(bgFrame);
-    //bgFLay->addWidget(healthBar);
-
-    hLayout->addWidget(bgFrame);*/
-
+    healthBar = vitalsProgress("health", HEALTH, 100);
+    QFrame* healthIndicator = vitalsFrame(healthBar);
+    hLayout->addWidget(healthIndicator);
 
     concentrationBar = vitalsProgress("concentration", CONCENTRATION_BG, 100);
-    hLayout->addWidget(concentrationBar);
+    QFrame* concentrationIndicator = vitalsFrame(concentrationBar);
+    hLayout->addWidget(concentrationIndicator);
 
     fatigueBar = vitalsProgress("fatigue", FATIGUE_BG, 100);
-    hLayout->addWidget(fatigueBar);
+    QFrame* fatigueIndicator = vitalsFrame(fatigueBar);
+    hLayout->addWidget(fatigueIndicator);
 
     spiritBar = vitalsProgress("spirit", SPIRIT_BG, 100);
-    hLayout->addWidget(spiritBar);
+    QFrame* spiritIndicator = vitalsFrame(spiritBar);
+    hLayout->addWidget(spiritIndicator);
 
-    widget->setLayout(hLayout);
+    vitalsWidget->setLayout(hLayout);
 
-    return widget;
+    return vitalsWidget;
 }
 
 VitalsIndicator::~VitalsIndicator() {
@@ -61,4 +66,5 @@ VitalsIndicator::~VitalsIndicator() {
     delete concentrationBar;
     delete fatigueBar;
     delete spiritBar;
+    delete vitalsWidget;
 }

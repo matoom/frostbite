@@ -14,13 +14,15 @@ public:
 
     QWidget* create();
 
-    QProgressBar *healthBar;
-    QProgressBar *concentrationBar;
-    QProgressBar *fatigueBar;
-    QProgressBar *spiritBar;
+    QWidget* vitalsWidget;
+    QProgressBar* healthBar;
+    QProgressBar* concentrationBar;
+    QProgressBar* fatigueBar;
+    QProgressBar* spiritBar;
 
 private:
-    QProgressBar *vitalsProgress(const char*, const char*, qint8);
+    QProgressBar* vitalsProgress(const char*, const char*, qint8);
+    QFrame* vitalsFrame(QProgressBar*);
 
 signals:
 

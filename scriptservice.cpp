@@ -80,7 +80,7 @@ void ScriptService::writeGameWindow(QByteArray command) {
 
 void ScriptService::writeOutgoingMessage(QByteArray message) {
     if(script->isRunning()) {
-        script->sendMessage(message);
+        script->sendMessage(message + "\n");
     }
 }
 

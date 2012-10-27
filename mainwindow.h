@@ -51,7 +51,9 @@ public:
     void addToolbarSeparator();
     void addToolbarSpacer(int);
     void addToolbarWidget(QWidget*);
+    void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void setMainTitle(QString);
+    void setBackgroundColor(QColor);
 
     WindowManager* getWindowManager();
     ToolbarManager* getToolbarManager();
