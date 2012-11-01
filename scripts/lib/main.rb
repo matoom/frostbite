@@ -1,4 +1,15 @@
 require "#{File.dirname(__FILE__)}/models.rb"
+require "#{File.dirname(__FILE__)}/ruby_goto.rb"
+
+require 'dl'
+require 'dl/import'
+
+module GameData
+  extend DL::Importer
+  dlload 'data.dll'
+  extern 'int addNumbers(int, int)'
+  extern 'char* getString()'
+end
 
 $args = []
 ARGV.each do |arg|
@@ -75,24 +86,90 @@ end
 def match_wait(pattern)
   $_data_queue.clear
   match_found = false
-  match = ""
+  match = :not_found
+
   (0..1000000).each do
     $_data_queue.each_index do |i|
       unless match_found
         pattern.each_pair do |k, v|
-          if $_data_queue.at(i).match(v)
-            match = k
-            match_found = true
+          v.each do |m|
+            if $_data_queue.at(i).match(m)
+              match = k
+              match_found = true
+              break
+            end
           end
+          break if match_found
         end
       end
+
       if $_data_queue.at(i).match(/^Roundtime:/)
         sleep $_data_queue.at(i)[/\d+/].to_i
       end
+
+      if match_found
+        if $_data_queue.at(i).match(/^>/)
+          return match
+        end
+      end
+
       $_data_queue.delete_at(i)
     end
-    if match_found
-      return match
+    sleep 0.01
+  end
+
+end
+
+# Matches multiple regex patterns with game text
+# and goes to defined label.
+#
+# @param [Hash] pattern list of regex patterns and names
+# @return [Void]
+# @example Using match patterns to go to predefined labels
+#   frame_start
+#
+#   label(:retry){
+#     match = {:retry => "...wait", :next => "you open"}
+#     match_wait match
+#     echo "retry"
+#   }
+#
+#   label(:next){
+#     echo "next"
+#   }
+#
+#   frame_end
+def match_wait_goto(pattern)
+  $_data_queue.clear
+  match_found = false
+  match = :not_found
+
+  (0..1000000).each do
+    $_data_queue.each_index do |i|
+      unless match_found
+        pattern.each_pair do |k, v|
+          v.each do |m|
+            if $_data_queue.at(i).match(m)
+              match = k
+              match_found = true
+              break
+            end
+          end
+          break if match_found
+        end
+      end
+
+      if $_data_queue.at(i).match(/^Roundtime:/)
+        sleep $_data_queue.at(i)[/\d+/].to_i
+      end
+
+      if match_found
+        if $_data_queue.at(i).match(/^>/)
+          goto match
+        end
+      end
+
+      $_data_queue.delete_at(i)
     end
     sleep 0.01
   end
@@ -293,11 +370,6 @@ end
 #
 # @param
 # @return [Integer] current round time value
-# @example Script is interrupted during round time.
-#   def finally_do
-#     sleep get_match_rt
-#     put "stow right"
-#   end
 def get_match_rt
   @current_rt
 end

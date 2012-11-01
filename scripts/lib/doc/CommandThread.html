@@ -94,7 +94,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">models.rb</dd>
+    <dd class="r2 last">main.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -186,6 +186,8 @@
       <pre class="lines">
 
 
+173
+174
 175
 176
 177
@@ -194,65 +196,21 @@
 180
 181
 182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206</pre>
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
-  <span class='kw'>while</span> <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_gets'>gets</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>game_text#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>game_text#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_data_queue</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exp#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exp#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_exp</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>room#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>room#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_room</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wield#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wield#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_wield</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>vitals#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>vitals#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_vitals</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>status#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_status</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inventory#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inventory#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_inventory</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>container#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>container#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='gvar'>$_container</span> <span class='op'>=</span> <span class='id identifier rubyid_line'>line</span>
-    <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exit#</span><span class='tstring_end'>&quot;</span></span>
-      <span class='const'>Kernel</span><span class='op'>::</span><span class='id identifier rubyid_abort'>abort</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.01</span>
-  <span class='kw'>end</span>
+   <span class='kw'>while</span> <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_gets'>gets</span>
+     <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>game_text#</span><span class='tstring_end'>&quot;</span></span>
+       <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_slice!'>slice!</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>game_text#</span><span class='tstring_end'>&quot;</span></span>
+       <span class='gvar'>$_data_queue</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_line'>line</span>
+     <span class='kw'>elsif</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_start_with?'>start_with?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>exit#</span><span class='tstring_end'>&quot;</span></span>
+       <span class='gvar'>$_end</span> <span class='op'>=</span> <span class='kw'>true</span>
+       <span class='const'>Kernel</span><span class='op'>::</span><span class='id identifier rubyid_abort'>abort</span>
+     <span class='kw'>end</span>
+   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -264,7 +222,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Oct 27 21:07:12 2012 by
+  Generated on Sat Oct  6 15:44:57 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>

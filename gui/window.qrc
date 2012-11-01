@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/window">
+        <file>images/highlight.png</file>
+        <file>images/color.png</file>
+        <file>images/keyboard.png</file>
+        <file>images/connect.png</file>
+        <file>images/disconnect.png</file>
+        <file>images/edit.png</file>
+        <file>images/icon_ph.png</file>
+        <file>images/arrow_right.png</file>
+        <file>images/window.png</file>
+        <file>images/loading.gif</file>
+    </qresource>
+</RCC>
