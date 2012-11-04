@@ -136,26 +136,22 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             /* filter player wielding in left hand */
             //<right exist="162134941" noun="sharks">fuzzy sharks</right>
             toolbarManager->updateWieldLeft(e.text());
-            /* persist wield data in memory */
-            WieldModel* wield = gameDataContainer->getWield();
-            wield->setLeft(e.text());
-            wield->setLeftNoun(e.attribute("noun"));
+            /* persist wield data in memory */            
+            gameDataContainer->setLeft(e.text());
+            gameDataContainer->setLeftNoun(e.attribute("noun"));
         } else if(e.tagName() == "right") {
             /* filter player wielding in right hand */
             toolbarManager->updateWieldRight(e.text());
             /* persist wield data in memory */
-            WieldModel* wield = gameDataContainer->getWield();
-            wield->setRight(e.text());
-            wield->setRightNoun(e.attribute("noun"));
+            gameDataContainer->setRight(e.text());
+            gameDataContainer->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
             toolbarManager->updateSpell(e.text());
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
             QString title = e.attribute("subtitle");
             mainWindow->setMainTitle(title);
-
-            RoomModel* room = gameDataContainer->getRoom();
-            room->setName(title.mid(3));
+            gameDataContainer->setRoomName(title.mid(3));
             windowManager->updateRoomWindowTitle(title);
         } else if(e.tagName() == "component") {
             if(e.attribute("id").startsWith("exp")) {
@@ -163,28 +159,26 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 QString id = e.attribute("id").mid(4);
                 if(!text.isEmpty()) {
                     if(e.firstChildElement("d").isNull()) {
-                        gameDataContainer->setExpField(id, new ExpModel(false, text));
+                        gameDataContainer->setExpField(id, text);
                     } else {
-                        gameDataContainer->setExpField(id, new ExpModel(true, text));
+                        gameDataContainer->setExpFieldBrief(id, text);
                     }
                 } else {                    
                     gameDataContainer->removeExpField(id);
                 }
                 windowManager->updateExpWindow();
             } else if(e.attribute("id").startsWith("room")) {
-                RoomModel* room = gameDataContainer->getRoom();
-
                 QString id = e.attribute("id");
                 if(id.endsWith("desc")) {
-                    room->setDesc(e.text());
+                    gameDataContainer->setRoomDesc(e.text());
                 } else if (id.endsWith("objs")) {
-                    room->setObjs(e.text());
+                    gameDataContainer->setRoomObjs(e.text());
                 } else if (id.endsWith("players")) {
-                    room->setPlayers(e.text());
+                    gameDataContainer->setRoomPlayers(e.text());
                 } else if (id.endsWith("exits")) {
-                    room->setExits(e.text());
+                    gameDataContainer->setRoomExits(e.text());
                 } else if (id.endsWith("extra")) {
-                    room->setExtra(e.text());
+                    gameDataContainer->setRoomExtra(e.text());
                 }
                 windowManager->updateRoomWindow();
             }

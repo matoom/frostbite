@@ -1,16 +1,6 @@
 require "#{File.dirname(__FILE__)}/models.rb"
 require "#{File.dirname(__FILE__)}/ruby_goto.rb"
 
-require 'dl'
-require 'dl/import'
-
-module GameData
-  extend DL::Importer
-  dlload 'data.dll'
-  extern 'int addNumbers(int, int)'
-  extern 'char* getString()'
-end
-
 $args = []
 ARGV.each do |arg|
   $args << arg
@@ -22,7 +12,6 @@ STDOUT.sync = true
 @_file = $args.shift
 
 $_data_queue = []
-$_exp, $_room, $_wield, $_vitals, $_status, $_inventory, $_container = "", "", "", "", "", "", ""
 
 @current_rt = 0
 
@@ -117,7 +106,6 @@ def match_wait(pattern)
     end
     sleep 0.01
   end
-
 end
 
 # Matches multiple regex patterns with game text
@@ -208,7 +196,7 @@ end
 #   wait
 #   put remove my shield
 def wait
-  match_wait(/^>/)
+  wait_for(/^>/)
 end
 
 # Sends a message to client main window.
@@ -221,140 +209,6 @@ end
 def echo(value)
   puts "echo#" + value.to_s
   STDOUT.flush
-end
-
-# Gets experience data from client.
-#
-# @param [String] value field name.
-# @return [Exp] Exp object.
-# @example Using exp data in script.
-#   get_exp("climbing").inspect #=> #<Exp:0x2b051b0 @rank=222, @progress="53%", @state="cogitating", @numeric_state=25>
-#
-#   if get_exp("climbing").numeric_state == 34
-#     exit
-#   end
-def get_exp(value)
-  $_exp.clear
-  puts "get_exp#" + value
-  STDOUT.flush
-  while true
-    unless $_exp.empty?
-      return Exp.new($_exp)
-    end
-  end
-end
-
-# Gets room data from client.
-#
-# @param
-# @return [Room] Room object.
-# @example Using room data in script.
-#   get_room.inspect #=> #<Room:0x2aee140 @description="Well-worn paths ...", @objects="You also see a musk hog, a musk hog which appears dead and a musk hog.", @players="", @exits="Obvious paths: northwest.">
-#
-#   if get_room.count_objects "hog" > 2
-#     put "attack"
-#   end
-def get_room
-  $_room.clear
-  puts "get_room#"
-  STDOUT.flush
-  while true
-    unless $_room.empty?
-      return Room.new($_room)
-    end
-  end
-end
-
-# Gets wield data from client.
-#
-# @param
-# @return [Wield] Wield object.
-# @example Using wield data in script.
-#   get_wield.inspect #=> #<Wield:0x2ac99c0 @left="Empty", @left_noun="", @right="fuzzy sharks", @right_noun="sharks">
-#
-#   put "put my #{get_wield.right} in my backpack"
-def get_wield
-  $_wield.clear
-  puts "get_wield#"
-  STDOUT.flush
-  while true
-    unless $_wield.empty?
-      return Wield.new($_wield)
-    end
-  end
-end
-
-# Gets vitals data from client.
-#
-# @param
-# @return [Vitals] Vitals object.
-# @example Using vitals data in script.
-#   get_vitals.inspect #=> #<Vitals:0x3aa328 @health="100", @concentration="46", @fatigue="100", @spirit="100">
-#
-#   if get_vitals.health < 100
-#     put retreat
-#   end
-def get_vitals
-  $_vitals.clear
-  puts "get_vitals#"
-  STDOUT.flush
-  while true
-    unless $_vitals.empty?
-      return Vitals.new($_vitals)
-    end
-  end
-end
-
-# Gets status data from client.
-#
-# @param
-# @return [Status] Status object.
-# @example Using status data in script.
-#   get_status.inspect #=> #<Status:0x3a9d10 @kneeling=0, @prone=0, @sitting=0, @standing=1, @stunned=1, @dead=0, @bleeding=1, @hidden=1, @invisible=0, @webbed=0, @joined=1>
-#
-#   if get_status.hidden
-#     put unhide
-#   end
-def get_status
-  $_status.clear
-  puts "get_status#"
-  STDOUT.flush
-  while true
-    unless $_status.empty?
-      return Status.new($_status)
-    end
-  end
-end
-
-
-# Gets inventory list from client.
-#
-# @param
-# @return [Status] Status object.
-def get_inventory
-  $_inventory.clear
-  puts "get_inventory#"
-  STDOUT.flush
-  while true
-    unless $_inventory.empty?
-      return Inventory.new($_inventory)
-    end
-  end
-end
-
-# Gets items in main stow container from client.
-#
-# @param
-# @return [Container] Container object.
-def get_container
-  $_container.clear
-  puts "get_container#"
-  STDOUT.flush
-  while true
-    unless $_container.empty?
-      return Container.new($_container)
-    end
-  end
 end
 
 # Pauses for given time.
@@ -374,6 +228,18 @@ def get_match_rt
   @current_rt
 end
 
+# @api private
+def end_command_thread
+  puts "end#"
+  STDOUT.flush
+end
+
+# @api private
+def exit
+  end_command_thread
+  Kernel::exit
+end
+
 at_exit do
   if defined? finally_do
     unless @_command_thread.alive?
@@ -381,9 +247,13 @@ at_exit do
     end
     sleep get_match_rt
     finally_do
-    Kernel::exit!
+    end_command_thread
+    #Kernel::exit!
   end
 end
 
 #load script file here
-load @_file
+require @_file
+
+#end command thread after finished
+end_command_thread

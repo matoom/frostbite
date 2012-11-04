@@ -140,7 +140,7 @@ void WindowManager::updateNavigationDisplay(QList<QString> directions) {
     this->paintNavigationDisplay();
 }
 
-void  WindowManager::scriptRunning(bool state) {
+void WindowManager::scriptRunning(bool state) {
     navigationDisplay->setAutoPilot(state);
     this->paintNavigationDisplay();
 }
@@ -168,11 +168,11 @@ void WindowManager::paintNavigationDisplay() {
 
 void WindowManager::updateExpWindow() {
     QTextEdit *text = (QTextEdit*)expWindow->widget();
-    QHash<QString, ExpModel*> exp = gameDataContainer->getExp();
+    QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
-    foreach (ExpModel *value, exp) {
-        expString += highlighter->highlight(value->getExpString() + "\n");
+    foreach (QString value, exp) {
+        expString += highlighter->highlight(value + "\n");
     }
 
     text->clear();

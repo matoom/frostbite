@@ -4,7 +4,6 @@
         <file>images/bow.png</file>
         <file>images/shield.png</file>
         <file>images/sword.png</file>
-        <file>images/web.png</file>
         <file>images/bag.png</file>
         <file>images/xsword.png</file>
         <file>images/xshield.png</file>
@@ -40,5 +39,6 @@
         <file>images/invisible.png</file>
         <file>images/vitals_frame.png</file>
         <file>images/frame_bg.png</file>
+        <file>images/web.png</file>
     </qresource>
 </RCC>

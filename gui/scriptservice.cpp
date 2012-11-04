@@ -4,16 +4,10 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     commandLine = mainWindow->getCommandLine();
     windowManager = mainWindow->getWindowManager();
-    toolbarManager = mainWindow->getToolbarManager();
-    gameDataContainer = GameDataContainer::Instance();    
     dataConverterService = DataConverterService::Instance();
 
     script = new Script(this);
-    terminateFlag = false;
-
-    myFunction = (MyPrototype) myLib.resolve("data.dll", "addNumbers");
-    getString = (MyStringPrototype) myLib.resolve("data.dll", "getString");
-    setString = (MysetStringPrototype) myLib.resolve("data.dll", "setString");
+    terminateFlag = false;    
 }
 
 bool ScriptService::isScriptActive() {
@@ -21,15 +15,6 @@ bool ScriptService::isScriptActive() {
 }
 
 void ScriptService::runScript(QString input) {
-    if(myFunction)
-        qDebug() << myFunction(3,2);
-
-    if(setString)
-        setString("kurk");
-
-    if(getString)
-        qDebug() << getString();
-
     QList<QString> args = input.split(" ");
     QString fileName = args.takeFirst();
 
@@ -92,7 +77,7 @@ void ScriptService::writeGameWindow(QByteArray command) {
 }
 
 void ScriptService::writeOutgoingMessage(QByteArray message) {
-    if(script->isRunning()) {
+    if(script != NULL && script->isRunning()) {
         script->sendMessage("game_text#" + message + "\n");
     }
 }
@@ -103,50 +88,15 @@ void ScriptService::processCommand(QByteArray msg) {
         if(!line.isEmpty()){
             if(line.startsWith("put#")) {
                 commandLine->writeCommand(line.mid(4).trimmed());
-            } else if (line.startsWith("get_vitals#")) {
-                script->sendMessage("vitals#" + QString::number(toolbarManager->getHealthValue()).toLocal8Bit() + "|" +
-                    QString::number(toolbarManager->getConcentrationValue()).toLocal8Bit() + "|" +
-                    QString::number(toolbarManager->getFatigueValue()).toLocal8Bit() + "|" +
-                    QString::number(toolbarManager->getSpiritValue()).toLocal8Bit() + "\n");
-            } else if (line.startsWith("get_status#")) {
-                QHash<QString, bool> status = toolbarManager->getStatus();
-                script->sendMessage("status#" + QString(status.value("kneeling")).toLocal8Bit() +
-                    QString(status.value("prone")).toLocal8Bit() + QString(status.value("sitting")).toLocal8Bit() +
-                    QString(status.value("standing")).toLocal8Bit() + QString(status.value("stunned")).toLocal8Bit() +
-                    QString(status.value("dead")).toLocal8Bit() + QString(status.value("bleeding")).toLocal8Bit() +
-                    QString(status.value("hidden")).toLocal8Bit() + QString(status.value("invisible")).toLocal8Bit() +
-                    QString(status.value("webbed")).toLocal8Bit() + QString(status.value("joined")).toLocal8Bit() + "\n");
-            } else if (line.startsWith("get_exp#")) {
-                ExpModel *exp = gameDataContainer->getExpField(line.mid(8).trimmed());
-
-                if(exp != NULL) {
-                    script->sendMessage("exp#" + exp->getName().toLocal8Bit() + "|" +
-                        QString::number(exp->getRank()).toLocal8Bit() + "|" + exp->getRankProgression().toLocal8Bit() + "|" +
-                        exp->getState().toLocal8Bit() + "|" + QString::number(exp->getNumericState()).toLocal8Bit() + "\n");
-                } else {
-                    script->sendMessage("exp#\n");
-                }
-            } else if (line.startsWith("get_room#")) {
-                RoomModel* room = gameDataContainer->getRoom();
-                script->sendMessage("room#" + room->getDesc().toLocal8Bit() + "|" + room->getObjs().toLocal8Bit() + "|" +
-                    room->getPlayers().toLocal8Bit() + "|" + room->getExits().toLocal8Bit() + "\n");
-            } else if (line.startsWith("get_wield#")) {
-                WieldModel* wield = gameDataContainer->getWield();
-                script->sendMessage("wield#" + wield->getLeft().toLocal8Bit() + "|" + wield->getLeftNoun().toLocal8Bit() + "|" +
-                    wield->getRight().toLocal8Bit() + "|" + wield->getRightNoun().toLocal8Bit() + "\n");
-            } else if (line.startsWith("get_inventory#")) {
-                QStringList inventoryList = gameDataContainer->getInventory();
-                script->sendMessage("inventory#" + inventoryList.join("|").toLocal8Bit() + "\n");
-            } else if (line.startsWith("get_container#")) {
-                QStringList containerList = gameDataContainer->getContainer();
-                script->sendMessage("container#" + containerList.join("|").toLocal8Bit() + "\n");
             } else if (line.startsWith("echo#")) {
                 windowManager->writeGameWindow(line.mid(5).trimmed());
+            } else if (line.startsWith("end#")) {
+                script->sendMessage("end#\n");
             }
         }
     }
 }
 
 ScriptService::~ScriptService() {
-    myLib.unload();
+    delete script;
 }

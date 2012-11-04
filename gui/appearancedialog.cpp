@@ -49,7 +49,10 @@ QToolButton* AppearanceDialog::selectButton(int width, int height, QString toolT
     button->setToolButtonStyle(Qt::ToolButtonTextOnly);
     button->setMenu(new QMenu());
     button->setMinimumWidth(width);
-    button->setMaximumWidth(height);
+    //button->setMaximumWidth(height);
+
+    button->setMinimumHeight(height);
+    //button->setMaximumHeight(height);
 
     return button;
 }
@@ -76,7 +79,7 @@ void AppearanceDialog::populateMainBox() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(label("Background:"));
 
-    mainBgSelect = selectButton(40, 40, "Click here to pick a new color.");
+    mainBgSelect = selectButton(40, 20, "Click here to pick a new color.");
     connect(mainBgSelect, SIGNAL(clicked()), this, SLOT(selectMainBg()));
     hLayout->addWidget(mainBgSelect);
 
@@ -86,11 +89,11 @@ void AppearanceDialog::populateMainBox() {
 
     hLayout->addWidget(label("Text:"));
 
-    mainFontSelect = selectButton(200, 200, "Click here to pick a new font.");
+    mainFontSelect = selectButton(200, 22, "Click here to pick a new font.");
     connect(mainFontSelect, SIGNAL(clicked()), this, SLOT(selectMainFont()));
     hLayout->addWidget(mainFontSelect);
 
-    mainFontColorSelect = selectButton(40, 40, "Click here to pick a new color.");
+    mainFontColorSelect = selectButton(40, 20, "Click here to pick a new color.");
     connect(mainFontColorSelect, SIGNAL(clicked()), this, SLOT(selectMainFontColor()));
     hLayout->addWidget(mainFontColorSelect);
 
@@ -101,7 +104,7 @@ void AppearanceDialog::populateDockBox() {
     QHBoxLayout* hLayout = new QHBoxLayout();
     hLayout->addWidget(label("Background:"));
 
-    dockBgSelect = selectButton(40, 40, "Click here to pick a new color.");
+    dockBgSelect = selectButton(40, 20, "Click here to pick a new color.");
     connect(dockBgSelect, SIGNAL(clicked()), this, SLOT(selectDockBg()));
     hLayout->addWidget(dockBgSelect);
 
@@ -111,11 +114,11 @@ void AppearanceDialog::populateDockBox() {
 
     hLayout->addWidget(label("Text:"));
 
-    dockFontSelect = selectButton(200, 200, "Click here to pick a new font.");
+    dockFontSelect = selectButton(200, 22, "Click here to pick a new font.");
     connect(dockFontSelect, SIGNAL(clicked()), this, SLOT(selectDockFont()));
     hLayout->addWidget(dockFontSelect);
 
-    dockFontColorSelect = selectButton(40, 40, "Click here to pick a new color.");
+    dockFontColorSelect = selectButton(40, 20, "Click here to pick a new color.");
     connect(dockFontColorSelect, SIGNAL(clicked()), this, SLOT(selectDockFontColor()));
     hLayout->addWidget(dockFontColorSelect);
 

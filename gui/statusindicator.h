@@ -6,6 +6,10 @@
 
 #include <toolbardefines.h>
 
+#include <gamedatacontainer.h>
+
+class GameDataContainer;
+
 class StatusIndicator : public QObject {
     Q_OBJECT
 
@@ -19,6 +23,8 @@ public:
     QHash<QString, bool> getFullStatus();
 
 private:
+    GameDataContainer* gameDataContainer;
+
     QLabel *playerStatusLabel(const char*, const char*, bool);    
     void updatePosture(const char*, QString );
     void updateCondition(const char*, QString);

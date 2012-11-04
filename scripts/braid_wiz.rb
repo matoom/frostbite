@@ -9,14 +9,14 @@ end
 def finally_do
   echo "*** Ending in #{get_match_rt.to_s} seconds. ***"
 
-  wielding = get_wield
-
-  unless wielding.right_noun.empty?
-    put "put my #{wielding.right_noun} in bucket"
+  right = Wield::right_noun
+  unless right.empty?
+    put "put my #{right} in bucket"
   end
 
-  unless wielding.left_noun.empty?
-    put "put my #{wielding.left_noun} in bucket"
+  left = Wield::left_noun
+  unless left.empty?
+    put "put my #{left} in bucket"
   end
 end
 
@@ -47,7 +47,7 @@ label(:braid) {
 }
 
 label(:end) {
-  echo "*** DONE ***"
+
 }
 
 frame_end

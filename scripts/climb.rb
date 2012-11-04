@@ -1,81 +1,21 @@
+path = ["go gate", "west", "west", "south", "south", "west", "west", "south", "west", "west", "west", "west", "west", "west",
+        "go bridge", "west", "west", "west", "west", "go gate", "climb wall", "south", "climb embrasure", "climb wall", "north",
+        "east", "climb break", "climb wall", "climb embrasure", "climb wall", "west", "climb embrasure", "go gate", "east",
+        "east", "east", "east", "east", "east", "east", "east", "south", "south", "south", "south", "south", "east", "east", "southeast",
+        "east", "east", "east", "east", "go gate", "climb wall", "north", "climb break", "climb wall", "climb embrasure", "climb wall",
+        "south", "climb embrasure", "go bushes", "north", "northeast", "north", "north", "up", "north", "north"]
+
 100.times do
-  exp = get_exp "climbing"
+  exp = Exp::state "climbing"
 
-  echo "*** #{exp.numeric_state} ***"
+  echo "*** #{exp} ***"
 
-  if exp.numeric_state >= 33
+  if exp > 32
     echo "*** DONE ***"
-    abort
+    exit
   end
 
-  move "go gate"
-  move "west"
-  move "west"
-  move "south"
-  move "south"
-  move "west"
-  move "west"
-  move "south"
-  move "west"
-  move "west"
-  move "west"
-  move "west"
-  move "west"
-  move "west"
-  move "go bridge"
-  move "west"
-  move "west"
-  move "west"
-  move "west"
-  move "go gate"
-  move "climb wall"
-  move "south"
-  move "climb embrasure"
-  move "climb wall"
-  move "north"
-  move "east"
-  move "climb break"
-  move "climb wall"
-  move "climb embrasure"
-  move "climb wall"
-  move "west"
-  move "climb embrasure"
-  move "go gate"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "south"
-  move "south"
-  move "south"
-  move "south"
-  move "south"
-  move "east"
-  move "east"
-  move "southeast"
-  move "east"
-  move "east"
-  move "east"
-  move "east"
-  move "go gate"
-  move "climb wall"
-  move "north"
-  move "climb break"
-  move "climb wall"
-  move "climb embrasure"
-  move "climb wall"
-  move "south"
-  move "climb embrasure"
-  move "go bushes"
-  move "north"
-  move "northeast"
-  move "north"
-  move "north"
-  move "up"
-  move "north"
-  move "north"
+  path.each do |p|
+      move p
+  end
 end

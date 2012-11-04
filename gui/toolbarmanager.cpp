@@ -2,6 +2,7 @@
 
 ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
+    gameDataContainer = GameDataContainer::Instance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -52,20 +53,25 @@ QHash<QString, bool> ToolbarManager::getStatus() {
 }
 
 void ToolbarManager::updateVitals(QString name, QString value) {
+    int intValue = value.toInt();
     if(name == "health") {
-        vitalsIndicator->healthBar->setValue(value.toInt());
+        gameDataContainer->setHealth(intValue);
+        vitalsIndicator->healthBar->setValue(intValue);
         vitalsIndicator->healthBar->setToolTip("Health: " + value + "%");
         vitalsIndicator->healthBar->repaint();
     } else if(name == "concentration") {
-        vitalsIndicator->concentrationBar->setValue(value.toInt());
+        gameDataContainer->setConcentration(intValue);
+        vitalsIndicator->concentrationBar->setValue(intValue);
         vitalsIndicator->concentrationBar->setToolTip("Concentration: " + value + "%");
         vitalsIndicator->concentrationBar->repaint();
     } else if(name == "stamina") {
-        vitalsIndicator->fatigueBar->setValue(value.toInt());
+        gameDataContainer->setFatigue(intValue);
+        vitalsIndicator->fatigueBar->setValue(intValue);
         vitalsIndicator->fatigueBar->setToolTip("Fatigue: " + value + "%");
         vitalsIndicator->fatigueBar->repaint();
     } else if(name == "spirit") {
-        vitalsIndicator->spiritBar->setValue(value.toInt());
+        gameDataContainer->setSpirit(intValue);
+        vitalsIndicator->spiritBar->setValue(intValue);
         vitalsIndicator->spiritBar->setToolTip("Spirit: " + value + "%");
         vitalsIndicator->spiritBar->repaint();
     }

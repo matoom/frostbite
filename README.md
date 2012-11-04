@@ -1,10 +1,10 @@
 frostbite
 =========
 
-h2. Description
+## Description
 
 MUD client for dragonrealms.
 
-h2. License
+## License
 
 MIT

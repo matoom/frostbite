@@ -23,10 +23,10 @@ public:
     void sendMessage(QByteArray);    
 
 private:
-    ScriptService *scriptService;
-    bool running;
+    ScriptService* scriptService;
+    QProcess* script_proc;
 
-    QProcess *script_proc;
+    bool running;
 
 signals:
 

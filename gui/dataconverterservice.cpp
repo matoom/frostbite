@@ -24,8 +24,13 @@ void DataConverterService::populateExpStates() {
 }
 
 int DataConverterService::expStateToNumeric(QString state) {
-    int index = mindStates.indexOf(state);
-    return index;
+    return mindStates.indexOf(state) - 1;
+}
+
+int DataConverterService::expBriefToNumeric(QString state) {
+    QRegExp rx("(\\d+)");
+    rx.indexIn(state, 0);
+    return rx.cap(1).toInt();
 }
 
 QString DataConverterService::expNumericToState(int index) {

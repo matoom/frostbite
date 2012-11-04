@@ -10,10 +10,12 @@
 #include <spellindicator.h>
 #include <quickbuttondisplay.h>
 #include <quickbuttoneditdialog.h>
+#include <gamedatacontainer.h>
 
 class MainWindow;
 class QuickButtonDisplay;
 class QuickButtonEditDialog;
+class GameDataContainer;
 
 class ToolbarManager : public QObject {
     Q_OBJECT
@@ -40,6 +42,7 @@ private:
     MainWindow* mainWindow;
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
+    GameDataContainer* gameDataContainer;
     QuickButtonDisplay* quickButtonDisplay;
     QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;

@@ -1,7 +1,7 @@
 #include "statusindicator.h"
 
 StatusIndicator::StatusIndicator(QObject *parent) : QObject(parent) {
-
+    gameDataContainer = GameDataContainer::Instance();
 }
 
 QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, bool show) {
@@ -63,36 +63,47 @@ void StatusIndicator::updateStatus(QString visibleString, QString icon) {
     if(icon == "IconKNEELING") {
         fullStatus.insert("kneeling", visible);
         this->setPosture(visible, icon);
+        gameDataContainer->setKneeling(visible);
     } else if(icon == "IconPRONE") {
         fullStatus.insert("prone", visible);
         this->setPosture(visible, icon);
+        gameDataContainer->setProne(visible);
     } else if(icon == "IconSITTING") {
         fullStatus.insert("sitting", visible);
         this->setPosture(visible, icon);
+        gameDataContainer->setSitting(visible);
     } else if(icon == "IconSTANDING") {
         fullStatus.insert("standing", visible);
         this->setPosture(visible, icon);
+        gameDataContainer->setStanding(visible);
     } else if(icon == "IconSTUNNED") {
         fullStatus.insert("stunned", visible);
         this->setCondition(visible, icon);
+        gameDataContainer->setStunned(visible);
     } else if(icon == "IconDEAD") {
         fullStatus.insert("dead", visible);
         this->setCondition(visible, icon);
+        gameDataContainer->setDead(visible);
     }else if(icon == "IconBLEEDING") {
         fullStatus.insert("bleeding", visible);
         this->setCondition(visible, icon);
+        gameDataContainer->setBleeding(visible);
     } else if(icon == "IconHIDDEN") {
         fullStatus.insert("hidden", visible);
         this->setHidden(visible);
+        gameDataContainer->setHidden(visible);
     } else if(icon == "IconINVISIBLE") {
         fullStatus.insert("invisible", visible);
         this->setInvisible(visible);
+        gameDataContainer->setInvisible(visible);
     } else if(icon == "IconWEBBED") {
         fullStatus.insert("webbed", visible);
-        this->setImmobile(visible);
+        this->setImmobile(visible);        
+        gameDataContainer->setWebbed(visible);
     } else if(icon == "IconJOINED") {
         fullStatus.insert("joined", visible);
         this->setJoined(visible);
+        gameDataContainer->setJoined(visible);
     }
 }
 

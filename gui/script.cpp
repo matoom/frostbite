@@ -32,6 +32,7 @@ void Script::execute(QString fileName, QList<QString> userArgs) {
 
 void Script::killScript() {
     script_proc->kill();
+    script_proc->waitForFinished(1000);
 }
 
 void Script::sendMessage(QByteArray message) {
@@ -69,8 +70,5 @@ void Script::finish(int exit) {
 }
 
 Script::~Script() {
-    if(!script_proc->atEnd()) {
-        script_proc->kill();
-    }
     delete script_proc;
 }

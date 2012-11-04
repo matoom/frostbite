@@ -104,9 +104,9 @@ void CommandLine::writeCommand(QString text) {
     cursor.select(QTextCursor::WordUnderCursor);
 
     if(cursor.selectedText() == ">") {
+        cursor.movePosition(QTextCursor::PreviousRow);
         cursor.movePosition(QTextCursor::EndOfLine);
-        windowManager->getGameWindow()->setTextCursor(cursor);
-        windowManager->getGameWindow()->insertPlainText(text);
+        cursor.insertText(text);
     } else {
         windowManager->getGameWindow()->append(text);
     }

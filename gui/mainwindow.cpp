@@ -158,6 +158,9 @@ void MainWindow::closeEvent(QCloseEvent *event){
     /* save client window state */
     settings->setParameter("MainWindow/state", saveState());
     //settings->setParameter("MainWindow/geometry", saveGeometry());
+
+    /* terminate if script running at exit */
+    scriptService->terminateScript();
 }
 
 MainWindow::~MainWindow() {

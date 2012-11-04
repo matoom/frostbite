@@ -13,6 +13,7 @@ public:
     static DataConverterService* Instance();
 
     int expStateToNumeric(QString);
+    int expBriefToNumeric(QString);
     QString expNumericToState(int);
     QString msToMMSS(int);
 

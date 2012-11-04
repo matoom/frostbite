@@ -6,16 +6,12 @@
 #include <mainwindow.h>
 #include <commandline.h>
 #include <script.h>
-#include <expmodel.h>
-#include <gamedatacontainer.h>
 #include <dataconverterservice.h>
 
 class MainWindow;
 class CommandLine;
 class Script;
-class GameDataContainer;
 class DataConverterService;
-
 
 class ScriptService : public QObject {
     Q_OBJECT
@@ -35,25 +31,13 @@ public:
     bool isScriptActive();
 
 private:
+    DataConverterService* dataConverterService;
     MainWindow* mainWindow;
     CommandLine* commandLine;
-    Script* script;
     WindowManager* windowManager;
-    ToolbarManager* toolbarManager;
-    GameDataContainer* gameDataContainer;
-    DataConverterService* dataConverterService;
+    Script* script;
     QElapsedTimer timer;
     bool terminateFlag;
-
-    QLibrary myLib;
-    typedef int (*MyPrototype)(int, int);
-    MyPrototype myFunction;
-
-    typedef char* (*MyStringPrototype)();
-    MyStringPrototype getString;
-
-    typedef void (*MysetStringPrototype)(const char*);
-    MysetStringPrototype setString;
 
 public slots:
 

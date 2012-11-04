@@ -654,7 +654,7 @@ Obvious paths: <d>north</d>, <d>east</d>, <d>southeast</d>.
 <component id='room objs'>You also see <pushBold/>a musk hog<popBold/>.</component>
 <prompt time="1349973730">&gt;</prompt>
 <component id='exp Light Crossbow'><d cmd='skill Light Crossbow'>     LX</d>:  394 62%  [14/34]</component>
-<component id='exp First Aid'><preset id='whisper'>       First Aid:   40 06% perusing     </preset></component>
+<component id='exp First Aid'><preset id='whisper'>     Cloth Armor:  666 11% nearly locked </preset></component>
 <resource picture="0"/><style id="roomName" />[Grassland Road, Meadow]
 <style id=""/><preset id='roomDesc'>Tall sharp blades of switch grass rustle and whisper in the breeze.  Here and there small clumps of wild sweet cicely grow in the meadow, filling the air with a spicy scent.</preset>  You also see <pushBold/>a musk hog<popBold/>.
 Obvious paths: <d>east</d>, <d>west</d>.

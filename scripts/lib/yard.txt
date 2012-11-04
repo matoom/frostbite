@@ -1,0 +1,2 @@
+yard doc -m markdown
+yardoc --no-private --protected

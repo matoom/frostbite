@@ -13,10 +13,13 @@ NavigationDisplay::NavigationDisplay(QObject *parent) : QObject(parent) {
 void NavigationDisplay::updateState(QList<QString> directions) {
     /*TODO: on boat directions (aft, starboard, port, ..)*/
     for(int i = 0; i < state.size(); i++) {
-        if(directions.contains(dir[i])){
-            state[i] = true;
-        } else {
-            state[i] = false;
+        /* dont update auto pilot (mid circle) */
+        if(i != 6) {
+            if(directions.contains(dir[i])){
+                state[i] = true;
+            } else {
+                state[i] = false;
+            }
         }
     }
 }

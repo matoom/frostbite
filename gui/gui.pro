@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) {
-    error( Couldn't find the common.pri file! )
+!include(../common.pri) {
+    error(Couldn't find the common.pri file!)
 }
 
 QT       += core gui network xml
 
-TARGET = FrostBite
+TARGET = ../../FrostBite
 TEMPLATE = app
 
 SOURCES += main.cpp\
@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     appearancedialog.cpp \
     aboutdialog.cpp \
     connectwizard.cpp \
-    wizardpage.cpp
+    wizardpage.cpp \
+    dataservice.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -115,7 +116,8 @@ HEADERS  += mainwindow.h \
     appearancedialog.h \
     aboutdialog.h \
     connectwizard.h \
-    wizardpage.h
+    wizardpage.h \
+    dataservice.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \
@@ -137,6 +139,4 @@ RC_FILE = resources.rc
 OTHER_FILES += \
     resources.rc
 
-LIBS += -L../gui
 
-TARGET = ../../Frostbite
