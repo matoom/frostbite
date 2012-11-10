@@ -26,7 +26,7 @@ $_data_queue = []
 #   wait_for_roundtime
 #   put unhide
 def wait_for_roundtime
-  $_data_queue.clear
+  #$_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/^Roundtime:/)
@@ -48,7 +48,7 @@ end
 # @param [String] pattern regex pattern.
 # @return [void]
 def wait_for(pattern)
-  $_data_queue.clear
+  #$_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(pattern)
@@ -73,7 +73,7 @@ end
 #     echo "next"
 #   end
 def match_wait(pattern)
-  $_data_queue.clear
+  #$_data_queue.clear
   match_found = false
   match = :not_found
 
@@ -128,7 +128,7 @@ end
 #
 #   frame_end
 def match_wait_goto(pattern)
-  $_data_queue.clear
+  #$_data_queue.clear
   match_found = false
   match = :not_found
 
@@ -168,6 +168,7 @@ end
 # @param [String] value command.
 # @return [void]
 def put(value)
+  $_data_queue.clear
   puts "put#" + value.to_s
   STDOUT.flush
 end

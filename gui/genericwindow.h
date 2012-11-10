@@ -1,31 +1,43 @@
-#ifndef WINDOWFACTORY_H
-#define WINDOWFACTORY_H
+#ifndef GENERICWINDOW_H
+#define GENERICWINDOW_H
 
 #include <QObject>
-#include <QDockWidget>
-#include <QTextEdit>
-
-#include <mainwindow.h>
+#include <QPlainTextEdit>
+#include <QMouseEvent>
 #include <clientsettings.h>
 
-class MainWindow;
+#include <mainwindow.h>
 
-class GenericWindow: public QObject {
+class MainWindow;
+class ClientSettings;
+
+class GenericWindow : public QPlainTextEdit {
     Q_OBJECT
 
 public:
-    GenericWindow(QObject *parent = 0);
-
-    QDockWidget* createWindow(const char*);
+    explicit GenericWindow(QWidget *parent = 0);
+    ~GenericWindow();
 
 private:
-    QPalette palette();
-    QTextEdit* textBox(QDockWidget*, QString);    
+    void contextMenuEvent(QContextMenuEvent* event);
+    void buildContextMenu();
+    void loadSettings();
 
-    MainWindow* mw;
+    MainWindow* mainWindow;
     ClientSettings* settings;
 
-    QTextEdit *textEdit;
+    QAction* copyAct;
+    QAction* selectAct;
+    QMenu* menu;
+
+signals:
+
+private slots:
+    void copySelected();
+    void enableCopy(bool);
+    
+public slots:
+    
 };
 
-#endif // WINDOWFACTORY_H
+#endif // GENERICWINDOW_H

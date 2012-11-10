@@ -2,7 +2,7 @@
 
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
-    settings = HighlightSettings::Instance();
+    settings = HighlightSettings::Instance();    
     audioPlayer = AudioPlayer::Instance();
 
     listWidget = highlightDialog->getGeneralList();
@@ -16,8 +16,7 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     this->prepareList();
     this->initFileSelect();
     this->initContextMenu();
-
-    listWidget->setStyleSheet("QListWidget {background-color: black;}");
+    this->setBackground();
 
     connect(listWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
             this, SLOT(itemSelected(QListWidgetItem*, QListWidgetItem*)));
@@ -29,12 +28,21 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     connect(playButton, SIGNAL(clicked()), this, SLOT(playSound()));
 }
 
+void HighlightGeneralTab::setBackground() {
+    ClientSettings* clientSettings = ClientSettings::Instance();
+
+    QColor bgColor = clientSettings->getParameter("GameWindow/background",
+        DEFAULT_MAIN_BACKGROUND).value<QColor>();
+
+    listWidget->setStyleSheet("QListWidget {background-color:" + bgColor.name() + ";}");
+}
+
 void HighlightGeneralTab::loadSettings() {
     highlightList.insert(ROOM_NAME, readSettings(ROOM_NAME, "[Room titles]", QColor(ROOM_NAME_COLOR_HEX)));
     highlightList.insert(GAME_MESSAGE, readSettings(GAME_MESSAGE, "Game Messages", QColor(GAME_MESSAGE_COLOR_HEX)));
     highlightList.insert(SPEECH, readSettings(SPEECH, "Someone says, ..", QColor(SPEECH_COLOR_HEX)));
     highlightList.insert(THINKING, readSettings(THINKING, "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
-    highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BONUS_COLOR_HEX)));
+    highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BOOST_COLOR_HEX)));
     highlightList.insert(PENALTY, readSettings(PENALTY, "Stat penalty", QColor(PENALTY_COLOR_HEX)));
 }
 

@@ -1,4 +1,4 @@
-frostbite
+Frostbite
 =========
 
 ## Description

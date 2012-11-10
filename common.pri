@@ -1,5 +1,6 @@
 #Includes common configuration for all subdirectory .pro files.
 INCLUDEPATH += . ..
+
 WARNINGS += -Wall
 
 TEMPLATE = lib

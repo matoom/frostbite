@@ -37,8 +37,7 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     this->initTimerActionSelect();
     this->loadHighlightList();
     this->initContextMenu();
-
-    listWidget->setStyleSheet("QListWidget {background-color: black;}");
+    this->setBackground();
 
     connect(listWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
             this, SLOT(itemSelected(QListWidgetItem*, QListWidgetItem*)));
@@ -80,6 +79,15 @@ void HighlightTextTab::initContextMenu() {
     editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
     menu->addAction(editAct);
     connect(editAct, SIGNAL(triggered()), this, SLOT(showEditDialog()));
+}
+
+void HighlightTextTab::setBackground() {
+    ClientSettings* clientSettings = ClientSettings::Instance();
+
+    QColor bgColor = clientSettings->getParameter("GameWindow/background",
+        DEFAULT_MAIN_BACKGROUND).value<QColor>();
+
+    listWidget->setStyleSheet("QListWidget {background-color:" + bgColor.name() + ";}");
 }
 
 void HighlightTextTab::listWidgetMenuRequested(const QPoint &point) {

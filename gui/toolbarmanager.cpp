@@ -12,6 +12,26 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     spell = new SpellIndicator(this);
 }
 
+MainWindow* ToolbarManager::getMainWindow() {
+    return mainWindow;
+}
+
+void ToolbarManager::addFullScreenButton() {
+    /* spacer forcing to float right */
+    QWidget* spacerWidget = new QWidget(mainWindow);
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacerWidget->setVisible(true);
+    mainWindow->addToolbarWidget(spacerWidget);
+
+    /* fullscreen button */
+    FullscreenButton* fullScreenButton = new FullscreenButton(mainWindow);
+    QWidget* buttonWidget = new QWidget(mainWindow);
+    QHBoxLayout* hLayout = new QHBoxLayout(buttonWidget);
+    buttonWidget->setLayout(hLayout);
+    hLayout->addWidget((QToolButton*)fullScreenButton);
+    mainWindow->addToolbarWidget(buttonWidget);
+}
+
 void ToolbarManager::loadToolbar() {
     mainWindow->setToolbarAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
 
@@ -28,12 +48,9 @@ void ToolbarManager::loadToolbar() {
     mainWindow->addToolbarWidget(quickButtonDisplay->create());
     //mainWindow->addToolbarSeparator();
 
-    /*QWidget* spacerWidget = new QWidget;
-    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    spacerWidget->setVisible(true);
-    mainWindow->addToolbarWidget(spacerWidget);*/
-
     mainWindow->addToolbarWidget(vitalsIndicator->create());
+
+    this->addFullScreenButton();
 }
 
 void ToolbarManager::updateWieldLeft(QString value) {

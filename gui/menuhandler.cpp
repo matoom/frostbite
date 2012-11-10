@@ -7,6 +7,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     macroDialog = new MacroDialog(qobject_cast<QWidget *>(parent));
     appearanceDialog = new AppearanceDialog(qobject_cast<QWidget *>(parent));
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
+    scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
 }
 
 void MenuHandler::menuTriggered(QAction* action) {
@@ -24,6 +25,8 @@ void MenuHandler::menuTriggered(QAction* action) {
         mainWindow->close();
     } else if(action->text() == "About") {
         aboutDialog->show();
+    } else if(action->text() == "Edit/Create") {
+        scriptEditDialog->show();
     } else if(action->text() == "User Guide") {
         QDesktopServices::openUrl(QUrl("file:///" +
             QDir::currentPath() + "/docs/index.html", QUrl::TolerantMode));
@@ -37,5 +40,6 @@ MenuHandler::~MenuHandler() {
     delete highlightDialog;
     delete macroDialog;
     delete aboutDialog;
+    delete scriptEditDialog;
 }
 

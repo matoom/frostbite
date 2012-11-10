@@ -69,6 +69,7 @@ private:
     void initGroupSelect();
     void initTimerActionSelect();
     void initContextMenu();
+    void setBackground();
     void updateControls(QListWidgetItem*);
     void clearControls();
     void updateAlertControl(bool, QString);

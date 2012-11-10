@@ -14,8 +14,8 @@
    <string>The Frostbite Client</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="toolbar.qrc">
-    <normaloff>:/images/frost.png</normaloff>:/images/frost.png</iconset>
+   <iconset resource="window.qrc">
+    <normaloff>:/window/images/shield.png</normaloff>:/window/images/shield.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#mainToolBar {
@@ -168,9 +168,9 @@ QDialogButtonBox {
     <property name="separatorsCollapsible">
      <bool>false</bool>
     </property>
+    <addaction name="actionAppearance"/>
     <addaction name="actionText_Highlight"/>
     <addaction name="actionMacros"/>
-    <addaction name="actionAppearance"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -181,12 +181,19 @@ QDialogButtonBox {
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAbout"/>
     <addaction name="actionReference_Manual"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuScript">
+    <property name="title">
+     <string>Script</string>
+    </property>
+    <addaction name="actionEdit"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuScript"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -276,10 +283,14 @@ QDialogButtonBox {
     <string>User Guide</string>
    </property>
   </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit/Create</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="toolbar.qrc"/>
   <include location="window.qrc"/>
  </resources>
  <connections/>

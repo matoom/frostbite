@@ -29,13 +29,22 @@ void MainWindow::appSetup() {
     /* load client window state */
     settings = ClientSettings::Instance();
     restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
-    //restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
+    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
 
-    /* start maximized */
-    setWindowState(Qt::WindowMaximized);
+    /* start maximized // fullscreen */
+    //setWindowState(Qt::WindowFullScreen);
+    //setWindowState(Qt::WindowMaximized);
 
     /* set cleanlooks as base style */
     QApplication::setStyle("cleanlooks");
+}
+
+void MainWindow::toggleFullScreen() {
+    setWindowState(Qt::WindowFullScreen);
+}
+
+void MainWindow::toggleMaximized() {
+    setWindowState(Qt::WindowMaximized);
 }
 
 void MainWindow::initSettings() {
@@ -43,14 +52,15 @@ void MainWindow::initSettings() {
         DEFAULT_MAIN_BACKGROUND).value<QColor>();
 
     /* set centralWidget background color to black */
+    /* background for gamewindow is transparent on navi collage */
     QPalette palette = ui->centralWidget->palette();
     palette.setColor(QPalette::Window, color);
     ui->centralWidget->setPalette(palette);
 
     /* set gameWindow background to transparent to show compass */
-    palette = windowManager->getGameWindow()->palette();
+    /*palette = windowManager->getGameWindow()->palette();
     palette.setColor(QPalette::Base, Qt::transparent);
-    windowManager->getGameWindow()->viewport()->setPalette(palette);
+    windowManager->getGameWindow()->viewport()->setPalette(palette);*/
 
     /* set focus to command line at startup */
     cmdLine->setFocus();
@@ -157,7 +167,7 @@ void MainWindow::connectEnabled(bool enabled) {
 void MainWindow::closeEvent(QCloseEvent *event){
     /* save client window state */
     settings->setParameter("MainWindow/state", saveState());
-    //settings->setParameter("MainWindow/geometry", saveGeometry());
+    settings->setParameter("MainWindow/geometry", saveGeometry());
 
     /* terminate if script running at exit */
     scriptService->terminateScript();

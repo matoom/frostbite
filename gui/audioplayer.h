@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QDir>
 #include <QSound>
+#include <QDebug>
 
 class AudioPlayer : public QObject {
     Q_OBJECT

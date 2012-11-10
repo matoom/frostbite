@@ -55,6 +55,8 @@ public:
     void setMainTitle(QString);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
+    void toggleFullScreen();
+    void toggleMaximized();
 
     WindowManager* getWindowManager();
     ToolbarManager* getToolbarManager();

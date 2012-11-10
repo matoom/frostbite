@@ -10,6 +10,10 @@ h1 {
     font-family: "M+2pheavy", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+header {
+    margin-left: -60px;
+}
+
 header h2 {
     font-size: 12px;
     margin-bottom: 0.5em;
@@ -17,6 +21,10 @@ header h2 {
     font-style: italic;
     font-weight: normal;
     color: rgb(85, 85, 85);
+}
+
+header img {
+    float: left;
 }
 
 .contents_head {

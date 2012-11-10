@@ -1,13 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/axe.png</file>
-        <file>images/bow.png</file>
-        <file>images/shield.png</file>
-        <file>images/sword.png</file>
-        <file>images/bag.png</file>
-        <file>images/xsword.png</file>
-        <file>images/xshield.png</file>
-        <file>images/xbow.png</file>
         <file>images/frost.png</file>
         <file>images/bleeding.png</file>
         <file>images/stars.png</file>
@@ -40,5 +32,7 @@
         <file>images/vitals_frame.png</file>
         <file>images/frame_bg.png</file>
         <file>images/web.png</file>
+        <file>images/fullscreen_exit.png</file>
+        <file>images/fullscreen.png</file>
     </qresource>
 </RCC>

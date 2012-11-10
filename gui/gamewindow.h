@@ -1,7 +1,7 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QMouseEvent>
 #include <QResizeEvent>
 
@@ -13,30 +13,36 @@
 class MainWindow;
 class WindowManager;
 
-class GameWindow : public QTextEdit {
+class GameWindow : public QPlainTextEdit {
     Q_OBJECT
 
 public:
     explicit GameWindow(QWidget *parent = 0);
+    ~GameWindow();
 
 private:
-    void contextMenuEvent(QContextMenuEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent  *event);
-    void wheelEvent(QWheelEvent  *event);
+    void contextMenuEvent(QContextMenuEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
-    void copySelected();
     void loadSettings();
+    void buildContextMenu();
+
+    void showEvent(QShowEvent*);
 
     MainWindow* mainWindow;
     WindowManager* windowManager;
     ClientSettings* settings;
 
+    QAction* copyAct;
+    QAction* selectAct;
+    QMenu* menu;
+
 signals:
 
 private slots:
     void adjustRowMargin();
-
+    void copySelected();
+    void enableCopy(bool);
 };
 
 #endif // GAMEWINDOW_H

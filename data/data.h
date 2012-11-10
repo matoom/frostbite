@@ -18,7 +18,7 @@ public:
     Data();
 
     /* exp */
-    static const int expX = 100;
+    static const int expX = 50;
     static const int expY = 3;
     static const int expZ = 18;
 

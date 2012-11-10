@@ -2,7 +2,7 @@
 
 WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    genericWindow = new GenericWindow(parent);
+    genericWindowFactory = new GenericWindowFactory(parent);
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
     clientSettings = ClientSettings::Instance();
@@ -10,12 +10,13 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     settings = HighlightSettings::Instance();
 }
 
-QTextEdit* WindowManager::getGameWindow() {
+QPlainTextEdit* WindowManager::getGameWindow() {
     return this->gameWindow;
 }
 
-QString WindowManager::getColor(QString name, QString defaultValue) {
-    return settings->getSingleParameter("GeneralHighlight/" + name + "/color", defaultValue).value<QColor>().name();
+QString WindowManager::textColor(QString name, QString defaultValue) {
+    return settings->getSingleParameter(
+        "GeneralHighlight/" + name + "/color", defaultValue).value<QColor>().name();
 }
 
 void WindowManager::setGameWindowFont(QFont font) {
@@ -23,49 +24,60 @@ void WindowManager::setGameWindowFont(QFont font) {
 }
 
 void WindowManager::setGameWindowFontColor(QColor color) {
-    QPalette palette = gameWindow->palette();
-    palette.setColor(QPalette::Text, color);
-    gameWindow->setPalette(palette);
+    QPalette p = gameWindow->viewport()->palette();
+    p.setColor(QPalette::Text, color);
+
+    gameWindow->viewport()->setPalette(p);    
 }
 
-void WindowManager::setDockColor(QColor backgroundColor, QColor fontColor) {    
+void WindowManager::setDockFontColor(QColor fontColor) {
+    QPalette p;
+    foreach(QDockWidget* dock, dockWindows) {        
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Text, fontColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+    }
+}
+
+void WindowManager::setDockBackground(QColor backgroundColor) {
+    QPalette p;
     foreach(QDockWidget* dock, dockWindows) {
-        dock->setStyleSheet(QString("QTextEdit { background: %1;"
-            "color: %2; border: 2px inset #b5b5b5;}").arg(backgroundColor.name(), fontColor.name()));
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Base, backgroundColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
     }
 }
 
 void WindowManager::setDockFont(QFont font) {    
     foreach(QDockWidget* dock, dockWindows) {
-        ((QTextEdit*)dock->widget())->setFont(font);
+        ((QPlainTextEdit*)dock->widget())->setFont(font);
     }
 }
 
 void WindowManager::updateWindowStyle() {
-    QString style = "#_BODY {}"
-        "#_SPEECH {color: " + getColor(SPEECH, SPEECH_COLOR_HEX) + "; /*font-family: Consolas;*/}"
-        "#_BONUS {color: " + getColor(BONUS, BONUS_COLOR_HEX) + "; /*font-family: Consolas;*/}"
-        "#_PENALTY {color: " + getColor(PENALTY, PENALTY_COLOR_HEX) + "; /*font-family: Consolas;*/}"
-        "#_THINKING {color: " + getColor(THINKING, THINKING_COLOR_HEX) + "; /*font-family: Consolas;*/}"
-        "#_ROOM_NAME {color: " + getColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + "; /*font-family: Consolas;*/}"
-        "#_BOLD {color: " + getColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + "; /*font-family: Consolas;*/}";
+    QString style = "#_SPEECH {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}"
+        "#_BONUS {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}"
+        "#_PENALTY {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";}"
+        "#_THINKING {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}"
+        "#_ROOM_NAME {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}"
+        "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}";
 
     foreach(QDockWidget* dock, dockWindows) {
-        ((QTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
+        ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
     }
 
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
 
 void WindowManager::loadWindows() {                
-    gameWindow = (QTextEdit*)new GameWindow(mainWindow);
+    gameWindow = (QPlainTextEdit*)new GameWindow(mainWindow);
     mainWindow->addWidgetMainLayout(gameWindow);
 
-    roomWindow = genericWindow->createWindow("Room");
+    roomWindow = genericWindowFactory->createWindow("Room");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, roomWindow);
     dockWindows << roomWindow;
 
-    //qDebug() << ((QTextEdit*)roomWindow->widget())->toPlainText();
+    //qDebug() << ((QPlainTextEdit*)roomWindow->widget())->toPlainText();
 
     /*QSizePolicy policy = roomWindow->sizePolicy();
     policy.setHorizontalPolicy(QSizePolicy::Fixed);
@@ -73,24 +85,24 @@ void WindowManager::loadWindows() {
 
     //roomWindow->size();
 
-    arrivalsWindow = genericWindow->createWindow("Arrivals");
+    arrivalsWindow = genericWindowFactory->createWindow("Arrivals");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, arrivalsWindow);
     dockWindows << arrivalsWindow;
 
-    deathsWindow = genericWindow->createWindow("Deaths");
+    deathsWindow = genericWindowFactory->createWindow("Deaths");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, deathsWindow);
     dockWindows << deathsWindow;
 
-    thoughtsWindow = genericWindow->createWindow("Thoughts");
+    thoughtsWindow = genericWindowFactory->createWindow("Thoughts");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, thoughtsWindow);
     dockWindows << thoughtsWindow;
     connect(thoughtsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(thoughtsVisibility(bool)));
 
-    expWindow = genericWindow->createWindow("Experience");
+    expWindow = genericWindowFactory->createWindow("Experience");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
     dockWindows << expWindow;
 
-    conversationsWindow = genericWindow->createWindow("Conversations");
+    conversationsWindow = genericWindowFactory->createWindow("Conversations");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
     dockWindows << conversationsWindow;
 
@@ -149,7 +161,6 @@ void WindowManager::scriptRunning(bool state) {
 void WindowManager::paintNavigationDisplay() {
     QPixmap image = navigationDisplay->paint();
 
-    QPalette palette;
     QPixmap collage(gameWindow->width(), gameWindow->height());
     collage.fill(Qt::transparent);
 
@@ -162,12 +173,13 @@ void WindowManager::paintNavigationDisplay() {
     painter.drawPixmap(QRectF(x, y, image.width(), image.height()), image,
                        QRectF(0, 0, image.width(), image.height()));
 
+    QPalette palette = gameWindow->viewport()->palette();
     palette.setBrush(QPalette::Base, QBrush(collage));
     gameWindow->viewport()->setPalette(palette);
 }
 
 void WindowManager::updateExpWindow() {
-    QTextEdit *text = (QTextEdit*)expWindow->widget();
+    QPlainTextEdit *text = (QPlainTextEdit*)expWindow->widget();
     QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
@@ -176,42 +188,42 @@ void WindowManager::updateExpWindow() {
     }
 
     text->clear();
-    text->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + expString + "</span>");
+    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + expString + "</SPAN>");
 }
 
 void WindowManager::updateConversationsWindow(QString conversationText) {
-    QTextEdit *text = (QTextEdit*)conversationsWindow->widget();
-    text->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + conversationText.trimmed() + "</span>");
+    QPlainTextEdit *text = (QPlainTextEdit*)conversationsWindow->widget();
+    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + conversationText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
-    QTextEdit *text = (QTextEdit*)deathsWindow->widget();
-    text->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + deathText.trimmed() + "</span>");
+    QPlainTextEdit *text = (QPlainTextEdit*)deathsWindow->widget();
+    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + deathText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateThoughtsWindow(QString thoughtText) {
-    QTextEdit *text = (QTextEdit*)thoughtsWindow->widget();
-    text->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + thoughtText.trimmed() + "</span>");
+    QPlainTextEdit *text = (QPlainTextEdit*)thoughtsWindow->widget();
+    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + thoughtText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateArrivalsWindow(QString arrivalText) {
-    QTextEdit *text = (QTextEdit*)arrivalsWindow->widget();
-    text->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + arrivalText.trimmed() + "</span>");
+    QPlainTextEdit *text = (QPlainTextEdit*)arrivalsWindow->widget();
+    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + arrivalText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateRoomWindow() {
-    QTextEdit *text = (QTextEdit*)roomWindow->widget();
+    QPlainTextEdit *text = (QPlainTextEdit*)roomWindow->widget();
     RoomModel* room = gameDataContainer->getRoom();    
 
-    QString roomText = "<span style=\"white-space:pre;\" id=\"_BODY\">";
+    QString roomText = "<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">";
     roomText += highlighter->highlight(room->getDesc() + "\n");
     roomText += room->getObjs().isEmpty() ? "" : highlighter->highlight(room->getObjs() + "\n");
     roomText += room->getPlayers().isEmpty() ? "" : highlighter->highlight(room->getPlayers() + "\n");
     roomText += room->getExits().isEmpty() ? "" : highlighter->highlight(room->getExits() + "\n");
-    roomText += "</span>";
+    roomText += "</SPAN>";
 
     text->clear();
-    text->append(roomText);
+    text->appendHtml(roomText);
 }
 
 void WindowManager::updateRoomWindowTitle(QString title) {
@@ -228,15 +240,15 @@ void WindowManager::writePromptGameWindow(QByteArray text) {
         cursor.select(QTextCursor::BlockUnderCursor);
         cursor.removeSelectedText();
     }
-    gameWindow->append("<span style=\"white-space:pre;\" id=\"_BODY\">" + text + "</span>");
+    gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {
-    gameWindow->append(text);
+    gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
 }
 
 WindowManager::~WindowManager() {
-    delete genericWindow;
+    delete genericWindowFactory;
     delete gameWindow;
     delete navigationDisplay;
     delete roomWindow;

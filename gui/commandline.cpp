@@ -58,7 +58,7 @@ void CommandLine::focus() {
 }
 
 void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay) {
-    QPalette pal;
+    QPalette pal = this->palette();
 
     QPixmap collage(this->width(), this->height());
     collage.fill(Qt::white);
@@ -108,7 +108,7 @@ void CommandLine::writeCommand(QString text) {
         cursor.movePosition(QTextCursor::EndOfLine);
         cursor.insertText(text);
     } else {
-        windowManager->getGameWindow()->append(text);
+        windowManager->getGameWindow()->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
     }
 }
 

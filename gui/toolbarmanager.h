@@ -11,11 +11,13 @@
 #include <quickbuttondisplay.h>
 #include <quickbuttoneditdialog.h>
 #include <gamedatacontainer.h>
+#include <fullscreenbutton.h>
 
 class MainWindow;
 class QuickButtonDisplay;
 class QuickButtonEditDialog;
 class GameDataContainer;
+class FullscreenButton;
 
 class ToolbarManager : public QObject {
     Q_OBJECT
@@ -23,6 +25,8 @@ class ToolbarManager : public QObject {
 public:
     ToolbarManager(QObject *parent = 0);
     ~ToolbarManager();
+
+    MainWindow* getMainWindow();
 
     void loadToolbar();
     void updateVitals(QString name, QString value);    
@@ -48,6 +52,8 @@ private:
     WieldIndicator* wieldLeft;
     WieldIndicator* wieldRight;
     SpellIndicator* spell;
+
+    void addFullScreenButton();
 
 public slots:
     void quickButtonAction();

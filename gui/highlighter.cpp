@@ -10,17 +10,17 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
 
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
-        QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");
+        QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");       
 
         HighlightSettingsEntry entry;
-        foreach(entry, highlightList){
+        foreach(entry, highlightList) {
             // match whole or partial words
             QRegExp rx(QRegExp("\\b" + entry.value + "\\b"));
             if(entry.options.at(1)) {
                 rx.setPattern(entry.value);
             }
 
-            int indexStart = text.indexOf(rx);
+            int indexStart = text.indexOf(rx);                        
             if(indexStart != -1) {
                 QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
                 QString endTag = "</span>";

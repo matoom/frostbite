@@ -4,7 +4,7 @@
 #include <QDockWidget>
 
 #include <mainwindow.h>
-#include <genericwindow.h>
+#include <genericwindowfactory.h>
 #include <gamewindow.h>
 #include <navigationdisplay.h>
 #include <gamedatacontainer.h>
@@ -13,7 +13,7 @@
 
 class MainWindow;
 class GameWindow;
-class GenericWindow;
+class GenericWindowFactory;
 class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
@@ -27,7 +27,7 @@ public:
     ~WindowManager();
 
     void loadWindows();
-    QTextEdit* getGameWindow();
+    QPlainTextEdit* getGameWindow();
     void paintNavigationDisplay();
     void writePromptGameWindow(QByteArray);
     void writeGameWindow(QByteArray);
@@ -43,8 +43,9 @@ public:
     void updateWindowStyle();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
-    void setDockFont(QFont);
-    void setDockColor(QColor, QColor);    
+    void setDockFontColor(QColor);
+    void setDockBackground(QColor);
+    void setDockFont(QFont font);
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -61,9 +62,9 @@ private slots:
     void thoughtsVisibility(bool);
 
 private:
-    GenericWindow* genericWindow;
+    GenericWindowFactory* genericWindowFactory;
     MainWindow* mainWindow;
-    QTextEdit* gameWindow;
+    QPlainTextEdit* gameWindow;
     NavigationDisplay *navigationDisplay;
     GameDataContainer* gameDataContainer;
     ClientSettings* clientSettings;
@@ -78,7 +79,7 @@ private:
     QDockWidget* conversationsWindow;
     QList<QDockWidget*> dockWindows;
 
-    QString getColor(QString, QString);
+    QString textColor(QString, QString);
 };
 
 #endif // WINDOWMANAGER_H

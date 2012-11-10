@@ -44,9 +44,9 @@ private:
     void initContextMenu();
     void loadSettings();
     void prepareList();
+    void setBackground();
     void updateControls(QListWidgetItem*);
     void clearControls();
-    //void updateListColor(QString key);
     void registerChange(QString currentItemKey);
     void updateAlertSettings(QString key, QVariant value);
     void initFileSelect();

@@ -49,10 +49,7 @@ QToolButton* AppearanceDialog::selectButton(int width, int height, QString toolT
     button->setToolButtonStyle(Qt::ToolButtonTextOnly);
     button->setMenu(new QMenu());
     button->setMinimumWidth(width);
-    //button->setMaximumWidth(height);
-
     button->setMinimumHeight(height);
-    //button->setMaximumHeight(height);
 
     return button;
 }
@@ -130,8 +127,9 @@ void AppearanceDialog::reset() {
     windowManager->setGameWindowFont(mainFontValue);
     windowManager->setGameWindowFontColor(mainFontColorValue);
 
-    windowManager->setDockColor(dockBackgroundValue, dockFontColorValue);
+    windowManager->setDockBackground(dockBackgroundValue);
     windowManager->setDockFont(dockFontValue);
+    windowManager->setDockFontColor(dockFontColorValue);
 }
 
 void AppearanceDialog::selectMainBg() {
@@ -176,7 +174,7 @@ void AppearanceDialog::selectDockBg() {
     if(dockBackgroundValue.isValid()) {
         dockBgSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                       "border: 1px solid #C0C0C0; }").arg(dockBackgroundValue.name()));
-        windowManager->setDockColor(dockBackgroundValue, dockFontColorValue);
+        windowManager->setDockBackground(dockBackgroundValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/background", dockBackgroundValue);
@@ -201,7 +199,7 @@ void AppearanceDialog::selectDockFontColor() {
     if(dockFontColorValue.isValid()) {
         dockFontColorSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                              "border: 1px solid #C0C0C0; }").arg(dockFontColorValue.name()));
-        windowManager->setDockColor(dockBackgroundValue, dockFontColorValue);
+        windowManager->setDockFontColor(dockFontColorValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/fontColor", dockFontColorValue);

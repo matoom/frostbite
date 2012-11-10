@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     navigationdisplay.cpp \
     roundtimedisplay.cpp \
     gamewindow.cpp \
-    genericwindow.cpp \
     vitalsindicator.cpp \
     statusindicator.cpp \
     wieldindicator.cpp \
@@ -44,7 +43,6 @@ SOURCES += main.cpp\
     eauthservice.cpp \
     script.cpp \
     scriptservice.cpp \
-    expmodel.cpp \
     gamedatacontainer.cpp \
     roommodel.cpp \
     wieldmodel.cpp \
@@ -62,7 +60,11 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     connectwizard.cpp \
     wizardpage.cpp \
-    dataservice.cpp
+    dataservice.cpp \
+    scripteditdialog.cpp \
+    genericwindowfactory.cpp \
+    genericwindow.cpp \
+    fullscreenbutton.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -74,7 +76,6 @@ HEADERS  += mainwindow.h \
     navigationdefines.h \
     roundtimedisplay.h \
     gamewindow.h \
-    genericwindow.h \
     vitalsindicator.h \
     statusindicator.h \
     wieldindicator.h \
@@ -97,7 +98,6 @@ HEADERS  += mainwindow.h \
     eauthservice.h \
     script.h \
     scriptservice.h \
-    expmodel.h \
     gamedatacontainer.h \
     roommodel.h \
     wieldmodel.h \
@@ -117,7 +117,11 @@ HEADERS  += mainwindow.h \
     aboutdialog.h \
     connectwizard.h \
     wizardpage.h \
-    dataservice.h
+    dataservice.h \
+    scripteditdialog.h \
+    genericwindowfactory.h \
+    genericwindow.h \
+    fullscreenbutton.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \
@@ -127,7 +131,8 @@ FORMS    += mainwindow.ui \
     quickbuttoneditdialog.ui \
     appearancedialog.ui \
     aboutdialog.ui \
-    connectwizard.ui
+    connectwizard.ui \
+    scripteditdialog.ui
 
 RESOURCES += \
     toolbar.qrc \

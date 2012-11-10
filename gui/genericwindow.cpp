@@ -1,43 +1,59 @@
 #include "genericwindow.h"
 
-GenericWindow::GenericWindow(QObject *parent) : QObject(parent) {
-    mw = (MainWindow*)parent;
+GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
+    mainWindow = (MainWindow*)parent;
     settings = ClientSettings::Instance();
+
+    this->buildContextMenu();
+    this->loadSettings();
+
+    this->setFocusPolicy(Qt::NoFocus);
+    this->setReadOnly(true);
+    this->document()->setMaximumBlockCount(1000);
+
+    connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 }
 
-QPalette GenericWindow::palette() {    
-    QPalette palette = QPalette();
+void GenericWindow::loadSettings() {
+    QFont font = settings->getParameter("GameWindow/font",
+        QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE)).value<QFont>();
 
-    QColor textBackground = settings->getParameter("DockWindow/background",
-        DEFAULT_DOCK_BACKGROUND).value<QColor>();
-    palette.setColor(QPalette::Base, textBackground);
-
-    QColor textColor = settings->getParameter("DockWindow/fontColor",
-        DEFAULT_DOCK_FONT_COLOR).value<QColor>();
-    palette.setColor(QPalette::Text, textColor);
-
-    return palette;
+    this->setFont(font);
 }
 
-QTextEdit* GenericWindow::textBox(QDockWidget *dock, QString name) {
-    QFont font = settings->getParameter("DockWindow/font",
-        QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
+void GenericWindow::buildContextMenu() {
+    menu = new QMenu(this);
 
-    QTextEdit *textEdit = new QTextEdit(dock);
-    textEdit->setReadOnly(true);
-    textEdit->setObjectName(name + "Text");
-    textEdit->setPalette(this->palette());        
-    textEdit->setFont(font);
-    //textEdit->setFocusPolicy(Qt::NoFocus);
+    copyAct = new QAction(tr("&Copy\t"), this);
+    menu->addAction(copyAct);
+    copyAct->setEnabled(false);
+    connect(copyAct, SIGNAL(triggered()), this, SLOT(copySelected()));
 
-    return textEdit;
+    menu->addSeparator();
+
+    selectAct = new QAction(tr("&Select All\t"), this);
+    menu->addAction(selectAct);
+    connect(selectAct, SIGNAL(triggered()), this, SLOT(selectAll()));
 }
 
-QDockWidget* GenericWindow::createWindow(const char* name) {
-    QDockWidget *dock = new QDockWidget(QObject::tr(name), mw);
-    dock->setObjectName(QObject::tr(name) + "Window");
-    dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
-    dock->setWidget(this->textBox(dock, name));
+void GenericWindow::contextMenuEvent(QContextMenuEvent* event) {
+    menu->exec(event->globalPos());
+}
 
-    return dock;
+void GenericWindow::enableCopy(bool enabled) {
+    copyAct->setEnabled(enabled);
+}
+
+void GenericWindow::copySelected() {
+    this->copy();
+
+    QTextCursor textCursor = this->textCursor();
+    textCursor.clearSelection();
+    this->setTextCursor(textCursor);
+}
+
+GenericWindow::~GenericWindow() {
+    delete copyAct;
+    delete selectAct;
+    delete menu;
 }

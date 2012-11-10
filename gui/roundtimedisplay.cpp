@@ -42,7 +42,7 @@ void RoundTimeDisplay::repaint() {
 
 void RoundTimeDisplay::paint(int seconds) {
     if(seconds < 1) {
-        QPalette pal;
+        QPalette pal = mainWindow->getCommandLine()->palette();
         pal.setBrush(QPalette::Base, Qt::white);
         mainWindow->getCommandLine()->setPalette(pal);
 

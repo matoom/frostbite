@@ -147,6 +147,7 @@ void ConnectWizard::addCharacterList(QString id, QString name) {
 void ConnectWizard::setSession(QString sessionKey) {
     this->sessionKey = sessionKey;
     this->button(QWizard::FinishButton)->setEnabled(true);
+    this->button(QWizard::FinishButton)->setFocus();
     ui->finishLabel->setText("Press finish to connect with " + ui->characterBox->currentText() + ".");
 }
 

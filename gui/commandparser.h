@@ -6,7 +6,6 @@
 
 #include <mainwindow.h>
 #include <gamedatacontainer.h>
-#include <expmodel.h>
 #include <highlighter.h>
 
 class MainWindow;

@@ -1,0 +1,6 @@
+open -> FrostBite.pro
+load user env settings -> no
+-> select desktop project
+-> build for debug target
+in projects tab -> add custom executable
+-> find exe in debug build

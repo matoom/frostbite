@@ -65,7 +65,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Utility Windows</string>
+        <string>Dock Windows</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
