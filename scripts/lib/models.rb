@@ -1,5 +1,15 @@
 require "#{File.dirname(__FILE__)}/data.rb"
 
+class Rt
+  # Roundtime
+  #
+  # @param
+  # @return [int] roundtime value
+  def self.value
+    GameData.getRt().to_i
+  end
+end
+
 class Inventory
   # Inventory items
   #
@@ -275,8 +285,6 @@ class CommandThread
         $_data_queue << line
       elsif line.start_with? "exit#"
         Kernel::abort
-      elsif line.start_with? "end#"
-        break
       end
       sleep 0.01
     end

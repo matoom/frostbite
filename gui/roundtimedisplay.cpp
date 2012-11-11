@@ -2,6 +2,7 @@
 
 RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
+    gameDataContainer = GameDataContainer::Instance();
 
     timer = new QTimer;
     timer->setInterval(1000);
@@ -13,6 +14,7 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
 
 void RoundTimeDisplay::setTimer(int seconds) {
     time = seconds;
+    gameDataContainer->setRt(time);
 
     if(!timer->isActive()) {
         timer->start();
@@ -26,6 +28,8 @@ void RoundTimeDisplay::setTimer(int seconds) {
 
 void RoundTimeDisplay::intervalEvent() {
     time--;
+
+    gameDataContainer->setRt(time);
 
     if(time < 1) {
         timer->stop();

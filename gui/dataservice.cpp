@@ -53,6 +53,8 @@ void DataService::loadDataLib() {
     setRoomObjects = (Set_s)dataLib->resolve("setRoomObjects");
     setRoomPlayers = (Set_s)dataLib->resolve("setRoomPlayers");
     setRoomExits = (Set_s)dataLib->resolve("setRoomExits");
+
+    setRt = (Set_i)dataLib->resolve("setRt");
 }
 
 DataService::~DataService() {

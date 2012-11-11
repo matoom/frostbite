@@ -41,7 +41,7 @@ void Script::sendMessage(QByteArray message) {
 
 void Script::displayOutputMsg() {
     script_proc->setReadChannel(QProcess::StandardOutput);
-    QByteArray msg = script_proc->readAll();
+    QByteArray msg = script_proc->readAll();        
     scriptService->processCommand(msg);
 
     qDebug() << msg.data();
@@ -61,6 +61,8 @@ void Script::start() {
 }
 
 void Script::finish(int exit) {
+    script_proc->closeWriteChannel();
+
     if(exit == 0) {
         scriptService->scriptFinished();
     }

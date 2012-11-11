@@ -13,7 +13,7 @@ STDOUT.sync = true
 
 $_data_queue = []
 
-@current_rt = 0
+@match_rt = 0
 
 @_command_thread = Thread.new { CommandThread.new.run }
 
@@ -26,15 +26,10 @@ $_data_queue = []
 #   wait_for_roundtime
 #   put unhide
 def wait_for_roundtime
-  #$_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/^Roundtime:/)
-        total_rt = $_data_queue.at(i)[/\d+/].to_i
-        total_rt.downto(0) do |current_rt|
-          @current_rt = current_rt
-          sleep 1
-        end
+        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
         return
       end
       $_data_queue.delete_at(i)
@@ -48,7 +43,6 @@ end
 # @param [String] pattern regex pattern.
 # @return [void]
 def wait_for(pattern)
-  #$_data_queue.clear
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(pattern)
@@ -73,7 +67,6 @@ end
 #     echo "next"
 #   end
 def match_wait(pattern)
-  #$_data_queue.clear
   match_found = false
   match = :not_found
 
@@ -93,7 +86,7 @@ def match_wait(pattern)
       end
 
       if $_data_queue.at(i).match(/^Roundtime:/)
-        sleep $_data_queue.at(i)[/\d+/].to_i
+        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
       end
 
       if match_found
@@ -128,7 +121,6 @@ end
 #
 #   frame_end
 def match_wait_goto(pattern)
-  #$_data_queue.clear
   match_found = false
   match = :not_found
 
@@ -148,7 +140,7 @@ def match_wait_goto(pattern)
       end
 
       if $_data_queue.at(i).match(/^Roundtime:/)
-        sleep $_data_queue.at(i)[/\d+/].to_i
+        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
       end
 
       if match_found
@@ -170,7 +162,6 @@ end
 def put(value)
   $_data_queue.clear
   puts "put#" + value.to_s
-  STDOUT.flush
 end
 
 # Sends a command to client and waits for room title.
@@ -184,6 +175,7 @@ end
 def move(value)
   put value
   wait_for(/^\[.*?\]$/)
+  wait()
 end
 
 # Waits for a prompt character after a command is issued.
@@ -209,7 +201,6 @@ end
 #   echo 1
 def echo(value)
   puts "echo#" + value.to_s
-  STDOUT.flush
 end
 
 # Pauses for given time.
@@ -226,13 +217,12 @@ end
 # @param
 # @return [Integer] current round time value
 def get_match_rt
-  @current_rt
+  @match_rt
 end
 
 # @api private
 def end_command_thread
   puts "end#"
-  STDOUT.flush
 end
 
 # @api private
@@ -241,20 +231,36 @@ def exit
   Kernel::exit
 end
 
+# @api private
+def sleep_for_rt(rt)
+  rt.downto(0) do |current_rt|
+    @match_rt = current_rt
+    sleep 1
+  end
+end
+
 at_exit do
   if defined? finally_do
     unless @_command_thread.alive?
       @_command_thread = Thread.new { CommandThread.new.run }
     end
-    sleep get_match_rt
+    sleep Rt::value
     finally_do
     end_command_thread
-    #Kernel::exit!
   end
 end
 
-#load script file here
+# wait for round time
+sleep Rt::value
+
+#enable labels
+frame_start
+
+# load script file here
 require @_file
 
-#end command thread after finished
+frame_end
+
+# end command thread after finished
 end_command_thread
+

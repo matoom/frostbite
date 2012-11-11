@@ -108,7 +108,7 @@ void CommandLine::writeCommand(QString text) {
         cursor.movePosition(QTextCursor::EndOfLine);
         cursor.insertText(text);
     } else {
-        windowManager->getGameWindow()->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
+        windowManager->getGameWindow()->appendHtml(text);
     }
 }
 

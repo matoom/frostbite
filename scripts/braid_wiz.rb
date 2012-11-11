@@ -20,9 +20,6 @@ def finally_do
   end
 end
 
-# enabling goto/labels
-frame_start
-
 label(:start){
   put "exp mech"
   match = { :end => ["% mind lock", "% nearly locked"],
@@ -33,7 +30,6 @@ label(:start){
 label(:forage) {
   pause 0.5
   put "forage #{$args.join(" ")}"
-
   match = { :braid => ["You manage to find"] }
   match_wait_goto match
 }
@@ -49,5 +45,3 @@ label(:braid) {
 label(:end) {
 
 }
-
-frame_end

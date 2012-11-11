@@ -54,6 +54,8 @@ public:
     void setSpirit(int);
     void setFatigue(int);
 
+    void setRt(int rt);
+
     QString getExpField(QString name);
     QHash<QString, QString> getExp();
     void removeExpField(QString);

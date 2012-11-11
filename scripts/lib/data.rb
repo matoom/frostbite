@@ -40,4 +40,6 @@ module GameData
   extern 'unsigned char getWebbed()'
   extern 'unsigned char getJoined()'
   extern 'unsigned char getDead()'
+
+  extern 'int getRt()'
 end

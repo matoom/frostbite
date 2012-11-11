@@ -38,6 +38,7 @@ char roomObjects[Data::roomObjectsX] SHARED = "";
 char roomPlayers[Data::roomPlayersX] SHARED = "";
 char roomExits[Data::roomExitsX] SHARED = "";
 
+int rt SHARED = 0;
 #else
 /* other platforms - gcc ??*/
 /*int nProcesses __attribute__((section(".GLOBALS")) = 0;
@@ -344,4 +345,12 @@ extern "C" EXPORT_FUNCTION char* getRoomExits() {
 
 extern "C" EXPORT_FUNCTION void setRoomExits(const char exits[]) {
     strcpy(roomExits, exits);
+}
+
+extern "C" EXPORT_FUNCTION int getRt() {
+    return rt;
+}
+
+extern "C" EXPORT_FUNCTION void setRt(int _rt) {
+    rt = _rt;
 }

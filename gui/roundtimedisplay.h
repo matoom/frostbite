@@ -2,8 +2,10 @@
 #define ROUNDTIMEDISPLAY_H
 
 #include <mainwindow.h>
+#include <gamedatacontainer.h>
 
 class MainWindow;
+class GameDataContainer;
 
 class RoundTimeDisplay : public QObject {
     Q_OBJECT
@@ -18,7 +20,8 @@ public:
     QTimer *timer;
 
 private:
-    MainWindow *mainWindow;
+    MainWindow* mainWindow;
+    GameDataContainer* gameDataContainer;
     int time;    
 
     void paint(int);

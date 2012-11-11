@@ -692,3 +692,9 @@ The Dwarven driver says, "I'm leaving shortly, returning to the ferry to Riverha
 <pushStream id="talk"/><preset id='speech'>Boromir asks</preset>, "Safe trip for me or for you?"
 <popStream/><preset id='speech'>Boromir asks</preset>, "Safe trip for me or for you?"
 <prompt time="1351415180">&gt;</prompt>
+<pushStream id="whispers"/><preset id="whisper">Frodo whispers to your group,</preset> "This the other part?"
+<popStream/><preset id="whisper">Frodo whispers to your group,</preset> "This the other part?"
+<prompt time="1352573830">&gt;</prompt>
+<pushStream id="whispers"/><preset id="whisper">Smith whispers,</preset> "Settle down for an hour?"
+<popStream/><preset id="whisper">Smith whispers,</preset> "Settle down for an hour?"
+<prompt time="1352573791">&gt;</prompt>

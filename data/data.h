@@ -102,6 +102,10 @@ public:
     char* getRoomExits();
     void setRoomExits(const char[]);
 
+    /* roundtime */
+    int getRt();
+    void setRt(int);
+
 private:
     int getLastFreeIndex();
     void setExp(int, const char[], const char[], const char[]);

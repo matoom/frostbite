@@ -56,10 +56,12 @@ void WindowManager::setDockFont(QFont font) {
 
 void WindowManager::updateWindowStyle() {
     QString style = "#_SPEECH {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}"
+        "#_WHISPER {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";}"
         "#_BONUS {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}"
         "#_PENALTY {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";}"
         "#_THINKING {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}"
         "#_ROOM_NAME {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}"
+        "#_ECHO {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}"
         "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}";
 
     foreach(QDockWidget* dock, dockWindows) {
@@ -244,7 +246,7 @@ void WindowManager::writePromptGameWindow(QByteArray text) {
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {
-    gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
+    gameWindow->appendHtml(text);
 }
 
 WindowManager::~WindowManager() {

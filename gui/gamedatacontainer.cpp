@@ -193,3 +193,6 @@ void GameDataContainer::setFatigue(int fatigue) {
     dataService->setFatigue(fatigue);
 }
 
+void GameDataContainer::setRt(int rt) {
+    dataService->setRt(rt);
+}

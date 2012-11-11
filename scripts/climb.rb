@@ -1,9 +1,10 @@
-path = ["go gate", "west", "west", "south", "south", "west", "west", "south", "west", "west", "west", "west", "west", "west",
-        "go bridge", "west", "west", "west", "west", "go gate", "climb wall", "south", "climb embrasure", "climb wall", "north",
-        "east", "climb break", "climb wall", "climb embrasure", "climb wall", "west", "climb embrasure", "go gate", "east",
-        "east", "east", "east", "east", "east", "east", "east", "south", "south", "south", "south", "south", "east", "east", "southeast",
-        "east", "east", "east", "east", "go gate", "climb wall", "north", "climb break", "climb wall", "climb embrasure", "climb wall",
-        "south", "climb embrasure", "go bushes", "north", "northeast", "north", "north", "up", "north", "north"]
+path = ["go gate", "w", "w", "s", "s", "w", "w", "s", "w", "w", "w", "w", "w", "w",
+        "go bridge", "w", "w", "w", "w", "go gate", "climb wall", "s", "climb embrasure",
+        "climb wall", "n", "e", "climb break", "climb wall", "climb embrasure", "climb wall",
+        "w", "climb embrasure", "go gate", "e", "e", "e", "e", "e", "e", "e", "e", "s", "s",
+        "s", "s", "s", "e", "e", "se", "e", "e", "e", "e", "go gate", "climb wall", "n",
+        "climb break", "climb wall", "climb embrasure", "climb wall", "s", "climb embrasure",
+        "go bushes", "n", "ne", "n", "n", "up", "n", "n"]
 
 100.times do
   exp = Exp::state "climbing"

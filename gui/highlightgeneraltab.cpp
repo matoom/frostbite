@@ -41,9 +41,11 @@ void HighlightGeneralTab::loadSettings() {
     highlightList.insert(ROOM_NAME, readSettings(ROOM_NAME, "[Room titles]", QColor(ROOM_NAME_COLOR_HEX)));
     highlightList.insert(GAME_MESSAGE, readSettings(GAME_MESSAGE, "Game Messages", QColor(GAME_MESSAGE_COLOR_HEX)));
     highlightList.insert(SPEECH, readSettings(SPEECH, "Someone says, ..", QColor(SPEECH_COLOR_HEX)));
+    highlightList.insert(WHISPER, readSettings(WHISPER, "Someone whispers, ..", QColor(WHISPER_COLOR_HEX)));
     highlightList.insert(THINKING, readSettings(THINKING, "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
     highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BOOST_COLOR_HEX)));
     highlightList.insert(PENALTY, readSettings(PENALTY, "Stat penalty", QColor(PENALTY_COLOR_HEX)));
+    highlightList.insert(ECHO, readSettings(ECHO, "Script echo", QColor(ECHO_COLOR_HEX)));
 }
 
 void HighlightGeneralTab::initContextMenu() {

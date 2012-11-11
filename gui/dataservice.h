@@ -50,6 +50,8 @@ public:
     Set_s setRoomPlayers;
     Set_s setRoomExits;
 
+    Set_i setRt;
+
 private:
     DataService(QObject *parent = 0);
     DataService(DataService const& copy);

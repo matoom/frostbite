@@ -79,7 +79,16 @@ bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
             QString speech = root.text().trimmed();
             speech.insert(speech.indexOf("\""), "</SPAN>");
             speech.prepend("<SPAN ID=\"_SPEECH\">");
-            windowManager->updateConversationsWindow(speech);
+            windowManager->updateConversationsWindow(speech +
+            " [" + QTime::currentTime().toString() + "]");
+        } else if(e.tagName() == "preset" && e.attribute("id") == "whisper") {
+            gameText += "<SPAN ID=\"_WHISPER\">" + e.text() + "</SPAN>";
+
+            QString whisper = root.text().trimmed();
+            whisper.insert(whisper.indexOf("\""), "</SPAN>");
+            whisper.prepend("<SPAN ID=\"_WHISPER\">");
+            windowManager->updateConversationsWindow(whisper +
+            " [" + QTime::currentTime().toString() + "]");
         }
     }
     return true;
@@ -189,15 +198,17 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             }
 
             if(e.attribute("id") == "logons") {
-                windowManager->updateArrivalsWindow(highlighter->highlight(root.text()));
+                windowManager->updateArrivalsWindow(highlighter->highlight(root.text() +
+                    " [" + QTime::currentTime().toString() + "]"));
             } else if(e.attribute("id") == "thoughts") {
                 QString thought = root.text().trimmed();
                 thought.insert(thought.indexOf("\""), "</SPAN>");
                 thought.prepend("<SPAN ID=\"_THINKING\">");
                 windowManager->updateThoughtsWindow(highlighter->highlight(thought +
-                    " [" + QTime::currentTime().toString() + "]\n"));
+                    " [" + QTime::currentTime().toString() + "]"));
             } else if(e.attribute("id") == "death") {
-                windowManager->updateDeathsWindow(highlighter->highlight(root.text()));
+                windowManager->updateDeathsWindow(highlighter->highlight(root.text() +
+                    " [" + QTime::currentTime().toString() + "]"));
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();
             } else if(e.attribute("id") == "inv") {

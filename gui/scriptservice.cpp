@@ -89,7 +89,8 @@ void ScriptService::processCommand(QByteArray msg) {
             if(line.startsWith("put#")) {
                 commandLine->writeCommand(line.mid(4).trimmed());
             } else if (line.startsWith("echo#")) {
-                windowManager->writeGameWindow(line.mid(5).trimmed());
+                windowManager->writeGameWindow("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_ECHO\">" +
+                    line.mid(5).trimmed() + "</SPAN>");
             } else if (line.startsWith("end#")) {
                 script->sendMessage("end#\n");
             }
