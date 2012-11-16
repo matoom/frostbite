@@ -91,3 +91,15 @@ li {
     line-height: 1.7em;
     font-family: "Droid Serif", Georgia, serif;
 }
+
+.folders {
+    font-size: 14px;
+}
+
+.folders img {
+   vertical-align: middle;
+}
+
+.gray {
+   color: gray;
+}

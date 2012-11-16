@@ -14,6 +14,7 @@ STDOUT.sync = true
 $_data_queue = []
 
 @match_rt = 0
+@match_rt_adjustment = 0
 
 @_command_thread = Thread.new { CommandThread.new.run }
 
@@ -174,8 +175,12 @@ end
 #   move go gate
 def move(value)
   put value
-  wait_for(/^\[.*?\]$/)
-  wait()
+  res = match_wait({:room => [/^\[.*?\]$/],
+                    :wait => ["...wait"]})
+  if res == :wait
+    pause 0.5
+    move value
+  end
 end
 
 # Waits for a prompt character after a command is issued.
@@ -211,6 +216,17 @@ def pause(value)
   sleep value
 end
 
+# Pauses for given time.
+#
+# @param [Integer, Float] value sleep time in seconds
+# @return [Void]
+
+def execute(name)
+  frame_start
+  load "#{Dir.pwd}/scripts/#{name}.rb"
+  frame_end
+end
+
 # Current match round time -- can be used in
 # secondary threads while main thread is stuck in round time
 #
@@ -233,6 +249,9 @@ end
 
 # @api private
 def sleep_for_rt(rt)
+  if rt > 0
+    rt = rt  - 1 + @match_rt_adjustment
+  end
   rt.downto(0) do |current_rt|
     @match_rt = current_rt
     sleep 1
