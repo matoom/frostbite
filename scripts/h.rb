@@ -1,3 +1,7 @@
+# desc: trains hiding, stalking and backstabbing for thieves
+# skill: only works for thieves cirlce 70+, pref min. hiding rt
+# run: hunting area
+
 @match_rt_adjustment = -1
 
 if !$args.first

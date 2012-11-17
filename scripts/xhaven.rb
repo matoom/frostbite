@@ -1,3 +1,7 @@
+# desc: travelling script from riverhaven to crossing
+# skill: 150+ in swimming
+# run: east gate, riverhaven
+
 if Room::title == "[Riverhaven, Stone Bridge]"
     execute "xfaldesu"
 end

@@ -1,3 +1,7 @@
+# desc: travelling from crossing to riverhaven
+# skill: 150+ in swimming
+# run: ne gate, crossing
+
 path = ["n", "n", "n", "ne", "ne", "n", "nw", "nw", "n", "n", "ne", "nw", "n", "n", "nw", "nw", "n", "n",
         "n", "ne", "ne", "ne", "e", "e", "e", "n", "n", "n", "n", "n", "n", "ne", "go gate", "n", "ne",
         "go gate", "nw", "nw", "n", "e", "e", "n", "n", "ne", "n", "e", "e", "ne", "ne", "nw", "n", "n",

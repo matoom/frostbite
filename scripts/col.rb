@@ -1,3 +1,7 @@
+# desc: collects piles of specified foraging items and cleans up after
+# skill: ??
+# run: valid foraging spot
+
 if $args.empty?
   echo "Item name missing!"
   exit!

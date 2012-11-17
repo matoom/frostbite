@@ -1,3 +1,7 @@
+# desc: climing script for crossing
+# skill: 300?? climbing, 60?? stamina
+# run: ne gate, crossing
+
 path = ["go gate", "w", "w", "s", "s", "w", "w", "s", "w", "w", "w", "w", "w", "w",
         "go bridge", "w", "w", "w", "w", "go gate", "climb wall", "s", "climb embrasure",
         "climb wall", "n", "e", "climb break", "climb wall", "climb embrasure", "climb wall",

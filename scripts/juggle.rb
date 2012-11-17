@@ -1,3 +1,7 @@
+# desc: juggles 10 times
+# skill: -
+# run: anywhere
+
 if $args.empty?
   echo "Item name missing!"
   exit!

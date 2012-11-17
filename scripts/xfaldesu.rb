@@ -1,3 +1,7 @@
+# desc: goes across faldesu river from north to south side
+# skill: 150+ swimming
+# run: north side of faldesu
+
 @match_rt_adjustment = -1
 
 label_start

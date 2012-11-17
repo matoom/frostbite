@@ -1,3 +1,8 @@
+# desc: Disarm boxes you have in open containers or holding in your right hand,
+#       harvest only on quick and blind disarms.
+# skill: 0
+# run: anywhere
+
 def ident(box)
   put "disarm my #{box} ident"
   match = { :wait => ["..wait"],

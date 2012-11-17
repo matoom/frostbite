@@ -1,3 +1,7 @@
+# desc: studies a compendium of anatomy charts
+# skill: ??
+# run: anywhere
+
 def finally_do
   put "put my compendium in my shroud"
 end

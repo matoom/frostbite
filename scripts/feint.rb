@@ -1,3 +1,7 @@
+# desc: uses feint to train melee weapons while "dancing" with your opponents
+# skill: 0
+# run: hunting area
+
 @match_rt_adjustment = -1
 
 def go_wait(label_self, label)

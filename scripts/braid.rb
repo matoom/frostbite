@@ -1,3 +1,7 @@
+# desc: braids vines or grass
+# skill: ??
+# run: foraging spot with a bucket available
+
 # argument value is required
 if $args.empty?
   echo "Braid what?"
