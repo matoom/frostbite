@@ -131,11 +131,11 @@ void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
 }
 
 void ConnectionManager::showError(QString message) {
-    windowManager->writeGameWindow("\n\n"
-        "*\n"
-        "* " + message.toLocal8Bit() + "\n"
-        "*\n"
-        "\n\n");
+    windowManager->writeGameWindow("<br><br>"
+        "*<br>"
+        "* " + message.toLocal8Bit() + "<br>"
+        "*<br>"
+        "<br><br>");
 }
 
 ConnectionManager::~ConnectionManager() {

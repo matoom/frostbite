@@ -11,7 +11,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setFocusPolicy(Qt::NoFocus);
 
     this->setReadOnly(true);
-    this->document()->setMaximumBlockCount(1000);
+    this->document()->setMaximumBlockCount(500);
 
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(adjustRowMargin()));
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));

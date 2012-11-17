@@ -45,6 +45,7 @@ void HighlightGeneralTab::loadSettings() {
     highlightList.insert(THINKING, readSettings(THINKING, "Your mind hears someone thinking, .. ", QColor(THINKING_COLOR_HEX)));
     highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BOOST_COLOR_HEX)));
     highlightList.insert(PENALTY, readSettings(PENALTY, "Stat penalty", QColor(PENALTY_COLOR_HEX)));
+    highlightList.insert(SCRIPT, readSettings(SCRIPT, "Script commands", QColor(SCRIPT_COLOR_HEX)));
     highlightList.insert(ECHO, readSettings(ECHO, "Script echo", QColor(ECHO_COLOR_HEX)));
 }
 

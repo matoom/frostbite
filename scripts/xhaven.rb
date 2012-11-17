@@ -10,7 +10,8 @@ path.each { |p|
   move p
 }
 
-frame_start
+label_start
+
 def go_wait(label_self, label)
   if label == :wait
     pause 0.5
@@ -50,7 +51,8 @@ label(:stand) {
 
 label(:continue) {
 }
-frame_end
+
+label_end
 
 
 path = ["go trail", "se", "s", "s", "s", "se", "se", "se", "se", "s", "sw", "sw", "sw", "sw", "s", "s", "s", "se",

@@ -19,6 +19,8 @@
 #define PENALTY_COLOR_RGB 255, 85, 127
 #define ECHO_COLOR_HEX "#ffff7f"
 #define ECHO_COLOR_RGB 255, 255, 127
+#define SCRIPT_COLOR_HEX "#aaaaff"
+#define SCRIPT_COLOR_RGB 170, 170, 255
 
 #define ROOM_NAME "1_roomName"
 #define GAME_MESSAGE "2_gameMessage"
@@ -27,7 +29,8 @@
 #define THINKING "5_thinking"
 #define BONUS "6_bonus"
 #define PENALTY "7_penalty"
-#define ECHO "8_echo"
+#define SCRIPT "8_script"
+#define ECHO "9_echo"
 
 #define DEFAULT_MAIN_FONT "Consolas"
 #define DEFAULT_MAIN_FONT_SIZE 12

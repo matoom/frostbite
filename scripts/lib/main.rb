@@ -108,7 +108,7 @@ end
 # @param [Hash] pattern list of regex patterns and names
 # @return [Void]
 # @example Using match patterns to go to predefined labels
-#   frame_start
+#   label_start
 #
 #   label(:retry){
 #     match = {:retry => "...wait", :next => "you open"}
@@ -120,7 +120,7 @@ end
 #     echo "next"
 #   }
 #
-#   frame_end
+#   label_end
 def match_wait_goto(pattern)
   match_found = false
   match = :not_found
@@ -176,7 +176,7 @@ end
 def move(value)
   put value
   res = match_wait({:room => [/^\[.*?\]$/],
-                    :wait => ["...wait"]})
+                    :wait => ["...wait", "you may only type ahead"]})
   if res == :wait
     pause 0.5
     move value
@@ -222,9 +222,7 @@ end
 # @return [Void]
 
 def execute(name)
-  frame_start
   load "#{Dir.pwd}/scripts/#{name}.rb"
-  frame_end
 end
 
 # Current match round time -- can be used in
@@ -272,13 +270,8 @@ end
 # wait for round time
 sleep Rt::value
 
-#enable labels
-frame_start
-
 # load script file here
 require @_file
-
-frame_end
 
 # end command thread after finished
 end_command_thread

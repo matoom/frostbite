@@ -4,6 +4,8 @@ end
 
 put "get my compendium"
 
+label_start
+
 label(:study) {
   put "study my compendium"
   match = { :study => ["You begin studying", "You continue studying", "You continue to study"],
@@ -21,3 +23,5 @@ label(:turn) {
 label(:exit) {
   exit
 }
+
+label_end

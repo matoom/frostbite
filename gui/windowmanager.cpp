@@ -62,6 +62,7 @@ void WindowManager::updateWindowStyle() {
         "#_THINKING {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}"
         "#_ROOM_NAME {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}"
         "#_ECHO {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}"
+        "#_SCRIPT {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";}"
         "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}";
 
     foreach(QDockWidget* dock, dockWindows) {
@@ -234,15 +235,13 @@ void WindowManager::updateRoomWindowTitle(QString title) {
 
 void WindowManager::writePromptGameWindow(QByteArray text) {
     QTextCursor cursor(gameWindow->textCursor());
-    cursor.movePosition(QTextCursor::End);
-    cursor.movePosition(QTextCursor::PreviousCharacter);
-    cursor.select(QTextCursor::WordUnderCursor);
+    cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
 
-    if(cursor.selectedText() == ">") {
-        cursor.select(QTextCursor::BlockUnderCursor);
-        cursor.removeSelectedText();
+    if(!cursor.selectedText().contains(">")) {
+        gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
     }
-    gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {

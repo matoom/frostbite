@@ -1,5 +1,7 @@
 @match_rt_adjustment = -1
 
+label_start
+
 label(:start) {
   move "dive river"
   goto :south_1
@@ -58,5 +60,7 @@ label(:south_2) {
 label(:end) {
   move "climb bridge"
 }
+
+label_end
 
 @match_rt_adjustment = 0

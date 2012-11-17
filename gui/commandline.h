@@ -33,7 +33,7 @@ public:
 
     void historyBack();
     void historyForward();
-    void writeCommand(QString);
+    void writeCommand(QString, QString style = "_BODY");
     void moveCursor(int);
     void completeCommand();
     bool runMacro(QString);

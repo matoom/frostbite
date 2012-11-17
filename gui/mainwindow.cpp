@@ -12,15 +12,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->initSettings();
 
     ui->statusBar->hide();
-
-    /* ping indicatior */
-
-    /*QLabel *m_statusRight = new QLabel("200ms", this);
-    m_statusRight->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-
-    ui->statusBar->insertPermanentWidget(0, m_statusRight, 0);*/
-
-    //ui->menuBar->find("actionConnect");
 }
 
 void MainWindow::appSetup() {
@@ -29,14 +20,13 @@ void MainWindow::appSetup() {
     /* load client window state */
     settings = ClientSettings::Instance();
     restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
-    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
+    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());    
 
-    /* start maximized // fullscreen */
-    //setWindowState(Qt::WindowFullScreen);
-    //setWindowState(Qt::WindowMaximized);
+    // does not open on correct screen in 4.8
+    // https://bugreports.qt-project.org/browse/QTBUG-21371
 
     /* set cleanlooks as base style */
-    QApplication::setStyle("cleanlooks");
+    QApplication::setStyle("cleanlooks");    
 }
 
 void MainWindow::toggleFullScreen() {

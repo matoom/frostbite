@@ -23,11 +23,11 @@ def label(sym, &block)
   STACK.last << Label.new(sym, block)
 end
 
-def frame_start
+def label_start
   STACK << []
 end
 
-def frame_end
+def label_end
   frame = STACK.pop
   idx = 0
 
