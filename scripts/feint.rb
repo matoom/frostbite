@@ -1,5 +1,5 @@
 # desc: uses feint to train melee weapons while "dancing" with your opponents
-# skill: 0
+# requirements: -
 # run: hunting area
 
 @match_rt_adjustment = -1
@@ -13,7 +13,7 @@ def go_wait(label_self, label)
   end
 end
 
-label_start
+labels_start
 
 label(:start) {
   put "feint right leg"
@@ -37,4 +37,4 @@ label(:wait_for) {
   goto :start
 }
 
-label_end
+labels_end

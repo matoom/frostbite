@@ -150,6 +150,16 @@ QDockWidget* WindowManager::getConversationsWindow() {
     return this->conversationsWindow;
 }
 
+void WindowManager::copyDock() {
+    foreach(QDockWidget* dock, dockWindows) {
+        QTextCursor cursor = ((QPlainTextEdit*)dock->widget())->textCursor();
+        if(cursor.hasSelection()) {
+            ((QPlainTextEdit*)dock->widget())->copy();
+            break;
+        }
+    }
+}
+
 void WindowManager::updateNavigationDisplay(QList<QString> directions) {
     navigationDisplay->updateState(directions);
     this->paintNavigationDisplay();

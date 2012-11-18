@@ -7,11 +7,23 @@ KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {
 }
 
 bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
-    if (event->type() == QEvent::KeyPress) {
-        commandLine = (CommandLine*)object;        
+    commandLine = (CommandLine*)object;
 
+    /* workaround to give back focus to command line */
+    if (event->type() == QEvent::KeyRelease) {
         QKeyEvent *keyEvent = (QKeyEvent*)event;
-        if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
+        if(keyEvent->key() == Qt::Key_Alt) {
+            commandLine->setFocus();
+        }
+    }
+
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = (QKeyEvent*)event;
+
+        if (keyEvent->matches(QKeySequence::Copy)) {
+            commandLine->doCopy();
+            return true;
+        } else if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
             QString cmd = macroSettings->getParameter("keypad/" +
                 QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();
             return commandLine->runMacro(cmd);

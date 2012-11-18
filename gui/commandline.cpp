@@ -95,6 +95,19 @@ void CommandLine::clearCommand() {
     this->clear();
 }
 
+void CommandLine::doCopy() {
+    if(this->hasSelectedText()) {
+        this->copy();
+    } else {
+        QTextCursor mainCursor = windowManager->getGameWindow()->textCursor();
+        if(mainCursor.hasSelection()) {
+            windowManager->getGameWindow()->copy();
+        } else {
+            windowManager->copyDock();
+        }
+    }
+}
+
 void CommandLine::writeCommand(QString text, QString style) {
     mainWindow->getConnectionManager()->writeCommand(text);
 
@@ -106,11 +119,11 @@ void CommandLine::writeCommand(QString text, QString style) {
     if(cursor.selectedText() == ">") {
         cursor.movePosition(QTextCursor::PreviousRow);
         cursor.movePosition(QTextCursor::EndOfLine);
-        cursor.insertHtml(
-            "<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" + style + "\">" + text + "</SPAN>");
+        cursor.insertHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" +
+            style + "\">" + text + "</SPAN>");
     } else {
-        windowManager->getGameWindow()->appendHtml(
-            "<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" + style + "\">" + text + "</SPAN>");
+        windowManager->getGameWindow()->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" +
+            style + "\">" + text + "</SPAN>");
     }
 }
 

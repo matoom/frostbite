@@ -1,10 +1,10 @@
 # desc: goes across faldesu river from south to north side
-# skill: 150+ swimming
+# requirements: 150+ swimming
 # run: south side of faldesu
 
 @match_rt_adjustment = -1
 
-label_start
+labels_start
 
 label(:start) {
   move "dive river"
@@ -65,6 +65,6 @@ label(:end) {
   move "climb bridge"
 }
 
-label_end
+labels_end
 
 @match_rt_adjustment = 0

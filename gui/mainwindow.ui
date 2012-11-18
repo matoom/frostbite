@@ -111,6 +111,9 @@ QDialogButtonBox {
 }
 </string>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="autoFillBackground">
     <bool>true</bool>
@@ -135,6 +138,9 @@ QDialogButtonBox {
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -145,7 +151,7 @@ QDialogButtonBox {
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="tearOffEnabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>File</string>
@@ -160,7 +166,7 @@ QDialogButtonBox {
    </widget>
    <widget class="QMenu" name="menuConfiguration">
     <property name="tearOffEnabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>Settings</string>
@@ -173,6 +179,9 @@ QDialogButtonBox {
     <addaction name="actionMacros"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Window</string>
     </property>
@@ -185,6 +194,9 @@ QDialogButtonBox {
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuScript">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Script</string>
     </property>
@@ -254,6 +266,9 @@ QDialogButtonBox {
    <property name="text">
     <string>Highlight</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionMacros">
    <property name="icon">
@@ -262,6 +277,9 @@ QDialogButtonBox {
    </property>
    <property name="text">
     <string>Macros</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="actionAppearance">
@@ -272,10 +290,16 @@ QDialogButtonBox {
    <property name="text">
     <string>Appearance</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionReference_Manual">

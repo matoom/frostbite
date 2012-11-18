@@ -1,5 +1,5 @@
 # desc: fills gem pouch by specified color
-# skill: -
+# requirements: -
 # run: anywhere
 
 put "take my #{$args.join(" ")} pouch from my backpack"

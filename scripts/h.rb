@@ -1,5 +1,5 @@
 # desc: trains hiding, stalking and backstabbing for thieves
-# skill: only works for thieves cirlce 70+, pref min. hiding rt
+# requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
 @match_rt_adjustment = -1
@@ -18,7 +18,7 @@ def go_wait(label, back_label)
   end
 end
 
-label_start
+labels_start
 
 label(:start) {
   put "face #{$args.first}"
@@ -78,4 +78,4 @@ label(:wait_for) {
   goto :start
 }
 
-label_end
+labels_end

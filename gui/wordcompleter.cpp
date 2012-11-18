@@ -2,11 +2,11 @@
 
 WordCompleter::WordCompleter(QObject *parent) : QObject(parent) {
     words << "put" << "get" << "open" << "close" << "hide"
-          << "unhide" << "aim" << "fire" << "load" << "whisper"
+          << "unhide" << "aim" << "fire" << "loot" << "whisper"
           << "say" << "sign" << "stand" << "kneel"
           << "sit" << "face" << "attack" << "circle" << "feint"
           << "draw" << "thrust" << "chop" << "slice" << "arrange"
-          << "skin" << "loot" << "fill" << "pick" << "think" << "eat"
+          << "skin" << "load" << "fill" << "pick" << "think" << "eat"
           << "rub" << "drop" << "forage" << "braid" << "take";
 }
 

@@ -1,5 +1,5 @@
 # desc: travelling script from riverhaven to crossing
-# skill: 150+ in swimming
+# requirements: 150+ in swimming
 # run: east gate, riverhaven
 
 if Room::title == "[Riverhaven, Stone Bridge]"
@@ -14,7 +14,7 @@ path.each { |p|
   move p
 }
 
-label_start
+labels_start
 
 def go_wait(label_self, label)
   if label == :wait
@@ -56,7 +56,7 @@ label(:stand) {
 label(:continue) {
 }
 
-label_end
+labels_end
 
 
 path = ["go trail", "se", "s", "s", "s", "se", "se", "se", "se", "s", "sw", "sw", "sw", "sw", "s", "s", "s", "se",

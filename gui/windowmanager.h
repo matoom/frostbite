@@ -46,6 +46,7 @@ public:
     void setDockFontColor(QColor);
     void setDockBackground(QColor);
     void setDockFont(QFont font);
+    void copyDock();
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();

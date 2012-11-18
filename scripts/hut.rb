@@ -1,5 +1,5 @@
 # desc: from thieves guil to crossing hut
-# skill: -
+# requirements: -
 # run: thief guild den, crossing
 
 path = ["go arch", "s", "go niche", "e", "go door", "e", "e", "e", "n",

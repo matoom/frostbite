@@ -1,5 +1,5 @@
 # desc: juggles 10 times
-# skill: -
+# requirements: -
 # run: anywhere
 
 if $args.empty?

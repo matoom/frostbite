@@ -1,5 +1,5 @@
 # desc: braids vines or grass
-# skill: ??
+# requirements: ??
 # run: foraging spot with a bucket available
 
 # argument value is required
@@ -32,7 +32,7 @@ def finally_do
   end
 end
 
-label_start
+labels_start
 
 label(:start){
   put "exp mech"
@@ -60,4 +60,4 @@ label(:end) {
 
 }
 
-label_end
+labels_end

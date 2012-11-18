@@ -37,7 +37,8 @@ public:
     void moveCursor(int);
     void completeCommand();
     bool runMacro(QString);
-    void clearCommand();
+    void clearCommand();    
+    void doCopy();
 
     int historyCounter;
 

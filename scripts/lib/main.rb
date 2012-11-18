@@ -7,6 +7,7 @@ ARGV.each do |arg|
 end
 ARGV.clear
 
+# auto-flushing
 STDOUT.sync = true
 
 @_file = $args.shift
@@ -108,7 +109,7 @@ end
 # @param [Hash] pattern list of regex patterns and names
 # @return [Void]
 # @example Using match patterns to go to predefined labels
-#   label_start
+#   labels_start
 #
 #   label(:retry){
 #     match = {:retry => "...wait", :next => "you open"}
@@ -120,7 +121,7 @@ end
 #     echo "next"
 #   }
 #
-#   label_end
+#   labels_end
 def match_wait_goto(pattern)
   match_found = false
   match = :not_found
@@ -216,11 +217,10 @@ def pause(value)
   sleep value
 end
 
-# Pauses for given time.
+# Execute a ruby script file.
 #
-# @param [Integer, Float] value sleep time in seconds
+# @param [String] name name of the file
 # @return [Void]
-
 def execute(name)
   load "#{Dir.pwd}/scripts/#{name}.rb"
 end

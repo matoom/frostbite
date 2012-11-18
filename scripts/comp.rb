@@ -1,5 +1,5 @@
 # desc: studies a compendium of anatomy charts
-# skill: ??
+# requirements: ??
 # run: anywhere
 
 def finally_do
@@ -8,7 +8,7 @@ end
 
 put "get my compendium"
 
-label_start
+labels_start
 
 label(:study) {
   put "study my compendium"
@@ -28,4 +28,4 @@ label(:exit) {
   exit
 }
 
-label_end
+labels_end

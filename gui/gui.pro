@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     statusindicator.cpp \
     wieldindicator.cpp \
     quickbuttondisplay.cpp \
-    ping.cpp \
     commandparser.cpp \
     commandline.cpp \
     keyboardfilter.cpp \
@@ -80,7 +79,6 @@ HEADERS  += mainwindow.h \
     statusindicator.h \
     wieldindicator.h \
     quickbuttondisplay.h \
-    ping.h \
     commandparser.h \
     commandline.h \
     version.h \

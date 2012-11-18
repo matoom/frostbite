@@ -1,5 +1,5 @@
 # desc: trains brawling while "dancing" with critters
-# skill: 0
+# requirements: 0
 # run: hunting area
 
 while true

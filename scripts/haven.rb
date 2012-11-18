@@ -1,5 +1,5 @@
 # desc: travelling from crossing to riverhaven
-# skill: 150+ in swimming
+# requirements: 150+ in swimming
 # run: ne gate, crossing
 
 path = ["n", "n", "n", "ne", "ne", "n", "nw", "nw", "n", "n", "ne", "nw", "n", "n", "nw", "nw", "n", "n",

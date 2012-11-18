@@ -1,5 +1,5 @@
 # desc: collects piles of specified foraging items and cleans up after
-# skill: ??
+# requirements: ??
 # run: valid foraging spot
 
 if $args.empty?
