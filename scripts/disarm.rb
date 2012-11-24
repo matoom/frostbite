@@ -130,7 +130,7 @@ end
     ident box
   elsif res == :wait
     pause 0.5
-    --index
+    redo
   end
 
   exit_script "*** All boxes opened! ***"
