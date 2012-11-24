@@ -14,7 +14,6 @@ public:
     static AudioPlayer* Instance();
 
     QStringList getAudioList();
-    void play(const QString&);
 
 private:
     AudioPlayer(QObject *parent = 0);
@@ -28,6 +27,7 @@ private:
 signals:
 
 public slots:
+    void play(const QString&);
 
 };
 

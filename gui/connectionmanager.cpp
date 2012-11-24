@@ -13,12 +13,24 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
     }
 
-    debug = false;
+    debug = true;
 
-    commandParser = new CommandParser(parent);
+    dataProcessThread = new DataProcessThread(parent);
+    connect(this, SIGNAL(addData(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
 
     if(debug) {
-        commandParser->processMock();
+        QFile file(MOCK_DATA_PATH);
+
+        if(!file.open(QIODevice::ReadOnly)) {
+            qDebug() << "Unable to open mock data file!";
+            return;
+        }
+        QByteArray data = file.readAll();
+
+        dataProcessThread->addData(data);
+        if(!dataProcessThread->isRunning()) {
+            dataProcessThread->start();
+        }
     }
 }
 
@@ -104,7 +116,11 @@ void ConnectionManager::socketReadyRead() {
                 }
             }
             //qDebug() << buffer;
-            commandParser->process(buffer);
+
+            emit addData(buffer);
+            if(!dataProcessThread->isRunning()) {
+                dataProcessThread->start();
+            }
         } else {
             windowManager->writeGameWindow(buffer.data());
         }

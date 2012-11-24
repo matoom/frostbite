@@ -4,6 +4,8 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+    qRegisterMetaType<DirectionsList>("DirectionsList");
+
     /* application settings */
     this->appSetup();
     /* build client content */
@@ -75,9 +77,9 @@ void MainWindow::loadClient() {
     cmdLine = new CommandLine(this);
     ui->mainLayout->addWidget(cmdLine);
 
-    cm = new ConnectionManager(this);
-
     scriptService = new ScriptService(this);
+
+    cm = new ConnectionManager(this);
 
     menuHandler = new MenuHandler(this);
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
@@ -104,6 +106,7 @@ ScriptService* MainWindow::getScriptService() {
 }
 
 TimerBar* MainWindow::getTimerBar() {
+    QReadLocker locker(&lock);
     return this->timerBar;
 }
 

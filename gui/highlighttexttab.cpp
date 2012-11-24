@@ -1,7 +1,7 @@
 #include "highlighttexttab.h"
 
 HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
-    highlightSettings = HighlightSettings::Instance();
+    highlightSettings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
     highlightList = highlightSettings->getSettings("TextHighlight");
 
@@ -28,7 +28,7 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     highlightEditDialog = new HighlightEditDialog(this, highlightDialog);
     editGroupSelect = highlightEditDialog->getGroupSelect();
 
-    groupNames << "All" << "General" << "Names" << "Critters" << "Travel" << "Combat" << "Other";
+    groupNames << "All" << "General" << "Names" << "Critters" << "Travel" << "Combat" << "Exp" << "Other";
     group = groupNames.at(0);
 
     timerActionNames << "Restart" << "Ignore";
@@ -73,10 +73,12 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 void HighlightTextTab::initContextMenu() {
     menu = new QMenu(listWidget);
     colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
+    colorAct->setEnabled(false);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
+    editAct->setEnabled(false);
     menu->addAction(editAct);
     connect(editAct, SIGNAL(triggered()), this, SLOT(showEditDialog()));
 }
@@ -110,6 +112,11 @@ void HighlightTextTab::colorDialog() {
         highlightList.replace(currentId, currentEntry);
         this->registerChange();
     }
+}
+
+void HighlightTextTab::enableMenuItems() {
+    colorAct->setEnabled(true);
+    editAct->setEnabled(true);
 }
 
 void HighlightTextTab::updateIcon(QListWidgetItem *current, QListWidgetItem *previous) {
@@ -159,6 +166,9 @@ void HighlightTextTab::reloadHighlightList() {
 }
 
 void HighlightTextTab::itemSelected(QListWidgetItem *current, QListWidgetItem *previous) {
+    /* enable context menu items once item is selected */
+    enableMenuItems();
+
     /* change highlight selected item icon */
     updateIcon(current, previous);
 
@@ -426,4 +436,8 @@ void HighlightTextTab::showEditDialog() {
         highlightEditDialog->setEntry(currentEntry);
         highlightEditDialog->show();
     }
+}
+
+HighlightTextTab::~HighlightTextTab() {
+    delete highlightSettings;
 }

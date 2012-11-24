@@ -10,6 +10,7 @@
 #include <gamedatacontainer.h>
 #include <highlighter.h>
 #include <defaultvalues.h>
+#include <highlightsettings.h>
 
 class MainWindow;
 class GameWindow;
@@ -18,6 +19,8 @@ class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
 class Highlighter;
+
+typedef QList<QString> DirectionsList;
 
 class WindowManager : public QObject {
     Q_OBJECT
@@ -29,17 +32,7 @@ public:
     void loadWindows();
     QPlainTextEdit* getGameWindow();
     void paintNavigationDisplay();
-    void writePromptGameWindow(QByteArray);
-    void writeGameWindow(QByteArray);
-    void updateNavigationDisplay(QList<QString>);
     void scriptRunning(bool);
-    void updateExpWindow();
-    void updateRoomWindow();
-    void updateConversationsWindow(QString);
-    void updateDeathsWindow(QString);
-    void updateRoomWindowTitle(QString);
-    void updateThoughtsWindow(QString);
-    void updateArrivalsWindow(QString);
     void updateWindowStyle();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
@@ -58,6 +51,17 @@ public:
     bool thoughtsVisible;
 
 public slots:
+    void updateConversationsWindow(QString);
+    void writeGameWindow(QByteArray);
+    void writePromptGameWindow(QByteArray);
+    void updateNavigationDisplay(DirectionsList);
+    void updateRoomWindowTitle(QString);
+    void updateExpWindow();
+    void updateRoomWindow();
+    void updateDeathsWindow(QString);
+    void updateThoughtsWindow(QString);
+    void updateArrivalsWindow(QString);
+
 
 private slots:
     void thoughtsVisibility(bool);

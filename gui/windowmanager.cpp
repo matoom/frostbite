@@ -7,7 +7,7 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     gameDataContainer = GameDataContainer::Instance();
     clientSettings = ClientSettings::Instance();
     highlighter = new Highlighter(parent);
-    settings = HighlightSettings::Instance();
+    settings = new HighlightSettings();
 }
 
 QPlainTextEdit* WindowManager::getGameWindow() {
@@ -160,7 +160,7 @@ void WindowManager::copyDock() {
     }
 }
 
-void WindowManager::updateNavigationDisplay(QList<QString> directions) {
+void WindowManager::updateNavigationDisplay(DirectionsList directions) {
     navigationDisplay->updateState(directions);
     this->paintNavigationDisplay();
 }
@@ -267,4 +267,5 @@ WindowManager::~WindowManager() {
     delete thoughtsWindow;
     delete deathsWindow;
     delete conversationsWindow;
+    delete settings;
 }

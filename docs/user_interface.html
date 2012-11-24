@@ -1,0 +1,194 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. -->
+
+<head id="frostbite" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title></title>
+
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <!-- Google will often use this as its description of your page/site. Make it good. -->
+
+    <meta name="google-site-verification" content="">
+    <!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
+
+    <meta name="author" content="Your Name Here">
+    <meta name="Copyright" content="Copyright Your Name Here 2011. All Rights Reserved.">
+
+    <!-- Dublin Core Metadata : http://dublincore.org/ -->
+    <meta name="DC.title" content="Frostbite">
+    <meta name="DC.subject" content="Dragonrealms MUD Frontend">
+    <meta name="DC.creator" content="">
+
+    <!--  Mobile Viewport Fix
+     j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+     device-width : Occupy full width of the screen in its current orientation
+     initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+     maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+     -->
+    <!-- Uncomment to use; use thoughtfully!
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+     -->
+
+    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- This is the traditional favicon.
+          - size: 16x16 or 32x32
+          - transparency is OK
+          - see wikipedia for info on browser support: http://mky.be/favicon/ -->
+
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    <!-- The is the icon for iOS's Web Clip.
+          - size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+          - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
+          - Transparency is not recommended (iOS will put a black BG behind the icon) -->
+
+    <!-- CSS: screen, mobile & print are all in the same file -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+
+    <!-- all our JS is at the bottom of the page, except for Modernizr. -->
+    <script src="js/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header>
+        <hgroup>
+            <img src="img/logo.png" /><br/>
+            <h1>Frostbite</h1>
+            <h2 class="">A MUD client for Dragonrealms</h2>
+        </hgroup>
+    </header>
+
+    <h2 class="contents_head" id="contents">2 User Interface</h2>
+    <div class="about">
+    <p>
+        The Frostbite application includes number of user interface elements such as the toolbar, command line, main game window,
+        dock windows, navigation compass, round time display and a timer bar.
+    </p><br/>
+        <h3>Navigation compass</h3>
+    <p>
+        The graphical user interface for Frostbite is in overall based on GUI standard formats although it includes some custom
+        elements like the navigation compass that helps to better understand and visualize available movement paths.
+    </p>
+    <br/><img src="img/compass.png" /><br/><br/>
+
+        <h3>Timer bar</h3>
+    <p>
+        The timer bar enables users to set timers for tasks or actions that are not regulated by round times. For example
+        boat travel or aiming a ranged weapon. Timers can be triggered by any text highlighter event.
+    </p>
+    <br/><img src="img/timer.png" /><br/><br/>
+        <h3>Toolbar</h3>
+    <p>
+        The toolbar is set up to indicate player status and provide control functions.
+    </p>
+    <br/>
+
+    <ul class="list">
+        <li>
+            <p>
+                The wield indicator allows quickly to see items that are being held in the left or the right hand.
+            </p>
+            <img src="img/wield-left.png" /> <img src="img/wield-right.png" /><br/><br/>
+        </li>
+        <li>
+            <p>
+                The spell icon indicates currently active spells as a mouse cursor activated tooltip.
+            </p>
+            <img src="img/spell.png" /><br/><br/>
+        </li>
+        <li>
+            <p>
+                The status indicator displays different forms of character conditions.
+            </p>
+
+            <table>
+                <tr>
+                    <td rowspan="5"><img src="img/statusbar.png" /></td><td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td><td class="gray">invisible, webbed, grouped, hidden, bleeding, standing</td>
+                </tr>
+                <tr>
+                    <td></td><td class="gray">stunned, kneeling</td>
+                </tr>
+                <tr>
+                    <td></td><td class="gray">dead, sitting</td>
+                </tr>
+                <tr>
+                    <td></td><td class="gray">prone</td>
+                </tr>
+            </table>
+            <br/>
+        </li>
+        <li><p>
+                The quick-buttons enable to send pre-configured commands to the game server upon clicking. The settings dialog
+                for configuring quick button actions can be triggered by right-clicking on the buttons.
+            </p>
+            <img src="img/quick-button.png" /><br/><br/>
+        </li>
+        <li><p>
+                Vitals indicator shows the character health status.
+            </p>
+            <img src="img/health.png" /> - health <br/>
+            <img src="img/concentration.png" /> - concentration <br/>
+            <img src="img/fatigue.png" /> - fatigue <br/>
+            <img src="img/spirit.png" /> - spirit<br/><br/>
+        </li>
+        <li>
+            <p>
+                Full screen button allows to enter into full screen mode to make the full use out of all the
+                available screen space.
+            </p>
+            <img src="img/fullscreen.png" /><br/><br/>
+        </li>
+    </ul>
+
+    <h3>Dock windows</h3>
+    <p>
+        The game text is divided up between separate game windows. The main window holds general
+        game text while the dock windows filter out rest of the data such as player experience, current room descriptions,
+        thoughts, arrivals, deaths and conversations. The standard Qt GUI allows to stack dock windows on top of each
+        other and to place them adjacently to each side. In the main window area, the dock windows can be placed on top,
+        left or right of the screen.
+    </p>
+    <br/><img src="img/window.png" /><br/><br/>
+
+    <h3>Command line</h3>
+    <p>
+        As this is a client for a text-based game the majority of user interaction takes place in the command line,
+        by sending commands to the game. However the command line includes more functions than just allowing to enter game
+        commands. Command line can be used to run scripts, it includes functions like a tab word completer for some of the
+        game commands and it displays the game round times.
+    </p>
+    <br/><img src="img/rt_bar.png" /><img src="img/num_rt.png" /><br/><br/>
+
+    </div>
+    <footer>
+        <p><small>Feedback: madtoom@gmail.com; https://github.com/matoom/frostbite</small></p>
+    </footer>
+
+</div>
+
+<!-- here comes the javascript -->
+<script src='js/jquery-1.5.1.min.js'></script>
+
+<!-- this is where we put our custom functions -->
+<script src="js/functions.js"></script>
+
+</body>
+</html>

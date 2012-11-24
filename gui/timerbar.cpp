@@ -12,6 +12,7 @@ TimerBar::TimerBar(QObject *parent) : QObject(parent) {
 }
 
 bool TimerBar::isActive() {
+    QReadLocker locker(&lock);
     return timer->isActive();
 }
 

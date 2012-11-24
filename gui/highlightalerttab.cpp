@@ -2,7 +2,7 @@
 
 HighlightAlertTab::HighlightAlertTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
-    settings = HighlightSettings::Instance();
+    settings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
 
     applyButton = highlightDialog->getApplyButton();
@@ -210,4 +210,8 @@ void HighlightAlertTab::saveChanges() {
 
 void HighlightAlertTab::cancelChanges() {
     this->initSettings();
+}
+
+HighlightAlertTab::~HighlightAlertTab() {
+    delete settings;
 }

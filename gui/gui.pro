@@ -26,7 +26,6 @@ SOURCES += main.cpp\
     statusindicator.cpp \
     wieldindicator.cpp \
     quickbuttondisplay.cpp \
-    commandparser.cpp \
     commandline.cpp \
     keyboardfilter.cpp \
     menuhandler.cpp \
@@ -63,7 +62,8 @@ SOURCES += main.cpp\
     scripteditdialog.cpp \
     genericwindowfactory.cpp \
     genericwindow.cpp \
-    fullscreenbutton.cpp
+    fullscreenbutton.cpp \
+    dataprocessthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -79,7 +79,6 @@ HEADERS  += mainwindow.h \
     statusindicator.h \
     wieldindicator.h \
     quickbuttondisplay.h \
-    commandparser.h \
     commandline.h \
     version.h \
     keyboardfilter.h \
@@ -119,7 +118,8 @@ HEADERS  += mainwindow.h \
     scripteditdialog.h \
     genericwindowfactory.h \
     genericwindow.h \
-    fullscreenbutton.h
+    fullscreenbutton.h \
+    dataprocessthread.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

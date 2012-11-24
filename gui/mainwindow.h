@@ -52,7 +52,6 @@ public:
     void addToolbarSpacer(int);
     void addToolbarWidget(QWidget*);
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
-    void setMainTitle(QString);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
     void toggleFullScreen();
@@ -75,6 +74,7 @@ private:
     MenuHandler* menuHandler;
     ScriptService* scriptService;
     TimerBar* timerBar;
+    QReadWriteLock lock;
 
     void initSettings();
     void loadClient();
@@ -82,6 +82,9 @@ private:
 
 protected:
     void closeEvent(QCloseEvent*);
+
+public slots:
+    void setMainTitle(QString);
 
 /*private slots:
     void menuTriggered(QAction*);*/

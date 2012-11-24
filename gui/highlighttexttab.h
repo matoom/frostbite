@@ -24,6 +24,7 @@ class HighlightTextTab : public QObject {
     Q_OBJECT
 public:
     explicit HighlightTextTab(QObject *parent = 0);
+    ~HighlightTextTab();
 
     void loadHighlightList();
     void reloadHighlightList();
@@ -79,6 +80,7 @@ private:
     void createListItem(int, QString, QColor);
     void updateSelectedItemColor(QListWidgetItem*);
     void updateIcon(QListWidgetItem*, QListWidgetItem*);
+    void enableMenuItems();
 
 signals:
 

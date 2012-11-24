@@ -20,7 +20,6 @@ public:
     explicit ScriptService(QObject *parent = 0);
     ~ScriptService();
 
-    void writeOutgoingMessage(QByteArray);
     void writeGameWindow(QByteArray);
     void processCommand(QByteArray);
     void runScript(QString);
@@ -40,8 +39,7 @@ private:
     bool terminateFlag;
 
 public slots:
-
-
+    void writeOutgoingMessage(QByteArray);
 };
 
 #endif // SCRIPTSERVICE_H

@@ -6,18 +6,18 @@
 #include <QDebug>
 
 #include <mainwindow.h>
-#include <commandparser.h>
 #include <windowmanager.h>
 #include <clientsettings.h>
 #include <eauthservice.h>
+#include <dataprocessthread.h>
 
 #include <environment.h>
 
 class MainWindow;
 class WindowManager;
-class CommandParser;
 class ClientSettings;
 class EAuthService;
+class DataProcessThread;
 
 class ConnectionManager : public QObject {
     Q_OBJECT
@@ -33,11 +33,11 @@ private:
     MainWindow *mainWindow;
     QTcpSocket *tcpSocket;
     QByteArray buffer;
-    CommandParser *commandParser;
     WindowManager *windowManager;
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
+    DataProcessThread* dataProcessThread;
 
     bool waitStartCommand;
     bool debug;
@@ -48,6 +48,7 @@ signals:
     void retrieveSessionKey(QString);
     void sessionKeyRetrieved(QString);
     void eAuthError(QString);
+    void addData(QByteArray);
 
 public slots:
     void socketReadyRead();

@@ -1,12 +1,35 @@
-#include "commandparser.h"
+#include "dataprocessthread.h"
 
-CommandParser::CommandParser(QObject *parent) : QObject(parent) {
+DataProcessThread::DataProcessThread(QObject *parent) {
     mainWindow = (MainWindow*)parent;
     windowManager = mainWindow->getWindowManager();
-    toolbarManager = mainWindow->getToolbarManager();    
+    toolbarManager = mainWindow->getToolbarManager();
     commandLine = mainWindow->getCommandLine();
     gameDataContainer = GameDataContainer::Instance();
     highlighter = new Highlighter(parent);
+
+    connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
+    connect(this, SIGNAL(writeGameWindow(QByteArray)), windowManager, SLOT(writeGameWindow(QByteArray)));
+    connect(this, SIGNAL(writePromptGameWindow(QByteArray)), windowManager, SLOT(writePromptGameWindow(QByteArray)));
+    connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));
+    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowManager, SLOT(updateRoomWindowTitle(QString)));
+
+    connect(this, SIGNAL(updateExpWindow()), windowManager, SLOT(updateExpWindow()));
+    connect(this, SIGNAL(updateRoomWindow()), windowManager, SLOT(updateRoomWindow()));
+
+    connect(this, SIGNAL(updateDeathsWindow(QString)), windowManager, SLOT(updateDeathsWindow(QString)));
+    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowManager, SLOT(updateThoughtsWindow(QString)));
+    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowManager, SLOT(updateArrivalsWindow(QString)));
+
+    connect(this, SIGNAL(updateVitals(QString, QString)), toolbarManager, SLOT(updateVitals(QString, QString)));
+    connect(this, SIGNAL(updateStatus(QString, QString)), toolbarManager, SLOT(updateStatus(QString, QString)));
+    connect(this, SIGNAL(updateWieldLeft(QString)), toolbarManager, SLOT(updateWieldLeft(QString)));
+    connect(this, SIGNAL(updateWieldRight(QString)), toolbarManager, SLOT(updateWieldRight(QString)));
+    connect(this, SIGNAL(updateSpell(QString)), toolbarManager, SLOT(updateSpell(QString)));
+
+    connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
+    connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeOutgoingMessage(QByteArray)));
+    connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
 
     pushStream = false;
     inv = false;
@@ -15,7 +38,17 @@ CommandParser::CommandParser(QObject *parent) : QObject(parent) {
     initRoundtime = false;
 }
 
-void CommandParser::processGameData(QByteArray data) {
+void DataProcessThread::run() {
+    while(!dataQueue.isEmpty()) {
+        process(dataQueue.dequeue());
+    }
+}
+
+void DataProcessThread::addData(QByteArray buffer) {
+    dataQueue.enqueue(buffer);
+}
+
+void DataProcessThread::processGameData(QByteArray data) {
     QDomDocument doc("GameData");
     QByteArray rawData(data);
 
@@ -31,24 +64,24 @@ void CommandParser::processGameData(QByteArray data) {
 
     gameText = "";
     while(!n.isNull()) {
-        /* Process game text */
+        // Process game text
         if(!filterPlainText(root, n)) {
             break;
         }
-        /* Process game data tags */
+        // Process game data tags
         filterDataTags(root, n);
 
         n = n.nextSibling();
     }
 
-    /* process pushstream data over multiple lines */
+    // process pushstream data over multiple lines
     processPushStream(rawData);
 
-    /* Write game text and raw data */
+    // Write game text and raw data
     writeGameText(rawData);
 }
 
-bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
+bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
     if(!mono && !pushStream) {
@@ -79,22 +112,23 @@ bool CommandParser::filterPlainText(QDomElement root, QDomNode n) {
             QString speech = root.text().trimmed();
             speech.insert(speech.indexOf("\""), "</SPAN>");
             speech.prepend("<SPAN ID=\"_SPEECH\">");
-            windowManager->updateConversationsWindow(speech +
-            " [" + QTime::currentTime().toString("h:m ap") + "]");
+
+            emit updateConversationsWindow(speech +
+            " [" + QTime::currentTime().toString("h:mm ap") + "]");
         } else if(e.tagName() == "preset" && e.attribute("id") == "whisper") {
             gameText += "<SPAN ID=\"_WHISPER\">" + e.text() + "</SPAN>";
 
             QString whisper = root.text().trimmed();
             whisper.insert(whisper.indexOf("\""), "</SPAN>");
             whisper.prepend("<SPAN ID=\"_WHISPER\">");
-            windowManager->updateConversationsWindow(whisper +
-            " [" + QTime::currentTime().toString("h:m ap") + "]");
+            emit updateConversationsWindow(whisper +
+            " [" + QTime::currentTime().toString("h:mm ap") + "]");
         }
     }
     return true;
 }
 
-void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
+void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
     if(!e.isNull()) {
@@ -102,12 +136,16 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             /* filter prompt */
             if(initRoundtime) {
                 time.setTime_t(e.attribute("time").toInt());
-                commandLine->getRoundtimeDisplay()->setTimer(time.secsTo(roundTime));
+
+                int t_to = time.secsTo(roundTime);
+                emit setTimer(t_to > 100 ? 100 : t_to - 1);
+
                 initRoundtime = false;
             }
             /* write prompt */
-            windowManager->writePromptGameWindow(root.text().trimmed().toUtf8());            
-            mainWindow->getScriptService()->writeOutgoingMessage(root.text().trimmed().toUtf8());
+            QByteArray prompt = root.text().trimmed().toUtf8();
+            emit writePromptGameWindow(prompt);
+            emit writeScriptMessage(prompt);
         } else if(e.tagName() == "compass") {
             /* filter compass */
             QList<QString> directions;
@@ -116,7 +154,7 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 directions << compassNode.toElement().attribute("value");
                 compassNode = compassNode.nextSibling();
             }
-            windowManager->updateNavigationDisplay(directions);
+            emit updateNavigationDisplay(directions);
         } else if (e.tagName() == "clearContainer") {
             QStringList container;
             QDomElement invElem = root.firstChildElement("inv");
@@ -126,42 +164,42 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             }
             gameDataContainer->setContainer(container);
         } else if(e.tagName() == "roundTime") {
-            roundTime.setTime_t(e.attribute("value").toInt() - 1);
+            roundTime.setTime_t(e.attribute("value").toInt());
             initRoundtime = true;
-            //commandLine->getRoundtimeDisplay()->setTimer(time.secsTo(roundTime));
+
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "minivitals") {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
-            toolbarManager->updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
+            emit updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
             highlighter->alert(vitalsElement.attribute("id"), vitalsElement.attribute("value").toInt());
         }  else if(e.tagName() == "indicator") {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
-            toolbarManager->updateStatus(e.attribute("visible"), e.attribute("id"));
+            emit updateStatus(e.attribute("visible"), e.attribute("id"));
             if(e.attribute("visible") == "y") {
                 highlighter->alert(e.attribute("id"));
             }
         } else if(e.tagName() == "left") {
             /* filter player wielding in left hand */
             //<right exist="162134941" noun="sharks">fuzzy sharks</right>
-            toolbarManager->updateWieldLeft(e.text());
-            /* persist wield data in memory */            
+            emit updateWieldLeft(e.text());
+            /* persist wield data in memory */
             gameDataContainer->setLeft(e.text());
             gameDataContainer->setLeftNoun(e.attribute("noun"));
         } else if(e.tagName() == "right") {
             /* filter player wielding in right hand */
-            toolbarManager->updateWieldRight(e.text());
+            emit updateWieldRight(e.text());
             /* persist wield data in memory */
             gameDataContainer->setRight(e.text());
             gameDataContainer->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
-            toolbarManager->updateSpell(e.text());
+            emit updateSpell(e.text());
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
             QString title = e.attribute("subtitle");
-            mainWindow->setMainTitle(title);
             gameDataContainer->setRoomName(title.mid(3));
-            windowManager->updateRoomWindowTitle(title);
+            emit setMainTitle(title);
+            emit updateRoomWindowTitle(title);
         } else if(e.tagName() == "component") {
             if(e.attribute("id").startsWith("exp")) {
                 QString text = e.text();
@@ -172,10 +210,10 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                     } else {
                         gameDataContainer->setExpFieldBrief(id, text);
                     }
-                } else {                    
+                } else {
                     gameDataContainer->removeExpField(id);
                 }
-                windowManager->updateExpWindow();
+                emit updateExpWindow();
             } else if(e.attribute("id").startsWith("room")) {
                 QString id = e.attribute("id");
                 if(id.endsWith("desc")) {
@@ -189,7 +227,7 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 } else if (id.endsWith("extra")) {
                     gameDataContainer->setRoomExtra(e.text());
                 }
-                windowManager->updateRoomWindow();
+                emit updateRoomWindow();
             }
         } else if(e.tagName() == "pushStream") {
             pushStream = true;
@@ -198,17 +236,17 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
             }
 
             if(e.attribute("id") == "logons") {
-                windowManager->updateArrivalsWindow(highlighter->highlight(root.text() +
-                    " [" + QTime::currentTime().toString("h:m ap") + "]"));
+                emit updateArrivalsWindow(highlighter->highlight(root.text() +
+                    " [" + QTime::currentTime().toString("h:mm ap") + "]"));
             } else if(e.attribute("id") == "thoughts") {
                 QString thought = root.text().trimmed();
                 thought.insert(thought.indexOf("\""), "</SPAN>");
                 thought.prepend("<SPAN ID=\"_THINKING\">");
-                windowManager->updateThoughtsWindow(highlighter->highlight(thought +
-                    " [" + QTime::currentTime().toString("h:m ap") + "]"));
+                emit updateThoughtsWindow(highlighter->highlight(thought +
+                    " [" + QTime::currentTime().toString("h:mm ap") + "]"));
             } else if(e.attribute("id") == "death") {
-                windowManager->updateDeathsWindow(highlighter->highlight(root.text() +
-                    " [" + QTime::currentTime().toString("h:m ap") + "]"));
+                emit updateDeathsWindow(highlighter->highlight(root.text() +
+                    " [" + QTime::currentTime().toString("hh:mm ap") + "]"));
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();
             } else if(e.attribute("id") == "inv") {
@@ -222,8 +260,8 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
                 inv = false;
             }
         } else if(e.tagName() == "output") {
-            if(e.attribute("class") == "mono") {                
-                mono = true;                
+            if(e.attribute("class") == "mono") {
+                mono = true;
             } else {
                 mono = false;
             }
@@ -235,7 +273,7 @@ void CommandParser::filterDataTags(QDomElement root, QDomNode n) {
     }
 }
 
-void CommandParser::processPushStream(QByteArray rawData) {
+void DataProcessThread::processPushStream(QByteArray rawData) {
     QString tag = "";
     if(pushStream) {
         if(inv) {
@@ -250,9 +288,9 @@ void CommandParser::processPushStream(QByteArray rawData) {
     }
 }
 
-void CommandParser::writeGameText(QByteArray rawData) {
+void DataProcessThread::writeGameText(QByteArray rawData) {
     if (rawData.size() == 1) {
-        windowManager->writeGameWindow("");
+        emit writeGameWindow("");
     } else if (mono && !pushStream) {
         /* mono handled separately otherwise white spaces
         before tags are not recognized as text */
@@ -270,21 +308,24 @@ void CommandParser::writeGameText(QByteArray rawData) {
             }
             line.append("</SPAN>");
 
-            windowManager->writeGameWindow(line.toLocal8Bit());
+            emit writeGameWindow(line.toLocal8Bit());
             this->writeScript(line.toLocal8Bit());
+            //QCoreApplication::processEvents();
         }
     } else if(gameText != "") {
+        /* highlighter altert not thread safe */
         gameText = highlighter->highlight(gameText);
         gameText.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">");
         gameText.append("</SPAN>");
 
-        windowManager->writeGameWindow(gameText.toLocal8Bit());
+        emit writeGameWindow(gameText.toLocal8Bit());
         this->writeScript(gameText.toLocal8Bit());
+        //QCoreApplication::processEvents();
     }
 }
 
 // custom parsing for mono tags
-void CommandParser::fixMonoTags(QString& line) {
+void DataProcessThread::fixMonoTags(QString& line) {
     // fix style ids
     if(line.contains("preset id=\"thought\"")) {
         line.replace("preset id=\"thought\"", "PRESET ID=\"_PENALTY\"");
@@ -298,18 +339,18 @@ void CommandParser::fixMonoTags(QString& line) {
     }
 }
 
-QString CommandParser::stripTags(QString line) {
+QString DataProcessThread::stripTags(QString line) {
     QXmlStreamReader xml(line);
     QString textString;
     while (!xml.atEnd()) {
-        if ( xml.readNext() == QXmlStreamReader::Characters ) {
+        if (xml.readNext() == QXmlStreamReader::Characters) {
             textString += xml.text();
         }
     }
     return textString;
 }
 
-void CommandParser::writeScript(QByteArray rawData) {
+void DataProcessThread::writeScript(QByteArray rawData) {
     QXmlStreamReader xml(rawData);
     QString textString;
     while (!xml.atEnd()) {
@@ -317,28 +358,14 @@ void CommandParser::writeScript(QByteArray rawData) {
             textString += xml.text();
         }
     }
-    mainWindow->getScriptService()->writeOutgoingMessage(textString.toLocal8Bit());
+    emit writeScriptMessage(textString.toLocal8Bit());
 }
 
-void CommandParser::processMock() {
-    QFile file(MOCK_DATA_PATH);
-
-    if(!file.open(QIODevice::ReadOnly)) {
-        qDebug("Unable to open mock data file!");
-        return;
-    }
-    QByteArray data = file.readAll();
-
-    process(data);
-
-    file.close();
-}
-
-void CommandParser::process(QByteArray data) {
+void DataProcessThread::process(QByteArray data) {
     QList<QByteArray> lines = data.split('\n');
 
     for(int i = 0; i < lines.size(); i++ ) {
-        //qDebug() << lines.at(i);
         processGameData(lines.at(i));
     }
 }
+

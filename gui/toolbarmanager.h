@@ -29,11 +29,6 @@ public:
     MainWindow* getMainWindow();
 
     void loadToolbar();
-    void updateVitals(QString name, QString value);    
-    void updateStatus(QString visible, QString icon);
-    void updateWieldLeft(QString value);
-    void updateWieldRight(QString value);
-    void updateSpell(QString);
 
     int getHealthValue();
     int getConcentrationValue();
@@ -57,6 +52,12 @@ private:
 
 public slots:
     void quickButtonAction();
+
+    void updateVitals(QString name, QString value);
+    void updateStatus(QString visible, QString icon);
+    void updateWieldLeft(QString value);
+    void updateWieldRight(QString value);
+    void updateSpell(QString);
 
 };
 

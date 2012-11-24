@@ -7,7 +7,7 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
     ui->setupUi(this);
 
     parenDialog = (QDialog*)parent;
-    settings = HighlightSettings::Instance();
+    settings = new HighlightSettings();
 
     this->textTab = textTab;
 
@@ -56,4 +56,5 @@ void HighlightEditDialog::cancelPressed() {
 
 HighlightEditDialog::~HighlightEditDialog() {
     delete ui;
+    delete settings;
 }

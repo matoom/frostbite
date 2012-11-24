@@ -2,18 +2,20 @@
 
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    highlightSettings = HighlightSettings::Instance();
+    highlightSettings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
 
     healthAlert = true;
+
+    connect(this, SIGNAL(playAudio(QString)), audioPlayer, SLOT(play(QString)));
 }
 
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
-        QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");       
+        QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");
 
         HighlightSettingsEntry entry;
-        foreach(entry, highlightList) {
+        foreach(entry, highlightList) {            
             // match whole or partial words
             QRegExp rx(QRegExp("\\b" + entry.value + "\\b"));
             if(entry.options.at(1)) {
@@ -52,18 +54,20 @@ QString Highlighter::highlight(QString text) {
 
 void Highlighter::highlightAlert(HighlightSettingsEntry entry) {
     if(entry.alert) {
-        audioPlayer->play(entry.alertValue);
+        emit playAudio(entry.alertValue);
     }
 }
 
 void Highlighter::highlightTimer(HighlightSettingsEntry entry) {
+    connect(this, SIGNAL(setTimer(int)), mainWindow->getTimerBar(), SLOT(setTimer(int)));
+
     if(entry.timer) {
         if (entry.timerAction == "Ignore") {
             if(!mainWindow->getTimerBar()->isActive()){
-                mainWindow->getTimerBar()->setTimer(entry.timerValue);
+                emit setTimer(entry.timerValue);
             }
         } else {
-            mainWindow->getTimerBar()->setTimer(entry.timerValue);
+            emit setTimer(entry.timerValue);
         }
     }
 }
@@ -76,7 +80,7 @@ void Highlighter::alert(QString eventName, int value) {
             if(settingsValue + 1 <= value) {
                 if(healthAlert) {
                     QString fileName = highlightSettings->getSingleParameter("AlertHighlight/health/file", "").toString();
-                    audioPlayer->play(fileName);
+                    emit playAudio(fileName);
                     healthAlert = false;
                 }
             } else {
@@ -86,22 +90,22 @@ void Highlighter::alert(QString eventName, int value) {
     } else if(eventName == "IconDEAD") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/death/enabled", false).toBool();
         if(enabled) {
-            audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/death/file", "").toString());
+            emit playAudio(highlightSettings->getSingleParameter("AlertHighlight/death/file", "").toString());
         }
     } else if(eventName == "IconSTUNNED") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/stun/enabled", false).toBool();
         if(enabled) {
-            audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/stun/file", "").toString());
+            emit playAudio(highlightSettings->getSingleParameter("AlertHighlight/stun/file", "").toString());
         }
     } else if(eventName == "IconBLEEDING") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/bleeding/enabled", false).toBool();
         if(enabled) {
-            audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/bleeding/file", "").toString());
+            emit playAudio(highlightSettings->getSingleParameter("AlertHighlight/bleeding/file", "").toString());
         }
     } else if(eventName == "IconWEBBED") {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/webbed/enabled", false).toBool();
         if(enabled) {
-            audioPlayer->play(highlightSettings->getSingleParameter("AlertHighlight/webbed/file", "").toString());
+            emit playAudio(highlightSettings->getSingleParameter("AlertHighlight/webbed/file", "").toString());
         }
     }
 }
@@ -112,4 +116,8 @@ Qt::CaseSensitivity Highlighter::matchCase(bool value) {
         matchCase = Qt::CaseInsensitive;
     }
     return matchCase;
+}
+
+Highlighter::~Highlighter() {
+    delete highlightSettings;
 }

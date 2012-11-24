@@ -9,7 +9,7 @@
 class HighlightSettings : QSettings {
 
 public:
-    static HighlightSettings* Instance();
+    HighlightSettings();
 
     void setSingleParameter(QString name, QVariant value);
     QVariant getSingleParameter(QString name, QVariant defaultValue);
@@ -20,10 +20,7 @@ public:
     void setSettings(QString, QList<HighlightSettingsEntry>);
 
 private:
-    HighlightSettings();
-    HighlightSettings(HighlightSettings const& copy);
-    HighlightSettings& operator = (HighlightSettings const& copy);
-    static HighlightSettings* m_pInstance;
+
 };
 
 #endif // HIGHLIGHTSETTINGS_H

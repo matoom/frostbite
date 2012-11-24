@@ -2,7 +2,7 @@
 
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
-    settings = HighlightSettings::Instance();    
+    settings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
 
     listWidget = highlightDialog->getGeneralList();
@@ -230,4 +230,5 @@ void HighlightGeneralTab::cancelChanges() {
 }
 
 HighlightGeneralTab::~HighlightGeneralTab() {
+    delete settings;
 }

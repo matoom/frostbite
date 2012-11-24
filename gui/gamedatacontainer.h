@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QReadLocker>
 
 #include <roommodel.h>
 #include <wieldmodel.h>
@@ -79,6 +80,7 @@ private:
     QStringList inventory;
 
     QStringList extractExp(QString, bool brief);
+    QReadWriteLock lock;
 
 signals:
     

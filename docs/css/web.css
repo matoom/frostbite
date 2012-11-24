@@ -103,3 +103,15 @@ li {
 .gray {
    color: gray;
 }
+
+.list li {
+   list-style-type: square
+}
+
+.about p {
+   margin-bottom: 10px;
+}
+
+pre {
+   white-space: pre-wrap;
+}

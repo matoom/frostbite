@@ -15,7 +15,6 @@ public:
     ~RoundTimeDisplay();
 
     void repaint();
-    void setTimer(int seconds);
 
     QTimer *timer;
 
@@ -28,6 +27,9 @@ private:
     QPixmap segmentDisplay(int seconds);
     QPixmap numericDisplay(int seconds);
     QColor getColorRange(int seconds);
+
+public slots:
+    void setTimer(int seconds);
 
 private slots:
     void intervalEvent();

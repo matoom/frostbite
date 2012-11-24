@@ -14,19 +14,20 @@ public:
     ~TimerBar();
 
     void loadProgressbar();
-    void setTimer(int);
     bool isActive();
 
 private:
     MainWindow* mainWindow;
     QProgressBar* timerProgress;
     QTimer* timer;
+    QReadWriteLock lock;
 
     int increment;
 
 signals:
     
 public slots:
+    void setTimer(int);
 
 private slots:
     void intervalEvent();

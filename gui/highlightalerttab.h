@@ -19,6 +19,7 @@ class HighlightAlertTab : public QObject {
 
 public:
     HighlightAlertTab(QObject *parent = 0);
+    ~HighlightAlertTab();
 
     void saveChanges();
     void cancelChanges();

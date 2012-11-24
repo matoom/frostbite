@@ -1,15 +1,5 @@
 #include "highlightsettings.h"
 
-HighlightSettings* HighlightSettings::m_pInstance = NULL;
-
-HighlightSettings* HighlightSettings::Instance() {
-    if (!m_pInstance) {
-        m_pInstance = new HighlightSettings;
-    }
-
-    return m_pInstance;
-}
-
 HighlightSettings::HighlightSettings() : QSettings("highlights.ini", QSettings::IniFormat) {
     //m_sSettingsFile = QApplication::applicationDirPath().left(1) + ":/demosettings.ini";
 }
