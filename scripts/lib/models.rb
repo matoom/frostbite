@@ -5,6 +5,9 @@ class Rt
   #
   # @param
   # @return [int] roundtime value
+  # @example Using round time in script.
+  #   echo Rt::value
+  #   => 5
   def self.value
     GameData.getRt().to_i
   end
@@ -15,6 +18,10 @@ class Inventory
   #
   # @param
   # @return [Array] inventory item list
+  # @example Using inventory list in script.
+  #   echo Inventory::list
+  #   => ["a lumpy bundle", "an origami-paper envelope", "a heavy burlap haversack",
+  #       "a simple belt knife", "a sturdy troll-skin herb pouch"]
   def self.list
     GameData.getInventory().to_s.split(", ")
   end
@@ -25,6 +32,10 @@ class Container
   #
   # @param
   # @return [Array] container item list
+  # @example Using container list in script.
+  #   echo Container::list
+  #   => ["a rock", "a brown pouch", "a misshaped brass chest", "a mud-stained steel chest",
+  #       "a blue gem pouch"]
   def self.list
     GameData.getContainer().to_s.split(", ")
   end
@@ -35,6 +46,9 @@ class Wield
   #
   # @param
   # @return [String]
+  # @example Using wield right in script.
+  #   echo Wield::right
+  #   => fuzzy sharks
   def self.right()
     GameData.getWieldRight().to_s
   end
@@ -53,6 +67,9 @@ class Wield
   #
   # @param
   # @return [String]
+  # @example Using wield left in script.
+  #   echo Wield::left
+  #   => ""
   def self.left()
     GameData.getWieldLeft().to_s
   end
@@ -61,6 +78,9 @@ class Wield
   #
   # @param
   # @return [String]
+  # @example Using wield left noun in script.
+  #   echo Wield::left_noun
+  #   => ""
   def self.left_noun()
     GameData.getWieldLeftNoun().to_s
   end
@@ -71,6 +91,9 @@ class Exp
   #
   # @param
   # @return [int] rank of skill
+  # @example Using exp rank in script.
+  #   echo Exp::rank
+  #   => 222
   def self.rank(exp_string)
     index = GameData.getExpIndex(exp_string.to_s)
     GameData.getExpRank(index).to_i
@@ -95,6 +118,9 @@ class Room
   #
   # @param
   # @return [string] room title
+  # @example Using room title in script.
+  #   echo Room::title
+  #   => [Mycthengelde, Flatlands]
   def self.title
     GameData.getRoomTitle().to_s
   end
@@ -103,6 +129,10 @@ class Room
   #
   # @param
   # @return [string] room description
+  # @example Using room description in script.
+  #   echo Room::description
+  #   => Well-worn paths lead through a grove of trees to a gate in The Crossing's
+  #      western wall.  Now and again you hear birds ...
   def self.description
     GameData.getRoomDescription().to_s
   end
@@ -111,6 +141,9 @@ class Room
   #
   # @param
   # @return [string] room objects
+  # @example Using room objects in script.
+  #   echo Room::objects
+  #   => You also see a musk hog.
   def self.objects
     GameData.getRoomObjects().to_s
   end
@@ -119,6 +152,9 @@ class Room
   #
   # @param
   # @return [string] room players
+  # @example Using room players in script.
+  #   echo Room::players
+  #   => ""
   def self.players
     GameData.getRoomPlayers().to_s
   end
@@ -127,6 +163,9 @@ class Room
   #
   # @param
   # @return [string] room exits
+  # @example Using room exits in script.
+  #   echo Room::exits
+  #   => Obvious paths: northwest.
   def self.exits
     GameData.getRoomExits().to_s
   end
@@ -161,6 +200,9 @@ class Vitals
   #
   # @param
   # @return [int] concentration value 0 - 100
+  # @example Using concentration value in script.
+  #   echo Vitals::concentration
+  #   => 100
   def self.concentration
     GameData.getConcentration().to_i
   end
@@ -169,6 +211,9 @@ class Vitals
   #
   # @param
   # @return [int] fatigue value 0 - 100
+  # @example Using fatigue value in script.
+  #   echo Vitals::fatigue
+  #   => 100
   def self.fatigue
     GameData.getFatigue().to_i
   end
@@ -177,6 +222,8 @@ class Vitals
   #
   # @param
   # @return [int] spirit value 0 - 100
+  # @example Using spirit value in script.
+  #   echo Vitals::spirit
   def self.spirit
     GameData.getSpirit().to_i
   end
@@ -187,6 +234,9 @@ class Status
   #
   # @param
   # @return [bool] is standing
+  # @example Echoing standing status to main window
+  #   echo Status::standing
+  #   => 1
   def self.standing
     GameData.getStanding().to_i
   end
@@ -195,6 +245,9 @@ class Status
   #
   # @param
   # @return [bool] is kneeling
+  # @example Echoing kneeling status to main window
+  #   echo Status::kneeling
+  #   => 0
   def self.kneeling
     GameData.getKneeling().to_i
   end
@@ -203,6 +256,9 @@ class Status
   #
   # @param
   # @return [bool] is sitting
+  # @example Echoing sitting status to main window
+  #   echo Status::sitting
+  #   => 0
   def self.sitting
     GameData.getSitting().to_i
   end
@@ -211,6 +267,9 @@ class Status
   #
   # @param
   # @return [bool] is prone
+  # @example Echoing prone status to main window
+  #   echo Status::prone
+  #   => 0
   def self.prone
     GameData.getProne().to_i
   end
@@ -219,6 +278,9 @@ class Status
   #
   # @param
   # @return [bool] is stunned
+  # @example Echoing stunned status to main window
+  #   echo Status::stunned
+  #   => 0
   def self.stunned
     GameData.getStunned().to_i
   end
@@ -227,6 +289,9 @@ class Status
   #
   # @param
   # @return [bool] is dead
+  # @example Echoing dead status to main window
+  #   echo Status::dead
+  #   => 0
   def self.dead
     GameData.getDead().to_i
   end
@@ -235,6 +300,9 @@ class Status
   #
   # @param
   # @return [bool] is bleeding
+  # @example Echoing bleeding status to main window
+  #   echo Status::bleeding
+  #   => 1
   def self.bleeding
     GameData.getBleeding().to_i
   end
@@ -247,6 +315,7 @@ class Status
   #   if Status::hidden
   #     put unhide
   #   end
+  #   => 1
   def self.hidden
     GameData.getHidden().to_i
   end
@@ -255,6 +324,9 @@ class Status
   #
   # @param
   # @return [bool] is ivisible
+  # @example Echoing invisible status to main window
+  #   echo Status::invisible
+  #   => 0
   def self.invisible
     GameData.getInvisible().to_i
   end
@@ -263,6 +335,9 @@ class Status
   #
   # @param
   # @return [bool] is webbed
+  # @example Echoing webbed status to main window
+  #   echo Status::webbed
+  #   => 0
   def self.webbed
     GameData.getWebbed().to_i
   end
@@ -271,12 +346,15 @@ class Status
   #
   # @param
   # @return [bool] is joined
+  # @example Echoing joined status to main window
+  #   echo Status::joined
+  #   => 1
   def self.joined
     GameData.getJoined().to_i
   end
 end
 
-# @api private
+# @private
 class CommandThread
   def run
     while line = gets

@@ -24,9 +24,9 @@ $_data_queue = []
 # @param
 # @return [void]
 # @example Wait for the duration of the round time before executing next command.
-#   put hide
+#   put "hide"
 #   wait_for_roundtime
-#   put unhide
+#   put "unhide"
 def wait_for_roundtime
   (0..1000000).each do
     $_data_queue.each_index do |i|
@@ -56,12 +56,12 @@ def wait_for(pattern)
   end
 end
 
-# Matches multiple regex patterns with game text
+# Matches multi regex patterns with game text
 # and returns the name of the matching pattern.
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [Symbol] pattern name
-# @example Using multiple match patterns to make decisions in script.
+# @example Using multi match patterns to make decisions in script.
 #   match = {:retry => "...wait", :next => "you open"}
 #   result = match_wait match
 #   result #=> :retry or :next
@@ -103,7 +103,7 @@ def match_wait(pattern)
   end
 end
 
-# Matches multiple regex patterns with game text
+# Matches multi regex patterns with game text
 # and goes to defined label.
 #
 # @param [Hash] pattern list of regex patterns and names
@@ -171,9 +171,9 @@ end
 # @param [String] value command.
 # @return [void]
 # @example Using move command in script.
-#   move n
-#   move e
-#   move go gate
+#   move "n"
+#   move "e"
+#   move "go gate"
 def move(value)
   put value
   res = match_wait({:room => [/^\[.*?\]$/],
@@ -189,11 +189,11 @@ end
 # @param
 # @return [void]
 # @example Using wait in script to run consecutive commands.
-#   put remove my shield
+#   put "remove my shield"
 #   wait
-#   put wear my shield
+#   put "wear my shield"
 #   wait
-#   put remove my shield
+#   put "remove my shield"
 def wait
   wait_for(/^>/)
 end
@@ -234,18 +234,18 @@ def get_match_rt
   @match_rt
 end
 
-# @api private
+# @private
 def end_command_thread
   puts "end#"
 end
 
-# @api private
+# @private
 def exit
   end_command_thread
   Kernel::exit
 end
 
-# @api private
+# @private
 def sleep_for_rt(rt)
   if rt > 0
     rt = rt  - 1 + @match_rt_adjustment
@@ -256,6 +256,7 @@ def sleep_for_rt(rt)
   end
 end
 
+# @private
 at_exit do
   if defined? finally_do
     unless @_command_thread.alive?

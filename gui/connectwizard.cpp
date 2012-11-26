@@ -39,12 +39,6 @@ void ConnectWizard::showEvent(QShowEvent* event) {
     QDialog::showEvent(event);
 
     this->init();
-
-    if(ui->userEdit->text().isEmpty()) {
-        ui->userEdit->setFocus();
-    } else {
-        ui->passwordEdit->setFocus();
-    }
 }
 
 void ConnectWizard::registerFields() {
@@ -78,6 +72,12 @@ void ConnectWizard::init() {
     if(!password.isEmpty()) {
         ui->passwordEdit->setText(password);
         ui->passwordEdit->setModified(true);
+    }
+
+    if(ui->userEdit->text().isEmpty()) {
+        ui->userEdit->setFocus();
+    } else {
+        ui->passwordEdit->setFocus();
     }
 }
 
