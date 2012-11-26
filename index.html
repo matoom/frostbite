@@ -1,0 +1,135 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. -->
+
+<head id="frostbite" data-template-set="html5-reset">
+
+	<meta charset="utf-8">
+	
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Frostbite specification document</title>
+	
+	<meta name="title" content="">
+	<meta name="description" content="">
+	<!-- Google will often use this as its description of your page/site. Make it good. -->
+	
+	<meta name="google-site-verification" content="">
+	<!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
+	
+	<meta name="author" content="Your Name Here">
+	<meta name="Copyright" content="Copyright Your Name Here 2011. All Rights Reserved.">
+
+	<!-- Dublin Core Metadata : http://dublincore.org/ -->
+	<meta name="DC.title" content="Frostbite">
+	<meta name="DC.subject" content="Dragonrealms MUD Frontend">
+	
+	<!--  Mobile Viewport Fix
+	j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
+	device-width : Occupy full width of the screen in its current orientation
+	initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+	maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+	-->
+	<!-- Uncomment to use; use thoughtfully!
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	-->
+
+	<link rel="shortcut icon" href="img/favicon.png">
+	<!-- This is the traditional favicon.
+		 - size: 16x16 or 32x32
+		 - transparency is OK
+		 - see wikipedia for info on browser support: http://mky.be/favicon/ -->
+		 
+	<link rel="apple-touch-icon" href="img/favicon.png">
+	<!-- The is the icon for iOS's Web Clip.
+		 - size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+		 - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
+		 - Transparency is not recommended (iOS will put a black BG behind the icon) -->
+	
+	<!-- CSS: screen, mobile & print are all in the same file -->
+	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+	
+	<!-- all our JS is at the bottom of the page, except for Modernizr. -->
+	<script src="js/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header>
+        <hgroup>
+            <img src="img/logo.png" /><br/>
+            <h1>Frostbite</h1>
+            <h2 class="">A MUD client for Dragonrealms</h2>
+        </hgroup>
+    </header>
+
+    <h2 class="contents_head" id="contents">Table of contents</h2>
+
+    <div>
+        <ul>
+            <li>
+                <a href="introduction.html"><span class="number">1</span>Introduction</a>
+                <ul>
+                    <li><a href="application_contents.html"><span class="number">1.1</span>Application contents</a></li>
+                    <li><a href="installation.html"><span class="number">1.2</span>Installation</a></li>
+                    <li><a href="getting_started.html"><span class="number">1.3</span>Getting started</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="user_interface.html"><span class="number">2</span>User interface</a>
+                <ul>
+                    <li><a href="settings.html"><span class="number">2.1</span>Client settings</a></li>
+                    <li><a href="flags.html"><span class="number">2.2</span>Server-side flags and settings</a></li>
+                    <li><a href="media.html"><span class="number">2.3</span>Media - screenshots</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="scripting.html"><span class="number">3</span>Scripting</a>
+                <ul>
+                    <li><a href="basics.html"><span class="number">3.1</span>Basics</a></li>
+                    <li><a href="api.html"><span class="number">3.2</span>API</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="development.html"><span class="number">4</span>Development</a>
+            </li>
+        </ul>
+    </div>
+
+    <h2 class="about_head">About</h2>
+    <div class="about">
+        <p>
+            Frostbite is a desktop MUD frontend for Windows and it is specifically designed for <a href="http://www.play.net/dr/">Dragonrealms</a>.
+            It is free to use and is created based on open source principles -- allowing any personal modifications or additions to the current software.
+        </p><p>
+            The application software is developed in C++ using <a href="http://qt.digia.com/">Qt</a> framework which enables to
+            extend the application across multiple platforms to Linux and Mac OS in future releases.
+        </p><p>
+            The Frostbite frontend includes full-featured user interface; text highlighting; macros and sequences; and scripting support with
+            <a href="http://www.ruby-lang.org/en/">Ruby</a> scripting language -- all of which will be covered in more detail in this document.
+        </p>
+    </div>
+
+	<footer>
+		<p><small>Feedback: madtoom@gmail.com; https://github.com/matoom/frostbite</small></p>
+	</footer>
+
+</div>
+
+<!-- here comes the javascript -->
+<script src='js/jquery-1.5.1.min.js'></script>
+
+<!-- this is where we put our custom functions -->
+<script src="js/functions.js"></script>
+
+</body>
+</html>

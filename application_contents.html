@@ -1,0 +1,145 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. -->
+
+<head id="frostbite" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Introduction - application contents</title>
+
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <!-- Google will often use this as its description of your page/site. Make it good. -->
+
+    <meta name="google-site-verification" content="">
+    <!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
+
+    <meta name="author" content="Your Name Here">
+    <meta name="Copyright" content="Copyright Your Name Here 2011. All Rights Reserved.">
+
+    <!-- Dublin Core Metadata : http://dublincore.org/ -->
+    <meta name="DC.title" content="Frostbite">
+    <meta name="DC.subject" content="Dragonrealms MUD Frontend">
+    <meta name="DC.creator" content="">
+
+    <!--  Mobile Viewport Fix
+     j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+     device-width : Occupy full width of the screen in its current orientation
+     initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+     maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+     -->
+    <!-- Uncomment to use; use thoughtfully!
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+     -->
+
+    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- This is the traditional favicon.
+          - size: 16x16 or 32x32
+          - transparency is OK
+          - see wikipedia for info on browser support: http://mky.be/favicon/ -->
+
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    <!-- The is the icon for iOS's Web Clip.
+          - size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+          - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
+          - Transparency is not recommended (iOS will put a black BG behind the icon) -->
+
+    <!-- CSS: screen, mobile & print are all in the same file -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+
+    <!-- all our JS is at the bottom of the page, except for Modernizr. -->
+    <script src="js/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header>
+        <hgroup>
+            <img src="img/logo.png" /><br/>
+            <h1>Frostbite</h1>
+            <h2 class="">A MUD client for Dragonrealms</h2>
+        </hgroup>
+    </header>
+
+    <h2 class="contents_head" id="contents">1.1 Application contents</h2>
+    <div class="about">
+        <p>
+            As a whole, the application is comprised of the application software and Ruby runtime (which is not included
+            in the installation package and has to be downloaded separately).
+        </p>
+        <p>
+            By itself the application software is capable of running without any support from Ruby but it is necessary
+            for running scripts from the client. The installation of ruby runtime is described in more detail in the
+            <a href="installation.html">installation</a> page.
+        </p>
+
+        <br/>
+        <h3>The application structure</h3>
+        <p>
+            The Frostbite client software comes in a pre-defined structure for containing the necessary utility files
+            required by different functions of the application.
+        </p>
+        <br/>
+        <div class="folders">
+            <ul>
+                <li>/..</li>
+                <li><img src="img/folder.png" /> docs
+                    <ul>
+                        <li class="gray">User guide documents are placed in this folder.</li>
+                    </ul>
+                </li>
+                <li><img src="img/folder.png" /> notepad2
+                    <ul>
+                        <li class="gray">Notepad2 is used to open scripts for editing from the scripts menu.</li>
+                    </ul>
+                </li>
+                <li><img src="img/folder.png" /> scripts
+                    <ul>
+                        <li class="gray">The designated folder for the application scripts.</li>
+                    </ul>
+                </li>
+                <li><img src="img/folder.png" /> sounds
+                    <ul>
+                        <li class="gray">The designated folder for sound files used by highlights and alerts.</li>
+                    </ul>
+                </li>
+                <br/>
+                <li><img src="img/dll.png" /> data.dll - <span class="gray">contains shared memory of game data which is used by the scripts.</span></li>
+                <li><img src="img/exe.png" /> FrostBite.exe - <span class="gray">application executable.</span></li>
+                <li><img src="img/ini.png" /> client.ini - <span class="gray">settings file for general client settings.</span></li>
+                <li><img src="img/ini.png" /> highlights.ini - <span class="gray">settings file for color highlights.</span></li>
+                <li><img src="img/ini.png" /> macros.ini - <span class="gray">settings file for macros.</span></li>
+            </ul>
+        </div>
+        <br />
+        <p>
+            Due to mechanics in scripting module implementation, only one instance of the game application can
+            be run per copy.
+        </p>
+    </div>
+    <footer>
+        <p><small>Feedback: madtoom@gmail.com; https://github.com/matoom/frostbite</small></p>
+    </footer>
+
+</div>
+
+<!-- here comes the javascript -->
+<script src='js/jquery-1.5.1.min.js'></script>
+
+<!-- this is where we put our custom functions -->
+<script src="js/functions.js"></script>
+
+</body>
+</html>

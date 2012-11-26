@@ -1,0 +1,117 @@
+.wrapper {
+    width: 820px;
+    margin: 4em auto;
+    padding: 0 1em;
+}
+
+h1 {
+    font-size: 300%;
+    line-height: 1em;
+    font-family: "M+2pheavy", "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+header {
+    margin-left: -60px;
+}
+
+header h2 {
+    font-size: 12px;
+    margin-bottom: 0.5em;
+    font-family: "Droid Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: normal;
+    color: rgb(85, 85, 85);
+}
+
+header img {
+    float: left;
+}
+
+.contents_head {
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    line-height: 1.5em;
+    font-family: "M+2pheavy", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    margin: 2em 0;
+    font-size: 160%;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+body .wrapper > footer {
+    margin-top: 3em;
+    border-top: 1px solid rgb(204, 204, 204);
+    padding: 1em 0 0;
+    clear: right;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: center;
+    color: rgb(85, 85, 85);
+}
+
+a {
+    color: rgb(7, 115, 202);
+}
+
+a:link {
+    color: rgb(7, 115, 202);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.45em;
+    font-family: "Droid Serif", Georgia, serif;
+}
+
+li {
+    list-style: none outside none;
+}
+
+.number {
+    color: rgb(136, 136, 136);
+    font-size: 14px;
+    line-height: 1.45em;
+    font-family: "Droid Serif", Georgia, serif;
+    margin-right: 5px;
+}
+
+.about_head {
+    margin: 2em 0;
+    margin-bottom: 1em;
+    font-size: 34px;
+    line-height: 1.45em;
+    font-family: "Droid Serif", Georgia, serif;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.about {
+    margin-left: 50px;
+    margin-right: 50px;
+    font-size: 16px;
+    line-height: 1.7em;
+    font-family: "Droid Serif", Georgia, serif;
+}
+
+.folders {
+    font-size: 14px;
+}
+
+.folders img {
+   vertical-align: middle;
+}
+
+.gray {
+   color: gray;
+}
+
+.list li {
+   list-style-type: square
+}
+
+.about p {
+   margin-bottom: 10px;
+}
+
+pre {
+   white-space: pre-wrap;
+}
