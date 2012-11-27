@@ -16,7 +16,6 @@ gems = ["peridot", "kunzite", "chrysoprase", "ivory", "jade", "andalusite", "opa
 $args.each do |color|
   put "get my #{color} pouch"
   wait
-  pause 0.5
   gems.each do |gem|
     result = :sell
     until result == :next
