@@ -85,12 +85,13 @@
         </p>
         <br/>
         <p>
-            The project is based on open source practices and the credits for making the client go to all of
-            the parties that have provided the means to make everything possible.
+            The Frostbite project is based on open source technologies and the credits for making everything possible go
+            to all the parties that have provided the means for it.
         </p>
         <ul>
             <li><a href="http://qt-project.org/">Qt framework</a> - the core framework for building the client software;</li>
             <li><a href="http://www.ruby-lang.org/en/">Ruby</a> - providing the scripting support for the frontend;</li>
+            <li><a href="https://github.com/">Github</a> - hosting all the project related files and source code;</li>
             <li><a href="http://opengameart.org">OpenGameArt.org</a> - bringing the design elements for the user interface,
                 provided by many artists of which special thanks go out to Ravenmore and Dakal for their generous
                 contribution to the entire open game development community;
@@ -99,7 +100,7 @@
                 installation.</li>
         </ul>
         <br/>
-        <p>
+        <p class="alert-box">
             The client is still a work in progress and does not provide a full support for all the functions in
             the game -- it has to be used with caution accordingly.
         </p>
@@ -115,6 +116,20 @@
 
 <!-- this is where we put our custom functions -->
 <script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 </body>
 </html>

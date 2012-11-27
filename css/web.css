@@ -115,3 +115,12 @@ li {
 pre {
    white-space: pre-wrap;
 }
+
+.alert-box {
+    background: #fff6bf url("../img/alert.png") no-repeat;
+    background-position: 15px 12px;
+    text-align: left;
+    padding: 5px 20px 5px 45px;
+    border-top: 2px solid #ffd324;
+    border-bottom: 2px solid #ffd324;
+}

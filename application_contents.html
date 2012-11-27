@@ -80,9 +80,14 @@
             in the installation package and has to be downloaded separately).
         </p>
         <p>
-            By itself the application software is capable of running without any support from Ruby but it is necessary
-            for running scripts from the client. The installation of ruby runtime is described in more detail in the
-            <a href="installation.html">installation</a> page.
+            The ruby runtime installation is required to run scripts in the Frostbite frontend however the client is still
+            available to use without any support from Ruby.
+            The installation of ruby runtime is described in more detail in the <a href="installation.html">installation</a> page.
+        </p>
+        <br/>
+        <p class="alert-box">
+            The mechanics in scripting module implementation restrict from running more than one frontend per
+            application copy.
         </p>
 
         <br/>
@@ -124,10 +129,6 @@
             </ul>
         </div>
         <br />
-        <p>
-            Due to mechanics in scripting module implementation, only one instance of the game application can
-            be run per copy.
-        </p>
     </div>
     <footer>
         <p><small>Feedback: madtoom@gmail.com; https://github.com/matoom/frostbite</small></p>
@@ -140,6 +141,20 @@
 
 <!-- this is where we put our custom functions -->
 <script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 </body>
 </html>
