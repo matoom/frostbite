@@ -1,13 +1,13 @@
 Frostbite
 =========
 
-## Description
+### Description
 
 MUD client for dragonrealms.
 
-## Specification documentation
+### Specification documentation
 [http://matoom.github.com/frostbite/](http://matoom.github.com/frostbite/).
 
-## License
+### License
 
 MIT

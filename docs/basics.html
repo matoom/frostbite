@@ -107,12 +107,12 @@
         <pre><code>@match_rt_adjustment = 0 # class scope variable, available in functions</code></pre>
         <p>This is an adjustment parameter which is added to the round time values used by match functions. It enables to regulate
         the wait times and make the script run faster by tightening the value. This is of course in case the script is
-        prepared to deal with the possible outcome of running the commands early.</p>
+        prepared to deal with the possible outcome of running the commands too early.</p>
 
         <br/>
         <h3>Script structures and blocks</h3>
         <p>
-            Frostbite API driven scripts can be directed to <i>"finally_do"</i> method at script exit. This includes either aborting the
+            All the Frostbite API driven scripts can be directed to <i>"finally_do"</i> method at script exit. This includes either aborting the
             script or exiting by natural means. The final block can be avoided by calling Kernel::exit! or Kernel::abort. If the
             <i>"finally_do"</i> function is not defined in the script, no extra action will be taken at the script exit. Finally block is
             useful when you want to perform clean up tasks after running the script.
@@ -152,7 +152,7 @@
         <br/>
         <p>
             The match mechanics can also be executed without labels by calling the <i>"match_wait"</i> function instead.
-            This way the keyword (symbol) for the match will be returned by the function and any further action depends on
+            This way the keyword (:symbol) for the match will be returned by the function and any further action depends on
             the decision logic that handles those responses.
         </p>
 
@@ -169,7 +169,7 @@
     </code></pre>
         <br/>
         <p>
-            To avoid code repetitions Ruby enables to create functions and loops to keep the script clean from any
+            For avoiding code repetitions, Ruby enables to create functions and loops to keep the script clean from any
             redundant code.
         </p>
     <pre><code>
@@ -202,6 +202,20 @@
 
 <!-- this is where we put our custom functions -->
 <script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 </body>
 </html>

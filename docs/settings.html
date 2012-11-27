@@ -101,7 +101,7 @@
     <h3>Macros/Sequences</h3>
     <p>
         Macros allow users to bind game commands to specified key combinations. In addition to macros Frostbite frontend
-        also supports key sequences, meaning that you can delay a predetermined amount of time between each command which
+        also supports key sequences, meaning that you can delay a predetermined amount of time between each command, which
         makes it possible to enter 3 or more commands in a single sequence (game only supports 2 consecutive commands).
     </p>
     <p>
@@ -111,7 +111,7 @@
     <img src="img/macros.png" /><br/><br/>
     <h3>Quick button actions</h3>
     <p>
-        Quick button actions can be changed by clicking the right mouse button on the quick button.
+        Quick button actions can be changed by clicking the right mouse button on the specified quick button.
     </p>
     <img src="img/quick_button_edit.png" /><br/><br/>
 
@@ -127,6 +127,20 @@
 
 <!-- this is where we put our custom functions -->
 <script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 </body>
 </html>

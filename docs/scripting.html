@@ -83,8 +83,9 @@
         <h3>High level description</h3>
         <p>
             Most of the scripting functionality is created in Ruby and it can be easily re-adjusted to every specific need. The
-            game client only provides game text over standard output and all the additional utility functions as part of a
-            dynamic library file <i>"data.dll/so"</i>, which can be accessed by any other process.
+            game client provides game text over standard output, while rest of the utility functions are available as part
+            of a dynamic library file <i>"data.dll/so"</i>, which can be accessed by any other process -- including the
+            Ruby scripting module.
         </p>
         <p>
             The Ruby side API is placed in the <i>"scripts/lib"</i> folder and should only be modified at your own risk. The game client
@@ -118,6 +119,20 @@
 
 <!-- this is where we put our custom functions -->
 <script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
 </body>
 </html>
