@@ -200,13 +200,14 @@
         <br/>
         <h3>Errors in scripting</h3>
         <p>
-            All script error descriptions are being displayed in the Frostbite client main window. If the script
-            contains errors then it will not run at all and the provided error message should in this case point
-            to the line number which contains the error.
+            Error messages coming from scripts are displayed in the Frostbite client main window. Scripts containing
+            any errors in syntax or structure can not be used until they are fixed. The error messages, in most
+            cases, point to the errors by the line number in code to make them easier to find.
         </p>
         <p>
             For example, when calling a function which expects a string type but has not been denoted as such by using
-            quotes.
+            quotes. In Ruby, variables can be created using just alphanumeric characters and underscore. In this case
+            the word - hello - will be handled as a variable which has no value assigned, therefore causing an error.
         </p>
     <pre><code>
 #script
@@ -218,9 +219,8 @@ echo hello
 C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello' for main:Object (NameError)
     </code></pre>
         <p>
-            In Ruby, variables can be created using just alphanumeric characters and underscore. The word - hello -
-            in this case looks like a common variable, which is not defined to contain any value and therefore results
-            in an error.
+            Error on line one, undefined local variable. To fix this particular error, the word hello has to be
+            enclosed in quotes -- "hello".
         </p>
 
     </div>
