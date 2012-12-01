@@ -14,7 +14,7 @@ label(:start) {
 label(:north_1) {
   put "north"
 
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :midsection => ["You can't swim in that direction"],
             :north_1 => ["You"]}
   result = match_wait match
@@ -31,7 +31,7 @@ label(:north_1) {
 
 label(:midsection) {
   put "nw"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :north_2 => ["You"] }
   result = match_wait match
 
@@ -46,7 +46,7 @@ label(:midsection) {
 label(:north_2) {
   put "north"
 
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :end => ["You can't swim in that direction"],
             :north_2 => ["You"]}
   result = match_wait match

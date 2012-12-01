@@ -62,7 +62,7 @@ end
 # @param [Hash] pattern list of regex patterns and names
 # @return [Symbol] pattern name
 # @example Using multi match patterns to make decisions in script.
-#   match = {:retry => "...wait", :next => "you open"}
+#   match = {:retry => "\.\.\.wait", :next => "you open"}
 #   result = match_wait match
 #   result #=> :retry or :next
 #   if result = :next
@@ -112,7 +112,7 @@ end
 #   labels_start
 #
 #   label(:retry){
-#     match = {:retry => "...wait", :next => "you open"}
+#     match = {:retry => "\.\.\.wait", :next => "you open"}
 #     match_wait match
 #     echo "retry"
 #   }
@@ -176,9 +176,10 @@ end
 #   move "go gate"
 def move(value)
   put value
-  res = match_wait({:room => [/^\[.*?\]$/],
-                    :wait => ["...wait", "you may only type ahead"]})
+  res = match_wait({ :room => [/^\[.*?\]$/],
+                     :wait => ["\.\.\.wait", "you may only type ahead"] })
   if res == :wait
+    echo "**** REPEAT COMMAND IN MOVE ****"
     pause 0.5
     move value
   end

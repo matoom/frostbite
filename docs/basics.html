@@ -223,12 +223,62 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
             enclosed in quotes -- "hello".
         </p>
 
-    </div>
 
+
+    <br/>
+    <h3>Regular expressions</h3>
+    <p>
+        The match functions in scripts are based on regular expressions. To use any of the regular expression
+        characters as a literal in a match pattern, they have to be escaped by a backslash.
+    </p>
+
+<pre><code>
+#escaped to match dot characters instead of any single character
+:wait => ["\.\.\.wait"]
+
+#case insensitive, bracets are escaped to match bracet characters
+:canyon => [/\[North Road, Canyon\]/i]
+
+#not containing any regular expression special characters
+:exit => ["study this chart again"]
+</code></pre>
+    <br/>
+
+    <p>
+        Regular expression reference:
+    </p>
+
+<pre><code>
+[abc] 	#A single character of: a, b or c
+[^abc] 	#Any single character except: a, b, or c
+[a-z] 	#Any single character in the range a-z
+[a-zA-Z] #Any single character in the range a-z or A-Z
+^ 	#Start of line
+$ 	#End of line
+\A 	#Start of string
+\z 	#End of string
+. 	#Any single character
+\s 	#Any whitespace character
+\S 	#Any non-whitespace character
+\d 	#Any digit
+\D 	#Any non-digit
+\w 	#Any word character (letter, number, underscore)
+\W 	#Any non-word character
+\b 	#Any word boundary
+(...) 	#Capture everything enclosed
+(a|b) 	#a or b
+a? 	#Zero or one of a
+a* 	#Zero or more of a
+a+ 	#One or more of a
+a{3} 	#Exactly 3 of a
+a{3,} 	#3 or more of a
+a{3,6} 	#Between 3 and 6 of a
+</code></pre>
+
+    </div>
 	<footer>
         <p><small>Github: https://github.com/matoom/frostbite</small></p>
 	</footer>
-
 </div>
 
 <!-- here comes the javascript -->

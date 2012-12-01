@@ -138,8 +138,24 @@ void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
     }
 }
 
+QList<HighlightSettingsEntry> HighlightTextTab::populateHighlights() {
+    if(this->changeList.isEmpty()) {
+        highlightList = highlightSettings->getSettings("TextHighlight");
+    } else {
+        QList<HighlightSettingsEntry> tmpList = highlightSettings->getSettings("TextHighlight");
+        for(int i = 0; i < tmpList.size(); i++) {
+            if(changeList.contains(i)) {
+                tmpList.replace(i, highlightList.at(i));
+            }
+        }
+        highlightList = tmpList;
+    }
+
+    return highlightList;
+}
+
 void HighlightTextTab::loadHighlightList() {
-    highlightList = highlightSettings->getSettings("TextHighlight");
+    highlightList = populateHighlights();
 
     for(int i = 0; i < highlightList.size(); i++) {
         HighlightSettingsEntry entry = highlightList.at(i);
@@ -160,9 +176,11 @@ void HighlightTextTab::createListItem(int id, QString value, QColor color) {
     newItem->setFont(QFont("Consolas", 12));
 }
 
-void HighlightTextTab::reloadHighlightList() {    
+void HighlightTextTab::reloadHighlightList() {
+    int row = listWidget->currentRow();
     listWidget->clear();
     this->loadHighlightList();
+    listWidget->setCurrentRow(row);
 }
 
 void HighlightTextTab::itemSelected(QListWidgetItem *current, QListWidgetItem *previous) {
@@ -398,7 +416,13 @@ void HighlightTextTab::initTimerActionSelect() {
 }
 
 void HighlightTextTab::removeHighlightItem() {
-    highlightList.removeAt(listWidget->currentItem()->data(Qt::UserRole).toInt());
+    int id = listWidget->currentItem()->data(Qt::UserRole).toInt();
+    highlightList.removeAt(id);
+
+    int index = changeList.indexOf(id);
+    if(index != -1) {
+        changeList.removeAt(index);
+    }
 
     highlightSettings->setSettings("TextHighlight", highlightList);
 

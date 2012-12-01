@@ -81,6 +81,7 @@ private:
     void updateSelectedItemColor(QListWidgetItem*);
     void updateIcon(QListWidgetItem*, QListWidgetItem*);
     void enableMenuItems();
+    QList<HighlightSettingsEntry> populateHighlights();
 
 signals:
 

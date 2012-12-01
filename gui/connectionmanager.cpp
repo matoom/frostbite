@@ -13,7 +13,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
     }
 
-    debug = true;
+    debug = false;
 
     dataProcessThread = new DataProcessThread(parent);
     connect(this, SIGNAL(addData(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));

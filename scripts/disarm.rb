@@ -5,7 +5,7 @@
 
 def ident(box)
   put "disarm my #{box} ident"
-  match = { :wait => ["..wait"],
+  match = { :wait => ["\.\.wait"],
             :ident => ["fails to reveal to you what"],
             :blind => ["aged grandmother could defeat", "could do it blindfolded"],
             :quick => ["can take down any time", "a simple matter", "should not take long"],
@@ -31,7 +31,7 @@ end
 
 def disarm(box, method)
   put "disarm my #{box} #{method.to_s}"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :next_method => ["not likely to be a good thing"],
             :continue => ["progress"],
             :analyze => ["Roundtime", "not yet fully disarmed"]}
@@ -57,7 +57,7 @@ end
 
 def analyze(box)
   put "disarm my #{box} analyze"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :analyze => ["unable to determine"],
             :ident => ["not fully disarmed", "what could you possibly analyze"],
             :end => ["unsuitable for"],
@@ -81,7 +81,7 @@ end
 
 def harvest(box)
   put "disarm my #{box} harvest"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :harvest => ["unable to extract"],
             :end => ["inept fumblings have damaged", "mangled remnants"],
             :stow => ["Roundtime"] }
@@ -121,7 +121,7 @@ end
 
 @box_types.each_with_index do |box, index|
   put "get my first #{box}"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :next => ["were you referring"],
             :open => ["You get"] }
   res = match_wait match

@@ -27,7 +27,7 @@ end
 
 label(:trail) {
   put "go trail"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :canyon => [/\[North Road, Canyon\]/] }
   res = match_wait match
 
@@ -36,7 +36,7 @@ label(:trail) {
 
 label(:canyon) {
   put "e"
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :stand => ["You can't do that while lying down"],
             :continue => [/\[North Rim, Canyon\]/] }
   res = match_wait match

@@ -14,7 +14,7 @@ label(:start) {
 label(:south_1) {
   put "south"
 
-  match = { :wait => ["...wait"],
+  match = { :wait => ["\.\.\.wait"],
             :midsection => ["You can't swim in that direction"],
             :south_1 => ["You"]}
   result = match_wait match

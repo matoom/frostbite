@@ -35,7 +35,7 @@ labels_start
 label(:go) {
   put "sw"
   match = { :noweb => ["Thick trees line the route here"],
-            :web => ["Roundtime", "You can't do that while", "...wait"] }
+            :web => ["Roundtime", "You can't do that while", "\.\.\.wait"] }
   match_wait_goto match
 }
 

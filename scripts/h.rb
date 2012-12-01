@@ -25,7 +25,7 @@ label(:start) {
   match = { :wait_for => ["Face what?"],
             :hide => ["You are already facing", "You turn to face"],
             :retreat => ["You are too closely engaged"],
-            :wait => ["...wait"] }
+            :wait => ["\.\.\.wait"] }
   res = match_wait match
   go_wait(res, :start)
 }
@@ -36,7 +36,7 @@ label(:hide) {
   match = { :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
             :stop_stalk => ["You're already stalking"],
             :hide => ["ruining your hiding"],
-            :wait => ["...wait"] }
+            :wait => ["\.\.\.wait"] }
   res = match_wait match
   go_wait(res, :hide)
 }
@@ -54,7 +54,7 @@ label(:feint) {
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime"],
             :face => ["You can't backstab that."],
-            :wait => ["...wait"]}
+            :wait => ["\.\.\.wait"]}
   res = match_wait match
   go_wait(res, :feint)
 }
@@ -63,7 +63,7 @@ label(:advance) {
   put "advance"
   put "shiver"
   match = { :hide => ["begin to advance", "You are already"],
-            :wait => ["...wait"]}
+            :wait => ["\.\.\.wait"]}
   res = match_wait match
   go_wait(res, :advance)
 }
