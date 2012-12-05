@@ -44,7 +44,7 @@ void Script::displayOutputMsg() {
     QByteArray msg = script_proc->readAll();        
     scriptService->processCommand(msg);
 
-    //qDebug() << msg.data();
+    qDebug() << msg.data();
 }
 
 void Script::displayErrorMsg() {

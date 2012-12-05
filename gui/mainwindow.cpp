@@ -17,18 +17,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 void MainWindow::appSetup() {
-    //setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-    /* load client window state */
-    settings = ClientSettings::Instance();
-    restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
-    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());    
+    /* set cleanlooks as base style */
+    QApplication::setStyle("cleanlooks");
 
     // does not open on correct screen in 4.8
     // https://bugreports.qt-project.org/browse/QTBUG-21371
 
-    /* set cleanlooks as base style */
-    QApplication::setStyle("cleanlooks");    
+    /* load client window state */
+    settings = ClientSettings::Instance();
+    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
+    restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
 }
 
 void MainWindow::toggleFullScreen() {
@@ -48,11 +46,6 @@ void MainWindow::initSettings() {
     QPalette palette = ui->centralWidget->palette();
     palette.setColor(QPalette::Window, color);
     ui->centralWidget->setPalette(palette);
-
-    /* set gameWindow background to transparent to show compass */
-    /*palette = windowManager->getGameWindow()->palette();
-    palette.setColor(QPalette::Base, Qt::transparent);
-    windowManager->getGameWindow()->viewport()->setPalette(palette);*/
 
     /* set focus to command line at startup */
     cmdLine->setFocus();

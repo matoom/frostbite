@@ -11,7 +11,6 @@ MacroSettings* MacroSettings::Instance() {
 }
 
 MacroSettings::MacroSettings() : QSettings("macros.ini", QSettings::IniFormat) {
-    //m_sSettingsFile = QApplication::applicationDirPath().left(1) + ":/demosettings.ini";
 }
 
 void MacroSettings::setParameter(QString name, QVariant value) {

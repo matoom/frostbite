@@ -32,7 +32,7 @@ void MenuHandler::menuTriggered(QAction* action) {
             QDir::currentPath() + "/docs/index.html", QUrl::TolerantMode));
     }
 
-    qDebug() << action->text();
+    //qDebug() << action->text();
 }
 
 MenuHandler::~MenuHandler() {

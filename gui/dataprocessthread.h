@@ -84,6 +84,7 @@ signals:
     void setTimer(int);
     void writeScriptMessage(QByteArray);
     void setMainTitle(QString);
+    void writeText(QByteArray);
 
 public slots:
     void addData(QByteArray);

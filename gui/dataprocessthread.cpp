@@ -30,6 +30,7 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
     connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeOutgoingMessage(QByteArray)));
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
+    connect(this, SIGNAL(writeText(QByteArray)), windowManager, SLOT(writeGameText(QByteArray)));
 
     pushStream = false;
     inv = false;
@@ -308,9 +309,10 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
             }
             line.append("</SPAN>");
 
-            emit writeGameWindow(line.toLocal8Bit());
-            this->writeScript(line.toLocal8Bit());
+            //emit writeGameWindow(line.toLocal8Bit());
+            //this->writeScript(line.toLocal8Bit());
             //QCoreApplication::processEvents();
+            emit writeText(line.toLocal8Bit());
         }
     } else if(gameText != "") {
         /* highlighter altert not thread safe */
@@ -318,9 +320,10 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
         gameText.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">");
         gameText.append("</SPAN>");
 
-        emit writeGameWindow(gameText.toLocal8Bit());
-        this->writeScript(gameText.toLocal8Bit());
+        //emit writeGameWindow(gameText.toLocal8Bit());
+        //this->writeScript(gameText.toLocal8Bit());
         //QCoreApplication::processEvents();
+        emit writeText(gameText.toLocal8Bit());
     }
 }
 

@@ -82,19 +82,18 @@ void WindowManager::loadWindows() {
 
     //qDebug() << ((QPlainTextEdit*)roomWindow->widget())->toPlainText();
 
-    /*QSizePolicy policy = roomWindow->sizePolicy();
-    policy.setHorizontalPolicy(QSizePolicy::Fixed);
-    policy.setVerticalPolicy(QSizePolicy::Fixed);*/
-
-    //roomWindow->size();
+    //https://bugreports.qt-project.org/browse/QTBUG-16252
 
     arrivalsWindow = genericWindowFactory->createWindow("Arrivals");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, arrivalsWindow);
     dockWindows << arrivalsWindow;
+    connect(arrivalsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(arrivalsVisibility(bool)));
+
 
     deathsWindow = genericWindowFactory->createWindow("Deaths");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, deathsWindow);
     dockWindows << deathsWindow;
+    connect(deathsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(deathsVisibility(bool)));
 
     thoughtsWindow = genericWindowFactory->createWindow("Thoughts");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, thoughtsWindow);
@@ -108,6 +107,7 @@ void WindowManager::loadWindows() {
     conversationsWindow = genericWindowFactory->createWindow("Conversations");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
     dockWindows << conversationsWindow;
+    connect(conversationsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(conversationsVisibility(bool)));
 
     if(!clientSettings->hasValue("MainWindow/state")) {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
@@ -118,12 +118,32 @@ void WindowManager::loadWindows() {
 }
 
 void WindowManager::thoughtsVisibility(bool visibility) {
+    thoughtsWindow->setWindowTitle(DOCK_TITLE_THOUGHTS);
     thoughtsVisible = visibility;
-
     //https://bugreports.qt-project.org/browse/QTBUG-840
+}
 
-    //qDebug() << thoughtsWindow->style();
-    //qDebug() << visibility;
+void WindowManager::deathsVisibility(bool visibility) {
+    deathsWindow->setWindowTitle(DOCK_TITLE_DEATHS);
+    deathsVisible = visibility;
+}
+
+void WindowManager::arrivalsVisibility(bool visibility) {
+    arrivalsWindow->setWindowTitle(DOCK_TITLE_ARRIVALS);
+    arrivalsVisible = visibility;
+}
+
+void WindowManager::conversationsVisibility(bool visibility) {
+    conversationsWindow->setWindowTitle(DOCK_TITLE_CONVERSATIONS);
+    conversationsVisible = visibility;
+}
+
+void WindowManager::setVisibilityIndicator(QDockWidget* widget, bool visible, QString title) {
+    if(visible) {
+        widget->setWindowTitle(title);
+    } else {
+        widget->setWindowTitle(title + " *");
+    }
 }
 
 QDockWidget* WindowManager::getRoomWindow() {
@@ -205,21 +225,29 @@ void WindowManager::updateExpWindow() {
 }
 
 void WindowManager::updateConversationsWindow(QString conversationText) {
+    setVisibilityIndicator(conversationsWindow, conversationsVisible, DOCK_TITLE_CONVERSATIONS);
+
     QPlainTextEdit *text = (QPlainTextEdit*)conversationsWindow->widget();
     text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + conversationText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
+    setVisibilityIndicator(deathsWindow, deathsVisible, DOCK_TITLE_DEATHS);
+
     QPlainTextEdit *text = (QPlainTextEdit*)deathsWindow->widget();
     text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + deathText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateThoughtsWindow(QString thoughtText) {
+    setVisibilityIndicator(thoughtsWindow, thoughtsVisible, DOCK_TITLE_THOUGHTS);
+
     QPlainTextEdit *text = (QPlainTextEdit*)thoughtsWindow->widget();
     text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + thoughtText.trimmed() + "</SPAN>");
 }
 
 void WindowManager::updateArrivalsWindow(QString arrivalText) {
+    setVisibilityIndicator(arrivalsWindow, arrivalsVisible, DOCK_TITLE_ARRIVALS);
+
     QPlainTextEdit *text = (QPlainTextEdit*)arrivalsWindow->widget();
     text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + arrivalText.trimmed() + "</SPAN>");
 }
@@ -252,6 +280,18 @@ void WindowManager::writePromptGameWindow(QByteArray text) {
     if(!cursor.selectedText().contains(">")) {
         gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
     }
+}
+
+void WindowManager::writeGameText(QByteArray text) {
+    QXmlStreamReader xml(text);
+    QString textString;
+    while (!xml.atEnd()) {
+        if ( xml.readNext() == QXmlStreamReader::Characters ) {
+            textString += xml.text();
+        }
+    }
+    mainWindow->getScriptService()->writeOutgoingMessage(textString.toLocal8Bit());
+    gameWindow->appendHtml(text);
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {

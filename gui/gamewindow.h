@@ -40,7 +40,6 @@ private:
 signals:
 
 private slots:
-    void adjustRowMargin();
     void copySelected();
     void enableCopy(bool);
 };

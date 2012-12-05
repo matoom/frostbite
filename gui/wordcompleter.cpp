@@ -1,13 +1,33 @@
 #include "wordcompleter.h"
 
 WordCompleter::WordCompleter(QObject *parent) : QObject(parent) {
-    words << "put" << "get" << "open" << "close" << "hide"
-          << "unhide" << "aim" << "fire" << "loot" << "whisper"
-          << "say" << "sign" << "stand" << "kneel" << "advance"
-          << "sit" << "face" << "attack" << "circle" << "feint"
-          << "draw" << "thrust" << "chop" << "slice" << "arrange"
-          << "skin" << "load" << "fill" << "pick" << "think" << "eat"
-          << "rub" << "drop" << "forage" << "braid" << "take";
+    words << "arrange" << "attack" << "advance" << "accept" << "ambush" << "aim"
+          << "appraise" << "ask" << "awaken"
+          << "block" << "braid"  << "break" << "bundle" << "buy"
+          << "cast" << "carve" << "chant" << "charge" << "clean" << "collect" << "close"
+          << "combine" << "compare" << "concentrate" << "contact" << "crush" << "cut" << "climb"
+          << "decline" << "depart" << "deposit" << "disarm" << "disband" << "dismantle"
+          << "dodge" << "drag" << "drop" << "dump"
+          << "exit"
+          << "face" << "fire" << "fix" << "fletch" << "focus" << "forage"
+          << "get" << "guard"
+          << "harness" << "health" << "hide" << "hold"
+          << "info" << "inventory" << "invoke"
+          << "join"
+          << "khri"
+          << "load" << "light" << "listen"
+          << "make" << "mana" << "mark"
+          << "observe" << "open" << "offer"
+          << "point" << "parry" << "perceive" << "pick" << "play" << "poach" << "practice"
+          << "pull" << "put"
+          << "quit"
+          << "retreat" << "read" << "recall" << "release" << "remove" << "roar" << "rummage"
+          << "say" << "sign" << "stalk" << "stance" << "scrape" << "search" << "shiver"
+          << "show" << "signal" << "skin" << "skills" << "slip" << "sneak" << "spells"
+          << "steal" << "stomp" << "stow" << "study" << "swap"
+          << "think" << "target" << "teach" << "tell" << "thump" << "touch"
+          << "unhide" << "unload" << "unlock"
+          << "whisper" << "watch" << "wealth";
 }
 
 void WordCompleter::findMatches(QStringList commandList) {

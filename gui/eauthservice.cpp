@@ -74,7 +74,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
     if(buffer.startsWith("A\t")) {
         QList<QByteArray> aResponse = buffer.split('\t');
         if(aResponse.takeLast().trimmed() == "REJECT") {
-            emit connectionError("Renew subscription.");
+            emit connectionError("Subscription error.");
             tcpSocket->disconnectFromHost();
             return;
         }
@@ -126,10 +126,6 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
     } else {
         emit connectionError("Network error.");
     }
-
-    /*QNativeSocketEngine::write() was not called in QAbstractSocket::ConnectedState
-    QAbstractSocket::NetworkError*/
-    //QAbstractSocket::RemoteHostClosedError
 
     qDebug() << "EAUTH: " <<  error;
 }

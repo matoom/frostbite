@@ -84,7 +84,7 @@ void ConnectionManager::disconnectedFromHost() {
     mainWindow->connectEnabled(true);
 }
 
-
+/* proxy */
 /*void ConnectionManager::socketReadyRead() {
     buffer.append(tcpSocket->readAll());
     qDebug() << buffer;
@@ -134,16 +134,13 @@ void ConnectionManager::writeCommand(QString cmd) {
 
 void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
     if(error == QAbstractSocket::RemoteHostClosedError) {
-        //QMessageBox::information(mainWindow, tr("Message"), tr("Disconnected from server."), QMessageBox::Ok, 0);
         this->showError("Disconnected from server.");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
-        //QMessageBox::information(mainWindow, tr("Message"), tr("Unable to connect to server. Please check your internet connection and try again later."), QMessageBox::Ok, 0);
         this->showError("Unable to connect to server. Please check your internet connection and try again later.");
     } else if (error == QAbstractSocket::NetworkError) {
-        //QMessageBox::information(mainWindow, tr("Message"), tr("Connection timed out."), QMessageBox::Ok, 0);
         this->showError("Connection timed out.");
     }
-    qDebug() << "CONNECTION: " << error;    
+    qDebug() << error;
 }
 
 void ConnectionManager::showError(QString message) {

@@ -40,6 +40,7 @@ public:
     void setDockBackground(QColor);
     void setDockFont(QFont font);
     void copyDock();
+    void saveArrivals();
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -49,10 +50,14 @@ public:
     QDockWidget* getConversationsWindow();
 
     bool thoughtsVisible;
+    bool deathsVisible;
+    bool arrivalsVisible;
+    bool conversationsVisible;
 
 public slots:
     void updateConversationsWindow(QString);
     void writeGameWindow(QByteArray);
+    void writeGameText(QByteArray);
     void writePromptGameWindow(QByteArray);
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
@@ -64,7 +69,10 @@ public slots:
 
 
 private slots:
-    void thoughtsVisibility(bool);
+    void thoughtsVisibility(bool);    
+    void deathsVisibility(bool);
+    void arrivalsVisibility(bool);
+    void conversationsVisibility(bool);
 
 private:
     GenericWindowFactory* genericWindowFactory;
@@ -85,6 +93,7 @@ private:
     QList<QDockWidget*> dockWindows;
 
     QString textColor(QString, QString);
+    void setVisibilityIndicator(QDockWidget*, bool, QString);
 };
 
 #endif // WINDOWMANAGER_H

@@ -13,7 +13,6 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setReadOnly(true);
     this->document()->setMaximumBlockCount(500);
 
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(adjustRowMargin()));
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
@@ -51,30 +50,6 @@ void GameWindow::buildContextMenu() {
     selectAct = new QAction(tr("&Select All\t"), this);
     menu->addAction(selectAct);
     connect(selectAct, SIGNAL(triggered()), this, SLOT(selectAll()));
-}
-
-/* adjust right margin for bottom 5 blocks to clear compass view */
-void GameWindow::adjustRowMargin() {
-    /*if(this->verticalScrollBar()->isVisible()) {
-        QTextBlockFormat format;
-        QTextBlock block = this->document()->findBlockByNumber(this->document()->blockCount() - 1);
-        format = block.blockFormat();
-        format.setRightMargin(105);
-
-        QTextCursor cur = this->textCursor();
-        cur.setPosition(block.position());
-        cur.setBlockFormat(format);
-
-        if(this->document()->blockCount() > 5) {
-            block = this->document()->findBlockByNumber(this->document()->blockCount() - 5);
-            format = block.blockFormat();
-            format.setRightMargin(0);
-
-            cur = this->textCursor();
-            cur.setPosition(block.position());
-            cur.setBlockFormat(format);
-        }
-    }*/
 }
 
 void GameWindow::contextMenuEvent(QContextMenuEvent *event) {

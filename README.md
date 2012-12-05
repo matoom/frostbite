@@ -5,7 +5,7 @@ Frostbite
 
 MUD client for dragonrealms.
 
-### Specification documentation
+### User guide
 [http://matoom.github.com/frostbite/](http://matoom.github.com/frostbite/).
 
 ### License

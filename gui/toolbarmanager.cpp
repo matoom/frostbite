@@ -40,13 +40,10 @@ void ToolbarManager::loadToolbar() {
     mainWindow->addToolbarWidget(wieldLeftWidget);
     mainWindow->addToolbarWidget(wieldRight->create());
     mainWindow->addToolbarWidget(spell->create());
-    //mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(statusIndicator->create());
-    //mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(quickButtonDisplay->create());
-    //mainWindow->addToolbarSeparator();
 
     mainWindow->addToolbarWidget(vitalsIndicator->create());
 

@@ -40,4 +40,11 @@
 #define DEFAULT_DOCK_FONT_COLOR "#dcdcdc"
 #define DEFAULT_DOCK_BACKGROUND "#000000"
 
+#define DOCK_TITLE_DEATHS "Deaths"
+#define DOCK_TITLE_ARRIVALS "Arrivals"
+#define DOCK_TITLE_THOUGHTS "Thoughts"
+#define DOCK_TITLE_ROOM "Room"
+#define DOCK_TITLE_CONVERSATIONS "Conversations"
+
+
 #endif // DEFAULTVALUES_H

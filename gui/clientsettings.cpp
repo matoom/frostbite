@@ -11,7 +11,6 @@ ClientSettings* ClientSettings::Instance() {
 }
 
 ClientSettings::ClientSettings() : QSettings("client.ini", QSettings::IniFormat) {
-    //m_sSettingsFile = QApplication::applicationDirPath().left(1) + ":/demosettings.ini";
 }
 
 void ClientSettings::setParameter(QString name, QVariant value) {

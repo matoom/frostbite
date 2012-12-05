@@ -9,7 +9,7 @@ KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {
 bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
     commandLine = (CommandLine*)object;
 
-    /* workaround to give back focus to command line */
+    /* workaround to give back focus to command line from alt -> menu */
     if (event->type() == QEvent::KeyRelease) {
         QKeyEvent *keyEvent = (QKeyEvent*)event;
         if(keyEvent->key() == Qt::Key_Alt) {
