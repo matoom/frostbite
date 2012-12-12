@@ -1,3 +1,4 @@
+=begin
 echo "***"
 echo Status::standing
 echo Status::kneeling
@@ -17,8 +18,10 @@ echo Room::players
 echo Room::exits
 echo Room::count_objects "hog"
 echo "***"
+=end
 echo Exp::state("climb")
 echo Exp::rank("climb")
+=begin
 echo "***"
 echo Inventory::list
 echo "***"
@@ -34,3 +37,4 @@ echo Vitals::concentration
 echo Vitals::spirit
 echo Vitals::fatigue
 echo "***"
+=end

@@ -9,7 +9,6 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     highlighter = new Highlighter(parent);
 
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
-    connect(this, SIGNAL(writeGameWindow(QByteArray)), windowManager, SLOT(writeGameWindow(QByteArray)));
     connect(this, SIGNAL(writePromptGameWindow(QByteArray)), windowManager, SLOT(writePromptGameWindow(QByteArray)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));
     connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowManager, SLOT(updateRoomWindowTitle(QString)));
@@ -39,14 +38,24 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     initRoundtime = false;
 }
 
+void DataProcessThread::addData(QByteArray buffer) {
+    mMutex.lock();
+    dataQueue.enqueue(buffer);
+    mMutex.unlock();
+}
+
 void DataProcessThread::run() {
     while(!dataQueue.isEmpty()) {
         process(dataQueue.dequeue());
     }
 }
 
-void DataProcessThread::addData(QByteArray buffer) {
-    dataQueue.enqueue(buffer);
+void DataProcessThread::process(QByteArray data) {
+    QList<QByteArray> lines = data.split('\n');
+
+    for(int i = 0; i < lines.size(); i++) {
+        processGameData(lines.at(i));
+    }
 }
 
 void DataProcessThread::processGameData(QByteArray data) {
@@ -107,6 +116,9 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
             gameText += e.text();
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
             gameText += e.text();
+
+            //TODO: TEST FALSE!!
+            //return false;
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
             gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
 
@@ -139,7 +151,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
                 time.setTime_t(e.attribute("time").toInt());
 
                 int t_to = time.secsTo(roundTime);
-                emit setTimer(t_to > 100 ? 100 : t_to - 1);
+                emit setTimer(t_to > 100 ? 100 : t_to);
 
                 initRoundtime = false;
             }
@@ -291,7 +303,7 @@ void DataProcessThread::processPushStream(QByteArray rawData) {
 
 void DataProcessThread::writeGameText(QByteArray rawData) {
     if (rawData.size() == 1) {
-        emit writeGameWindow("");
+        emit writeText("");
     } else if (mono && !pushStream) {
         /* mono handled separately otherwise white spaces
         before tags are not recognized as text */
@@ -362,13 +374,5 @@ void DataProcessThread::writeScript(QByteArray rawData) {
         }
     }
     emit writeScriptMessage(textString.toLocal8Bit());
-}
-
-void DataProcessThread::process(QByteArray data) {
-    QList<QByteArray> lines = data.split('\n');
-
-    for(int i = 0; i < lines.size(); i++ ) {
-        processGameData(lines.at(i));
-    }
 }
 

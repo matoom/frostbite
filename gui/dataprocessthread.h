@@ -32,6 +32,7 @@ public:
 
 private:
     QQueue<QByteArray> dataQueue;
+    QMutex mMutex;
 
     bool filterPlainText(QDomElement, QDomNode);
     void filterDataTags(QDomElement, QDomNode);
@@ -64,7 +65,6 @@ private:
 
 signals:
     void updateConversationsWindow(QString);
-    void writeGameWindow(QByteArray);
     void writePromptGameWindow(QByteArray);
 
     void updateNavigationDisplay(DirectionsList);

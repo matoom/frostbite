@@ -62,7 +62,7 @@ end
 # @param [Hash] pattern list of regex patterns and names
 # @return [Symbol] pattern name
 # @example Using multi match patterns to make decisions in script.
-#   match = {:retry => "\.\.\.wait", :next => "you open"}
+#   match = { :retry => [/\.\.\.wait/], :next => [/you open/] }
 #   result = match_wait match
 #   result #=> :retry or :next
 #   if result = :next
@@ -112,7 +112,7 @@ end
 #   labels_start
 #
 #   label(:retry){
-#     match = {:retry => "\.\.\.wait", :next => "you open"}
+#     match = { :retry => [/\.\.\.wait/], :next => [/you open/] }
 #     match_wait match
 #     echo "retry"
 #   }
@@ -164,6 +164,7 @@ end
 def put(value)
   $_data_queue.clear
   puts "put#" + value.to_s
+  STDOUT.flush
 end
 
 # Sends a command to client and waits for room title.
@@ -177,9 +178,8 @@ end
 def move(value)
   put value
   res = match_wait({ :room => [/^\[.*?\]$/],
-                     :wait => ["\.\.\.wait", "you may only type ahead"] })
+                     :wait => [/\.\.\.wait/, /you may only type ahead/] })
   if res == :wait
-    echo "**** REPEAT COMMAND IN MOVE ****"
     pause 0.5
     move value
   end
@@ -249,7 +249,7 @@ end
 # @private
 def sleep_for_rt(rt)
   if rt > 0
-    rt = rt  - 1 + @match_rt_adjustment
+    rt = rt - 1 + @match_rt_adjustment
   end
   rt.downto(0) do |current_rt|
     @match_rt = current_rt
@@ -277,4 +277,3 @@ require @_file
 
 # end command thread after finished
 end_command_thread
-

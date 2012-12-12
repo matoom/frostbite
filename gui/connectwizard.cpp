@@ -51,10 +51,10 @@ void ConnectWizard::registerFields() {
 }
 
 void ConnectWizard::init() {
-    ui->gameHostEdit->setText(settings->getParameter("Login/gameHost", "prime.dr.game.play.net").toString());
+    ui->gameHostEdit->setText(settings->getParameter("Login/gameHost", "dr.simutronics.net").toString());
     ui->gameHostEdit->setModified(true);
 
-    ui->gamePortEdit->setText(settings->getParameter("Login/gamePort", "4901").toString());
+    ui->gamePortEdit->setText(settings->getParameter("Login/gamePort", "11024").toString());
     ui->gamePortEdit->setModified(true);
 
     ui->authHostEdit->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());

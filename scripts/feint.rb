@@ -17,7 +17,7 @@ labels_start
 
 label(:start) {
   put "feint right leg"
-  match = { :wait => ["\.\.\.wait", "entangled in a web"],
+  match = { :wait => [/\.\.\.wait/, "entangled in a web"],
             :start => ["Roundtime"],
             :adv => ["aren't close enough"],
             :wait_for => ["At what are you trying to attack?"]

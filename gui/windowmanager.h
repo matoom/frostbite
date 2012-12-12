@@ -41,6 +41,7 @@ public:
     void setDockFont(QFont font);
     void copyDock();
     void saveArrivals();
+    void writeGameWindow(QByteArray);
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -56,7 +57,6 @@ public:
 
 public slots:
     void updateConversationsWindow(QString);
-    void writeGameWindow(QByteArray);
     void writeGameText(QByteArray);
     void writePromptGameWindow(QByteArray);
     void updateNavigationDisplay(DirectionsList);

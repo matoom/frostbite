@@ -283,14 +283,16 @@ void WindowManager::writePromptGameWindow(QByteArray text) {
 }
 
 void WindowManager::writeGameText(QByteArray text) {
-    QXmlStreamReader xml(text);
-    QString textString;
-    while (!xml.atEnd()) {
-        if ( xml.readNext() == QXmlStreamReader::Characters ) {
-            textString += xml.text();
+    if(!text.isEmpty()) {
+        QXmlStreamReader xml(text);
+        QString textString;
+        while (!xml.atEnd()) {
+            if ( xml.readNext() == QXmlStreamReader::Characters ) {
+                textString += xml.text();
+            }
         }
+        mainWindow->getScriptService()->writeOutgoingMessage(textString.toLocal8Bit());
     }
-    mainWindow->getScriptService()->writeOutgoingMessage(textString.toLocal8Bit());
     gameWindow->appendHtml(text);
 }
 

@@ -151,15 +151,17 @@
 
     <h3>Dock windows</h3>
     <p>
-        The game text is divided up between separate game windows. The main window holds general
-        game text while the dock windows filters out rest of the data such as player experience, current room descriptions,
-        thoughts, arrivals, deaths and conversations.
+        The dock windows are used to diplay continuous data for player experience, conversations and current room descriptions.
+        The information about thoughts, arrivals and deaths are only being collected by the dock windows and are
+        not displayed anywhere else on the screen. The data for dock windows is being collected regardless of them being
+        closed and the previously collected data will be visible once a dock window is opened.
     </p>
     <p>
         The standard Qt GUI allows to stack dock windows on top of each
         other and to place them adjacently to each side. In the main window area, the dock windows can be placed on top,
         left or right of the screen.
     </p>
+
     <br/><img src="img/window.png" /><br/><br/>
 
     <h3>Command line</h3>
@@ -174,7 +176,8 @@
         <h3>Navigation compass</h3>
     <p>
         The graphical user interface for Frostbite is in overall based on GUI standard formats although it includes some custom
-        elements like the navigation compass, which helps to better understand and visualize available movement paths.
+        elements like the navigation compass, which helps to better understand and visualize available movement paths in
+        the game.
     </p>
     <img src="img/compass.png" /><br/><br/>
 

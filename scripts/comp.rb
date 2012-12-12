@@ -14,7 +14,7 @@ label(:study) {
   put "study my compendium"
   match = { :study => ["You begin studying", "You continue studying", "You continue to study"],
             :turn => ["makes sense to you"],
-            :exit => ["study this chart again"]}
+            :exit => ["study this chart again"] }
   match_wait_goto match
 }
 

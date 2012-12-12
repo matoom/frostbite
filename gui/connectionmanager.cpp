@@ -11,9 +11,10 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
         connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
-    }
+        tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    }    
 
-    debug = false;
+    debug = true;
 
     dataProcessThread = new DataProcessThread(parent);
     connect(this, SIGNAL(addData(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
@@ -63,21 +64,11 @@ void ConnectionManager::connectToHost(QString sessionKey) {
     waitStartCommand = true;
 
     mainWindow->connectEnabled(false);
-
-    tcpSocket->connectToHost(settings->getParameter("Login/serverHost", "").toString(),
-                             settings->getParameter("Login/serverPort", "").toInt());
+    tcpSocket->connectToHost(settings->getParameter("Login/gameHost", "").toString(),
+                             settings->getParameter("Login/gamePort", "").toInt());
 
     tcpSocket->write(sessionKey.toLocal8Bit() + "\n");
     tcpSocket->write("<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
-
-    /*<c>_STATE CHATMODE OFF
-    <c>_swclose sconversation
-    <c>_swclose swhispers
-    <c>_swclose stalk
-    <c>_swclose sexperience
-    <c>_swclose sgroup
-    <c>_swclose satmospherics
-    <c>_swclose sooc*/
 }
 
 void ConnectionManager::disconnectedFromHost() {
@@ -88,26 +79,28 @@ void ConnectionManager::disconnectedFromHost() {
 /*void ConnectionManager::socketReadyRead() {
     buffer.append(tcpSocket->readAll());
     qDebug() << buffer;
-    if (buffer.endsWith("\r\n")) {
-        if(buffer.contains("200 Connection established")) {
-            qDebug() << "WRITE";
-            tcpSocket->flush();
-            tcpSocket->write("52f84c85522eac4df965bb570aad4993\r\n");
-            tcpSocket->write("FE/JAVA\r\n");
+        if (buffer.endsWith("\r\n")) {
+            if(buffer.contains("200 Connection established")) {
+                qDebug() << "WRITE";
+                tcpSocket->flush();
+                tcpSocket->write("52f84c85522eac4df965bb570aad4993\r\n");
+                tcpSocket->write("FE/JAVA\r\n");
+            }
+            buffer.clear();
         }
-        buffer.clear();
-    }    
 }
 */
+
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
 
     if (buffer.endsWith("\r\n")){
-
         if(!debug) {
             if(waitStartCommand) {
                 if(buffer.endsWith("GSw000100000150095\r\n")) {
                     this->writeCommand("<c>_STATE CHATMODE OFF\n\n");
+                    // TODO: TEST THIS
+                    //this->writeCommand("<c>_swclose sassess\n\n");
                     waitStartCommand = false;
                     buffer.chop(22);
                     buffer.append("\r\n\r\n");
@@ -130,6 +123,7 @@ void ConnectionManager::socketReadyRead() {
 
 void ConnectionManager::writeCommand(QString cmd) {
     tcpSocket->write(cmd.append("\n").toLocal8Bit());
+    tcpSocket->flush();
 }
 
 void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
@@ -139,7 +133,11 @@ void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
         this->showError("Unable to connect to server. Please check your internet connection and try again later.");
     } else if (error == QAbstractSocket::NetworkError) {
         this->showError("Connection timed out.");
+    } else if (error == QAbstractSocket::HostNotFoundError) {
+        this->showError("Unable to resolve game host.");
+        mainWindow->connectEnabled(true);
     }
+
     qDebug() << error;
 }
 

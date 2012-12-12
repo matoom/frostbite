@@ -109,10 +109,10 @@
 
         <h3>Parameter descriptions</h3>
 
-        <pre><code>$args # global variable, available everywhere</code></pre>
+        <pre><code>$args # array, global variable</code></pre>
         <p>Contains the arguments passed on to the script in the command line.</p>
 
-        <pre><code>@match_rt_adjustment = 0 # class scope variable, available in functions</code></pre>
+        <pre><code>@match_rt_adjustment = 0 # number, class scope variable</code></pre>
         <p>This is an adjustment parameter which is added to the round time values used by match functions. It enables to regulate
         the wait times and make the script run faster by tightening the value. This is of course in case the script is
         prepared to deal with the possible outcome of running the commands too early.</p>
@@ -234,7 +234,7 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
 
 <pre><code>
 #escaped to match dot characters instead of any single character
-:wait => ["\.\.\.wait"]
+:wait => [/\.\.\.wait/]
 
 #case insensitive, bracets are escaped to match bracet characters
 :canyon => [/\[North Road, Canyon\]/i]
