@@ -14,7 +14,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     }    
 
-    debug = true;
+    debug = false;
 
     dataProcessThread = new DataProcessThread(parent);
     connect(this, SIGNAL(addData(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
@@ -67,8 +67,8 @@ void ConnectionManager::connectToHost(QString sessionKey) {
     tcpSocket->connectToHost(settings->getParameter("Login/gameHost", "").toString(),
                              settings->getParameter("Login/gamePort", "").toInt());
 
-    tcpSocket->write(sessionKey.toLocal8Bit() + "\n");
-    tcpSocket->write("<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
+    tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
+                     "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
 }
 
 void ConnectionManager::disconnectedFromHost() {
@@ -94,22 +94,19 @@ void ConnectionManager::disconnectedFromHost() {
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
 
-    if (buffer.endsWith("\r\n")){
+    if(buffer.endsWith("\n")){
         if(!debug) {
             if(waitStartCommand) {
-                if(buffer.endsWith("GSw000100000150095\r\n")) {
-                    this->writeCommand("<c>_STATE CHATMODE OFF\n\n");
-                    // TODO: TEST THIS
-                    //this->writeCommand("<c>_swclose sassess\n\n");
+                if(buffer.endsWith("instance='DR'/>\n")) {
+                    this->writeCommand("");
+                    this->writeCommand("_STATE CHATMODE OFF");
+                    this->writeCommand("");
+                    this->writeCommand("_swclose sassess");
                     waitStartCommand = false;
-                    buffer.chop(22);
-                    buffer.append("\r\n\r\n");
 
                     return;
                 }
             }
-            //qDebug() << buffer;
-
             emit addData(buffer);
             if(!dataProcessThread->isRunning()) {
                 dataProcessThread->start();
@@ -122,7 +119,7 @@ void ConnectionManager::socketReadyRead() {
 }
 
 void ConnectionManager::writeCommand(QString cmd) {
-    tcpSocket->write(cmd.append("\n").toLocal8Bit());
+    tcpSocket->write("<c>" + cmd.append("\n").toLocal8Bit());
     tcpSocket->flush();
 }
 

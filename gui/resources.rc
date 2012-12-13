@@ -27,3 +27,5 @@ BEGIN
         VALUE "Translation", 0x409, 1252
     END
 END
+
+IDI_ICON1   ICON    DISCARDABLE "images/shield.ico"
