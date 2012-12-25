@@ -116,7 +116,6 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
             gameText += e.text();
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
             gameText += e.text();
-            return false;
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
             gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
 

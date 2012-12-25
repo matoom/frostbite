@@ -196,6 +196,7 @@ end
 #   wait
 #   put "remove my shield"
 def wait
+  $_data_queue.clear
   wait_for(/^>/)
 end
 

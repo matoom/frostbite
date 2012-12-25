@@ -70,7 +70,6 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
 }
 
 void EAuthService::negotiateSession(QByteArray buffer) {
-    qDebug() << "eauth-negotiate: " << buffer;
     if(buffer.startsWith("A\t")) {
         QList<QByteArray> aResponse = buffer.split('\t');
         if(aResponse.takeLast().trimmed() == "REJECT") {

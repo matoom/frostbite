@@ -39,16 +39,16 @@ private:
     QString sessionKey;
     DataProcessThread* dataProcessThread;
 
-    bool waitStartCommand;
-    bool debug;
-    bool est;        
+    bool waitForSettings;
+
+    void loadMockData();
 
 signals:
     void characterFound(QString, QString);
     void retrieveSessionKey(QString);
     void sessionKeyRetrieved(QString);
     void eAuthError(QString);
-    void addData(QByteArray);
+    void addToQueue(QByteArray);
 
 public slots:
     void socketReadyRead();

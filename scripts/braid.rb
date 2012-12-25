@@ -49,13 +49,24 @@ label(:forage) {
 label(:braid) {
   put "braid my #{$args.join(" ")}"
   match = { :start => [/need to have more material/],
-            :end => [/Roundtime: 8/, /Roundtime: 9/, /as long as you can make it/, /than wasted effort/],
+            :pull => [/Roundtime: 8/, /Roundtime: 9/, /as long as you can make it/, /than wasted effort/],
             :braid => [/Roundtime/] }
   match_wait_goto match
 }
 
-label(:end) {
+label(:pull) {
+  put "pull my #{$args.join(" ")}"
+  match = { :dispose => [/proudly examine your new braided|braided vines breaks apart|Roundtime/] }
+  match_wait_goto match
+}
 
+label(:dispose) {
+  pause Rt::value
+  put "put my rope in buck"
+  goto :start
+}
+
+label(:end) {
 }
 
 labels_end

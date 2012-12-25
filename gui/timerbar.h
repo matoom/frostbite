@@ -22,7 +22,7 @@ private:
     QTimer* timer;
     QReadWriteLock lock;
 
-    int increment;
+    int maxValue;
 
 signals:
     

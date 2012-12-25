@@ -14,24 +14,27 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     }    
 
-    debug = false;
-
     dataProcessThread = new DataProcessThread(parent);
-    connect(this, SIGNAL(addData(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
+    connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
 
-    if(debug) {
-        QFile file(MOCK_DATA_PATH);
+    //this->loadMockData();
+}
 
-        if(!file.open(QIODevice::ReadOnly)) {
-            qDebug() << "Unable to open mock data file!";
-            return;
-        }
-        QByteArray data = file.readAll();
+void ConnectionManager::loadMockData() {
+    QFile file(MOCK_DATA_PATH);
 
-        dataProcessThread->addData(data);
-        if(!dataProcessThread->isRunning()) {
-            dataProcessThread->start();
-        }
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Unable to open mock data file!";
+        return;
+    }
+
+    QByteArray mockData = file.readAll();
+
+    emit addToQueue(mockData);
+    //dataProcessThread->addData(mockData);
+
+    if(!dataProcessThread->isRunning()) {
+        dataProcessThread->start();
     }
 }
 
@@ -61,7 +64,7 @@ void ConnectionManager::connectWizardError(QString errorMsg) {
 }
 
 void ConnectionManager::connectToHost(QString sessionKey) {
-    waitStartCommand = true;
+    waitForSettings = true;
 
     mainWindow->connectEnabled(false);
     tcpSocket->connectToHost(settings->getParameter("Login/gameHost", "").toString(),
@@ -93,32 +96,47 @@ void ConnectionManager::disconnectedFromHost() {
 
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
+    //qDebug() << "INCOMING DATA: " << QTime::currentTime().toString("hh:mm:ss.zzz");
 
     if(buffer.endsWith("\n")){
-        if(!debug) {
-            if(waitStartCommand) {
-                if(buffer.endsWith("instance='DR'/>\n")) {
-                    this->writeCommand("");
-                    this->writeCommand("_STATE CHATMODE OFF");
-                    this->writeCommand("");
-                    this->writeCommand("_swclose sassess");
-                    waitStartCommand = false;
-
-                    return;
-                }
-            }
-            emit addData(buffer);
-            if(!dataProcessThread->isRunning()) {
-                dataProcessThread->start();
-            }
-        } else {
-            windowManager->writeGameWindow(buffer.data());
+        if(waitForSettings) {
+                this->writeCommand("");
+                this->writeCommand("_STATE CHATMODE OFF");
+                this->writeCommand("");
+                this->writeCommand("_swclose sassess");
+                waitForSettings = false;
         }
+        emit addToQueue(buffer);
+
+        if(!dataProcessThread->isRunning()) {
+            dataProcessThread->start();
+        }
+
         buffer.clear();
     }
 }
 
+/*void ConnectionManager::socketReadyRead() {
+    while(tcpSocket->canReadLine()) {
+        if(waitForSettings) {
+                this->writeCommand("");
+                this->writeCommand("_STATE CHATMODE OFF");
+                this->writeCommand("");
+                this->writeCommand("_swclose sassess");
+                waitForSettings = false;
+        }
+        QByteArray buff = tcpSocket->readLine();
+        buff.chop(1);
+        emit addToQueue(buff);
+
+        if(!dataProcessThread->isRunning()) {
+            dataProcessThread->start();
+        }
+    }
+}*/
+
 void ConnectionManager::writeCommand(QString cmd) {
+    //qDebug() << "WRITE COMMAND: " << QTime::currentTime().toString("hh:mm:ss.zzz");
     tcpSocket->write("<c>" + cmd.append("\n").toLocal8Bit());
     tcpSocket->flush();
 }
@@ -147,6 +165,7 @@ void ConnectionManager::showError(QString message) {
 }
 
 ConnectionManager::~ConnectionManager() {
+    this->writeCommand("quit");
     tcpSocket->disconnectFromHost();
 
     delete tcpSocket;

@@ -6,8 +6,6 @@ TimerBar::TimerBar(QObject *parent) : QObject(parent) {
     timer = new QTimer;
     timer->setInterval(1000);
 
-    increment = 0;
-
     connect(timer, SIGNAL(timeout()), this, SLOT(intervalEvent()));
 }
 
@@ -20,7 +18,8 @@ void TimerBar::setTimer(int seconds) {
     if(seconds > 0) {
         timerProgress->setValue(0);
 
-        increment = 100 / seconds;
+        timerProgress->setRange(0, seconds);
+        maxValue = seconds;
 
         if(!timer->isActive()) {
             timer->start();
@@ -32,9 +31,9 @@ void TimerBar::setTimer(int seconds) {
 }
 
 void TimerBar::intervalEvent() {
-    int value = timerProgress->value() + increment;
-    if(value >= 100) {
-        timerProgress->setValue(100);
+    int value = timerProgress->value() + 1;
+    if(value >= maxValue) {
+        timerProgress->setValue(maxValue);
         timer->stop();
     }
     timerProgress->setValue(value);
