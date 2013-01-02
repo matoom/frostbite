@@ -28,6 +28,7 @@ public:
 
     void writeCommand(QString);
     void showError(QString);
+    void updateSettings();
 
 private:
     MainWindow *mainWindow;
@@ -49,6 +50,8 @@ signals:
     void sessionKeyRetrieved(QString);
     void eAuthError(QString);
     void addToQueue(QByteArray);
+    void updateHighlighterSettings();
+    void resetPassword();
 
 public slots:
     void socketReadyRead();
@@ -61,6 +64,7 @@ public slots:
     void retrieveEauthSessionKey(QString);
     void eAuthsessionKeyRetrieved(QString);
     void connectWizardError(QString);
+    void authError();
 };
 
 

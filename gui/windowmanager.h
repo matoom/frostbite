@@ -34,6 +34,7 @@ public:
     void paintNavigationDisplay();
     void scriptRunning(bool);
     void updateWindowStyle();
+    void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
     void setDockFontColor(QColor);
@@ -42,6 +43,7 @@ public:
     void copyDock();
     void saveArrivals();
     void writeGameWindow(QByteArray);
+    void reloadSettings();
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -83,6 +85,7 @@ private:
     ClientSettings* clientSettings;
     Highlighter* highlighter;
     HighlightSettings* settings;
+    GeneralSettings* generalSettings;
 
     QDockWidget* roomWindow;
     QDockWidget* arrivalsWindow;

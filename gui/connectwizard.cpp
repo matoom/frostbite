@@ -33,6 +33,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     connect(mainWindow->getConnectionManager(), SIGNAL(eAuthError(QString)),
             this, SLOT(showError(QString)));
+
+    connect(mainWindow->getConnectionManager(), SIGNAL(resetPassword()),
+            this, SLOT(resetPassword()));
 }
 
 void ConnectWizard::showEvent(QShowEvent* event) {
@@ -130,6 +133,10 @@ void ConnectWizard::pageSelected(int id) {
         ui->finishLabel->setText("Retrieving session key ...");
         break;
     }
+}
+
+void ConnectWizard::resetPassword() {
+    ui->passwordEdit->clear();
 }
 
 void ConnectWizard::addCharacterList(QString id, QString name) {

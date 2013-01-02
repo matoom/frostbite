@@ -6,6 +6,8 @@
 #include <QDockWidget>
 #include <QDebug>
 
+#include <QDir>
+
 class ClientSettings : QSettings {
 
 public:
@@ -15,6 +17,7 @@ public:
     QVariant getParameter(QString name, QVariant defaultValue);
 
     bool hasValue(QString);
+    QString profilePath();
 
 private:
     ClientSettings();

@@ -40,6 +40,7 @@ signals:
      void sessionKeyRetrieved(QString);
      void addCharacter(QString, QString);
      void connectionError(QString);
+     void authError();
 
 public slots:
     void retrieveSessionKey(QString);

@@ -22,12 +22,13 @@ public:
     ~HighlightAddDialog();
 
     QComboBox* getGroupSelect();
+    void updateSettings();
 
 private:
     Ui::HighlightAddDialog* ui;
     HighlightTextTab* textTab;
     HighlightSettings* settings;
-    QDialog* parenDialog;
+    QDialog* parentDialog;
 
     void showEvent(QShowEvent* event);
 

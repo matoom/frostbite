@@ -1,93 +1,98 @@
 #include "highlightsettings.h"
 
-HighlightSettings::HighlightSettings() : QSettings("highlights.ini", QSettings::IniFormat) {
-    //m_sSettingsFile = QApplication::applicationDirPath().left(1) + ":/demosettings.ini";
+HighlightSettings::HighlightSettings() {
+    this->init();
+}
+
+void HighlightSettings::init() {
+    QString path = ClientSettings::Instance()->profilePath();
+    settings = new QSettings(path + "highlights.ini", QSettings::IniFormat);
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
-    setValue(name, value);
+    settings->setValue(name, value);
 }
 
 QVariant HighlightSettings::getSingleParameter(QString name, QVariant defaultValue) {
-    return value(name, defaultValue);
+    return settings->value(name, defaultValue);
 }
 
 void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry) {
-    int id = value(group + "/size").toInt();
+    int id = settings->value(group + "/size").toInt();
 
-    beginWriteArray(group);
-    setArrayIndex(id);
-    setValue("value", entry.value);
-    setValue("group", entry.group);
-    setValue("color", entry.color);
-    setValue("alert", entry.alert);
-    setValue("alertValue", entry.alertValue);
-    setValue("timer", entry.timer);
-    setValue("timerValue", entry.timerValue);
-    setValue("timerAction", entry.timerAction);
-    setValue("options", entry.options);
-    endArray();
+    settings->beginWriteArray(group);
+    settings->setArrayIndex(id);
+    settings->setValue("value", entry.value);
+    settings->setValue("group", entry.group);
+    settings->setValue("color", entry.color);
+    settings->setValue("alert", entry.alert);
+    settings->setValue("alertValue", entry.alertValue);
+    settings->setValue("timer", entry.timer);
+    settings->setValue("timerValue", entry.timerValue);
+    settings->setValue("timerAction", entry.timerAction);
+    settings->setValue("options", entry.options);
+    settings->endArray();
 }
 
 void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry) {
-    int size = value(group + "/size").toInt();
+    int size = settings->value(group + "/size").toInt();
 
-    beginWriteArray(group);
-    setArrayIndex(entry.id);
-    setValue("value", entry.value);
-    setValue("group", entry.group);
-    setValue("color", entry.color);
-    setValue("alert", entry.alert);
-    setValue("alertValue", entry.alertValue);
-    setValue("timer", entry.timer);
-    setValue("timerValue", entry.timerValue);
-    setValue("timerAction", entry.timerAction);
-    setValue("options", entry.options);
-    endArray();
+    settings->beginWriteArray(group);
+    settings->setArrayIndex(entry.id);
+    settings->setValue("value", entry.value);
+    settings->setValue("group", entry.group);
+    settings->setValue("color", entry.color);
+    settings->setValue("alert", entry.alert);
+    settings->setValue("alertValue", entry.alertValue);
+    settings->setValue("timer", entry.timer);
+    settings->setValue("timerValue", entry.timerValue);
+    settings->setValue("timerAction", entry.timerAction);
+    settings->setValue("options", entry.options);
+    settings->endArray();
 
-    setValue(group + "/size", size);
+    settings->setValue(group + "/size", size);
 }
 
 QList<HighlightSettingsEntry> HighlightSettings::getSettings(QString group) {
-    int size = beginReadArray(group);
+    int size = settings->beginReadArray(group);
 
-    QList<HighlightSettingsEntry> settings;
+    QList<HighlightSettingsEntry> settingsList;
     for (int i = 0; i < size; i++) {
-        setArrayIndex(i);
+        settings->setArrayIndex(i);
 
-        settings.append(HighlightSettingsEntry((const int&)i,
-            (const QString&)value("value").toString(),
-            (const QString&)value("group").toString(),
-            (const QColor&)value("color").value<QColor>(),
-            (const bool&)value("alert").toBool(),
-            (const QString&)value("alertValue").toString(),
-            (const bool&)value("timer").toBool(),
-            (const int&)value("timerValue").toInt(),
-            (const QString&)value("timerAction").toString(),
-            (const QBitArray&)value("options").value<QBitArray>()));
+        settingsList.append(HighlightSettingsEntry((const int&)i,
+            (const QString&)settings->value("value").toString(),
+            (const QString&)settings->value("group").toString(),
+            (const QColor&)settings->value("color").value<QColor>(),
+            (const bool&)settings->value("alert").toBool(),
+            (const QString&)settings->value("alertValue").toString(),
+            (const bool&)settings->value("timer").toBool(),
+            (const int&)settings->value("timerValue").toInt(),
+            (const QString&)settings->value("timerAction").toString(),
+            (const QBitArray&)settings->value("options").value<QBitArray>()));
     }
-    endArray();
+    settings->endArray();
 
-    return settings;
+    return settingsList;
 }
 
 void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry> settingsList) {
-    beginWriteArray(group);
-    clear();
+    settings->beginWriteArray(group);
+    settings->clear();
 
     for (int i = 0; i < settingsList.size(); ++i) {
         HighlightSettingsEntry entry = settingsList.at(i);
 
-        setArrayIndex(i);
-        setValue("value", entry.value);
-        setValue("group", entry.group);
-        setValue("color", entry.color);
-        setValue("alert", entry.alert);
-        setValue("alertValue", entry.alertValue);
-        setValue("timer", entry.timer);
-        setValue("timerValue", entry.timerValue);
-        setValue("timerAction", entry.timerAction);
-        setValue("options", entry.options);
+        settings->setArrayIndex(i);
+        settings->setValue("value", entry.value);
+        settings->setValue("group", entry.group);
+        settings->setValue("color", entry.color);
+        settings->setValue("alert", entry.alert);
+        settings->setValue("alertValue", entry.alertValue);
+        settings->setValue("timer", entry.timer);
+        settings->setValue("timerValue", entry.timerValue);
+        settings->setValue("timerAction", entry.timerAction);
+        settings->setValue("options", entry.options);
     }
-    endArray();
+    settings->endArray();
 }

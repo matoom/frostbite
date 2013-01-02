@@ -56,6 +56,10 @@ HighlightAlertTab::HighlightAlertTab(QObject *parent) : QObject(parent) {
     connect(webbedPlaySelect, SIGNAL(activated(const QString&)), this, SLOT(webbedFileSelected(const QString&)));
 }
 
+void HighlightAlertTab::updateSettings() {
+    settings->init();
+}
+
 void HighlightAlertTab::initSettings() {
     this->initBleedingSettings();
     this->initStunSettings();

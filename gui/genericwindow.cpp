@@ -2,7 +2,7 @@
 
 GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
-    settings = ClientSettings::Instance();
+    settings = new GeneralSettings();
 
     this->buildContextMenu();
     this->loadSettings();
@@ -18,9 +18,7 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
 }
 
 void GenericWindow::loadSettings() {
-    QFont font = settings->getParameter("GameWindow/font",
-        QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE)).value<QFont>();
-
+    QFont font = settings->dockWindowFont();
     this->setFont(font);
 }
 

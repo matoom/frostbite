@@ -24,6 +24,9 @@ public:
     void saveChanges();
     void cancelChanges();
 
+    void initSettings();
+    void updateSettings();
+
 private:
     HighlightDialog *highlightDialog;
     HighlightSettings *settings;
@@ -50,7 +53,6 @@ private:
 
     QHash<QString, QVariant> changeList;
 
-    void initSettings();
     void initFileSelect();
 
     void initBleedingSettings();

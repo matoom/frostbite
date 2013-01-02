@@ -6,11 +6,11 @@
 
 #include <toolbardefines.h>
 #include <toolbarmanager.h>
-#include <clientsettings.h>
+#include <generalsettings.h>
 #include <quickbuttondisplay.h>
 
 class ToolbarManager;
-class ClientSettings;
+class GeneralSettings;
 class QuickButtonEditDialog;
 
 class QuickButtonDisplay : public QObject {
@@ -22,10 +22,13 @@ public:
 
     QWidget *create();
 
+    void updateSettings();
+    void reloadSettings();
+
 private:
     QToolButton* actionButton(const char*, const char*, QString);
     ToolbarManager* toolbarManager;
-    ClientSettings* settings;
+    GeneralSettings* settings;
     QuickButtonEditDialog* editDialog;
     QWidget* buttonWidget;
     QHBoxLayout* hLayout;

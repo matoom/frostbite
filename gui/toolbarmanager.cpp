@@ -12,6 +12,11 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     spell = new SpellIndicator(this);
 }
 
+void ToolbarManager::updateQuickButtonSettings() {
+    quickButtonDisplay->updateSettings();
+    quickButtonDisplay->reloadSettings();
+}
+
 MainWindow* ToolbarManager::getMainWindow() {
     return mainWindow;
 }

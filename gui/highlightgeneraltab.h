@@ -8,10 +8,12 @@
 #include <highlightsettings.h>
 #include <audioplayer.h>
 #include <defaultvalues.h>
+#include <generalsettings.h>
 
 class HighlightDialog;
 class HighlightSettings;
 class AudioPlayer;
+class GeneralSettings;
 
 class HighlightGeneralTab : public QObject {
     Q_OBJECT
@@ -23,9 +25,14 @@ public:
     void saveChanges();
     void cancelChanges();
 
+    void updateSettings();
+    void loadSettings();
+    void prepareList();
+
 private:
     HighlightDialog *highlightDialog;
     HighlightSettings *settings;
+    GeneralSettings* generalSettings;
     AudioPlayer *audioPlayer;
 
     QMap<QString, QHash<QString, QVariant> > highlightList;
@@ -42,8 +49,6 @@ private:
     QMenu *menu;
 
     void initContextMenu();
-    void loadSettings();
-    void prepareList();
     void setBackground();
     void updateControls(QListWidgetItem*);
     void clearControls();

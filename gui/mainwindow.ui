@@ -202,10 +202,18 @@ QDialogButtonBox {
     </property>
     <addaction name="actionEdit"/>
    </widget>
+   <widget class="QMenu" name="menuProfile">
+    <property name="title">
+     <string>Profile</string>
+    </property>
+    <addaction name="actionCreate_new_profile"/>
+    <addaction name="actionLoad_profile"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuWindow"/>
    <addaction name="menuScript"/>
+   <addaction name="menuProfile"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -310,6 +318,16 @@ QDialogButtonBox {
   <action name="actionEdit">
    <property name="text">
     <string>Edit/Create</string>
+   </property>
+  </action>
+  <action name="actionCreate_new_profile">
+   <property name="text">
+    <string>Create new profile</string>
+   </property>
+  </action>
+  <action name="actionLoad_profile">
+   <property name="text">
+    <string>Load profile</string>
    </property>
   </action>
  </widget>

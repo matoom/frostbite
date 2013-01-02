@@ -6,7 +6,7 @@
 #include <QTextEdit>
 
 #include <mainwindow.h>
-#include <clientsettings.h>
+#include <generalsettings.h>
 #include <genericwindow.h>
 
 class MainWindow;
@@ -25,7 +25,7 @@ private:
     QPlainTextEdit* textBox(QString);
 
     MainWindow* mainWindow;
-    ClientSettings* settings;
+    GeneralSettings* settings;
 
 private slots:
 };

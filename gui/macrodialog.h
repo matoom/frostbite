@@ -20,6 +20,10 @@ class MacroDialog : public QDialog {
 public:
     explicit MacroDialog(QWidget *parent = 0);
     ~MacroDialog();
+
+    void updateSettings();
+    void loadSettings();
+    void loadSequenceTime();
     
 private:
     Ui::MacroDialog *ui;
@@ -35,7 +39,6 @@ private:
 
     void saveSequenceTime();
     void cancelSequenceTime();
-    void loadSequenceTime();
 
     bool saveTime;
 

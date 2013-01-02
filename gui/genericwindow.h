@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QPlainTextEdit>
 #include <QMouseEvent>
-#include <clientsettings.h>
+#include <generalsettings.h>
 
 #include <mainwindow.h>
 
 class MainWindow;
-class ClientSettings;
+class GeneralSettings;
 
 class GenericWindow : public QPlainTextEdit {
     Q_OBJECT
@@ -24,7 +24,7 @@ private:
     void loadSettings();
 
     MainWindow* mainWindow;
-    ClientSettings* settings;
+    GeneralSettings* settings;
 
     QAction* copyAct;
     QAction* selectAct;

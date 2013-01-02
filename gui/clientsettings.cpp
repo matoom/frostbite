@@ -24,3 +24,16 @@ QVariant ClientSettings::getParameter(QString name, QVariant defaultValue) {
 bool ClientSettings::hasValue(QString value) {
     return contains(value);
 }
+
+QString ClientSettings::profilePath() {
+    QString profile = value("Profile/name", "").toString();
+
+    if(!profile.isEmpty()) {
+        QDir dir(QDir::currentPath() + "/profiles/" + profile);
+
+        if(dir.exists()) {
+            return dir.absolutePath() + "/";
+        }
+    }
+    return "";
+}

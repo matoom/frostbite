@@ -7,7 +7,7 @@
 
 #include <mainwindow.h>
 #include <windowmanager.h>
-#include <clientsettings.h>
+#include <generalsettings.h>
 #include <defaultvalues.h>
 
 class MainWindow;
@@ -31,7 +31,7 @@ private:
 
     MainWindow* mainWindow;
     WindowManager* windowManager;
-    ClientSettings* settings;
+    GeneralSettings* settings;
 
     QAction* copyAct;
     QAction* selectAct;

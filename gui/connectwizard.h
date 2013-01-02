@@ -49,6 +49,7 @@ private slots:
     void addCharacterList(QString, QString);
     void setSession(QString);
     void showError(QString);
+    void resetPassword();
 
 signals:
     void loadCharacterList(QString, QString);

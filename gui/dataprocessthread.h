@@ -25,6 +25,7 @@ class DataProcessThread : public QThread {
 
 public:
     explicit DataProcessThread(QObject *parent = 0);
+    ~DataProcessThread();
     
     virtual void run();
 
@@ -88,7 +89,7 @@ signals:
 
 public slots:
     void addData(QByteArray);
-    
+    void updateHighlighterSettings();
 };
 
 #endif // DATAPROCESSTHREAD_H

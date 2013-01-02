@@ -3,12 +3,14 @@
 
 #include <QSettings>
 
-class MacroSettings : QSettings {
-    Q_OBJECT
+#include <clientsettings.h>
+
+class MacroSettings {
 
 public:
     static MacroSettings* Instance();
 
+    void init();
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue);
 
@@ -19,6 +21,7 @@ private:
     MacroSettings(MacroSettings const& copy);
     MacroSettings& operator = (MacroSettings const& copy);
     static MacroSettings* m_pInstance;
+    QSettings* settings;
     
 signals:
     

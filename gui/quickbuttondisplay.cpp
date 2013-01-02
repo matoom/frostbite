@@ -2,8 +2,22 @@
 
 QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
     toolbarManager = (ToolbarManager*)parent;
-    settings = ClientSettings::Instance();
+    settings = new GeneralSettings();
     editDialog = new QuickButtonEditDialog();
+}
+
+void QuickButtonDisplay::updateSettings() {
+    editDialog->updateSettings();
+    settings->init();
+}
+
+void QuickButtonDisplay::reloadSettings() {
+    sword->setText(settings->getParameter("QuickButton/sword", "").toString());
+    bow->setText(settings->getParameter("QuickButton/bow", "").toString());
+    shield->setText(settings->getParameter("QuickButton/shield", "").toString());
+    xsword->setText(settings->getParameter("QuickButton/xsword", "").toString());
+    xbow->setText(settings->getParameter("QuickButton/xbow", "").toString());
+    xshield->setText(settings->getParameter("QuickButton/xshield", "").toString());
 }
 
 QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* icon, QString value) {

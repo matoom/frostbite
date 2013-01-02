@@ -9,12 +9,14 @@
 #include <highlightsettings.h>
 #include <highlightsettingsentry.h>
 #include <audioplayer.h>
+#include <generalsettings.h>
 
 class HighlightDialog;
 class HighlightAddDialog;
 class HighlightEditDialog;
 class HighlightSettings;
 class AudioPlayer;
+class GeneralSettings;
 
 namespace Group {
     enum List {All, Names, Critters, Travel, Combat, Other};
@@ -29,13 +31,17 @@ public:
     void loadHighlightList();
     void reloadHighlightList();
     void saveChanges();
-    void cancelChanges();
+    void cancelChanges();    
+    void updateSettings();
+
+    QColor bgColor;
 
 private:
     HighlightDialog *highlightDialog;
     HighlightAddDialog *highlightAddDialog;
     HighlightEditDialog *highlightEditDialog;
     HighlightSettings *highlightSettings;
+    GeneralSettings* generalSettings;
     AudioPlayer *audioPlayer;
 
     QPushButton *addButton;

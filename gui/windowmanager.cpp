@@ -8,10 +8,31 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     clientSettings = ClientSettings::Instance();
     highlighter = new Highlighter(parent);
     settings = new HighlightSettings();
+    generalSettings = new GeneralSettings();
+}
+
+void WindowManager::reloadSettings() {
+    highlighter->reloadSettings();
+
+    settings->init();
+    this->updateWindowStyle();
+
+    generalSettings->init();
+    this->updateWindowColors();    
 }
 
 QPlainTextEdit* WindowManager::getGameWindow() {
     return this->gameWindow;
+}
+
+void WindowManager::updateWindowColors() {
+    this->setGameWindowFontColor(generalSettings->gameWindowFontColor());
+    this->setGameWindowFont(generalSettings->gameWindowFont());
+    mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
+
+    this->setDockBackground(generalSettings->dockWindowBackground());
+    this->setDockFont(generalSettings->dockWindowFont());
+    this->setDockFontColor(generalSettings->dockWindowFontColor());
 }
 
 QString WindowManager::textColor(QString name, QString defaultValue) {

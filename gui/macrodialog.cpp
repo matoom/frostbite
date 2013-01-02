@@ -8,17 +8,7 @@ MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDia
 
     saveTime = false;
 
-    this->buildKeys("alt", Qt::AltModifier, 0x41, 0x5a);
-    this->loadKeys("alt", ui->altTable);
-    this->buildKeys("ctrl", Qt::ControlModifier, 0x41, 0x5a);
-    this->loadKeys("ctrl", ui->ctrlTable);
-    this->buildKeys("function", Qt::NoModifier, 0x01000030, 0x0100003b);
-    this->loadKeys("function", ui->functionTable);
-
-    this->buildKeypadKeys(Qt::NoModifier);
-    this->buildKeypadKeys(Qt::ControlModifier);
-    this->loadKeys("keypad", ui->keypadTable);
-
+    this->loadSettings();
     this->loadSequenceTime();
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
@@ -37,6 +27,23 @@ MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDia
             this, SLOT(sequenceTimeChanged(const QString&)));
 
     ui->altTable->setFocus();
+}
+
+void MacroDialog::updateSettings() {
+    macroSettings->init();
+}
+
+void MacroDialog::loadSettings() {
+    this->buildKeys("alt", Qt::AltModifier, 0x41, 0x5a);
+    this->loadKeys("alt", ui->altTable);
+    this->buildKeys("ctrl", Qt::ControlModifier, 0x41, 0x5a);
+    this->loadKeys("ctrl", ui->ctrlTable);
+    this->buildKeys("function", Qt::NoModifier, 0x01000030, 0x0100003b);
+    this->loadKeys("function", ui->functionTable);
+
+    this->buildKeypadKeys(Qt::NoModifier);
+    this->buildKeypadKeys(Qt::ControlModifier);
+    this->loadKeys("keypad", ui->keypadTable);
 }
 
 void MacroDialog::loadSequenceTime() {

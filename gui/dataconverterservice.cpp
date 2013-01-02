@@ -16,7 +16,7 @@ DataConverterService::DataConverterService(QObject *parent) : QObject(parent) {
 
 void DataConverterService::populateExpStates() {
     mindStates << "clear" << "dabbling" << "perusing" << "learning" << "thoughtful"
-        << "thinking" << "considering" << "pondering" << "ruminating" << "dabbling" << "concentrating"
+        << "thinking" << "considering" << "pondering" << "ruminating" << "concentrating"
         << "attentive" << "deliberative" << "interested" << "examining" << "understanding" << "absorbing"
         << "intrigued" << "scrutinizing" << "analyzing" << "studious" << "focused" << "very focused"
         << "engaged" << "very engaged" << "cogitating" << "fascinated" << "captivated" << "engrossed" << "riveted"
@@ -24,7 +24,7 @@ void DataConverterService::populateExpStates() {
 }
 
 int DataConverterService::expStateToNumeric(QString state) {
-    return mindStates.indexOf(state) - 1;
+    return mindStates.indexOf(state);
 }
 
 int DataConverterService::expBriefToNumeric(QString state) {

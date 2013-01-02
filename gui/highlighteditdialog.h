@@ -22,6 +22,7 @@ public:
 
     QComboBox* getGroupSelect();
 
+    void updateSettings();
     void setEntry(HighlightSettingsEntry);
 
 private:
@@ -30,7 +31,7 @@ private:
     HighlightSettings *settings;
     HighlightSettingsEntry entry;
 
-    QDialog* parenDialog;
+    QDialog* parentDialog;
 
     void showEvent(QShowEvent*);
 

@@ -73,6 +73,8 @@ public:
     QPushButton* getApplyButton();
 
     void reloadWindowStyles();
+    void updateSettings();
+    void loadSettings();
 
 private:
     Ui::HighlightDialog *ui;

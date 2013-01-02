@@ -6,7 +6,7 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 
     mainWindow = (MainWindow*)parent;
     windowManager = mainWindow->getWindowManager();
-    settings = ClientSettings::Instance();
+    settings = new GeneralSettings();
 
     this->populateMainBox();
     this->populateDockBox();
@@ -17,29 +17,27 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 }
 
+void AppearanceDialog::updateSettings() {
+    settings->init();
+}
+
 void AppearanceDialog::loadSettings() {
-    mainFontValue = settings->getParameter("GameWindow/font",
-        QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE)).value<QFont>();
+    mainFontValue = settings->gameWindowFont();
     this->setSelectFont("GameWindow/font", mainFontSelect, QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE));
 
-    mainBackgroundValue = settings->getParameter("GameWindow/background",
-        DEFAULT_MAIN_BACKGROUND).value<QColor>();
+    mainBackgroundValue = settings->gameWindowBackground();
     this->setSelectBackground("GameWindow/background", mainBgSelect, DEFAULT_MAIN_BACKGROUND);
 
-    mainFontColorValue = settings->getParameter("GameWindow/fontColor",
-        DEFAULT_MAIN_FONT_COLOR).value<QColor>();
+    mainFontColorValue = settings->gameWindowFontColor();
     this->setSelectBackground("GameWindow/fontColor", mainFontColorSelect, DEFAULT_MAIN_FONT_COLOR);
 
-    dockFontValue = settings->getParameter("DockWindow/font",
-        QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
+    dockFontValue = settings->dockWindowFont();
     this->setSelectFont("DockWindow/font", dockFontSelect, QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE));
 
-    dockBackgroundValue = settings->getParameter("DockWindow/background",
-        DEFAULT_DOCK_BACKGROUND).value<QColor>();
+    dockBackgroundValue = settings->dockWindowBackground();
     this->setSelectBackground("DockWindow/background", dockBgSelect, DEFAULT_DOCK_BACKGROUND);
 
-    dockFontColorValue = settings->getParameter("DockWindow/fontColor",
-        DEFAULT_DOCK_FONT_COLOR).value<QColor>();
+    dockFontColorValue = settings->dockWindowFontColor();
     this->setSelectBackground("DockWindow/fontColor", dockFontColorSelect, DEFAULT_DOCK_FONT_COLOR);
 }
 

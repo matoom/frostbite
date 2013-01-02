@@ -6,10 +6,11 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     macroService = new MacroService(parent);
     windowManager = mainWindow->getWindowManager();
     wordCompleter = new WordCompleter(this);
+    keyboardFilter = new KeyboardFilter(this);
 
     historyCounter = -1;
 
-    this->setFont(QFont("Fixedsys", 12));
+    this->setFont(QFont("Consolas", 12));
 
     this->setStyleSheet("QLineEdit { min-width: 50em;"
                         "padding: 2px;"
@@ -19,7 +20,11 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     connect(this, SIGNAL(returnPressed()), this, SLOT(sendCommand()));
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(resetCompleter(const QString&)));
 
-    this->installEventFilter(&keyboardFilter);
+    this->installEventFilter(keyboardFilter);
+}
+
+void CommandLine::updateMacroSettings() {
+    keyboardFilter->reloadSettings();
 }
 
 RoundTimeDisplay* CommandLine::getRoundtimeDisplay() {
@@ -179,4 +184,5 @@ void CommandLine::abortSequence() {
 
 CommandLine::~CommandLine() {
     delete roundtimeDisplay;
+    delete keyboardFilter;
 }

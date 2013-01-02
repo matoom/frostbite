@@ -3,7 +3,11 @@
 
 /* add all keys to map:key, modifier, flags and action text */
 KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {
-    macroSettings = MacroSettings::Instance();
+    macroSettings = MacroSettings::Instance();        
+}
+
+void KeyboardFilter::reloadSettings() {
+    macroSettings->init();
 }
 
 bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {

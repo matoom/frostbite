@@ -5,9 +5,10 @@
 #include <QDebug>
 #include <QToolButton>
 
+#include <generalsettings.h>
 #include <clientsettings.h>
 
-class ClientSettings;
+class GeneralSettings;
 
 namespace Ui {
     class QuickButtonEditDialog;
@@ -22,9 +23,10 @@ public:
 
     void updateButton(QToolButton*);
     void updateLocation(const QPoint&);
+    void updateSettings();
 
 private:
-    ClientSettings* settings;
+    GeneralSettings* settings;
     QToolButton* button;
 
     void showEvent(QShowEvent*);

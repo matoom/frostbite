@@ -6,7 +6,7 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
 
     ui->setupUi(this);
 
-    parenDialog = (QDialog*)parent;
+    parentDialog = (QDialog*)parent;
     settings = new HighlightSettings();
 
     this->textTab = textTab;
@@ -15,10 +15,14 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 }
 
+void HighlightEditDialog::updateSettings() {
+    settings->init();
+}
+
 void HighlightEditDialog::showEvent(QShowEvent * event) {
     QDialog::showEvent(event);
-    this->move(parenDialog->x() + (parenDialog->height() / 4),
-               parenDialog->y() + (parenDialog->width() / 4));
+    this->move(parentDialog->x() + (parentDialog->height() / 4),
+               parentDialog->y() + (parentDialog->width() / 4));
 
     ui->textLine->setFocus();
 

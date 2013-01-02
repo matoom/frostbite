@@ -28,6 +28,8 @@ public:
 
     MainWindow* getMainWindow();
 
+    void updateQuickButtonSettings();
+
     void loadToolbar();
 
     int getHealthValue();

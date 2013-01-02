@@ -39,6 +39,7 @@ public:
     bool runMacro(QString);
     void clearCommand();    
     void doCopy();
+    void updateMacroSettings();
 
     int historyCounter;
 
@@ -48,7 +49,7 @@ private:
     WindowManager* windowManager;
     MacroService* macroService;
     WordCompleter* wordCompleter;
-    KeyboardFilter keyboardFilter;
+    KeyboardFilter* keyboardFilter;
 
     void resizeEvent(QResizeEvent  *event);
     //void keyPressEvent(QKeyEvent *event);

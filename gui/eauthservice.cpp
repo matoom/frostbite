@@ -26,6 +26,9 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
 
     connect(this, SIGNAL(connectionError(QString)),
             connectionManager, SLOT(connectWizardError(QString)));
+
+    connect(this, SIGNAL(authError()),
+            connectionManager, SLOT(authError()));
 }
 
 void EAuthService::init(QString user, QString key) {
@@ -96,6 +99,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         tcpSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
         emit connectionError("Invalid user or password.");
+        emit authError();
         tcpSocket->disconnectFromHost();
     } else {
         if (buffer.size() == 33) {

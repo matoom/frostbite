@@ -38,6 +38,10 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     initRoundtime = false;
 }
 
+void DataProcessThread::updateHighlighterSettings() {
+    highlighter->reloadSettings();
+}
+
 void DataProcessThread::addData(QByteArray buffer) {
     mMutex.lock();
     dataQueue.enqueue(buffer);
@@ -373,3 +377,6 @@ void DataProcessThread::writeScript(QByteArray rawData) {
     emit writeScriptMessage(textString.toLocal8Bit());
 }
 
+DataProcessThread::~DataProcessThread() {
+    delete highlighter;
+}

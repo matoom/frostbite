@@ -3,6 +3,7 @@
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
     settings = new HighlightSettings();
+    generalSettings = new GeneralSettings();
     audioPlayer = AudioPlayer::Instance();
 
     listWidget = highlightDialog->getGeneralList();
@@ -14,6 +15,7 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
 
     this->loadSettings();
     this->prepareList();
+
     this->initFileSelect();
     this->initContextMenu();
     this->setBackground();
@@ -29,12 +31,16 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
 }
 
 void HighlightGeneralTab::setBackground() {
-    ClientSettings* clientSettings = ClientSettings::Instance();
-
-    QColor bgColor = clientSettings->getParameter("GameWindow/background",
-        DEFAULT_MAIN_BACKGROUND).value<QColor>();
-
+    QColor bgColor = generalSettings->gameWindowBackground();
     listWidget->setStyleSheet("QListWidget {background-color:" + bgColor.name() + ";}");
+}
+
+void HighlightGeneralTab::updateSettings() {
+    settings->init();
+    generalSettings->init();
+
+    this->setBackground();
+    listWidget->clear();
 }
 
 void HighlightGeneralTab::loadSettings() {
@@ -231,4 +237,5 @@ void HighlightGeneralTab::cancelChanges() {
 
 HighlightGeneralTab::~HighlightGeneralTab() {
     delete settings;
+    delete generalSettings;
 }

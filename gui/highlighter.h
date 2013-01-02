@@ -20,6 +20,7 @@ public:
 
     QString highlight(QString);
     void alert(QString eventName, int value = 99);
+    void reloadSettings();
 
 private:
     HighlightSettings* highlightSettings;

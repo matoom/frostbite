@@ -3,7 +3,7 @@
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
     windowManager = mainWindow->getWindowManager();
-    settings = ClientSettings::Instance();
+    settings = new GeneralSettings();
 
     this->loadSettings();
     this->buildContextMenu();
@@ -11,7 +11,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setFocusPolicy(Qt::NoFocus);
 
     this->setReadOnly(true);
-    this->document()->setMaximumBlockCount(500);
+    this->document()->setMaximumBlockCount(800);
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
@@ -21,20 +21,17 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
 
 void GameWindow::showEvent(QShowEvent* event) {
     QPlainTextEdit::showEvent(event);
-
-    QColor fontColor = settings->getParameter("GameWindow/fontColor",
-        QColor(DEFAULT_MAIN_FONT_COLOR)).value<QColor>();
-
-    QPalette p = this->viewport()->palette();
-    p.setColor(QPalette::Text, fontColor);
-
-    this->viewport()->setPalette(p);
 }
 
 void GameWindow::loadSettings() {
-    QFont font = settings->getParameter("GameWindow/font",
-        QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE)).value<QFont>();       
+    QFont font = settings->gameWindowFont();
     this->setFont(font);
+
+    QColor fontColor = settings->gameWindowFontColor();
+    QPalette p = this->viewport()->palette();
+    p.setColor(QPalette::Text, fontColor);
+
+    this->setPalette(p);
 }
 
 void GameWindow::buildContextMenu() {

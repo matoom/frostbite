@@ -2,18 +2,16 @@
 
 GenericWindowFactory::GenericWindowFactory(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    settings = ClientSettings::Instance();    
+    settings = new GeneralSettings();
 }
 
 QPalette GenericWindowFactory::palette() {
     QPalette palette = QPalette();
 
-    QColor textBackground = settings->getParameter("DockWindow/background",
-        DEFAULT_DOCK_BACKGROUND).value<QColor>();
+    QColor textBackground = settings->dockWindowBackground();
     palette.setColor(QPalette::Base, textBackground);
 
-    QColor textColor = settings->getParameter("DockWindow/fontColor",
-        DEFAULT_DOCK_FONT_COLOR).value<QColor>();
+    QColor textColor = settings->dockWindowFontColor();
     palette.setColor(QPalette::Text, textColor);
 
     return palette;

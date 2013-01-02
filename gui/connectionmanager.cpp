@@ -16,8 +16,13 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
 
     dataProcessThread = new DataProcessThread(parent);
     connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
+    connect(this, SIGNAL(updateHighlighterSettings()), dataProcessThread, SLOT(updateHighlighterSettings()));
 
     //this->loadMockData();
+}
+
+void ConnectionManager::updateSettings() {
+    emit updateHighlighterSettings();
 }
 
 void ConnectionManager::loadMockData() {
@@ -31,7 +36,6 @@ void ConnectionManager::loadMockData() {
     QByteArray mockData = file.readAll();
 
     emit addToQueue(mockData);
-    //dataProcessThread->addData(mockData);
 
     if(!dataProcessThread->isRunning()) {
         dataProcessThread->start();
@@ -61,6 +65,10 @@ void ConnectionManager::eAuthsessionKeyRetrieved(QString sessionKey) {
 
 void ConnectionManager::connectWizardError(QString errorMsg) {
     emit eAuthError(errorMsg);
+}
+
+void ConnectionManager::authError() {
+    emit resetPassword();
 }
 
 void ConnectionManager::connectToHost(QString sessionKey) {
@@ -96,7 +104,7 @@ void ConnectionManager::disconnectedFromHost() {
 
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
-    //qDebug() << "INCOMING DATA: " << QTime::currentTime().toString("hh:mm:ss.zzz");
+    //qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz");
 
     if(buffer.endsWith("\n")){
         if(waitForSettings) {
@@ -106,6 +114,7 @@ void ConnectionManager::socketReadyRead() {
                 this->writeCommand("_swclose sassess");
                 waitForSettings = false;
         }
+
         emit addToQueue(buffer);
 
         if(!dataProcessThread->isRunning()) {
@@ -136,7 +145,7 @@ void ConnectionManager::socketReadyRead() {
 }*/
 
 void ConnectionManager::writeCommand(QString cmd) {
-    //qDebug() << "WRITE COMMAND: " << QTime::currentTime().toString("hh:mm:ss.zzz");
+    //qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz");
     tcpSocket->write("<c>" + cmd.append("\n").toLocal8Bit());
     tcpSocket->flush();
 }
@@ -169,4 +178,6 @@ ConnectionManager::~ConnectionManager() {
     tcpSocket->disconnectFromHost();
 
     delete tcpSocket;
+    delete dataProcessThread;
+    delete eAuth;
 }

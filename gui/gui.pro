@@ -63,7 +63,9 @@ SOURCES += main.cpp\
     genericwindowfactory.cpp \
     genericwindow.cpp \
     fullscreenbutton.cpp \
-    dataprocessthread.cpp
+    dataprocessthread.cpp \
+    profileadddialog.cpp \
+    generalsettings.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -119,7 +121,9 @@ HEADERS  += mainwindow.h \
     genericwindowfactory.h \
     genericwindow.h \
     fullscreenbutton.h \
-    dataprocessthread.h
+    dataprocessthread.h \
+    profileadddialog.h \
+    generalsettings.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \
@@ -130,7 +134,8 @@ FORMS    += mainwindow.ui \
     appearancedialog.ui \
     aboutdialog.ui \
     connectwizard.ui \
-    scripteditdialog.ui
+    scripteditdialog.ui \
+    profileadddialog.ui
 
 RESOURCES += \
     toolbar.qrc \

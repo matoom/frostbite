@@ -4,6 +4,7 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     highlightSettings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
     highlightList = highlightSettings->getSettings("TextHighlight");
+    generalSettings = new GeneralSettings();
 
     highlightDialog = (HighlightDialog*)parent;
     addButton = highlightDialog->getTextAddButton();
@@ -84,11 +85,7 @@ void HighlightTextTab::initContextMenu() {
 }
 
 void HighlightTextTab::setBackground() {
-    ClientSettings* clientSettings = ClientSettings::Instance();
-
-    QColor bgColor = clientSettings->getParameter("GameWindow/background",
-        DEFAULT_MAIN_BACKGROUND).value<QColor>();
-
+    bgColor = generalSettings->gameWindowBackground();
     listWidget->setStyleSheet("QListWidget {background-color:" + bgColor.name() + ";}");
 }
 
@@ -136,6 +133,15 @@ void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
         palette.setColor(QPalette::Highlight, Qt::transparent);
         listWidget->setPalette(palette);
     }
+}
+
+void HighlightTextTab::updateSettings() {
+    highlightSettings->init();
+    generalSettings->init();
+    highlightEditDialog->updateSettings();
+    highlightAddDialog->updateSettings();
+
+    this->setBackground();
 }
 
 QList<HighlightSettingsEntry> HighlightTextTab::populateHighlights() {
@@ -464,4 +470,5 @@ void HighlightTextTab::showEditDialog() {
 
 HighlightTextTab::~HighlightTextTab() {
     delete highlightSettings;
+    delete generalSettings;
 }

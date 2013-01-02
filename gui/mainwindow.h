@@ -12,6 +12,7 @@
 #include <menuhandler.h>
 #include <scriptservice.h>
 #include <timerbar.h>
+#include <generalsettings.h>
 
 /* test*/
 #include <QtXml>
@@ -37,6 +38,7 @@ class CommandLine;
 class MenuHandler;
 class ScriptService;
 class TimerBar;
+class GeneralSettings;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -51,11 +53,13 @@ public:
     void addToolbarSeparator();
     void addToolbarSpacer(int);
     void addToolbarWidget(QWidget*);
+    void insertProfilesMenu(QMenu*);
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
     void toggleFullScreen();
     void toggleMaximized();
+    void updateProfileSettings();
 
     WindowManager* getWindowManager();
     ToolbarManager* getToolbarManager();
@@ -70,6 +74,7 @@ private:
     ToolbarManager* tbm;
     ConnectionManager* cm;
     ClientSettings* settings;
+    GeneralSettings* generalSettings;
     CommandLine* cmdLine;
     MenuHandler* menuHandler;
     ScriptService* scriptService;

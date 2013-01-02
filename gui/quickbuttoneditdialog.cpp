@@ -4,10 +4,14 @@
 QuickButtonEditDialog::QuickButtonEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui::QuickButtonEditDialog) {
     ui->setupUi(this);
 
-    settings = ClientSettings::Instance();
+    settings = new GeneralSettings();
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
+}
+
+void QuickButtonEditDialog::updateSettings() {
+    settings->init();
 }
 
 void QuickButtonEditDialog::updateLocation(const QPoint& point) {

@@ -10,6 +10,10 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(playAudio(QString)), audioPlayer, SLOT(play(QString)));
 }
 
+void Highlighter::reloadSettings() {
+   highlightSettings->init();
+}
+
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
         QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");

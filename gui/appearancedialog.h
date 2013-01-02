@@ -11,11 +11,11 @@
 
 #include <mainwindow.h>
 #include <defaultvalues.h>
-#include <clientsettings.h>
+#include <generalsettings.h>
 #include <windowmanager.h>
 
 class MainWindow;
-class ClientSettings;
+class GeneralSettings;
 class WindowManager;
 
 namespace Ui {
@@ -27,13 +27,16 @@ class AppearanceDialog : public QDialog {
     
 public:
     explicit AppearanceDialog(QWidget *parent = 0);
-    ~AppearanceDialog();        
+    ~AppearanceDialog();
+
+    void loadSettings();
+    void updateSettings();
     
 private:    
     Ui::AppearanceDialog *ui;
     MainWindow* mainWindow;
     WindowManager* windowManager;
-    ClientSettings* settings;
+    GeneralSettings* settings;
 
     QToolButton* mainBgSelect;
     QToolButton* mainFontSelect;
@@ -51,7 +54,6 @@ private:
     QColor dockFontColorValue;
     QColor dockBackgroundValue;
 
-    void loadSettings();
     void populateMainBox();
     void populateDockBox();
 

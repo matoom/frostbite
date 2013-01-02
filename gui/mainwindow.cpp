@@ -4,29 +4,33 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+    // register types
     qRegisterMetaType<DirectionsList>("DirectionsList");
 
-    /* application settings */
+    // application settings
     this->appSetup();
-    /* build client content */
+    // build client content
     this->loadClient();
-    /* load client settings */
+    // load client settings
     this->initSettings();
 
     ui->statusBar->hide();
 }
 
 void MainWindow::appSetup() {
-    /* set cleanlooks as base style */
+    // set cleanlooks as base style
     QApplication::setStyle("cleanlooks");
 
     // does not open on correct screen in 4.8
     // https://bugreports.qt-project.org/browse/QTBUG-21371
 
-    /* load client window state */
+    // load client window state
     settings = ClientSettings::Instance();
     restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
     restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
+
+    // load general settings
+    generalSettings = new GeneralSettings();
 }
 
 void MainWindow::toggleFullScreen() {
@@ -37,9 +41,21 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
+void MainWindow::updateProfileSettings() {
+    // highlights
+    cm->updateSettings();
+    // general highlights/window coloring
+    windowManager->reloadSettings();
+    // macros
+    cmdLine->updateMacroSettings();
+    // quick buttons
+    tbm->updateQuickButtonSettings();
+    // dialogs
+    menuHandler->updateDialogSettings();
+}
+
 void MainWindow::initSettings() {
-    QColor color = settings->getParameter("GameWindow/background",
-        DEFAULT_MAIN_BACKGROUND).value<QColor>();
+    QColor color = generalSettings->gameWindowBackground();
 
     /* set centralWidget background color to black */
     /* background for gamewindow is transparent on navi collage */
@@ -76,6 +92,7 @@ void MainWindow::loadClient() {
 
     menuHandler = new MenuHandler(this);
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
+    connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 }
 
 WindowManager* MainWindow::getWindowManager() {
@@ -136,6 +153,10 @@ void MainWindow::addToolbarAction(QAction *action) {
 
 void MainWindow::addToolbarSeparator() {
     ui->mainToolBar->addSeparator();
+}
+
+void MainWindow::insertProfilesMenu(QMenu* menu) {
+    ui->actionLoad_profile->setMenu(menu);
 }
 
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {
