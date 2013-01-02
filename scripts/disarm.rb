@@ -17,11 +17,11 @@ def ident(box)
   result = match_wait match
 
   case result
-    when :wait
+    when :wait, :ident
       pause 0.5
       ident box
     when :end
-      exit_script("*** Box is already disarmed! ***")
+      exit_script("*** Box is disarmed! ***")
     when :hard
       exit_script("*** Unable to disarm! ***")
     else
@@ -29,12 +29,29 @@ def ident(box)
   end
 end
 
+#>disarm my skippet quick
+#You quickly work at disarming the skippet.
+#You work with the trap for a while but are unable to make any progress.
+#You get the distinct feeling your manipulation caused something to shift inside the trap mechanism.  This is not likely to be a good thing.
+#Roundtime: 1 sec.
+
+#>disarm my coffer normal
+#You begin work at disarming the coffer.
+#You work with the trap for a while but are unable to make any progress.
+#You get the distinct feeling your manipulation caused something to shift inside the trap mechanism.  This is not likely to be a good thing.
+#Roundtime: 4 sec.
+#>disarm my coffer normal
+
+
+#You believe that the crate is not yet fully disarmed.
+
 def disarm(box, method)
   put "disarm my #{box} #{method.to_s}"
   match = { :wait => [/\.\.\.wait/],
-            :next_method => ["not likely to be a good thing"],
+            :next_method => ["shift inside the trap"],
             :continue => ["progress"],
-            :analyze => ["Roundtime", "not yet fully disarmed"]}
+            :analyze => ["not yet fully disarmed"],
+            :analyze_last => ["Roundtime"] }
   result = match_wait match
 
   case result
@@ -42,20 +59,30 @@ def disarm(box, method)
       pause 0.5
       disarm(box, method)
     when :next_method
+      echo "NEXT METHOD!!!"
+      echo @disarm_methods.index(method.to_s)
+      echo @disarm_methods.fetch(next_index + 1, "careful")
+
       next_index = @disarm_methods.index(method.to_s)
       disarm(box, @disarm_methods.fetch(next_index + 1, "careful"))
     when :analyze
       if method == :blind or method == :quick
-        analyze box
+        analyze box, false
       else
         ident box
+      end
+    when :analyze_last
+      if method == :blind or method == :quick
+        analyze box, true
+      else
+        exit_script("*** box disarmed! ***")
       end
     else
       exit_script "*** ERROR in - disarm(box, method)! ***"
   end
 end
 
-def analyze(box)
+def analyze(box, last)
   put "disarm my #{box} analyze"
   match = { :wait => [/\.\.\.wait/],
             :reanalyze => ["unable to determine"],
@@ -67,19 +94,23 @@ def analyze(box)
   case result
     when :wait, :reanalyze
       pause 0.5
-      analyze box
+      analyze box, last
     when :ident
-      ident box
+      if last
+        exit_script("*** Box disamed! ***")
+      else
+        ident box
+      end
     when :end
       exit_script "*** Box disarmed! ***"
     when :harvest
-      harvest box
+      harvest box, last
     else
       exit_script "*** ERROR in - analyze(box)! ***"
   end
 end
 
-def harvest(box)
+def harvest(box, last)
   put "disarm my #{box} harvest"
   match = { :wait => [/\.\.\.wait/],
             :harvest => ["unable to extract"],
@@ -90,12 +121,20 @@ def harvest(box)
   case result
     when :wait, :harvest
       pause 0.5
-      harvest box
+      harvest box, last
     when :end
-      exit_script "Box disarmed! ***"
+      if last
+        exit_script("*** Box disamed! ***")
+      else
+        ident box
+      end
     when :stow
       put "stow left"
-      exit_script "Box disarmed! ***"
+      if last
+        exit_script("*** Box disamed! ***")
+      else
+        ident box
+      end
     else
       exit_script "*** ERROR in - harvest(box)! ***"
   end
@@ -127,12 +166,13 @@ end
             :open => ["You get"] }
   res = match_wait match
 
-  if res == :open
-    ident box
-  elsif res == :wait
-    pause 0.5
-    redo
+  case res
+    when :open
+      ident box
+    when :wait
+      pause 0.5
+      redo
   end
-
-  exit_script "*** All boxes opened! ***"
 end
+
+exit_script "*** All boxes opened! ***"

@@ -7,29 +7,39 @@ if !$args.first
   exit
 end
 
-gems = ["peridot", "kunzite", "chrysoprase", "ivory", "jade", "andalusite", "opal", "chalcedony", "garnet", "spinel",
-        "sunstone", "citrine", "agate", "lazuli", "carnelian", "chrysoberyl", "tanzanite", "pearl", "tourmaline",
-        "amber", "hematite", "beryl", "iolite", "tsavorite", "turquoise", "moonstone", "diopside", "topaz", "onyx",
-        "crystal", "quartz", "jasper", "bloodstone", "zircon", "amethyst", "stone", "gem", "sapphire", "nugget", "bar",
-        "morganite", "diamond"]
+def get_contents color
+  put "look in my #{color} pouch"
+  match = { :match => ["In the"],
+            :empty => ["There is nothing"] }
+
+  contents = match_get match
+
+  if contents.include?("nothing in there")
+    return []
+  end
+
+  contents.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
+end
+
+def sell_pouch color
+  get_contents.each do |item|
+    if item == "stuff"
+      sell_pouch color
+    end
+
+    pause 0.5
+    put "get #{item} from my #{color} pouch"
+    put "sell my #{item}"
+    wait
+  end
+end
 
 $args.each do |color|
   put "get my #{color} pouch"
   wait
-  gems.each do |gem|
-    result = :sell
-    until result == :next
-      put "get #{gem} from my pouch"
-      match = { :sell => ["from inside"],
-                :next => ["were you referring to"] }
-      result = match_wait match
 
-      if result == :sell
-        put "sell my #{gem}"
-        wait_for "then hands you"
-      end
-    end
-  end
+  sell_pouch color
+
   put "stow right"
   echo "*** All gems sold in #{color} pouch! ***"
 end

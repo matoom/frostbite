@@ -11,7 +11,7 @@ def finally_do
   put "put my #{$args.first} in my backpack"
 end
 
-10.times do
+100.times do
   put "juggle my " + $args.join(" ")
   wait_for_roundtime
 end

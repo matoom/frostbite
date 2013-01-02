@@ -30,7 +30,7 @@ $_data_queue = []
 def wait_for_roundtime
   (0..1000000).each do
     $_data_queue.each_index do |i|
-      if $_data_queue.at(i).match(/^Roundtime:/)
+      if $_data_queue.at(i).match(/^Roundtime/)
         sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
         return
       end
@@ -79,6 +79,52 @@ def match_wait(pattern)
           v.each do |m|
             if $_data_queue.at(i).match(m)
               match = k
+              match_found = true
+              break
+            end
+          end
+          break if match_found
+        end
+      end
+
+      if $_data_queue.at(i).match(/^Roundtime:/)
+        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
+      end
+
+      if match_found
+        if $_data_queue.at(i).match(/^>/)
+          return match
+        end
+      end
+
+      $_data_queue.delete_at(i)
+    end
+    sleep 0.01
+  end
+end
+
+
+# Matches multi regex patterns with game text
+# and returns the matched text.
+#
+# @param [Hash] pattern list of regex patterns and names
+# @return [Symbol] pattern name
+# @example Using multi match patterns to make decisions in script.
+#   match = { :m => [/you open/i] }
+#   result = match_get match
+#   result #=> You open the steel trunk...
+
+def match_get(pattern)
+  match_found = false
+  match = :not_found
+
+  (0..1000000).each do
+    $_data_queue.each_index do |i|
+      unless match_found
+        pattern.each_pair do |k, v|
+          v.each do |m|
+            if $_data_queue.at(i).match(m)
+              match = $_data_queue.at(i)
               match_found = true
               break
             end

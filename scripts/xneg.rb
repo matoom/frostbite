@@ -1,0 +1,11 @@
+move "go gate"
+move "w"
+move "w"
+move "s"
+move "s"
+move "w"
+move "w"
+move "s"
+move "w"
+move "w"
+

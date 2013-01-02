@@ -20,6 +20,8 @@ path = ["go gate", "w", "w", "s", "s", "w", "w", "s", "w", "w", "w", "w", "w", "
     exit
   end
 
+  pause 2
+
   path.each do |p|
       move p
   end

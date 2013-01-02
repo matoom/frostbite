@@ -49,7 +49,7 @@ label(:stop_stalk) {
 
 label(:feint) {
   # legs -> back -> arms -> hands -> abdomen -> chest -> neck -> head -> eyes
-  put "feint right eye"
+  put "feint chest"
   match = { :dead => ["and collapses"],
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime"],
@@ -74,7 +74,15 @@ label(:dead) {
 }
 
 label(:wait_for) {
-  waitfor "begins to advance you"
+  wait_for(/begins to advance you|closes to melee range/)
+  goto :start
+}
+
+label(:retreat) {
+  put "retreat"
+  wait
+  put "retreat"
+  wait
   goto :start
 }
 
