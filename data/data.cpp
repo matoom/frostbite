@@ -41,8 +41,42 @@ char roomExits[Data::roomExitsX] SHARED = "";
 int rt SHARED = 0;
 #else
 /* other platforms - gcc ??*/
-/*int nProcesses __attribute__((section(".GLOBALS")) = 0;
-int nThreads __attribute__((section(".GLOBALS")) = 0;*/
+int exp[Data::expX][Data::expY][Data::expZ] __attribute__((section(".SHARED")) = {{"", "", ""}};
+
+bool standing __attribute__((section(".SHARED")) = false;
+bool sitting __attribute__((section(".SHARED")) = false;
+bool kneeling __attribute__((section(".SHARED")) = false;
+bool prone __attribute__((section(".SHARED")) = false;
+bool stunned __attribute__((section(".SHARED")) = false;
+bool bleeding __attribute__((section(".SHARED")) = false;
+bool hidden __attribute__((section(".SHARED")) = false;
+bool invisible __attribute__((section(".SHARED")) = false;
+bool webbed __attribute__((section(".SHARED")) = false;
+bool joined __attribute__((section(".SHARED")) = false;
+bool dead __attribute__((section(".SHARED")) = false;
+
+char inventory[Data::inventoryX] __attribute__((section(".SHARED"))  = "";
+
+char container[Data::containerX] __attribute__((section(".SHARED"))  = "";
+
+char wieldRight[Data::wieldX] __attribute__((section(".SHARED"))  = "";
+char wieldRightNoun[Data::wieldX] __attribute__((section(".SHARED"))  = "";
+char wieldLeft[Data::wieldX] __attribute__((section(".SHARED"))  = "";
+char wieldLeftNoun[Data::wieldX] __attribute__((section(".SHARED"))  = "";
+
+int health __attribute__((section(".SHARED"))  = 0;
+int concentration __attribute__((section(".SHARED"))  = 0;
+int spirit __attribute__((section(".SHARED"))  = 0;
+int fatigue __attribute__((section(".SHARED"))  = 0;
+
+char roomTitle[Data::roomTitleX] __attribute__((section(".SHARED"))  = "";
+char roomDescription[Data::roomDescriptionX] __attribute__((section(".SHARED"))  = "";
+char roomObjects[Data::roomObjectsX] __attribute__((section(".SHARED"))  = "";
+char roomPlayers[Data::roomPlayersX] __attribute__((section(".SHARED"))  = "";
+char roomExits[Data::roomExitsX] __attribute__((section(".SHARED"))  = "";
+
+int rt __attribute__((section(".SHARED"))  = 0;
+
 #endif
 
 

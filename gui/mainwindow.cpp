@@ -183,6 +183,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
 MainWindow::~MainWindow() {
     delete cm;
     delete settings;
+    delete generalSettings;
     delete ui;
     delete tbm;
     delete windowManager;

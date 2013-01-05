@@ -49,5 +49,6 @@ void TimerBar::loadProgressbar() {
 }
 
 TimerBar::~TimerBar() {
+    delete timer;
     delete timerProgress;
 }

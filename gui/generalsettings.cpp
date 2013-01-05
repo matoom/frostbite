@@ -48,5 +48,5 @@ QColor GeneralSettings::dockWindowBackground(){
 }
 
 GeneralSettings::~GeneralSettings() {
-
+    delete settings;
 }

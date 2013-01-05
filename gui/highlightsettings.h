@@ -12,6 +12,7 @@ class HighlightSettings {
 
 public:
     HighlightSettings();
+    ~HighlightSettings();
 
     void setSingleParameter(QString name, QVariant value);
     QVariant getSingleParameter(QString name, QVariant defaultValue);

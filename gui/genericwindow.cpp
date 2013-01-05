@@ -57,4 +57,5 @@ GenericWindow::~GenericWindow() {
     delete copyAct;
     delete selectAct;
     delete menu;
+    delete settings;
 }

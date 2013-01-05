@@ -331,4 +331,5 @@ WindowManager::~WindowManager() {
     delete deathsWindow;
     delete conversationsWindow;
     delete settings;
+    delete generalSettings;
 }

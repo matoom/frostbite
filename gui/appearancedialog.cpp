@@ -42,10 +42,10 @@ void AppearanceDialog::loadSettings() {
 }
 
 QToolButton* AppearanceDialog::selectButton(int width, int height, QString toolTip) {
-    QToolButton* button = new QToolButton;
+    QToolButton* button = new QToolButton(this);
     button->setToolTip(toolTip);
     button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-    button->setMenu(new QMenu());
+    button->setMenu(new QMenu(button));
     button->setMinimumWidth(width);
     button->setMinimumHeight(height);
 
@@ -243,6 +243,7 @@ void AppearanceDialog::cancelPressed() {
 }
 
 AppearanceDialog::~AppearanceDialog() {
+    delete settings;
     delete mainBgSelect;
     delete mainFontSelect;
     delete mainFontColorSelect;

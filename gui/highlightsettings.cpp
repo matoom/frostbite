@@ -96,3 +96,7 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
     }
     settings->endArray();
 }
+
+HighlightSettings::~HighlightSettings() {
+    delete settings;
+}

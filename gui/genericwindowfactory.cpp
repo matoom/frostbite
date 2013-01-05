@@ -37,3 +37,7 @@ QDockWidget* GenericWindowFactory::createWindow(const char* name) {
 
     return dock;
 }
+
+GenericWindowFactory::~GenericWindowFactory() {
+    delete settings;
+}

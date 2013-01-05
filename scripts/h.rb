@@ -2,6 +2,10 @@
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
+#You quickly slip into hiding to prepare to stalk.
+#You melt into the background, convinced that your attempt to hide went unobserved.
+#It's hard to stalk if you aren't in a position to move around.
+
 @match_rt_adjustment = -1
 
 if !$args.first

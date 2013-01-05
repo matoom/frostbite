@@ -106,4 +106,5 @@ QColor RoundTimeDisplay::getColorRange(int seconds) {
 
 
 RoundTimeDisplay::~RoundTimeDisplay() {
+    delete timer;
 }

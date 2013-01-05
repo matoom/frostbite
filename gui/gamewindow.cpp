@@ -71,4 +71,5 @@ void GameWindow::copySelected() {
 }
 
 GameWindow::~GameWindow() {
+    delete settings;
 }

@@ -16,7 +16,7 @@
       :macipur => ["gold brocade long coat", 3], #[Marcipur's Stitchery, Workshop]
       :brisson => ["gold brocade tail coat", 3], #[Brisson's Haberdashery, Sales Salon]
       :tannery => ["lotion", 2], #[Falken's Tannery, Supply Room]
-      :alchemy => ["bucket", 2] #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => ["bucket", 1] #[Chizili's Alchemical Goods, Salesroom]
     }
 
 @arthe_items =
@@ -25,7 +25,7 @@
       :odds => ["hat", 1], #[Odds 'n Ends, Sales Room]
       :bardic => ["peri'el's", 2], #[Barley Bulrush, Bardic Ballads]
       :bobba => ["ring mail", 1], #[Bobba's Arms and Armor]
-      :lobby => ["pipe", 1] #[Yulugri Wala, Lobby]
+      :lobby => ["map", 1] #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
@@ -54,7 +54,7 @@ def move(value)
   put value
   res = match_wait({ :room => [/^\[.*?\]$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
-                     :lost => [/can't go there/],
+                     :lost => [/can't go there|were you referring/],
                      :retreat => [/You'll have better luck if you first retreat|You are engaged/],
                      :leave => [/You stop as you realize|is locked|You realize the shop is closed|You smash your nose/] })
   @leave = false
@@ -606,3 +606,5 @@ echo @stolen_items.inspect
     pause 0.2
   end
 end
+
+put "hide"

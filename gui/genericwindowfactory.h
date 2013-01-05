@@ -17,6 +17,7 @@ class GenericWindowFactory: public QObject {
 
 public:
     GenericWindowFactory(QObject *parent = 0);
+    ~GenericWindowFactory();
 
     QDockWidget* createWindow(const char*);
 

@@ -1,11 +1,10 @@
 move "go square"
 move "go door"
-put "go rosewood arch"
 
 labels_start
 
 label(:start) {
-  put "exp mech"
+  put "go rosewood arch"
   match = { :second => [/The attendant steps in/],
             :continue => [/The Dwarven attendant escorts/] }
   match_wait_goto match

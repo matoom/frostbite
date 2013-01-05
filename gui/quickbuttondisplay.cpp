@@ -144,4 +144,6 @@ QuickButtonDisplay::~QuickButtonDisplay() {
     delete xshield;
     delete hLayout;
     delete buttonWidget;
+    delete settings;
+    delete editDialog;
 }
