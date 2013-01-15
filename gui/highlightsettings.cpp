@@ -2,11 +2,14 @@
 
 HighlightSettings::HighlightSettings() {
     this->init();
+
+    settingsList = NULL;
 }
 
 void HighlightSettings::init() {
     QString path = ClientSettings::Instance()->profilePath();
     settings = new QSettings(path + "highlights.ini", QSettings::IniFormat);
+    settingsList = NULL;
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
@@ -53,14 +56,15 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue(group + "/size", size);
 }
 
-QList<HighlightSettingsEntry> HighlightSettings::getSettings(QString group) {
+void HighlightSettings::loadSettings(QString group) {
+    settingsList = new QList<HighlightSettingsEntry>();
+
     int size = settings->beginReadArray(group);
 
-    QList<HighlightSettingsEntry> settingsList;
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
 
-        settingsList.append(HighlightSettingsEntry((const int&)i,
+        settingsList->append(HighlightSettingsEntry((const int&)i,
             (const QString&)settings->value("value").toString(),
             (const QString&)settings->value("group").toString(),
             (const QColor&)settings->value("color").value<QColor>(),
@@ -72,16 +76,21 @@ QList<HighlightSettingsEntry> HighlightSettings::getSettings(QString group) {
             (const QBitArray&)settings->value("options").value<QBitArray>()));
     }
     settings->endArray();
+}
 
+QList<HighlightSettingsEntry>* HighlightSettings::getSettings(QString group) {       
+    if(!settingsList) {
+        this->loadSettings(group);
+    }
     return settingsList;
 }
 
-void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry> settingsList) {
+void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
     settings->beginWriteArray(group);
     settings->clear();
 
-    for (int i = 0; i < settingsList.size(); ++i) {
-        HighlightSettingsEntry entry = settingsList.at(i);
+    for (int i = 0; i < settingsList->size(); ++i) {
+        HighlightSettingsEntry entry = settingsList->at(i);
 
         settings->setArrayIndex(i);
         settings->setValue("value", entry.value);
@@ -99,4 +108,5 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 
 HighlightSettings::~HighlightSettings() {
     delete settings;
+    delete settingsList;
 }

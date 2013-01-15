@@ -11,6 +11,7 @@
 #include <highlighter.h>
 #include <defaultvalues.h>
 #include <highlightsettings.h>
+#include <highlighterthread.h>
 
 class MainWindow;
 class GameWindow;
@@ -19,6 +20,7 @@ class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
 class Highlighter;
+class HighlighterThread;
 
 typedef QList<QString> DirectionsList;
 
@@ -34,6 +36,7 @@ public:
     void paintNavigationDisplay();
     void scriptRunning(bool);
     void updateWindowStyle();
+    void initWindowHighlighters();
     void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
@@ -42,7 +45,6 @@ public:
     void setDockFont(QFont font);
     void copyDock();
     void saveArrivals();
-    void writeGameWindow(QByteArray);
     void reloadSettings();
 
     QDockWidget* getRoomWindow();
@@ -56,11 +58,13 @@ public:
     bool deathsVisible;
     bool arrivalsVisible;
     bool conversationsVisible;
+    bool writePrompt;
 
 public slots:
     void updateConversationsWindow(QString);
-    void writeGameText(QByteArray);
-    void writePromptGameWindow(QByteArray);
+    void writeGameText(QByteArray, bool);
+    void writeGameWindow(QByteArray);
+    void writeScriptText(QByteArray);
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
     void updateExpWindow();
@@ -68,7 +72,6 @@ public slots:
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);
-
 
 private slots:
     void thoughtsVisibility(bool);    
@@ -95,8 +98,26 @@ private:
     QDockWidget* conversationsWindow;
     QList<QDockWidget*> dockWindows;
 
+    HighlighterThread* gameWindowHighlighter;
+    HighlighterThread* roomHighlighter;
+    HighlighterThread* expHighlighter;
+    HighlighterThread* arrivalsHighlighter;
+    HighlighterThread* thoughtsHighlighter;
+    HighlighterThread* deathsHighlighter;
+    HighlighterThread* conversationsHighlighter;
+    QList<HighlighterThread*> highlighters;
+
     QString textColor(QString, QString);
     void setVisibilityIndicator(QDockWidget*, bool, QString);
+
+signals:
+    void updateGameWindowSettings();
+    void updateRoomSettings();
+    void updateExpSettings();
+    void updateArrivalsSettings();
+    void updateThoughtsSettings();
+    void updateDeathsSettings();
+    void updateConversationsSettings();
 };
 
 #endif // WINDOWMANAGER_H

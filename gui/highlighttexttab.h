@@ -66,7 +66,7 @@ private:
     QString group;
     QList<QString> timerActionNames;
 
-    QList<HighlightSettingsEntry> highlightList;
+    QList<HighlightSettingsEntry>* highlightList;
     QList<int> changeList;
 
     QAction *colorAct;
@@ -87,7 +87,7 @@ private:
     void updateSelectedItemColor(QListWidgetItem*);
     void updateIcon(QListWidgetItem*, QListWidgetItem*);
     void enableMenuItems();
-    QList<HighlightSettingsEntry> populateHighlights();
+    void populateHighlights();
 
 signals:
 

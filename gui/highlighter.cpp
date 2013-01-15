@@ -16,10 +16,10 @@ void Highlighter::reloadSettings() {
 
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
-        QList<HighlightSettingsEntry> highlightList = highlightSettings->getSettings("TextHighlight");
+        QList<HighlightSettingsEntry>* highlightList = highlightSettings->getSettings("TextHighlight");
 
-        HighlightSettingsEntry entry;
-        foreach(entry, highlightList) {            
+        for(int i = 0; i < highlightList->size(); ++i) {
+            HighlightSettingsEntry entry = highlightList->at(i);
             // match whole or partial words
             QRegExp rx(QRegExp("\\b" + entry.value + "\\b"));
             if(entry.options.at(1)) {
@@ -81,7 +81,7 @@ void Highlighter::alert(QString eventName, int value) {
         bool enabled = highlightSettings->getSingleParameter("AlertHighlight/health/enabled", false).toBool();
         if(enabled) {
             int settingsValue = highlightSettings->getSingleParameter("AlertHighlight/health/value", 99).toInt();
-            if(settingsValue + 1 <= value) {
+            if(value <= settingsValue + 1) {
                 if(healthAlert) {
                     QString fileName = highlightSettings->getSingleParameter("AlertHighlight/health/file", "").toString();
                     emit playAudio(fileName);

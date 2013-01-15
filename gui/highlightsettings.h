@@ -17,11 +17,14 @@ public:
     void setSingleParameter(QString name, QVariant value);
     QVariant getSingleParameter(QString name, QVariant defaultValue);
 
+    QList<HighlightSettingsEntry>* settingsList;
+
     void init();
     void setParameter(QString, HighlightSettingsEntry entry);
     void addParameter(QString, HighlightSettingsEntry entry);
-    QList<HighlightSettingsEntry> getSettings(QString);
-    void setSettings(QString, QList<HighlightSettingsEntry>);
+    QList<HighlightSettingsEntry>* getSettings(QString);
+    void setSettings(QString, QList<HighlightSettingsEntry>*);
+    void loadSettings(QString);
 
 private:
     QSettings* settings;

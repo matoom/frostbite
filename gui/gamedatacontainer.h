@@ -5,8 +5,6 @@
 #include <QHash>
 #include <QReadLocker>
 
-#include <roommodel.h>
-#include <wieldmodel.h>
 #include <dataconverterservice.h>
 #include <dataservice.h>
 
@@ -33,10 +31,22 @@ public:
     void setRoomExits(QString);
     void setRoomExtra(QString);
 
+    QString getRoomName();
+    QString getRoomDesc();
+    QString getRoomObjs();
+    QString getRoomPlayers();
+    QString getRoomExits();
+    QString getRoomExtra();
+
     void setRight(QString);
     void setRightNoun(QString);
     void setLeft(QString);
     void setLeftNoun(QString);
+
+    QString getRight();
+    QString getRightNoun();
+    QString getLeft();
+    QString getLeftNoun();
 
     void setStanding(bool);
     void setSitting(bool);
@@ -60,8 +70,6 @@ public:
     QString getExpField(QString name);
     QHash<QString, QString> getExp();
     void removeExpField(QString);
-    RoomModel* getRoom();
-    WieldModel* getWield();
     QStringList getInventory();
     QStringList getContainer();
 
@@ -74,13 +82,23 @@ private:
     DataConverterService* converter;
     DataService* dataService;
     QHash<QString, QString> exp;
-    RoomModel* room;
-    WieldModel* wield;
     QStringList container;
     QStringList inventory;
 
     QStringList extractExp(QString, bool brief);
     QReadWriteLock lock;
+
+    QString roomName;
+    QString roomDesc;
+    QString roomObjs;
+    QString roomPlayers;
+    QString roomExits;
+    QString roomExtra;
+
+    QString wieldRightNoun;
+    QString wieldRight;
+    QString wieldLeftNoun;
+    QString wieldLeft;
 
 signals:
     

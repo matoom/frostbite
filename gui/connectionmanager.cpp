@@ -18,7 +18,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), dataProcessThread, SLOT(updateHighlighterSettings()));
 
-    //this->loadMockData();
+    this->loadMockData();
 }
 
 void ConnectionManager::updateSettings() {

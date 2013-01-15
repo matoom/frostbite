@@ -56,6 +56,7 @@ private:
     bool mono;
     bool bold;
     bool initRoundtime;
+    bool prompt;
 
     void processGameData(QByteArray);
     void processPushStream(QByteArray);
@@ -66,7 +67,6 @@ private:
 
 signals:
     void updateConversationsWindow(QString);
-    void writePromptGameWindow(QByteArray);
 
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
@@ -85,7 +85,8 @@ signals:
     void setTimer(int);
     void writeScriptMessage(QByteArray);
     void setMainTitle(QString);
-    void writeText(QByteArray);
+    void writeText(QByteArray, bool);
+    void writeScriptText(QByteArray);
 
 public slots:
     void addData(QByteArray);

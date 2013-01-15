@@ -42,8 +42,6 @@ SOURCES += main.cpp\
     script.cpp \
     scriptservice.cpp \
     gamedatacontainer.cpp \
-    roommodel.cpp \
-    wieldmodel.cpp \
     dataconverterservice.cpp \
     highlighter.cpp \
     timerbar.cpp \
@@ -65,7 +63,8 @@ SOURCES += main.cpp\
     fullscreenbutton.cpp \
     dataprocessthread.cpp \
     profileadddialog.cpp \
-    generalsettings.cpp
+    generalsettings.cpp \
+    highlighterthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -98,8 +97,6 @@ HEADERS  += mainwindow.h \
     script.h \
     scriptservice.h \
     gamedatacontainer.h \
-    roommodel.h \
-    wieldmodel.h \
     dataconverterservice.h \
     highlighter.h \
     timerbar.h \
@@ -123,7 +120,8 @@ HEADERS  += mainwindow.h \
     fullscreenbutton.h \
     dataprocessthread.h \
     profileadddialog.h \
-    generalsettings.h
+    generalsettings.h \
+    highlighterthread.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \
@@ -147,4 +145,8 @@ RC_FILE = resources.rc
 OTHER_FILES += \
     resources.rc
 
-
+#debug flags
+#CONFIG += DEBUG
+#QMAKE_CXXFLAGS_DEBUG += -pg
+#QMAKE_CXXFLAGS_MT_DBG += -pg
+#QMAKE_LFLAGS_DEBUG += -pg

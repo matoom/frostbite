@@ -41,7 +41,7 @@ char roomExits[Data::roomExitsX] SHARED = "";
 int rt SHARED = 0;
 #else
 /* other platforms - gcc ??*/
-int exp[Data::expX][Data::expY][Data::expZ] __attribute__((section(".SHARED")) = {{"", "", ""}};
+char exp[Data::expX][Data::expY][Data::expZ] __attribute__((section(".SHARED")) = {{"", "", ""}};
 
 bool standing __attribute__((section(".SHARED")) = false;
 bool sitting __attribute__((section(".SHARED")) = false;

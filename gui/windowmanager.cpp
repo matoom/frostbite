@@ -6,13 +6,20 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
     clientSettings = ClientSettings::Instance();
-    highlighter = new Highlighter(parent);
     settings = new HighlightSettings();
     generalSettings = new GeneralSettings();
+
+    writePrompt = true;
 }
 
 void WindowManager::reloadSettings() {
-    highlighter->reloadSettings();
+    emit updateGameWindowSettings();
+    emit updateRoomSettings();
+    emit updateExpSettings();
+    emit updateArrivalsSettings();
+    emit updateThoughtsSettings();
+    emit updateDeathsSettings();
+    emit updateConversationsSettings();
 
     settings->init();
     this->updateWindowStyle();
@@ -110,7 +117,6 @@ void WindowManager::loadWindows() {
     dockWindows << arrivalsWindow;
     connect(arrivalsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(arrivalsVisibility(bool)));
 
-
     deathsWindow = genericWindowFactory->createWindow("Deaths");
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, deathsWindow);
     dockWindows << deathsWindow;
@@ -130,12 +136,45 @@ void WindowManager::loadWindows() {
     dockWindows << conversationsWindow;
     connect(conversationsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(conversationsVisibility(bool)));
 
+    this->initWindowHighlighters();
+
     if(!clientSettings->hasValue("MainWindow/state")) {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
         mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
         mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);
     }
-    this->updateWindowStyle();
+
+    this->updateWindowStyle();    
+}
+
+void WindowManager::initWindowHighlighters() {
+    gameWindowHighlighter = new HighlighterThread(mainWindow, gameWindow, false);
+    connect(this, SIGNAL(updateGameWindowSettings()), gameWindowHighlighter, SLOT(updateSettings()));
+    highlighters << gameWindowHighlighter;
+
+    roomHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)roomWindow->widget(), true);
+    connect(this, SIGNAL(updateRoomSettings()), roomHighlighter, SLOT(updateSettings()));
+    highlighters << roomHighlighter;
+
+    arrivalsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)arrivalsWindow->widget(), false);
+    connect(this, SIGNAL(updateArrivalsSettings()), arrivalsHighlighter, SLOT(updateSettings()));
+    highlighters << arrivalsHighlighter;
+
+    deathsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)deathsWindow->widget(), false);
+    connect(this, SIGNAL(updateDeathsSettings()), deathsHighlighter, SLOT(updateSettings()));
+    highlighters << deathsHighlighter;
+
+    thoughtsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)thoughtsWindow->widget(), false);
+    connect(this, SIGNAL(updateThoughtsSettings()), thoughtsHighlighter, SLOT(updateSettings()));
+    highlighters << thoughtsHighlighter;
+
+    expHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)expWindow->widget(), true);
+    connect(this, SIGNAL(updateExpSettings()), expHighlighter, SLOT(updateSettings()));
+    highlighters << expHighlighter;
+
+    conversationsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)conversationsWindow->widget(), false);
+    connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
+    highlighters << conversationsHighlighter;
 }
 
 void WindowManager::thoughtsVisibility(bool visibility) {
@@ -212,7 +251,7 @@ void WindowManager::scriptRunning(bool state) {
 }
 
 /* paints a full screen image to background */
-void WindowManager::paintNavigationDisplay() {
+void WindowManager::paintNavigationDisplay() {    
     QPixmap image = navigationDisplay->paint();
 
     QPixmap collage(gameWindow->width(), gameWindow->height());
@@ -233,103 +272,128 @@ void WindowManager::paintNavigationDisplay() {
 }
 
 void WindowManager::updateExpWindow() {
-    QPlainTextEdit *text = (QPlainTextEdit*)expWindow->widget();
     QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
     foreach (QString value, exp) {
-        expString += highlighter->highlight(value + "\n");
+        expString += value + "\n";
     }
 
-    text->clear();
-    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + expString + "</SPAN>");
+    expHighlighter->addText(expString);
+
+    if(!expHighlighter->isRunning()) {
+        expHighlighter->start();
+    }
 }
 
 void WindowManager::updateConversationsWindow(QString conversationText) {
     setVisibilityIndicator(conversationsWindow, conversationsVisible, DOCK_TITLE_CONVERSATIONS);
 
-    QPlainTextEdit *text = (QPlainTextEdit*)conversationsWindow->widget();
-    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + conversationText.trimmed() + "</SPAN>");
+    conversationsHighlighter->addText(conversationText.trimmed());
+
+    if(!conversationsHighlighter->isRunning()) {
+        conversationsHighlighter->start();
+    }
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
     setVisibilityIndicator(deathsWindow, deathsVisible, DOCK_TITLE_DEATHS);
 
-    QPlainTextEdit *text = (QPlainTextEdit*)deathsWindow->widget();
-    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + deathText.trimmed() + "</SPAN>");
+    deathsHighlighter->addText(deathText.trimmed());
+
+    if(!deathsHighlighter->isRunning()) {
+        deathsHighlighter->start();
+    }
 }
 
 void WindowManager::updateThoughtsWindow(QString thoughtText) {
     setVisibilityIndicator(thoughtsWindow, thoughtsVisible, DOCK_TITLE_THOUGHTS);
 
-    QPlainTextEdit *text = (QPlainTextEdit*)thoughtsWindow->widget();
-    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + thoughtText.trimmed() + "</SPAN>");
+    thoughtsHighlighter->addText(thoughtText.trimmed());
+
+    if(!thoughtsHighlighter->isRunning()) {
+        thoughtsHighlighter->start();
+    }
 }
 
 void WindowManager::updateArrivalsWindow(QString arrivalText) {
     setVisibilityIndicator(arrivalsWindow, arrivalsVisible, DOCK_TITLE_ARRIVALS);
 
-    QPlainTextEdit *text = (QPlainTextEdit*)arrivalsWindow->widget();
-    text->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + arrivalText.trimmed() + "</SPAN>");
+    arrivalsHighlighter->addText(arrivalText.trimmed());
+
+    if(!arrivalsHighlighter->isRunning()) {
+        arrivalsHighlighter->start();
+    }
 }
 
 void WindowManager::updateRoomWindow() {
-    QPlainTextEdit *text = (QPlainTextEdit*)roomWindow->widget();
-    RoomModel* room = gameDataContainer->getRoom();    
+    QString roomText = "";
 
-    QString roomText = "<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">";
-    roomText += highlighter->highlight(room->getDesc() + "\n");
-    roomText += room->getObjs().isEmpty() ? "" : highlighter->highlight(room->getObjs() + "\n");
-    roomText += room->getPlayers().isEmpty() ? "" : highlighter->highlight(room->getPlayers() + "\n");
-    roomText += room->getExits().isEmpty() ? "" : highlighter->highlight(room->getExits() + "\n");
-    roomText += "</SPAN>";
+    QString desc = gameDataContainer->getRoomDesc();
+    roomText += desc.isEmpty() ? "" : desc + "\n";
 
-    text->clear();
-    text->appendHtml(roomText);
+    QString objs = gameDataContainer->getRoomObjs();
+    roomText += objs.isEmpty() ? "" : objs + "\n";
+
+    QString players = gameDataContainer->getRoomPlayers();
+    roomText += players.isEmpty() ? "" : players + "\n";
+
+    QString exits = gameDataContainer->getRoomExits();
+    roomText += exits.isEmpty() ? "" : exits + "\n";
+
+    roomHighlighter->addText(roomText);
+
+    if(!roomHighlighter->isRunning()) {
+        roomHighlighter->start();
+    }
 }
 
 void WindowManager::updateRoomWindowTitle(QString title) {
     roomWindow->setWindowTitle("Room " + title);
 }
 
-void WindowManager::writePromptGameWindow(QByteArray text) {
-    QTextCursor cursor(gameWindow->textCursor());
-    cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
-    cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
-    cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-
-    if(!cursor.selectedText().contains(">")) {
-        gameWindow->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
+void WindowManager::writeScriptText(QByteArray text) {
+    if(!text.isEmpty() && mainWindow->getScriptService()->isScriptActive()) {
+        QString textString = text.constData();
+        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(QRegExp("<[^>]*>")).toLocal8Bit());
     }
 }
 
-void WindowManager::writeGameText(QByteArray text) {
-    if(!text.isEmpty()) {
-        QXmlStreamReader xml(text);
-        QString textString;
-        while (!xml.atEnd()) {
-            if ( xml.readNext() == QXmlStreamReader::Characters ) {
-                textString += xml.text();
-            }
-        }
-        mainWindow->getScriptService()->writeOutgoingMessage(textString.toLocal8Bit());
+void WindowManager::writeGameText(QByteArray text, bool prompt) {
+    if(prompt && writePrompt) {
+        gameWindowHighlighter->addText(text);
+        writePrompt = false;
+    } else if(!prompt) {
+        gameWindowHighlighter->addText(text);
+        writePrompt = true;
     }
-    gameWindow->appendHtml(text);
+
+    if(!gameWindowHighlighter->isRunning()) {
+        gameWindowHighlighter->start();
+    }
 }
 
 void WindowManager::writeGameWindow(QByteArray text) {
-    gameWindow->appendHtml(text);
+    gameWindowHighlighter->addText(text);
+
+    if(!gameWindowHighlighter->isRunning()) {
+        gameWindowHighlighter->start();
+    }
 }
 
 WindowManager::~WindowManager() {
     delete genericWindowFactory;
     delete gameWindow;
-    delete navigationDisplay;
-    delete roomWindow;
-    delete arrivalsWindow;
-    delete thoughtsWindow;
-    delete deathsWindow;
-    delete conversationsWindow;
+    delete navigationDisplay;    
+
+    foreach(QDockWidget* dock, dockWindows) {
+        delete dock;
+    }
+
+    foreach(HighlighterThread* highlighter, highlighters) {
+        delete highlighter;
+    }
+
     delete settings;
     delete generalSettings;
 }

@@ -131,6 +131,7 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
 
     if(settings->hasValue("MainWindow/state")) {
         restoreDockWidget(dock);
+        restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
     } else {
         addDockWidget(area, dock);
     }

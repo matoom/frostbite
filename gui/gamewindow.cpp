@@ -11,12 +11,14 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setFocusPolicy(Qt::NoFocus);
 
     this->setReadOnly(true);
-    this->document()->setMaximumBlockCount(800);
+    this->setUndoRedoEnabled(false);
+
+    this->document()->setMaximumBlockCount(1000);
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
-    setViewportMargins(0, 0, 0, -DEFAULT_MAIN_FONT_SIZE);
+    setViewportMargins(0, 0, 0, -6);
 }
 
 void GameWindow::showEvent(QShowEvent* event) {

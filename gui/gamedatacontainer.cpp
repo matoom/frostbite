@@ -12,9 +12,6 @@ GameDataContainer* GameDataContainer::Instance() {
 GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
     converter = DataConverterService::Instance();
     dataService = DataService::Instance();
-
-    room = new RoomModel();
-    wield = new WieldModel();
 }
 
 QStringList GameDataContainer::extractExp(QString exp, bool brief) {
@@ -79,10 +76,6 @@ QHash<QString, QString> GameDataContainer::getExp() {
     return exp;
 }
 
-WieldModel* GameDataContainer::getWield() {
-    return this->wield;
-}
-
 QStringList GameDataContainer::getInventory() {
     return this->inventory;
 }
@@ -91,146 +84,192 @@ QStringList GameDataContainer::getContainer() {
     return this->container;
 }
 
-RoomModel* GameDataContainer::getRoom() {
-    return this->room;
-}
-
 void GameDataContainer::setRoomName(QString name) {
     QWriteLocker locker(&lock);
-    this->room->setName(name);
+    this->roomName = name;
     dataService->setRoomTitle(name.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRoomName() {
+    QReadLocker locker(&lock);
+    return this->roomName;
 }
 
 void GameDataContainer::setRoomDesc(QString desc) {
     QWriteLocker locker(&lock);
-    this->room->setDesc(desc);
+    this->roomDesc = desc;
     dataService->setRoomDescription(desc.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRoomDesc() {
+    QReadLocker locker(&lock);
+    return this->roomDesc;
 }
 
 void GameDataContainer::setRoomObjs(QString objs) {
     QWriteLocker locker(&lock);
-    this->room->setObjs(objs);
+    this->roomObjs = objs;
     dataService->setRoomObjects(objs.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRoomObjs() {
+    QReadLocker locker(&lock);
+    return this->roomObjs;
 }
 
 void GameDataContainer::setRoomPlayers(QString players) {
     QWriteLocker locker(&lock);
-    this->room->setPlayers(players);
+    this->roomPlayers = players;
     dataService->setRoomPlayers(players.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRoomPlayers() {
+    QReadLocker locker(&lock);
+    return this->roomPlayers;
 }
 
 void GameDataContainer::setRoomExits(QString exits) {
     QWriteLocker locker(&lock);
-    this->room->setExits(exits);
+    this->roomExits = exits;
     dataService->setRoomExits(exits.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRoomExits() {
+    QReadLocker locker(&lock);
+    return this->roomExits;
 }
 
 void GameDataContainer::setRoomExtra(QString extra) {
     QWriteLocker locker(&lock);
-    this->room->setExtra(extra);
+    this->roomExtra = extra;
+}
+
+QString GameDataContainer::getRoomExtra() {
+    QReadLocker locker(&lock);
+    return this->roomExtra;
 }
 
 void GameDataContainer::setRight(QString right) {
     QWriteLocker locker(&lock);
-    this->wield->setRight(right);
+    this->wieldRight = right;
     dataService->setWieldRight(right.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRight() {
+    QReadLocker locker(&lock);
+    return this->wieldRight;
 }
 
 void GameDataContainer::setRightNoun(QString rightNoun) {
     QWriteLocker locker(&lock);
-    this->wield->setRightNoun(rightNoun);
+    this->wieldRightNoun = rightNoun;
     dataService->setWieldRightNoun(rightNoun.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getRightNoun() {
+    QReadLocker locker(&lock);
+    return this->wieldRightNoun;
 }
 
 void GameDataContainer::setLeft(QString left) {
     QWriteLocker locker(&lock);
-    this->wield->setLeft(left);
+    this->wieldLeft = left;
     dataService->setWieldLeft(left.toLocal8Bit().data());
+}
+
+QString GameDataContainer::getLeft() {
+    QReadLocker locker(&lock);
+    return this->wieldLeft;
 }
 
 void GameDataContainer::setLeftNoun(QString leftNoun) {
     QWriteLocker locker(&lock);
-    this->wield->setLeftNoun(leftNoun);
+    this->wieldLeftNoun = leftNoun;
     dataService->setWieldLeftNoun(leftNoun.toLocal8Bit().data());
 }
 
+QString GameDataContainer::getLeftNoun() {
+    QReadLocker locker(&lock);
+    return this->wieldLeftNoun;
+}
+
 void GameDataContainer::setStanding(bool standing) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setStanding(standing);
 }
 
 void GameDataContainer::setSitting(bool sitting) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setSitting(sitting);
 }
 
 void GameDataContainer::setKneeling(bool kneeling) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setKneeling(kneeling);
 }
 
 void GameDataContainer::setProne(bool prone) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setProne(prone);
 }
 
 void GameDataContainer::setStunned(bool stunned) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setStunned(stunned);
 }
 
 void GameDataContainer::setBleeding(bool bleeding) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setBleeding(bleeding);
 }
 
 void GameDataContainer::setHidden(bool hidden) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setHidden(hidden);
 }
 
 void GameDataContainer::setInvisible(bool invisible) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setInvisible(invisible);
 }
 
 void GameDataContainer::setWebbed(bool webbed) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setWebbed(webbed);
 }
 
 void GameDataContainer::setJoined(bool joined) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setJoined(joined);
 }
 
 void GameDataContainer::setDead(bool dead) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setDead(dead);
 }
 
 void GameDataContainer::setHealth(int health) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setHealth(health);
 }
 
 void GameDataContainer::setConcentration(int concentration) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setConcentration(concentration);
 }
 
 void GameDataContainer::setSpirit(int spirit) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setSpirit(spirit);
 }
 
 void GameDataContainer::setFatigue(int fatigue) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     dataService->setFatigue(fatigue);
 }
 
 void GameDataContainer::setRt(int rt) {
-    QWriteLocker locker(&lock);
+    //QWriteLocker locker(&lock);
     if(rt < 0) {
         rt = 0;
     }

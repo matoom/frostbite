@@ -102,11 +102,11 @@ void HighlightTextTab::colorDialog() {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
         listWidget->currentItem()->setTextColor(color);
 
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.color = color;
         updateSelectedItemColor(listWidget->currentItem());
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -144,27 +144,16 @@ void HighlightTextTab::updateSettings() {
     this->setBackground();
 }
 
-QList<HighlightSettingsEntry> HighlightTextTab::populateHighlights() {
-    if(this->changeList.isEmpty()) {
-        highlightList = highlightSettings->getSettings("TextHighlight");
-    } else {
-        QList<HighlightSettingsEntry> tmpList = highlightSettings->getSettings("TextHighlight");
-        for(int i = 0; i < tmpList.size(); i++) {
-            if(changeList.contains(i)) {
-                tmpList.replace(i, highlightList.at(i));
-            }
-        }
-        highlightList = tmpList;
-    }
-
-    return highlightList;
+void HighlightTextTab::populateHighlights() {
+    highlightSettings->loadSettings("TextHighlight");
+    highlightList = highlightSettings->getSettings("TextHighlight");
 }
 
 void HighlightTextTab::loadHighlightList() {
-    highlightList = populateHighlights();
+    this->populateHighlights();
 
-    for(int i = 0; i < highlightList.size(); i++) {
-        HighlightSettingsEntry entry = highlightList.at(i);
+    for(int i = 0; i < highlightList->size(); i++) {
+        HighlightSettingsEntry entry = highlightList->at(i);
         if(group == groupNames.at(0)) {
             this->createListItem(entry.id, entry.value, entry.color);
         } else {
@@ -228,11 +217,11 @@ void HighlightTextTab::playSound() {
 void HighlightTextTab::alertSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.alert = value;
         currentEntry.alertValue = alertFileSelect->currentText();
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -240,10 +229,10 @@ void HighlightTextTab::alertSelected(bool value) {
 void HighlightTextTab::alertFileSelected(const QString& fileName) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.alertValue = fileName;
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -251,10 +240,10 @@ void HighlightTextTab::alertFileSelected(const QString& fileName) {
 void HighlightTextTab::timerSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.timer = value;
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -262,10 +251,10 @@ void HighlightTextTab::timerSelected(bool value) {
 void HighlightTextTab::timerActionSelected(const QString& text) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.timerAction = text;
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -274,10 +263,10 @@ void HighlightTextTab::timerValueChanged() {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
 
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.timerValue = timerValueLine->text().toInt();
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -285,10 +274,10 @@ void HighlightTextTab::timerValueChanged() {
 void HighlightTextTab::entireRowSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.options.setBit(0, value);
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -296,10 +285,10 @@ void HighlightTextTab::entireRowSelected(bool value) {
 void HighlightTextTab::partialMatchSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.options.setBit(1, value);
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
@@ -307,17 +296,17 @@ void HighlightTextTab::partialMatchSelected(bool value) {
 void HighlightTextTab::startingWithSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         currentEntry.options.setBit(2, value);
 
-        highlightList.replace(currentId, currentEntry);
+        highlightList->replace(currentId, currentEntry);
         this->registerChange();
     }
 }
 
 void HighlightTextTab::updateControls(QListWidgetItem *currentItem) {
     if(currentItem != NULL) {
-        HighlightSettingsEntry currentEntry = highlightList.at(currentItem->data(Qt::UserRole).toInt());
+        HighlightSettingsEntry currentEntry = highlightList->at(currentItem->data(Qt::UserRole).toInt());
 
         this->updateAlertControl(currentEntry.alert, currentEntry.alertValue);
         this->updateTimerControl(currentEntry.timer, currentEntry.timerValue, currentEntry.timerAction);
@@ -423,7 +412,7 @@ void HighlightTextTab::initTimerActionSelect() {
 
 void HighlightTextTab::removeHighlightItem() {
     int id = listWidget->currentItem()->data(Qt::UserRole).toInt();
-    highlightList.removeAt(id);
+    highlightList->removeAt(id);
 
     int index = changeList.indexOf(id);
     if(index != -1) {
@@ -438,7 +427,7 @@ void HighlightTextTab::removeHighlightItem() {
 void HighlightTextTab::saveChanges() {
     if(!changeList.isEmpty()) {
         foreach(int id, changeList) {
-            highlightSettings->setParameter("TextHighlight", highlightList.at(id));
+            highlightSettings->setParameter("TextHighlight", highlightList->at(id));
         }
         this->reloadHighlightList();
         changeList.clear();
@@ -462,7 +451,7 @@ void HighlightTextTab::showAddDialog() {
 void HighlightTextTab::showEditDialog() {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        HighlightSettingsEntry currentEntry = highlightList->at(currentId);
         highlightEditDialog->setEntry(currentEntry);
         highlightEditDialog->show();
     }
