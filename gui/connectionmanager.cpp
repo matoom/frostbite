@@ -18,7 +18,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), dataProcessThread, SLOT(updateHighlighterSettings()));
 
-    this->loadMockData();
+    //this->loadMockData();
 }
 
 void ConnectionManager::updateSettings() {
@@ -104,7 +104,6 @@ void ConnectionManager::disconnectedFromHost() {
 
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
-    //qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz");
 
     if(buffer.endsWith("\n")){
         if(waitForSettings) {

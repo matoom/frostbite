@@ -14,7 +14,7 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
-    setViewportMargins(0, 0, 0, -DEFAULT_MAIN_FONT_SIZE);
+    //setViewportMargins(0, 0, 0, -DEFAULT_MAIN_FONT_SIZE);
 }
 
 void GenericWindow::loadSettings() {

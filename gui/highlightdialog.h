@@ -73,6 +73,7 @@ public:
     QPushButton* getApplyButton();
 
     void reloadWindowStyles();
+    void reloadHighlighterSettings();
     void updateSettings();
     void loadSettings();
 

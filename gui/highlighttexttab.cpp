@@ -172,6 +172,10 @@ void HighlightTextTab::createListItem(int id, QString value, QColor color) {
 }
 
 void HighlightTextTab::reloadHighlightList() {
+    // reload settings for window highlighters
+    highlightDialog->reloadHighlighterSettings();
+
+    // reload highlight dialog items
     int row = listWidget->currentRow();
     listWidget->clear();
     this->loadHighlightList();

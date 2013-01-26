@@ -7,8 +7,8 @@ def ident(box)
   put "disarm my #{box} ident"
   match = { :wait => [/\.\.wait/],
             :ident => ["fails to reveal to you what"],
-            :blind => ["aged grandmother could defeat", "could do it blindfolded"],
-            :quick => ["can take down any time", "a simple matter", "should not take long"],
+            :quick => ["can take down any time", "a simple matter", "should not take long",
+                       "aged grandmother could defeat", "could do it blindfolded"],
             :normal => ["this trap is precisely at your", "only minor troubles", "has the edge on you"],
             :careful => ["have some chance of being able to", "odds are against you", "would be a longshot"],
             :hard => ["really don't have any", "prayer would be a good start", "same shot as a snowball",
@@ -59,10 +59,7 @@ def disarm(box, method)
       pause 0.5
       disarm(box, method)
     when :next_method
-      echo "NEXT METHOD!!!"
-      echo @disarm_methods.index(method.to_s)
-      echo @disarm_methods.fetch(next_index + 1, "careful")
-
+      # does not work!
       next_index = @disarm_methods.index(method.to_s)
       disarm(box, @disarm_methods.fetch(next_index + 1, "careful"))
     when :analyze

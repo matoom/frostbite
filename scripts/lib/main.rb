@@ -30,7 +30,7 @@ $_data_queue = []
 def wait_for_roundtime
   (0..1000000).each do
     $_data_queue.each_index do |i|
-      if $_data_queue.at(i).match(/^Roundtime/)
+      if $_data_queue.at(i).match(/Roundtime/)
         sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
         return
       end
@@ -71,6 +71,7 @@ end
 def match_wait(pattern)
   match_found = false
   match = :not_found
+  sleep = 0
 
   (0..1000000).each do
     $_data_queue.each_index do |i|
@@ -87,12 +88,13 @@ def match_wait(pattern)
         end
       end
 
-      if $_data_queue.at(i).match(/^Roundtime:/)
-        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
+      if $_data_queue.at(i).match(/Roundtime/)
+        sleep += $_data_queue.at(i)[/\d+/].to_i
       end
 
       if match_found
         if $_data_queue.at(i).match(/^>/)
+          sleep_for_rt sleep
           return match
         end
       end
@@ -133,7 +135,7 @@ def match_get(pattern)
         end
       end
 
-      if $_data_queue.at(i).match(/^Roundtime:/)
+      if $_data_queue.at(i).match(/Roundtime/)
         sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
       end
 
@@ -187,7 +189,7 @@ def match_wait_goto(pattern)
         end
       end
 
-      if $_data_queue.at(i).match(/^Roundtime:/)
+      if $_data_queue.at(i).match(/Roundtime/)
         sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
       end
 
@@ -222,7 +224,9 @@ end
 #   move "e"
 #   move "go gate"
 def move(value)
-  put value
+  puts "put#" + value.to_s
+  STDOUT.flush
+  #put value
   res = match_wait({ :room => [/^\[.*?\]$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/] })
   if res == :wait
@@ -297,10 +301,11 @@ end
 def sleep_for_rt(rt)
   if rt > 0
     rt = rt - 1 + @match_rt_adjustment
-  end
-  rt.downto(0) do |current_rt|
-    @match_rt = current_rt
-    sleep 1
+
+    rt.downto(0) do |current_rt|
+      @match_rt = current_rt
+      sleep 1
+    end
   end
 end
 

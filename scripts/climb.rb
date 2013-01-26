@@ -15,10 +15,10 @@ path = ["go gate", "w", "w", "s", "s", "w", "w", "s", "w", "w", "w", "w", "w", "
 
   echo "*** #{exp} ***"
 
-  if exp > 32
-    echo "*** DONE ***"
-    exit
-  end
+  #if exp > 32
+  #  echo "*** DONE ***"
+  #  exit
+  #end
 
   pause 2
 

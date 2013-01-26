@@ -2,7 +2,7 @@
 # requirements: 150+ swimming
 # run: south side of faldesu
 
-@match_rt_adjustment = -1
+@match_rt_adjustment = 0
 
 labels_start
 

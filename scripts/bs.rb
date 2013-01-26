@@ -6,22 +6,11 @@
 #You melt into the background, convinced that your attempt to hide went unobserved.
 #It's hard to stalk if you aren't in a position to move around.
 
-@match_rt_adjustment = -1
-
-class String
-  def numeric?
-    Float(self) != nil rescue false
-  end
-end
-
-@targets = ["right leg", "back", "right arm", "right hand", "abdomen", "chest", "neck", "head", "right eye"]
-
-difficulty_level = ($args.at(1) and $args.at(1).numeric?) ? $args.at(1).to_i : 0
-
-@target = @targets.fetch(difficulty_level - 1)
+@match_rt_adjustment = 0
+@arrange_count = 1
 
 if !$args.first
-  echo '*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***'
+  echo '*** hide on what? usage: .h &lt;critter_name&gt; ***'
   exit
 end
 
@@ -34,6 +23,70 @@ def go_wait(label, back_label)
   end
 end
 
+def arrange count
+  put "arrange"
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
+            :quit => [/You are still stunned/],
+            :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
+            :loot => [/arrange what|cannot be skinned/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+      arrange count
+    when :quit
+      put "quit"
+    when :arrange
+      if count < @arrange_count - 1
+        arrange count + 1
+      else
+        skin
+      end
+    when :loot
+      loot
+  end
+end
+
+def skin
+  if Wield::left_noun != ""
+    put "stow left"
+  end
+  put "skin"
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
+            :quit => [/You are still stunned/],
+            :loot => [/Skin what|cannot be skinned|Roundtime/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+      skin
+    when :quit
+      put "quit"
+    when :loot
+      loot
+  end
+end
+
+def loot
+  put "loot"
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|Roundtime|still stunned/],
+            :quit => [/You are still stunned/],
+            :continue => [/could not find what|You search/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+      loot
+    when :quit
+      put "quit"
+    when :continue
+      goto :start
+  end
+end
+
 labels_start
 
 label(:start) {
@@ -41,7 +94,7 @@ label(:start) {
   match = { :wait_for => ["Face what?"],
             :hide => ["You are already facing", "You turn to face"],
             :retreat => ["You are too closely engaged"],
-            :wait => [/\.\.\.wait/] }
+            :wait => [/\.\.\.wait|facing a dead/] }
   res = match_wait match
   go_wait(res, :start)
 }
@@ -64,9 +117,8 @@ label(:stop_stalk) {
 }
 
 label(:feint) {
-  # legs -> back -> arms -> hands -> abdomen -> chest -> neck -> head -> eyes
-  put "feint #{@target}"
-  match = { :dead => ["and collapses"],
+  put "backstab"
+  match = { :dead => ["and collapses", "sharp halt"],
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime"],
             :face => ["You can't backstab that."],
@@ -78,15 +130,14 @@ label(:feint) {
 label(:advance) {
   put "advance"
   put "shiver"
-  match = { :hide => ["begin to advance", "You are already"],
+  match = { :hide => ["begin to advance", "You are already", "begin to stealthily advance"],
             :wait => [/\.\.\.wait/]}
   res = match_wait match
   go_wait(res, :advance)
 }
 
 label(:dead) {
-  put "loot"
-  goto :start
+  arrange 0
 }
 
 label(:wait_for) {

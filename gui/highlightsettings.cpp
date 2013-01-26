@@ -86,8 +86,8 @@ QList<HighlightSettingsEntry>* HighlightSettings::getSettings(QString group) {
 }
 
 void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
+    settings->remove(group);
     settings->beginWriteArray(group);
-    settings->clear();
 
     for (int i = 0; i < settingsList->size(); ++i) {
         HighlightSettingsEntry entry = settingsList->at(i);

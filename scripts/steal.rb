@@ -4,45 +4,87 @@
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start focus hasten darken dampen shadowstep plunder"
+@debug_mode = false
 
 @crossing_items =
     {
-      :bathhouse => ["fourth towel on rack", 2], #[Orem's Bathhouse, Lobby]
-      :locksmith => ["ring", 2], #[Ragge's Locksmithing, Salesroom]
-      :bard => ["wyndewood fiddle", 1], #[The True Bard D'Or, Fine Instruments]
-      :armor => ["leather cuirbouilli coat", 2], #[Tembeg's Armory, Salesroom]
-      :weapon => ["heavy crossbow", 2], #[Milgrym's Weapons, Showroom]
-      :jewelry => ["platinum ring", 1], #[Grisgonda's Gems and Jewels]
-      :macipur => ["gold brocade long coat", 3], #[Marcipur's Stitchery, Workshop]
-      :brisson => ["gold brocade tail coat", 3], #[Brisson's Haberdashery, Sales Salon]
-      :tannery => ["lotion", 2], #[Falken's Tannery, Supply Room]
-      :alchemy => ["bucket", 1] #[Chizili's Alchemical Goods, Salesroom]
+      :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
+      :locksmith => { :item => "ring", :amount => 2 }, #[Ragge's Locksmithing, Salesroom]
+      :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
+      :armor => { :item => "leather cuirbouilli coat", :amount => 2 }, #[Tembeg's Armory, Salesroom]
+      :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
+      :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
+      :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
+      :brisson => { :item => "gold brocade tail coat", :amount => 3 }, #[Brisson's Haberdashery, Sales Salon]
+      :tannery => { :item => "lotion", :amount => 2 }, #[Falken's Tannery, Supply Room]
+      :alchemy => { :item => "bucket", :amount => 1 } #[Chizili's Alchemical Goods, Salesroom]
     }
 
 @arthe_items =
     {
-      :thread => [:none, 2], #[Quellia's Thread Shop, Sales Room]
-      :odds => ["hat", 1], #[Odds 'n Ends, Sales Room]
-      :bardic => ["peri'el's", 2], #[Barley Bulrush, Bardic Ballads]
-      :bobba => ["ring mail", 1], #[Bobba's Arms and Armor]
-      :lobby => ["map", 1] #[Yulugri Wala, Lobby]
+      :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
+      :odds => { :item  => "hat", :amount => 1 }, #[Odds 'n Ends, Sales Room]
+      :bardic => { :item  => "peri'el's", :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
+      :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
+      :lobby => { :item  => "map", :amount => 1 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
-      :alberdeen => ["arm pouch", 1], #[Alberdeen's Meats and Provisions, Front Room]
-      :yerui => ["model tree", 1], #[Yerui's Woodcraft, Workshop]
-      :ongadine => ["ebony silk mantle", 3], #[Ongadine's Garb and Gear]
-      :bardic_leth => ["hat", 1], #[Sinjian's Bardic Requisites, Workshop]
-      :origami => ["second case on shelves", 1], #[Origami Boutique]
-      :trueflight => ["heavy crossbow", 2], #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
-      :shack => ["brass shield", 2] #[Leth Deriel, Wooden Shack]
+      :alberdeen => { :item  => "arm pouch", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room]
+      :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]
+      :ongadine => { :item  => "ebony silk mantle", :amount => 3 }, #[Ongadine's Garb and Gear]
+      :bardic_leth => { :item  => "hat", :amount => 1 }, #[Sinjian's Bardic Requisites, Workshop]
+      :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
+      :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :shack => { :item  => "brass shield", :amount => 2 } #[Leth Deriel, Wooden Shack]
     }
+
+@ilaya_items =
+    {
+        :tower => { :item  => "pike", :amount => 1 },
+        :fish => {:item => "fishbowl", :amount => 1}, #[Fernwyk's Fish]
+        :fishmonger => {:item => "pole", :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
+        :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
+        :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
+        :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
+        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :blood_bane => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :bloody_barnacle => {}, #furniture
+        :ninth_life => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :dark_nighttrawler => {},
+        :drunken_sage => { :items => [], :amount => 0 }, #food
+        :dusktide_rising => {},
+        :winged_duck => { :items => [{ :name => "ring", :desc => "heavy iron ring set with a pentagonal garnet", :amount => 1 }] },
+        :fleetwing_gull => { :items => [], :amount => 0 }, #food
+        :golden_apple => { :items => [], :amount => 0 }, #furniture
+        :harper_song => {:items => [{:name => "vial", :desc => "jade glass vial", :amount => 2}] },
+        :marsh_skipper => {},
+        :merelew_wench => { :items => [], :amount => 0 }, #food
+        :mermaid_fall => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :moveable_feast => {},
+        :night_sky_hair => {},
+        :north_wind_skimmer => {},
+        :paper_lion => {},
+        :river_dreamer => {},
+        :rusty_barnacle => {},
+        :spinning_jenny => { :items => [], :amount => 0 }, #furniture
+        :talking_salmon => { :items => [], :amount => 0 }, #food
+        :thornberry_dart => { :items => [], :amount => 0 }, #food
+        :tipsy_barmaid => { :items => [], :amount => 0 }, #food
+        :tropic_night => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :wavecrester => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}] },
+        :weaving_minstrel => { :items => [], :amount => 0 }, #furniture
+        :whitehaven_hope => { :items => [], :amount => 0 } #food
+    }
+
 
 @current_container = 0
 @stolen_items = []
 @shops_stolen_from = []
 @leave = false
+@ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer"]
 
 def jail_check
   put "look"
@@ -55,7 +97,7 @@ def move(value)
   res = match_wait({ :room => [/^\[.*?\]$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
                      :lost => [/can't go there|were you referring/],
-                     :retreat => [/You'll have better luck if you first retreat|You are engaged/],
+                     :retreat => [/You'll have better luck if you first retreat|You are engaged|do that while engaged/],
                      :leave => [/You stop as you realize|is locked|You realize the shop is closed|You smash your nose/] })
   @leave = false
   case res
@@ -147,6 +189,26 @@ def take item
   result
 end
 
+def get_item_position location, item_desc
+  put "look #{location}"
+  match = { :continue => ["On the", "In the"] }
+  contents = match_get match
+
+  if /On the|In The/ =~ contents
+    item_position contents, item_desc
+  elsif contents.include?("ahead 1 command")
+    get_item_position location, item_desc
+  end
+end
+
+def item_position list, item_desc
+  list.split(",").each_with_index do |item, index|
+    if item.include?(item_desc)
+      return @ordinal_numbers[index]
+    end
+  end
+end
+
 def steal item, amount_of
   do_hide
 
@@ -160,24 +222,141 @@ def steal item, amount_of
   stow_items
 end
 
-def steal_crossing shop_name
-  if @crossing_items[shop_name][0] != :none and !@shops_stolen_from.include?(shop_name) and !@leave
-    steal @crossing_items[shop_name][0], @crossing_items[shop_name][1]
+def steal_shop list, shop_name
+  if list[shop_name][:item] != :none and !@shops_stolen_from.include?(shop_name) and !@leave
+    item = list[shop_name][:item]
+
+    if list[shop_name].has_key?(:location) and list[shop_name].has_key?(:desc)
+      pos = get_item_position @leth_items[shop_name][:location], @leth_items[shop_name][:desc]
+      item = "#{pos} #{item} #{@leth_items[shop_name][:location]}"
+    elsif list[shop_name].has_key?(:location)
+      item = "#{item} #{@leth_items[shop_name][:location]}"
+    end
+
+    if @debug_mode
+      echo "*** #{item} => #{list[shop_name][:amount]} ***"
+    else
+      steal item, list[shop_name][:amount]
+    end
+
     @shops_stolen_from << shop_name
   end
 end
 
-def steal_arthe shop_name
-  if @arthe_items[shop_name][0] != :none and !@shops_stolen_from.include?(shop_name) and !@leave
-    steal @arthe_items[shop_name][0], @arthe_items[shop_name][1]
-    @shops_stolen_from << shop_name
+def identify_pier
+  if !@leave
+    put "look"
+    match = { :backfence_gossip => ["Backfence Gossip"],
+              :blood_bane => ["Blood Bane"],
+              :bloody_barnacle => ["Bloody Barnacle"],
+              :ninth_life => ["Cat's Ninth Life"],
+              :dark_nighttrawler => ["Dark Nighttrawler"],
+              :drunken_sage => ["Drunken Sage"],
+              :dusktide_rising => ["Dusktide Rising"],
+              :winged_duck => ["Dusk-winged Duck"],
+              :fleetwing_gull => ["Fleetwing Gull"],
+              :golden_apple => ["Golden Apple"],
+              :harper_song => ["Harper's Song"],
+              :marsh_skipper => ["Marsh Skipper"],
+              :merelew_wench => ["Merelew Wench"],
+              :mermaid_fall => ["Mermaid's Fall"],
+              :moveable_feast => ["Moveable Feast"],
+              :night_sky_hair => ["Night Sky's Hair"],
+              :north_wind_skimmer => ["North Wind's Skimmer"],
+              :paper_lion => ["Paper Lion"],
+              :river_dreamer => ["River Dreamer"],
+              :rusty_barnacle => ["Rusty Barnacle"],
+              :spinning_jenny => ["Spinning Jenny"],
+              :talking_salmon => ["Talking Salmon"],
+              :thornberry_dart => ["Thornberry Dart"],
+              :tipsy_barmaid => ["Tipsy Barmaid"],
+              :tropic_night => ["Tropic Night"],
+              :wavecrester => ["Wavecrester"],
+              :weaving_minstrel => [" Weaving Minstrel"],
+              :whitehaven_hope => ["Whitehaven Hope"],
+              :leave => ["Obvious paths"],
+              :repeat => [/\.\.\.wait/, /you may only type ahead/] }
+    result = match_wait match
+
+    case result
+      when :repeat
+        pause 0.4
+        identify_pier
+      when :leave
+        #no action
+      else
+        if @ilaya_items[result].has_key?(:items) and !@ilaya_items[result][:items].empty?
+          if @debug_mode
+            echo "*** #{match[result]} ***"
+            echo find_pier_item result
+          else
+            echo "*** #{match[result]} ***"
+            item = find_pier_item result
+            if !item.empty?
+              steal item[:name], item[:amount]
+            end
+          end
+        end
+    end
   end
 end
 
-def steal_leth shop_name
-  if @leth_items[shop_name][0] != :none and !@shops_stolen_from.include?(shop_name) and !@leave
-    steal @leth_items[shop_name][0], @leth_items[shop_name][1]
-    @shops_stolen_from << shop_name
+def find_pier_item ship
+  containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last(2).join(" ").delete('.') }
+
+  containers.each do |container|
+    item = find_stealable_item ship, container
+    if !item.empty?
+      return item
+    end
+  end
+  return {}
+end
+
+def find_stealable_item ship, container
+  if @valid_pier_containers.any? { |word| container.include?(word) }
+    put "look in #{container}"
+    match = { :continue => ["In the"],
+              :not_found => ["I could not find"] }
+    contents = match_get match
+
+    if contents.include?("In the")
+      return get_item_description ship, container, contents
+    elsif contents.include?("I could not find")
+      find_stealable_item ship, container.split.last
+    elsif contents.include?("ahead 1 command")
+      find_stealable_item ship, container
+    end
+  end
+  return {}
+end
+
+def get_item_description ship, container, contents
+  @ilaya_items[ship][:items].each do |item|
+    if item.has_key?(:desc) and contents.include?(item[:desc])
+      return { :name => "#{item_position contents, item[:desc]} #{item[:name]} in #{container}",
+               :amount => item[:amount] }
+    elsif !item.has_key?(:desc) and contents.include?(item[:name])
+      return { :name => "#{item[:name]} in #{container}",
+               :amount => item[:amount] }
+    end
+  end
+  return {}
+end
+
+
+def check_for_mites
+  put "health"
+  match = { :wait => [/\.\.\.wait|you may only type ahead/],
+            :tend => [/red blood mite/],
+            :continue => [/>/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      check_for_mites
+    when :tend
+      echo "MITES!"
   end
 end
 
@@ -228,11 +407,13 @@ if Room::title != "[The Crossing, Hodierna Way]"
 end
 
 #prepare
-prepare_containers
+unless @debug_mode
+  prepare_containers
 
-prepare_armor
+  prepare_armor
 
-prepare_khri
+  prepare_khri
+end
 
 #Crossing
 
@@ -242,7 +423,7 @@ move "w"
 move "w"
 move "go bath"
 
-steal_crossing :bathhouse
+steal_shop @crossing_items, :bathhouse
 
 move "out"
 move "w"
@@ -251,7 +432,7 @@ move "n"
 move "n"
 move "go door"
 
-steal_crossing :locksmith
+steal_shop @crossing_items, :locksmith
 
 move "out"
 move "n"
@@ -260,7 +441,7 @@ move "e"
 move "e"
 move "go shop"
 
-steal_crossing :bard
+steal_shop @crossing_items, :bard
 
 move "out"
 move "e"
@@ -268,13 +449,13 @@ move "e"
 move "n"
 move "go shop"
 
-steal_crossing :armor
+steal_shop @crossing_items, :armor
 
 move "out"
 move "e"
 move "go shop"
 
-steal_crossing :weapon
+steal_shop @crossing_items, :weapon
 
 move "out"
 move "s"
@@ -283,14 +464,14 @@ move "e"
 move "e"
 move "go shop"
 
-steal_crossing :jewelry
+steal_shop @crossing_items, :jewelry
 
 move "out"
 move "n"
 move "e"
 move "go shop"
 
-steal_crossing :macipur
+steal_shop @crossing_items, :macipur
 
 move "out"
 move "w"
@@ -310,7 +491,7 @@ move "w"
 move "n"
 move "go haberdashery"
 
-steal_crossing :brisson
+steal_shop @crossing_items, :brisson
 
 move "out"
 move "n"
@@ -329,7 +510,7 @@ move "go shop"
 move "w"
 move "w"
 
-steal_crossing :tannery
+steal_shop @crossing_items, :tannery
 
 move "e"
 move "e"
@@ -344,7 +525,7 @@ move "e"
 move "s"
 move "go shop"
 
-steal_crossing :alchemy
+steal_shop @crossing_items, :alchemy
 
 move "out"
 move "e"
@@ -368,32 +549,32 @@ end
 
 move "go door"
 
-steal_arthe :thread
+steal_shop @arthe_items, :thread
 
 move "out"
 move "e"
 move "go door"
 
-steal_arthe :odds
+steal_shop @arthe_items, :odds
 
 move "out"
 move "e"
 move "go shop"
 
-steal_arthe :bardic
+steal_shop @arthe_items, :bardic
 
 move "out"
 move "ne"
 move "go entryway"
 
-steal_arthe :bobba
+steal_shop @arthe_items, :bobba
 
 move "out"
 move "ne"
 move "e"
 move "go door"
 
-steal_arthe :lobby
+steal_shop @arthe_items, :lobby
 
 move "out"
 
@@ -467,7 +648,7 @@ move "e"
 move "e"
 move "go stump"
 
-steal_leth :alberdeen
+steal_shop @leth_items, :alberdeen
 
 move "out"
 move "w"
@@ -476,14 +657,14 @@ move "sw"
 move "sw"
 move "go door"
 
-steal_leth :yerui
+steal_shop @leth_items, :yerui
 
 move "go door"
 move "sw"
 move "n"
 move "go shop"
 
-steal_leth :ongadine
+steal_shop @leth_items, :ongadine
 
 move "out"
 move "s"
@@ -493,7 +674,7 @@ move "go knothole"
 move "up"
 move "go arch"
 
-steal_leth :bardic_leth
+steal_shop @leth_items, :bardic_leth
 
 move "go arch"
 move "down"
@@ -505,7 +686,7 @@ move "nw"
 move "nw"
 move "go tent"
 
-steal_leth :origami
+steal_shop @leth_items, :origami
 
 move "out"
 move "nw"
@@ -514,7 +695,7 @@ move "w"
 move "go path"
 move "go door"
 
-steal_leth :trueflight
+steal_shop @leth_items, :trueflight
 
 move "out"
 move "go path"
@@ -527,10 +708,178 @@ move "ne"
 move "cli stair"
 move "go shack"
 
-steal_leth :shack
+steal_shop @leth_items, :shack
 
 move "out"
 move "cli stair"
+
+# go to Ilaya Taipa
+
+move "sw"
+move "sw"
+move "go gate"
+move "sw"
+move "nw"
+move "nw"
+move "n"
+move "nw"
+move "n"
+move "sw"
+move "sw"
+move "sw"
+move "sw"
+move "s"
+move "s"
+move "s"
+move "s"
+move "se"
+move "sw"
+move "s"
+move "s"
+move "s"
+move "sw"
+move "w"
+move "w"
+move "s"
+move "sw"
+move "sw"
+move "w"
+move "w"
+move "nw"
+move "go break"
+move "go gate"
+
+move "nw"
+move "nw"
+move "n"
+move "n"
+move "ne"
+move "go tower"
+
+steal_shop @ilaya_items, :tower
+
+move "out"
+move "sw"
+move "s"
+move "go pier"
+
+identify_pier
+
+move "w"
+move "s"
+move "se"
+move "se"
+move "e"
+move "go pier"
+
+identify_pier
+
+move "s"
+move "se"
+move "e"
+move "go pier"
+
+identify_pier
+
+move "s"
+move "e"
+move "e"
+move "ne"
+move "ne"
+move "ne"
+move "n"
+move "n"
+move "go cottage"
+
+steal_shop @ilaya_items, :fish
+
+move "out"
+move "n"
+move "n"
+move "nw"
+move "nw"
+move "go stall"
+move "go door"
+
+steal_shop @ilaya_items, :fishmonger
+
+move "out"
+move "out"
+move "se"
+move "se"
+move "sw"
+move "go shop"
+
+steal_shop @ilaya_items, :pearls
+
+move "out"
+move "w"
+move "go shop"
+
+steal_shop @ilaya_items, :clothing
+
+move "out"
+move "nw"
+move "go shack"
+
+steal_shop @ilaya_items, :stuff
+
+move "out"
+move "se"
+move "e"
+move "ne"
+move "s"
+move "s"
+move "s"
+move "s"
+move "sw"
+move "sw"
+move "sw"
+move "w"
+move "w"
+move "w"
+move "nw"
+move "w"
+
+#returning to leth
+
+move "go gate"
+move "go break"
+move "se"
+move "e"
+move "e"
+move "ne"
+move "ne"
+move "n"
+move "e"
+move "e"
+move "ne"
+move "n"
+move "n"
+move "n"
+move "ne"
+move "nw"
+move "n"
+move "n"
+move "n"
+move "n"
+move "ne"
+move "ne"
+move "ne"
+move "ne"
+move "s"
+move "se"
+move "s"
+move "se"
+move "se"
+move "ne"
+
+check_for_mites
+
+move "go gate"
+move "ne"
+move "ne"
+
 move "ne"
 move "ne"
 move "ne"

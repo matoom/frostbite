@@ -95,7 +95,7 @@ class Exp
   #   echo Exp::rank
   #   => 222
   def self.rank(exp_string)
-    index = GameData.getExpIndex(exp_string.to_s)
+    index = GameData.getExpIndex(exp_string.to_s.downcase)
     GameData.getExpRank(index).to_i
   end
 
@@ -108,7 +108,7 @@ class Exp
   #     exit
   #   end
   def self.state(exp_string)
-    index = GameData.getExpIndex(exp_string.to_s)
+    index = GameData.getExpIndex(exp_string.to_s.downcase)
     GameData.getExpState(index).to_i
   end
 end

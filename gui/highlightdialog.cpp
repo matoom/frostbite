@@ -174,6 +174,10 @@ void HighlightDialog::reloadWindowStyles() {
     mainWindow->getWindowManager()->updateWindowStyle();
 }
 
+void HighlightDialog::reloadHighlighterSettings() {
+    mainWindow->getWindowManager()->reloadHighlighterSettings();
+}
+
 void HighlightDialog::okPressed() {
     generalTab->saveChanges();
     textTab->saveChanges();

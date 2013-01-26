@@ -1,5 +1,9 @@
 #include "data.h"
 
+#include <QReadWriteLock>
+
+QReadWriteLock lock;
+
 #ifdef WIN32
 /* windows specific - mingw32 */
 #define SHARED __attribute__((section(".shr"), shared))
@@ -148,6 +152,7 @@ extern "C" EXPORT_FUNCTION void removeExpField(const char name[]) {
 }
 
 extern "C" EXPORT_FUNCTION int getExpRank(int index) {
+    QReadLocker locker(&lock);
     if(index >= 0 && index < Data::expX) {
         return atoi(exp[index][1]);
     }
@@ -155,6 +160,7 @@ extern "C" EXPORT_FUNCTION int getExpRank(int index) {
 }
 
 extern "C" EXPORT_FUNCTION int getExpState(int index) {
+    QReadLocker locker(&lock);
     if(index >= 0 && index < Data::expX) {
         return atoi(exp[index][2]);
     }
@@ -164,6 +170,7 @@ extern "C" EXPORT_FUNCTION int getExpState(int index) {
 /* status getters/setters */
 
 extern "C" EXPORT_FUNCTION bool getStanding() {
+    QReadLocker locker(&lock);
     return standing;
 }
 
@@ -172,6 +179,7 @@ extern "C" EXPORT_FUNCTION void setStanding(bool _standing) {
 }
 
 extern "C" EXPORT_FUNCTION bool getSitting() {
+    QReadLocker locker(&lock);
     return sitting;
 }
 
@@ -180,6 +188,7 @@ extern "C" EXPORT_FUNCTION void setSitting(bool _sitting) {
 }
 
 extern "C" EXPORT_FUNCTION bool getKneeling() {
+    QReadLocker locker(&lock);
     return kneeling;
 }
 
@@ -188,6 +197,7 @@ extern "C" EXPORT_FUNCTION void setKneeling(bool _kneeling) {
 }
 
 extern "C" EXPORT_FUNCTION bool getProne() {
+    QReadLocker locker(&lock);
     return prone;
 }
 
@@ -196,6 +206,7 @@ extern "C" EXPORT_FUNCTION void setProne(bool _prone) {
 }
 
 extern "C" EXPORT_FUNCTION bool getStunned() {
+    QReadLocker locker(&lock);
     return stunned;
 }
 
@@ -204,6 +215,7 @@ extern "C" EXPORT_FUNCTION void setStunned(bool _stunned) {
 }
 
 extern "C" EXPORT_FUNCTION bool getBleeding() {
+    QReadLocker locker(&lock);
     return bleeding;
 }
 
@@ -212,6 +224,7 @@ extern "C" EXPORT_FUNCTION void setBleeding(bool _bleeding) {
 }
 
 extern "C" EXPORT_FUNCTION bool getHidden() {
+    QReadLocker locker(&lock);
     return hidden;
 }
 
@@ -220,6 +233,7 @@ extern "C" EXPORT_FUNCTION void setHidden(bool _hidden) {
 }
 
 extern "C" EXPORT_FUNCTION bool getInvisible() {
+    QReadLocker locker(&lock);
     return invisible;
 }
 
@@ -228,6 +242,7 @@ extern "C" EXPORT_FUNCTION void setInvisible(bool _invisible) {
 }
 
 extern "C" EXPORT_FUNCTION bool getWebbed() {
+    QReadLocker locker(&lock);
     return webbed;
 }
 
@@ -236,6 +251,7 @@ extern "C" EXPORT_FUNCTION void setWebbed(bool _webbed) {
 }
 
 extern "C" EXPORT_FUNCTION bool getJoined() {
+    QReadLocker locker(&lock);
     return joined;
 }
 
@@ -244,6 +260,7 @@ extern "C" EXPORT_FUNCTION void setJoined(bool _joined) {
 }
 
 extern "C" EXPORT_FUNCTION bool getDead() {
+    QReadLocker locker(&lock);
     return dead;
 }
 
@@ -254,6 +271,7 @@ extern "C" EXPORT_FUNCTION void setDead(bool _dead) {
 /* inventory */
 
 extern "C" EXPORT_FUNCTION char* getInventory() {
+    QReadLocker locker(&lock);
     return inventory;
 }
 
@@ -264,6 +282,7 @@ extern "C" EXPORT_FUNCTION void setInventory(const char inv[]) {
 /* container */
 
 extern "C" EXPORT_FUNCTION char* getContainer() {
+    QReadLocker locker(&lock);
     return container;
 }
 
@@ -274,6 +293,7 @@ extern "C" EXPORT_FUNCTION void setContainer(const char cont[]) {
 /* wield */
 
 extern "C" EXPORT_FUNCTION char* getWieldRight() {
+    QReadLocker locker(&lock);
     return wieldRight;
 }
 
@@ -282,6 +302,7 @@ extern "C" EXPORT_FUNCTION void setWieldRight(const char wield[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getWieldRightNoun() {
+    QReadLocker locker(&lock);
     return wieldRightNoun;
 }
 
@@ -290,6 +311,7 @@ extern "C" EXPORT_FUNCTION void setWieldRightNoun(const char wield[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getWieldLeft() {
+    QReadLocker locker(&lock);
     return wieldLeft;
 }
 
@@ -298,6 +320,7 @@ extern "C" EXPORT_FUNCTION void setWieldLeft(const char wield[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getWieldLeftNoun() {
+    QReadLocker locker(&lock);
     return wieldLeftNoun;
 }
 
@@ -308,6 +331,7 @@ extern "C" EXPORT_FUNCTION void setWieldLeftNoun(const char wield[]) {
 /* vitals */
 
 extern "C" EXPORT_FUNCTION int getHealth() {
+    QReadLocker locker(&lock);
     return health;
 }
 
@@ -316,6 +340,7 @@ extern "C" EXPORT_FUNCTION void setHealth(int _health) {
 }
 
 extern "C" EXPORT_FUNCTION int getConcentration() {
+    QReadLocker locker(&lock);
     return concentration;
 }
 
@@ -324,6 +349,7 @@ extern "C" EXPORT_FUNCTION void setConcentration(int _concentration) {
 }
 
 extern "C" EXPORT_FUNCTION int getSpirit() {
+    QReadLocker locker(&lock);
     return spirit;
 }
 
@@ -332,6 +358,7 @@ extern "C" EXPORT_FUNCTION void setSpirit(int _spirit) {
 }
 
 extern "C" EXPORT_FUNCTION int getFatigue() {
+    QReadLocker locker(&lock);
     return fatigue;
 }
 
@@ -342,6 +369,7 @@ extern "C" EXPORT_FUNCTION void setFatigue(int _fatigue) {
 /* room */
 
 extern "C" EXPORT_FUNCTION char* getRoomTitle() {
+    QReadLocker locker(&lock);
     return roomTitle;
 }
 
@@ -350,6 +378,7 @@ extern "C" EXPORT_FUNCTION void setRoomTitle(const char title[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getRoomDescription() {
+    QReadLocker locker(&lock);
     return roomDescription;
 }
 
@@ -358,6 +387,7 @@ extern "C" EXPORT_FUNCTION void setRoomDescription(const char desc[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getRoomObjects() {
+    QReadLocker locker(&lock);
     return roomObjects;
 }
 
@@ -366,6 +396,7 @@ extern "C" EXPORT_FUNCTION void setRoomObjects(const char obj[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getRoomPlayers() {
+    QReadLocker locker(&lock);
     return roomPlayers;
 }
 
@@ -374,6 +405,7 @@ extern "C" EXPORT_FUNCTION void setRoomPlayers(const char players[]) {
 }
 
 extern "C" EXPORT_FUNCTION char* getRoomExits() {
+    QReadLocker locker(&lock);
     return roomExits;
 }
 
@@ -382,6 +414,7 @@ extern "C" EXPORT_FUNCTION void setRoomExits(const char exits[]) {
 }
 
 extern "C" EXPORT_FUNCTION int getRt() {
+    QReadLocker locker(&lock);
     return rt;
 }
 

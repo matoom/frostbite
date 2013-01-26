@@ -19,15 +19,19 @@ put "get bones"
   wait
   put "climb practice #{$args.join(" ")}"
 
-  pause 120
+
+  6.times do
+    pause 20
+
+    if Exp::state("Athletics") > 32
+      echo "*** Finished! ***"
+      exit
+    end
+  end
 
   put "stop climb"
   wait
   put "stop play"
   wait
 
-  if Exp::state("climb") > 32
-    echo "*** Finished! ***"
-    exit
-  end
 end

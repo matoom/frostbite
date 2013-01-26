@@ -64,6 +64,16 @@ void DataProcessThread::process(QByteArray data) {
 }
 
 void DataProcessThread::processGameData(QByteArray data) {
+    /*The ampersand character (&) and the left angle bracket (<) MUST NOT
+    appear in their literal form, except when used as markup delimiters, or
+    within a comment, a processing instruction, or a CDATA section. If they
+    are needed elsewhere, they MUST be escaped using either numeric
+    character references or the strings "&amp;" and "&lt;" respectively.*/
+
+    QString d = data;
+    d.replace(QRegExp("&(?!#?[a-z0-9]+;)"), "&amp;");
+    data = d.toLocal8Bit();
+
     QDomDocument doc("GameData");
     QByteArray rawData(data);
 
@@ -106,7 +116,7 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
             return false;
         /* All plain text without tags */
         } else if(n.isText()) {
-            // Compensates for QDomText discarding HTML entities
+            // compensate for qdomnode discarding &lt
             QString textData = n.toText().data();
             textData.replace("<", "&lt;");
 

@@ -1,7 +1,7 @@
 def handle_delivery
   put "wear my #{Wield::right_noun}"
   match = { :stow => ["can't wear that"],
-            :continue => ["You put"] }
+            :continue => ["You put", "You slide", "You attach", "You slip", "You work"] }
   result = match_wait match
 
   case result

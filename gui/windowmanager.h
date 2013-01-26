@@ -46,6 +46,7 @@ public:
     void copyDock();
     void saveArrivals();
     void reloadSettings();
+    void reloadHighlighterSettings();
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();

@@ -3,6 +3,6 @@
 # run: hunting area
 
 while true
-  put "circle"
+  put "bob"
   wait_for_roundtime
 end

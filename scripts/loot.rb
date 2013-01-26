@@ -46,3 +46,33 @@ end
       break
   end
 end
+
+100.times do
+  put "stow bar"
+  match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
+            :loot_next => ["You pick up"],
+            :end => ["Stow what?"] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+    when :end
+      break
+  end
+end
+
+100.times do
+  put "stow nugget"
+  match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
+            :loot_next => ["You pick up"],
+            :end => ["Stow what?"] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+    when :end
+      break
+  end
+end

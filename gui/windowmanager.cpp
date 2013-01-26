@@ -13,6 +13,16 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
 }
 
 void WindowManager::reloadSettings() {
+    this->reloadHighlighterSettings();
+
+    settings->init();
+    this->updateWindowStyle();
+
+    generalSettings->init();
+    this->updateWindowColors();    
+}
+
+void WindowManager::reloadHighlighterSettings() {
     emit updateGameWindowSettings();
     emit updateRoomSettings();
     emit updateExpSettings();
@@ -20,12 +30,6 @@ void WindowManager::reloadSettings() {
     emit updateThoughtsSettings();
     emit updateDeathsSettings();
     emit updateConversationsSettings();
-
-    settings->init();
-    this->updateWindowStyle();
-
-    generalSettings->init();
-    this->updateWindowColors();    
 }
 
 QPlainTextEdit* WindowManager::getGameWindow() {
@@ -355,7 +359,7 @@ void WindowManager::updateRoomWindowTitle(QString title) {
 void WindowManager::writeScriptText(QByteArray text) {
     if(!text.isEmpty() && mainWindow->getScriptService()->isScriptActive()) {
         QString textString = text.constData();
-        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(QRegExp("<[^>]*>")).toLocal8Bit());
+        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(QRegExp("<[^>]*>")).toLocal8Bit());        
     }
 }
 

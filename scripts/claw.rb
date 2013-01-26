@@ -63,7 +63,7 @@ def loot
 end
 
 10000.times do
-  put "attack"
+  put "claw"
   match = { :wait => [/\.\.\.wait|entangled in a web|still stunned/],
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",

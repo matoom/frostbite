@@ -21,7 +21,7 @@ def ident
   match = { :wait => [/\.\.wait/],
             :get_pick => ["Find a more appropriate tool and try again!"],
             :ident => ["teach you anything about the"],
-            :blind => ["an aged grandmother could open", "blindfolded"],
+            :blind => ["aged grandmother could open", "blindfolded"],
             :quick => ["junk barely worth your time", "a simple matter", "should not take long"],
             :normal => ["precisely at your", "only minor troubles", "has the edge on you", "have some chance of being able to"],
             :careful => ["odds are against you", "longshot", "amazingly minimal chance", "really don't have any"],

@@ -695,7 +695,19 @@ The Dwarven driver says, "I'm leaving shortly, returning to the ferry to Riverha
 <pushStream id="whispers"/><preset id="whisper">Smith whispers,</preset> "Settle down for an hour?"
 <popStream/><preset id="whisper">Smith whispers,</preset> "Settle down for an hour?"
 <prompt time="1352573791">&gt;</prompt>
-
-
-
-
+<streamWindow id='main' title='Story' subtitle=" - [Crossing, Carousel Desk]" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [Crossing, Carousel Desk]" location='center' target='drop' ifClosed='' resident='true'/>
+<component id='room desc'>A long wooden desk spans the width of the western wall.  Brass lanterns hang from the ceiling, and the floor behind the desk is covered in spotless red tile.</component>
+<component id='room objs'>You also see a hastily scrawled notice, a brightly painted sign, a large bin labeled "Lost & Found" and a silver bell.</component>
+<component id='room players'></component>
+<component id='room exits'>Obvious exits: <d>out</d>.</component>
+<component id='room extra'></component>
+<resource picture="0"/><style id="roomName" />[Crossing, Carousel Desk]
+<style id=""/><preset id='roomDesc'>A long wooden desk spans the width of the western wall.  Brass lanterns hang from the ceiling, and the floor behind the desk is covered in spotless red tile.</preset>  You also see a hastily scrawled notice, a brightly painted sign, a large bin labeled "Lost & Found" and a silver bell.
+Obvious exits: <d>out</d>.
+<compass><dir value="out"/></compass><component id='room players'></component>
+<prompt time="1358360255">&gt;</prompt>
+<resource picture="0"/><style id="roomName" />[Crossing, Carousel Desk]
+<style id=""/><preset id='roomDesc'>A long wooden desk spans the width of the western wall.  Brass lanterns hang from the ceiling, and the floor behind the desk is covered in spotless red tile.</preset>  You also see a hastily scrawled notice, a brightly painted sign, a large bin labeled "Lost & Found" and a silver bell.
+Obvious exits: <d>out</d>.
+<compass><dir value="out"/></compass><prompt time="1358360269">&gt;</prompt>

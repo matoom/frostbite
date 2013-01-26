@@ -2,13 +2,13 @@
 # requirements: arm worn shield, set up stow containers
 # run: hunting area
 
-@arrange_count = 2
+@arrange_count = 1
 
 def start
   put "aim"
   put "appr #{$args.join(" ")} quick"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
+            :health_check => [/You are still stunned/],
             :wait_arrive => [/At what are you trying to aim?|cannot appraise that/],
             :next => [/Roundtime/] }
   result = match_wait match
@@ -17,8 +17,13 @@ def start
     when :wait
       pause 0.5
       start
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :next
       pause Rt::value
       circle 0
@@ -30,9 +35,9 @@ end
 
 def circle count
   put "circle"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :next => [/Roundtime/],
-            :quit => [/You are still stunned/],
+            :health_check => [/You are still stunned/],
             :stand => [/should stand up/] }
   result = match_wait match
 
@@ -43,8 +48,13 @@ def circle count
     when :stand
       put "stand"
       circle count
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :next
       if count < 1
         circle count + 1
@@ -56,8 +66,8 @@ end
 
 def fire
   put "fire"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
+            :health_check => [/You are still stunned/],
             :load => [/Roundtime/] }
   result = match_wait match
 
@@ -65,8 +75,13 @@ def fire
     when :wait
       pause 0.5
       fire
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :load
       load
   end
@@ -82,8 +97,8 @@ end
 
 def check_status
   put "look items"
-  match = { :wait => [/\.\.\.wait|you may only type ahead/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|you may only type ahead|able to move/],
+            :health_check => [/You are still stunned/],
             :dead => [/\bdead\b/],
             :continue => [/items in the area/] }
   result = match_wait match
@@ -93,8 +108,13 @@ def check_status
       check_status
     when :dead
       arrange 0
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :continue
       start
   end
@@ -102,8 +122,8 @@ end
 
 def arrange count
   put "arrange"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
+            :health_check => [/You are still stunned/],
             :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
             :loot => [/arrange what|cannot be skinned/] }
   result = match_wait match
@@ -112,8 +132,13 @@ def arrange count
     when :wait
       pause 0.5
       arrange count
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :arrange
       if count < @arrange_count - 1
         arrange count + 1
@@ -130,8 +155,8 @@ def skin
     put "stow left"
   end
   put "skin"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
+            :health_check => [/You are still stunned/],
             :loot => [/Skin what|cannot be skinned|Roundtime/] }
   result = match_wait match
 
@@ -139,17 +164,25 @@ def skin
     when :wait
       pause 0.5
       skin
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :loot
       loot
   end
 end
 
 def loot
+  if Wield::left_noun != ""
+    put "stow left"
+  end
   put "loot"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|Roundtime/],
-            :quit => [/You are still stunned/],
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|Roundtime|able to move/],
+            :health_check => [/You are still stunned/],
             :aim => [/could not find what|You search/] }
   result = match_wait match
 
@@ -157,8 +190,13 @@ def loot
     when :wait
       pause 0.5
       loot
-    when :quit
-      put "quit"
+    when :health_check
+      if Vitals::health < 60
+        put "quit"
+      else
+        pause Rt::value
+        start
+      end
     when :aim
       pause 0.5
       start
