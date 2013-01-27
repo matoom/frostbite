@@ -9,7 +9,15 @@ end
 
 def stow item
   put "stow #{item}"
-  wait
+  match = { :next => ["You put your"],
+            :end => ["You just can't"] }
+  result = match_wait match
+
+  case result
+    when :end
+      echo "*** Bag full! ***"
+      exit
+  end
 
   if Exp::state("skinning") > 32
     exit

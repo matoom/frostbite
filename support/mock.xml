@@ -711,3 +711,4 @@ Obvious exits: <d>out</d>.
 <style id=""/><preset id='roomDesc'>A long wooden desk spans the width of the western wall.  Brass lanterns hang from the ceiling, and the floor behind the desk is covered in spotless red tile.</preset>  You also see a hastily scrawled notice, a brightly painted sign, a large bin labeled "Lost & Found" and a silver bell.
 Obvious exits: <d>out</d>.
 <compass><dir value="out"/></compass><prompt time="1358360269">&gt;</prompt>
+<component id='exp tdp'>            TDPs:  367</component>

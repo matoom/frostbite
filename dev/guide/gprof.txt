@@ -1,0 +1,22 @@
+Profiling with grpof
+====================
+
+add to gui.pro =>
+
+CONFIG += DEBUG
+QMAKE_CXXFLAGS_DEBUG += -pg
+QMAKE_CXXFLAGS_MT_DBG += -pg
+QMAKE_LFLAGS_DEBUG += -pg
+
+
+=> run client in debug to produce gmon.out
+
+
+=> gmon.out
+
+gprof FrostBite.exe > out.txt
+gprof2dot.py --skew 0.001 --strip -o out.viz out.txt
+
+
+=> open output (out.viz) with graphwiz
+
