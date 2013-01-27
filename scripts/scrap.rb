@@ -22,7 +22,7 @@ def get item
 end
 
 def scrap item
-  put "scrap #{item} with scraper quick"
+  put "scrap #{item} with scraper"
   match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
             :stow => ["clean as you can make it", "beyond repair"],
             :next => ["scrape your"],

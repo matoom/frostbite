@@ -48,20 +48,23 @@
         :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
         :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
-        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
-        :blood_bane => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
+        :blood_bane => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
         :bloody_barnacle => {}, #furniture
-        :ninth_life => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
-        :dark_nighttrawler => {},
+        :ninth_life => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
+        :dark_nighttrawler => { :items => [{:name => "ring", :desc => "jade glass vial", :amount => 1}]},
         :drunken_sage => { :items => [], :amount => 0 }, #food
         :dusktide_rising => {},
-        :winged_duck => { :items => [{ :name => "ring", :desc => "heavy iron ring set with a pentagonal garnet", :amount => 1 }] },
+        :winged_duck => { :items => [{ :name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1 }] },
         :fleetwing_gull => { :items => [], :amount => 0 }, #food
         :golden_apple => { :items => [], :amount => 0 }, #furniture
-        :harper_song => {:items => [{:name => "vial", :desc => "jade glass vial", :amount => 2}] },
+        :harper_song => {:items => [{:name => "vial", :desc => "jade glass vial", :amount => 1}] },
         :marsh_skipper => {},
         :merelew_wench => { :items => [], :amount => 0 }, #food
-        :mermaid_fall => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :mermaid_fall => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
         :moveable_feast => {},
         :night_sky_hair => {},
         :north_wind_skimmer => {},
@@ -72,7 +75,8 @@
         :talking_salmon => { :items => [], :amount => 0 }, #food
         :thornberry_dart => { :items => [], :amount => 0 }, #food
         :tipsy_barmaid => { :items => [], :amount => 0 }, #food
-        :tropic_night => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}, {:name => "skirt", :desc => "green velvet skirt", :amount => 2}] },
+        :tropic_night => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
         :wavecrester => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}] },
         :weaving_minstrel => { :items => [], :amount => 0 }, #furniture
         :whitehaven_hope => { :items => [], :amount => 0 } #food
@@ -93,7 +97,8 @@ end
 #override
 undef :move
 def move(value)
-  put value
+  puts "put#" + value.to_s
+  STDOUT.flush
   res = match_wait({ :room => [/^\[.*?\]$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
                      :lost => [/can't go there|were you referring/],
@@ -302,7 +307,18 @@ def identify_pier
 end
 
 def find_pier_item ship
-  containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last(2).join(" ").delete('.') }
+  containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
+
+  endIndex = containers.length
+  containers.each_with_index do |container, startIndex|
+    count = 1
+    (startIndex + 1..endIndex).each do |index|
+      if container == containers[index]
+        containers[index] = "#{@ordinal_numbers[count]} #{container}"
+        count = count + 1
+      end
+    end
+  end
 
   containers.each do |container|
     item = find_stealable_item ship, container
@@ -323,7 +339,7 @@ def find_stealable_item ship, container
     if contents.include?("In the")
       return get_item_description ship, container, contents
     elsif contents.include?("I could not find")
-      find_stealable_item ship, container.split.last
+      #no action
     elsif contents.include?("ahead 1 command")
       find_stealable_item ship, container
     end

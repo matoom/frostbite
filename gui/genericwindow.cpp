@@ -30,11 +30,15 @@ void GenericWindow::buildContextMenu() {
     copyAct->setEnabled(false);
     connect(copyAct, SIGNAL(triggered()), this, SLOT(copySelected()));
 
-    menu->addSeparator();
-
     selectAct = new QAction(tr("&Select All\t"), this);
     menu->addAction(selectAct);
     connect(selectAct, SIGNAL(triggered()), this, SLOT(selectAll()));
+
+    menu->addSeparator();
+
+    clearAct = new QAction(tr("&Clear\t"), this);
+    menu->addAction(clearAct);
+    connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
 }
 
 void GenericWindow::contextMenuEvent(QContextMenuEvent* event) {
@@ -56,6 +60,7 @@ void GenericWindow::copySelected() {
 GenericWindow::~GenericWindow() {
     delete copyAct;
     delete selectAct;
+    delete clearAct;
     delete menu;
     delete settings;
 }

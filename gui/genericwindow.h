@@ -28,6 +28,7 @@ private:
 
     QAction* copyAct;
     QAction* selectAct;
+    QAction* clearAct;
     QMenu* menu;
 
 signals:
