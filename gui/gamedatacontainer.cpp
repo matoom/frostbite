@@ -32,8 +32,8 @@ QStringList GameDataContainer::extractExp(QString exp, bool brief) {
 
 void GameDataContainer::setExpField(QString name, QString exp) {
     QWriteLocker locker(&lock);
-    /* setting exp for exp window */
-    this->exp.insert(name, exp);
+    /* setting exp for exp window */    
+    this->exp.insert(name, converter->addNumericStateToExp(exp));
     /* extracting exp values for scripting */
     QStringList expList = this->extractExp(exp, false);
     dataService->addExpField(name.toLower().toLocal8Bit().data(),

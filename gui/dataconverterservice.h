@@ -16,6 +16,7 @@ public:
     int expBriefToNumeric(QString);
     QString expNumericToState(int);
     QString msToMMSS(int);
+    QString addNumericStateToExp(QString exp);
 
 private:
     DataConverterService(QObject *parent = 0);

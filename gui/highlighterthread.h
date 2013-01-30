@@ -14,7 +14,7 @@ class HighlighterThread : public QThread {
     Q_OBJECT
 
 public:
-    HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool clear);
+    HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool multiLine);
     ~HighlighterThread();
 
     virtual void run();
@@ -24,7 +24,9 @@ private:
     QPlainTextEdit* textEdit;
     Highlighter* highlighter;
     MainWindow* mainWindow;
-    bool clear;
+    QReadWriteLock lock;
+    bool multiLine;
+
 
     void process(QString data);
 

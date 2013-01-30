@@ -230,16 +230,19 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
             if(e.attribute("id").startsWith("exp")) {
                 QString text = e.text();
                 QString id = e.attribute("id").mid(4);
-                if(!text.isEmpty()) {
-                    if(e.firstChildElement("d").isNull()) {
-                        gameDataContainer->setExpField(id, text);
+
+                if(id != "tdp") {
+                    if(!text.isEmpty()) {
+                        if(e.firstChildElement("d").isNull()) {
+                            gameDataContainer->setExpField(id, text);
+                        } else {
+                            gameDataContainer->setExpFieldBrief(id, text);
+                        }
                     } else {
-                        gameDataContainer->setExpFieldBrief(id, text);
+                        gameDataContainer->removeExpField(id);
                     }
-                } else {
-                    gameDataContainer->removeExpField(id);
+                    emit updateExpWindow();
                 }
-                emit updateExpWindow();
             } else if(e.attribute("id").startsWith("room")) {
                 QString id = e.attribute("id");
                 if(id.endsWith("desc")) {

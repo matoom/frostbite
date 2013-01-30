@@ -23,6 +23,18 @@ void DataConverterService::populateExpStates() {
         << "very riveted" << "rapt" << "very rapt" << "enthralled" << "nearly locked" << "mind lock";
 }
 
+QString DataConverterService::addNumericStateToExp(QString exp) {
+    int index = 0;
+    for(int i = mindStates.length() - 1; i >= 0; i--) {
+        index = exp.indexOf(mindStates.at(i));
+        if(index != -1) {
+            exp.insert(index, QString("%1 ").arg(i, 2, 10));
+            break;
+        }
+    }
+    return exp;
+}
+
 int DataConverterService::expStateToNumeric(QString state) {
     return mindStates.indexOf(state);
 }
