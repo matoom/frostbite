@@ -30,7 +30,7 @@ void GenericWindow::buildContextMenu() {
     copyAct->setEnabled(false);
     connect(copyAct, SIGNAL(triggered()), this, SLOT(copySelected()));
 
-    selectAct = new QAction(tr("&Select All\t"), this);
+    selectAct = new QAction(tr("&Select all\t"), this);
     menu->addAction(selectAct);
     connect(selectAct, SIGNAL(triggered()), this, SLOT(selectAll()));
 

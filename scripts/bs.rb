@@ -1,3 +1,4 @@
+
 # desc: trains hiding, stalking and backstabbing for thieves
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
@@ -6,8 +7,8 @@
 #You melt into the background, convinced that your attempt to hide went unobserved.
 #It's hard to stalk if you aren't in a position to move around.
 
-@match_rt_adjustment = 0
-@arrange_count = 1
+@rt_adjust = 0
+@arrange_count = 5
 
 if !$args.first
   echo '*** hide on what? usage: .h &lt;critter_name&gt; ***'
@@ -27,7 +28,7 @@ def arrange count
   put "arrange"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
             :quit => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
+            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
             :loot => [/arrange what|cannot be skinned/] }
   result = match_wait match
 
@@ -118,9 +119,9 @@ label(:stop_stalk) {
 
 label(:feint) {
   put "backstab"
-  match = { :dead => ["and collapses", "sharp halt"],
+  match = { :dead => ["and collapses", "sharp halt", "ceases all movement"],
             :advance => ["would help if you were closer", "aren't close enough"],
-            :hide => ["Roundtime"],
+            :hide => ["Roundtime", "hidden to backstab"],
             :face => ["You can't backstab that."],
             :wait => [/\.\.\.wait/]}
   res = match_wait match

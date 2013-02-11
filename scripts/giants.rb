@@ -29,7 +29,7 @@ result = match_wait match
 case result
   when :wait_climb
     put "hide"
-    wait_for /finally arriving/
+    wait_for(/finally arriving/)
   when :stow
     put "stow left"
     wait

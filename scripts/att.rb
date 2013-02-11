@@ -1,10 +1,10 @@
-@arrange_count = 1
+@arrange_count = 5
 
 def arrange count
   put "arrange"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
             :quit => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
+            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
             :loot => [/arrange what|cannot be skinned/] }
   result = match_wait match
 
@@ -68,7 +68,7 @@ end
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",
                       "sharp halt", "crumbles", "life force fades away"],
-            :wait_for => ["At what are you trying to attack?"],
+            :wait_for => ["trying to attack"],
             :adv => ["You aren't close enough to attack."],
             :continue => ["Roundtime"] }
   result = match_wait match
@@ -79,7 +79,7 @@ end
     when :skin
       arrange 0
     when :wait_for
-      wait_for(/begins to advance you|closes to melee range/)
+      wait_for(/advance you|melee range/)
     when :adv
       put "advance"
       pause 2

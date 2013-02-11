@@ -3,6 +3,13 @@
 # requirements: -
 # run: anywhere
 
+@harvest = true
+
+if $args.join(" ").include? "noh"
+  @harvest = false;
+end
+
+
 def ident(box)
   put "disarm my #{box} ident"
   match = { :wait => [/\.\.wait/],
@@ -63,7 +70,7 @@ def disarm(box, method)
       next_index = @disarm_methods.index(method.to_s)
       disarm(box, @disarm_methods.fetch(next_index + 1, "careful"))
     when :analyze
-      if method == :blind or method == :quick
+      if @harvest and (method == :blind or method == :quick)
         analyze box, false
       else
         ident box
@@ -172,4 +179,4 @@ end
   end
 end
 
-exit_script "*** All boxes opened! ***"
+exit_script "*** All boxes disarmed! ***"

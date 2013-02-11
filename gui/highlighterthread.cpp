@@ -16,12 +16,16 @@ void HighlighterThread::updateSettings() {
 }
 
 void HighlighterThread::addText(QString text) {
-    QWriteLocker locker(&lock);
+    mMutex.lock();
     dataQueue.enqueue(text);
+    mMutex.unlock();
+
+    /*QWriteLocker locker(&lock);
+    dataQueue.enqueue(text);*/
 }
 
 void HighlighterThread::run() {
-    QReadLocker locker(&lock);
+    //QReadLocker locker(&lock);
     while(!dataQueue.isEmpty()) {
         process(dataQueue.dequeue());
     }

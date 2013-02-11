@@ -24,7 +24,7 @@ private:
     QPlainTextEdit* textEdit;
     Highlighter* highlighter;
     MainWindow* mainWindow;
-    QReadWriteLock lock;
+    QMutex mMutex;
     bool multiLine;
 
 

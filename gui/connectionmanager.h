@@ -29,6 +29,7 @@ public:
     void writeCommand(QString);
     void showError(QString);
     void updateSettings();
+    void disconnectFromServer();
 
 private:
     MainWindow *mainWindow;

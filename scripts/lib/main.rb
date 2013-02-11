@@ -1,5 +1,6 @@
 require "#{File.dirname(__FILE__)}/models.rb"
 require "#{File.dirname(__FILE__)}/ruby_goto.rb"
+require "#{File.dirname(__FILE__)}/timer.rb"
 
 $args = []
 ARGV.each do |arg|
@@ -14,10 +15,11 @@ STDOUT.sync = true
 
 $_data_queue = []
 
-@match_rt = 0
-@match_rt_adjustment = 0
+#@rt_adjust = 0
+$_interrupt_time = -1
 
 @_command_thread = Thread.new { CommandThread.new.run }
+
 
 # Waits for roundtime in game text and pauses for the duration.
 #
@@ -31,7 +33,8 @@ def wait_for_roundtime
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
+        rt = $_data_queue.at(i)[/\d+/].to_i
+        sleep_for_rt rt
         return
       end
       $_data_queue.delete_at(i)
@@ -40,7 +43,7 @@ def wait_for_roundtime
   end
 end
 
-# Waits until a match is found in game text.
+# Waits until specified match is found in game text.
 #
 # @param [String] pattern regex pattern.
 # @return [void]
@@ -56,7 +59,7 @@ def wait_for(pattern)
   end
 end
 
-# Matches multi regex patterns with game text
+# Matches regex patterns with each line of game text
 # and returns the name of the matching pattern.
 #
 # @param [Hash] pattern list of regex patterns and names
@@ -94,7 +97,8 @@ def match_wait(pattern)
 
       if match_found
         if $_data_queue.at(i).match(/^>/)
-          sleep_for_rt sleep
+          rt = sleep
+          sleep_for_rt rt
           return match
         end
       end
@@ -105,20 +109,19 @@ def match_wait(pattern)
   end
 end
 
-
-# Matches multi regex patterns with game text
-# and returns the matched text.
+# Matches regex patterns with each line of game text
+# and returns the matched line.
 #
 # @param [Hash] pattern list of regex patterns and names
-# @return [Symbol] pattern name
+# @return [String] line of text
 # @example Using multi match patterns to make decisions in script.
 #   match = { :m => [/you open/i] }
 #   result = match_get match
 #   result #=> You open the steel trunk...
-
 def match_get(pattern)
   match_found = false
   match = :not_found
+  sleep = 0
 
   (0..1000000).each do
     $_data_queue.each_index do |i|
@@ -136,11 +139,13 @@ def match_get(pattern)
       end
 
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
+        sleep += $_data_queue.at(i)[/\d+/].to_i
       end
 
       if match_found
         if $_data_queue.at(i).match(/^>/)
+          rt = sleep
+          sleep_for_rt rt
           return match
         end
       end
@@ -151,7 +156,7 @@ def match_get(pattern)
   end
 end
 
-# Matches multi regex patterns with game text
+# Matches regex patterns with each line of game text
 # and goes to defined label.
 #
 # @param [Hash] pattern list of regex patterns and names
@@ -173,6 +178,7 @@ end
 def match_wait_goto(pattern)
   match_found = false
   match = :not_found
+  sleep = 0
 
   (0..1000000).each do
     $_data_queue.each_index do |i|
@@ -190,11 +196,13 @@ def match_wait_goto(pattern)
       end
 
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i
+        sleep += $_data_queue.at(i)[/\d+/].to_i
       end
 
       if match_found
         if $_data_queue.at(i).match(/^>/)
+          rt = sleep
+          sleep_for_rt rt
           goto match
         end
       end
@@ -205,7 +213,7 @@ def match_wait_goto(pattern)
   end
 end
 
-# Sends a command to client.
+# Sends a command to server.
 #
 # @param [String] value command.
 # @return [void]
@@ -226,16 +234,16 @@ end
 def move(value)
   puts "put#" + value.to_s
   STDOUT.flush
-  #put value
-  res = match_wait({ :room => [/^\[.*?\]$/],
-                     :wait => [/\.\.\.wait/, /you may only type ahead/] })
-  if res == :wait
-    pause 0.5
-    move value
+  case match_wait({ :room => [/^\[.*?\]$/],
+                    :wait => [/\.\.\.wait/, /you may only type ahead/] })
+    when :wait
+      pause 0.5
+      move value
   end
 end
 
-# Waits for a prompt character after a command is issued.
+# Waits for a prompt character after a command is issued to
+# make sure that the server is responding
 #
 # @param
 # @return [void]
@@ -263,13 +271,13 @@ end
 
 # Pauses for given time.
 #
-# @param [Integer, Float] value sleep time in seconds
+# @param [Integer, Float] value sleep time in seconds, default value = 1
 # @return [Void]
-def pause(value)
+def pause(value = 1)
   sleep value
 end
 
-# Execute a ruby script file.
+# Execute a script by name.
 #
 # @param [String] name name of the file
 # @return [Void]
@@ -299,14 +307,13 @@ end
 
 # @private
 def sleep_for_rt(rt)
-  if rt > 0
-    rt = rt - 1 + @match_rt_adjustment
-
-    rt.downto(0) do |current_rt|
-      @match_rt = current_rt
-      sleep 1
-    end
+  return if rt <= 0
+  sleep 1
+  if $_interrupt_time != -1
+    rt = rt - $_interrupt_time
+    $_interrupt_time = -1
   end
+  sleep_for_rt rt - 1
 end
 
 # @private
@@ -321,11 +328,18 @@ at_exit do
   end
 end
 
-# wait for round time
+# wait for previous round time
+# before executing script
 sleep Rt::value
 
-# load script file here
+# run timer, check for "every_(n)s_do"
+# method and set up interrupt mechanics
+timer = Timer.new
+Thread.new { timer.run }
+
+# run script file here
 require @_file
 
-# end command thread after finished
+# end threads after finished
 end_command_thread
+timer.terminate_thread

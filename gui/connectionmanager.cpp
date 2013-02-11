@@ -172,9 +172,16 @@ void ConnectionManager::showError(QString message) {
         "<br><br>");
 }
 
-ConnectionManager::~ConnectionManager() {
-    this->writeCommand("quit");
+void ConnectionManager::disconnectFromServer() {
+    if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
+        showError("Disconnected from server.");
+        this->writeCommand("quit");
+    }
     tcpSocket->disconnectFromHost();
+}
+
+ConnectionManager::~ConnectionManager() {
+    this->disconnectFromServer();
 
     delete tcpSocket;
     delete dataProcessThread;

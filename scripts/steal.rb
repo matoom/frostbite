@@ -48,9 +48,13 @@
         :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
         :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
-        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
+        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 1},
+                                          {:name => "vial", :desc =>"citrine glass vial", :amount => 2},
+                                          {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2}] },
         :blood_bane => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
+                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
+                                    {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
+                                    {:name => "skirt", :desc => "trumpet skirt", :amount => 1}] },
         :bloody_barnacle => {}, #furniture
         :ninth_life => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                                     {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
@@ -68,8 +72,13 @@
         :moveable_feast => {},
         :night_sky_hair => {},
         :north_wind_skimmer => {},
-        :paper_lion => {},
-        :river_dreamer => {},
+        :paper_lion => { :items => [{:name => "flask", :amount => 2},
+                                    {:name => "skirt", :desc =>"white velvet skirt cinched at the waist", :amount => 1},
+                                    {:name => "ring", :desc =>"copper ring shaped like a pair of clasped", :amount => 1},
+                                    {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1}] },
+        :river_dreamer => { :items => [{:name => "moonstone lily", :amount => 1},
+                                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
+                                      {:name => "earrings", :desc =>"dangling golden earrings", :amount => 1}] },
         :rusty_barnacle => {},
         :spinning_jenny => { :items => [], :amount => 0 }, #furniture
         :talking_salmon => { :items => [], :amount => 0 }, #food
@@ -88,7 +97,8 @@
 @shops_stolen_from = []
 @leave = false
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
-@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer"]
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest"]
+@body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
 
 def jail_check
   put "look"
@@ -333,13 +343,12 @@ def find_stealable_item ship, container
   if @valid_pier_containers.any? { |word| container.include?(word) }
     put "look in #{container}"
     match = { :continue => ["In the"],
+              :redo => ["ahead 1 command"],
               :not_found => ["I could not find"] }
     contents = match_get match
 
     if contents.include?("In the")
       return get_item_description ship, container, contents
-    elsif contents.include?("I could not find")
-      #no action
     elsif contents.include?("ahead 1 command")
       find_stealable_item ship, container
     end
@@ -360,19 +369,31 @@ def get_item_description ship, container, contents
   return {}
 end
 
-
 def check_for_mites
   put "health"
   match = { :wait => [/\.\.\.wait|you may only type ahead/],
             :tend => [/red blood mite/],
             :continue => [/>/] }
-  result = match_wait match
+  result = match_get match
 
   case result
-    when :wait
+    when /wait/, /you may only/
+      pause 0.5
       check_for_mites
-    when :tend
-      echo "MITES!"
+    when /mite/
+      echo "*** Found MITES! ***"
+      echo result
+      tend result
+      check_for_mites
+  end
+end
+
+def tend wounds
+  @body_parts.each do |area|
+    if wounds.include? area
+      put "tend my #{area}"
+      wait_for_roundtime
+    end
   end
 end
 
@@ -971,5 +992,7 @@ echo @stolen_items.inspect
     pause 0.2
   end
 end
+
+check_for_mites
 
 put "hide"

@@ -29,7 +29,7 @@ void MenuHandler::menuTriggered(QAction* action) {
     if(action->text() == "Connect") {
         connectWizard->show();
     } else if (action->text() == "Disconnect") {
-        mainWindow->getCommandLine()->writeCommand("quit");
+        mainWindow->getConnectionManager()->disconnectFromServer();
     } else if(action->text() == "Highlight") {
         highlightDialog->show();
     } else if (action->text() == "Macros") {

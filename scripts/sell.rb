@@ -31,8 +31,9 @@ def sell_pouch color
       sell_pouch color
     end
 
-    pause 0.4
+    pause 0.1
     put "get #{item} from my #{color} pouch"
+    wait
     put "sell my #{item}"
     wait
   end
@@ -45,5 +46,6 @@ $args.each do |color|
   sell_pouch color
 
   put "stow right"
+  wait
   echo "*** All gems sold in #{color} pouch! ***"
 end

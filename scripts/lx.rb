@@ -2,7 +2,7 @@
 # requirements: arm worn shield, set up stow containers
 # run: hunting area
 
-@arrange_count = 1
+@arrange_count = 5
 
 def start
   put "aim"
@@ -21,14 +21,14 @@ def start
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :next
       pause Rt::value
       circle 0
     when :wait_arrive
-      wait_for "begins to advance on you!"
+      wait_for(/advance you|melee range/)
       start
   end
 end
@@ -38,6 +38,7 @@ def circle count
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :next => [/Roundtime/],
             :health_check => [/You are still stunned/],
+            :adv => ["must be closer to use tactical abilities"],
             :stand => [/should stand up/] }
   result = match_wait match
 
@@ -61,6 +62,10 @@ def circle count
       else
         fire
       end
+    when :adv
+      put "advance"
+      pause 4
+      circle count + 1
   end
 end
 
@@ -79,7 +84,7 @@ def fire
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :load
@@ -112,7 +117,7 @@ def check_status
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :continue
@@ -124,7 +129,7 @@ def arrange count
   put "arrange"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
+            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
             :loot => [/arrange what|cannot be skinned/] }
   result = match_wait match
 
@@ -136,7 +141,7 @@ def arrange count
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :arrange
@@ -168,7 +173,7 @@ def skin
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :loot
@@ -194,7 +199,7 @@ def loot
       if Vitals::health < 60
         put "quit"
       else
-        pause Rt::value
+        pause 5
         start
       end
     when :aim

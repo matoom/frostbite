@@ -6,7 +6,7 @@
 #You melt into the background, convinced that your attempt to hide went unobserved.
 #It's hard to stalk if you aren't in a position to move around.
 
-@match_rt_adjustment = -1
+@rt_adjust = -1
 
 class String
   def numeric?

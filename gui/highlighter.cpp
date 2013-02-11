@@ -21,9 +21,11 @@ QString Highlighter::highlight(QString text) {
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry entry = highlightList->at(i);
             // match whole or partial words
-            QRegExp rx("\\b" + entry.value + "\\b");
+            QRegExp rx;
             if(entry.options.at(1)) {
                 rx.setPattern(entry.value);
+            } else {
+                rx.setPattern("\\b" + entry.value + "\\b");
             }
 
             int indexStart = text.indexOf(rx);                        

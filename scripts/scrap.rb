@@ -10,7 +10,7 @@ end
 def stow item
   put "stow #{item}"
   match = { :next => ["You put your"],
-            :end => ["You just can't"] }
+            :end => ["You just can't", "any more room"] }
   result = match_wait match
 
   case result
@@ -30,7 +30,7 @@ def get item
 end
 
 def scrap item
-  put "scrap #{item} with scraper"
+  put "scrap #{item} with scraper quick"
   match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
             :stow => ["clean as you can make it", "beyond repair"],
             :next => ["scrape your"],

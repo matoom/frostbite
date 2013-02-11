@@ -1,10 +1,10 @@
-@arrange_count = 1
+@arrange_count = 5
 
 def arrange count
   put "arrange"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
             :quit => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|You make a mistake/],
+            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
             :loot => [/arrange what|cannot be skinned/] }
   result = match_wait match
 

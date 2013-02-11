@@ -1,6 +1,6 @@
 put "rem bundle"
 wait
-put "get stinger from my bundle"
+put "get hoof from my bundle"
 wait
 put "sell my bundle"
 wait
