@@ -112,7 +112,7 @@
         <pre><code>$args # array, global variable</code></pre>
         <p>Contains the arguments passed on to the script in the command line.</p>
 
-        <pre><code>@match_rt_adjustment = 0 # number, class scope variable</code></pre>
+        <pre><code>@rt_adjust = 0 # number, class scope variable</code></pre>
         <p>This is an adjustment parameter which is added to the round time values used by match functions. It enables to regulate
         the wait times and make the script run faster by tightening the value. This is of course in case the script is
         prepared to deal with the possible outcome of running the commands too early.</p>
@@ -131,7 +131,30 @@
         put "put my #{$args.first} in my backpack"
     }
     </code></pre>
-        <br/>
+
+        <p>
+            The frostbite API includes a timer module for creating independant repetitive mechanics in the script flow.
+            The repetitive block has to be declared in the script header -- meaning it has to be declared before any
+            blocking part of the code. Otherwise if no repetitive block is declared or it does not follow the proper naming
+            conventions the repetitive functions will not be implemented. The name of the repetitive block has to be declared
+            in the following format - <i>"every_(n)s_do"</i>, where (n) denominates the number of seconds (minimum of 1)
+            in the execution interval. When executed, the repetitive block calls an interrupt on the script flow for the
+            period of execution and continues running the script after it ends.
+        </p>
+
+    <pre><code>
+    def every_25s_do {
+        put "exp perception"
+        match = { :end => [/% mind lock/, /% nearly locked/],
+                  :forage => [/EXP HELP/] }
+
+        case match_wait match
+            when :end
+                exit
+        end
+    }
+    </code></pre>
+
         <p>
             There are different ways to set up the script flow in Ruby. With some additions to the standard library
             it is possible to create Wizard-like label structures. For labels to work it is required to wrap the label code into
@@ -234,13 +257,13 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
 
 <pre><code>
 #escaped to match dot characters instead of any single character
-:wait => [/\.\.\.wait/]
+:wait => [/\.\.\.wait/, "only one command"]
 
 #case insensitive, bracets are escaped to match bracet characters
 :canyon => [/\[North Road, Canyon\]/i]
 
 #not containing any regular expression special characters
-:exit => ["study this chart again"]
+:exit => ["study this chart again", "need to be holding"]
 </code></pre>
     <br/>
 
