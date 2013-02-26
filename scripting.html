@@ -68,18 +68,23 @@
         <hgroup>
             <img src="img/logo.png" /><br/>
             <h1>Frostbite</h1>
-            <h2 class="">A MUD client for Dragonrealms</h2>
+            <h2 class="">A frontend for Dragonrealms MUD</h2>
         </hgroup>
     </header>
 
     <h2 class="contents_head" id="contents">3 Scripting</h2>
 
     <div class="about">
-        <p>
+        <p class="alert-box">
             The Frostbite scripting support is provided by the <a href="http://www.ruby-lang.org/en/">Ruby</a>
             scripting engine and will therefore require the <a href="http://www.ruby-lang.org/en/">Ruby</a> runtime
             libraries to be <a href="installation.html">installed</a>.
         </p>
+        <br/>
+        <p>
+            Ruby scripting engine adds a flexible and powerful scripting support for the game client. It is easy to use
+            for beginners and yet it still enables more complex scripting possibilities for advanced users.
+        </p><br/>
         <h3>High level description</h3>
         <p>
             Most of the scripting functionality is created in Ruby and it can be easily re-adjusted to every specific need. The
@@ -101,6 +106,7 @@
             <li>models.rb - wraps and provides the game data that can be used in scripts;</li>
             <li>data.rb - interface for game data library;</li>
             <li>ruby_goto.rb - enables to use Wizard style labels in script logic.</li>
+            <li>timer.rb - logic for dynamic timer functions.</li>
         </ul>
         <br/>
         <p>
