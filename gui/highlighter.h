@@ -26,10 +26,13 @@ private:
     HighlightSettings* highlightSettings;
     AudioPlayer* audioPlayer;
     MainWindow* mainWindow;
+    QRegExp rx;
+    QList<HighlightSettingsEntry>* highlightList;
 
     bool healthAlert;    
 
-    QString& highlightText(int, QString&, HighlightSettingsEntry);
+    //QString& highlightText(int, QString&, HighlightSettingsEntry);
+    void highlightText(HighlightSettingsEntry, QString&, int);
     void highlightAlert(HighlightSettingsEntry);
     void highlightTimer(HighlightSettingsEntry);
 

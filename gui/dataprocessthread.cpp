@@ -8,6 +8,9 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     gameDataContainer = GameDataContainer::Instance();
     highlighter = new Highlighter(parent);
 
+    rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
+    rxDmg.setPattern("fail to\\b|attempt to\\b");
+
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));
     connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowManager, SLOT(updateRoomWindowTitle(QString)));
@@ -18,6 +21,7 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(updateDeathsWindow(QString)), windowManager, SLOT(updateDeathsWindow(QString)));
     connect(this, SIGNAL(updateThoughtsWindow(QString)), windowManager, SLOT(updateThoughtsWindow(QString)));
     connect(this, SIGNAL(updateArrivalsWindow(QString)), windowManager, SLOT(updateArrivalsWindow(QString)));
+    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowManager, SLOT(updateFamiliarWindow(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolbarManager, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateStatus(QString, QString)), toolbarManager, SLOT(updateStatus(QString, QString)));
@@ -37,6 +41,8 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     bold = false;
     initRoundtime = false;
     prompt = false;
+
+    familiarElementCount = 0;
 }
 
 void DataProcessThread::updateHighlighterSettings() {
@@ -51,7 +57,10 @@ void DataProcessThread::addData(QByteArray buffer) {
 
 void DataProcessThread::run() {
     while(!dataQueue.isEmpty()) {
-        process(dataQueue.dequeue());
+        mMutex.lock();
+        localData = dataQueue.dequeue();
+        mMutex.unlock();
+        process(localData);
     }
 }
 
@@ -70,8 +79,8 @@ void DataProcessThread::processGameData(QByteArray data) {
     are needed elsewhere, they MUST be escaped using either numeric
     character references or the strings "&amp;" and "&lt;" respectively.*/
 
-    QString d = data;
-    d.replace(QRegExp("&(?!#?[a-z0-9]+;)"), "&amp;");
+    QString d = data;    
+    d.replace(rxAmp, "&amp;");
     data = d.toLocal8Bit();
 
     QDomDocument doc("GameData");
@@ -87,6 +96,8 @@ void DataProcessThread::processGameData(QByteArray data) {
     QDomElement root = doc.documentElement();
     QDomNode n = root.firstChild();
 
+    familiarElementCount = 0;
+
     gameText = "";
     while(!n.isNull()) {
         // Process game text
@@ -94,7 +105,7 @@ void DataProcessThread::processGameData(QByteArray data) {
             break;
         }
         // Process game data tags
-        filterDataTags(root, n);
+        filterDataTags(root, n, data);
 
         n = n.nextSibling();
     }
@@ -121,11 +132,14 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
             textData.replace("<", "&lt;");
 
             if(bold) {
-                gameText += "<SPAN ID=\"_BOLD\">" + textData + "</SPAN>";
+                if(root.text().contains(rxDmg)) {
+                    gameText += "<SPAN ID=\"_DAMAGE\">" + textData + "</SPAN>";
+                } else {
+                    gameText += "<SPAN ID=\"_BOLD\">" + textData + "</SPAN>";
+                }
             } else {
                 gameText += textData;
             }
-
         /* Process game text between tags */
         } else if(e.tagName() == "d") {
             gameText += e.text();
@@ -146,14 +160,24 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
             QString whisper = root.text().trimmed();
             whisper.insert(whisper.indexOf("\""), "</SPAN>");
             whisper.prepend("<SPAN ID=\"_WHISPER\">");
+
             emit updateConversationsWindow(whisper +
+            " [" + QTime::currentTime().toString("h:mm ap") + "]");
+        } else if(e.tagName() == "b") {
+            gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
+
+            QString yell = root.text().trimmed();
+            yell.insert(yell.indexOf("\""), "</SPAN>");
+            yell.prepend("<SPAN ID=\"_SPEECH\">");
+
+            emit updateConversationsWindow(yell +
             " [" + QTime::currentTime().toString("h:mm ap") + "]");
         }
     }
     return true;
 }
 
-void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
+void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray rawData) {
     QDomElement e = n.toElement();
 
     prompt = false;
@@ -280,8 +304,28 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameText += root.text();
             } else if(e.attribute("id") == "inv") {
                 inv = true;
+            } else if(e.attribute("id") == "familiar") {
+                familiarElementCount++;
+                if(familiarElementCount == 1) {
+                    QString text = root.text().trimmed();
+
+                    if(root.firstChildElement("preset").attribute("id") == "speech" ||
+                       root.firstChildElement("b").tagName() == "b") {
+                        text.insert(text.indexOf("\""), "</SPAN>");
+                        text.prepend("<SPAN ID=\"_SPEECH\">");
+                    } else if(root.firstChildElement("preset").attribute("id") == "whisper") {
+                        text.insert(text.indexOf("\""), "</SPAN>");
+                        text.prepend("<SPAN ID=\"_WHISPER\">");
+                    } else {
+                        gameText += text;
+                    }
+
+                    emit updateFamiliarWindow(text);
+                }
+            } else if(e.attribute("id") == "ooc") {
+                gameText += root.text();
             }
-        } else if (e.tagName() == "popStream") {
+        } else if(e.tagName() == "popStream") {
             pushStream = false;
             if(inv) {
                 gameDataContainer->setInventory(inventory);
@@ -328,7 +372,7 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            emit writeScriptText(line.toLocal8Bit());
+            //emit writeScriptText(line.toLocal8Bit());
 
             if(bold) {
                 line.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BOLD\">");
@@ -338,7 +382,7 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
             emit writeText(line.toLocal8Bit(), false);
         }
     } else if(gameText != "") {
-        emit writeScriptText(gameText.toLocal8Bit());
+        //emit writeScriptText(gameText.toLocal8Bit());
         emit writeText(gameText.toLocal8Bit(), prompt);
     }
 }
@@ -369,16 +413,16 @@ QString DataProcessThread::stripTags(QString line) {
     return textString;
 }
 
-void DataProcessThread::writeScript(QByteArray rawData) {
+/*void DataProcessThread::writeScript(QByteArray rawData) {
     QXmlStreamReader xml(rawData);
     QString textString;
     while (!xml.atEnd()) {
-        if ( xml.readNext() == QXmlStreamReader::Characters ) {
+        if (xml.readNext() == QXmlStreamReader::Characters) {
             textString += xml.text();
         }
     }
     emit writeScriptMessage(textString.toLocal8Bit());
-}
+}*/
 
 DataProcessThread::~DataProcessThread() {
     delete highlighter;

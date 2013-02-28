@@ -27,7 +27,7 @@ private:
     QMutex mMutex;
     bool multiLine;
 
-
+    QString localData;
     void process(QString data);
 
 public slots:

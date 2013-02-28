@@ -1,7 +1,7 @@
 #include "wordcompleter.h"
 
 WordCompleter::WordCompleter(QObject *parent) : QObject(parent) {
-    words << "arrange" << "attack" << "advance" << "accept" << "ambush" << "aim"
+    words << "aim" << "arrange" << "attack" << "advance" << "accept" << "ambush"
           << "appraise" << "ask" << "awaken"
           << "block" << "braid"  << "break" << "bundle" << "buy"
           << "cast" << "carve" << "chant" << "charge" << "clean" << "collect" << "close"
@@ -27,12 +27,13 @@ WordCompleter::WordCompleter(QObject *parent) : QObject(parent) {
           << "steal" << "stomp" << "stow" << "study" << "swap"
           << "think" << "target" << "teach" << "tell" << "thump" << "touch"
           << "unhide" << "unload" << "unlock"
-          << "whisper" << "watch" << "wealth";
+          << "watch" << "whisper" << "wealth";
 }
 
 void WordCompleter::findMatches(QStringList commandList) {
     if(match) {
-        matchesFound = words.filter(QRegExp("^" + commandList.last()));
+        rx.setPattern("^" + commandList.last());
+        matchesFound = words.filter(rx);
         commandCount = commandList.size();
         order = 0;
         match = false;

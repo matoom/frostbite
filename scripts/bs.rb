@@ -119,7 +119,7 @@ label(:stop_stalk) {
 
 label(:feint) {
   put "backstab"
-  match = { :dead => ["and collapses", "sharp halt", "ceases all movement"],
+  match = { :dead => ["and collapses", "sharp halt", "ceases all movement", "fades away"],
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime", "hidden to backstab"],
             :face => ["You can't backstab that."],

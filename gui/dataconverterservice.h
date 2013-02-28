@@ -27,6 +27,8 @@ private:
     void populateExpStates();
     QStringList mindStates;
 
+    QRegExp rxNumber;
+
 signals:
     
 public slots:

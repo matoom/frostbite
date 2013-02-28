@@ -18,7 +18,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), dataProcessThread, SLOT(updateHighlighterSettings()));
 
-    //this->loadMockData();
+    this->loadMockData();
 }
 
 void ConnectionManager::updateSettings() {
@@ -47,6 +47,16 @@ void ConnectionManager::initEauthSession(QString user, QString password) {
     eAuth->initSession();
 }
 
+void ConnectionManager::selectGame() {
+    // eAuth -> connectWizard
+    emit enableGameSelect();
+}
+
+void ConnectionManager::gameSelected(QString id) {
+    // connectWizard -> eAuth
+    emit eAuthGameSelected(id);
+}
+
 void ConnectionManager::resetEauthSession() {
     eAuth->resetSession();
 }
@@ -55,12 +65,12 @@ void ConnectionManager::addCharacter(QString id, QString name) {
     emit characterFound(id, name);
 }
 
-void ConnectionManager::retrieveEauthSessionKey(QString id) {
+void ConnectionManager::retrieveEauthSession(QString id) {
     emit retrieveSessionKey(id);
 }
 
-void ConnectionManager::eAuthsessionKeyRetrieved(QString sessionKey) {
-    emit sessionKeyRetrieved(sessionKey);
+void ConnectionManager::eAuthSessionRetrieved(QString host, QString port, QString sessionKey) {
+    emit sessionRetrieved(host, port, sessionKey);
 }
 
 void ConnectionManager::connectWizardError(QString errorMsg) {
@@ -71,12 +81,12 @@ void ConnectionManager::authError() {
     emit resetPassword();
 }
 
-void ConnectionManager::connectToHost(QString sessionKey) {
+void ConnectionManager::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
     waitForSettings = true;
 
     mainWindow->connectEnabled(false);
-    tcpSocket->connectToHost(settings->getParameter("Login/gameHost", "").toString(),
-                             settings->getParameter("Login/gamePort", "").toInt());
+
+    tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
 
     tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
                      "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
@@ -113,6 +123,7 @@ void ConnectionManager::socketReadyRead() {
                 this->writeCommand("_swclose sassess");
                 waitForSettings = false;
         }
+        //qDebug() << buffer;
 
         emit addToQueue(buffer);
 

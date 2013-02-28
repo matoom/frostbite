@@ -32,7 +32,7 @@ void ScriptService::runScript(QString input) {
             terminateFlag = false;
             script->execute(fileName, args);
         } else {
-            windowManager->writeGameWindow("[Script already executing.]");
+            windowManager->writeGameWindow("[Script " + fileName.toLocal8Bit() + ".rb already executing.]");
         }
     } else {
         windowManager->writeGameWindow("[Script not found.]");

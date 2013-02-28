@@ -9,6 +9,8 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     settings = new HighlightSettings();
     generalSettings = new GeneralSettings();
 
+    rxRemoveTags.setPattern("<[^>]*>");
+
     writePrompt = true;
 }
 
@@ -30,6 +32,7 @@ void WindowManager::reloadHighlighterSettings() {
     emit updateThoughtsSettings();
     emit updateDeathsSettings();
     emit updateConversationsSettings();
+    emit updateFamiliarSettings();
 }
 
 QPlainTextEdit* WindowManager::getGameWindow() {
@@ -95,7 +98,8 @@ void WindowManager::updateWindowStyle() {
         "#_ROOM_NAME {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}"
         "#_ECHO {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}"
         "#_SCRIPT {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";}"
-        "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}";
+        "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}"
+        "#_DAMAGE {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";}";
 
     foreach(QDockWidget* dock, dockWindows) {
         ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
@@ -108,7 +112,7 @@ void WindowManager::loadWindows() {
     gameWindow = (QPlainTextEdit*)new GameWindow(mainWindow);
     mainWindow->addWidgetMainLayout(gameWindow);
 
-    roomWindow = genericWindowFactory->createWindow("Room");
+    roomWindow = genericWindowFactory->createWindow(DOCK_TITLE_ROOM);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, roomWindow);
     dockWindows << roomWindow;
 
@@ -116,36 +120,42 @@ void WindowManager::loadWindows() {
 
     //https://bugreports.qt-project.org/browse/QTBUG-16252
 
-    arrivalsWindow = genericWindowFactory->createWindow("Arrivals");
+    arrivalsWindow = genericWindowFactory->createWindow(DOCK_TITLE_ARRIVALS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, arrivalsWindow);
     dockWindows << arrivalsWindow;
     connect(arrivalsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(arrivalsVisibility(bool)));
 
-    deathsWindow = genericWindowFactory->createWindow("Deaths");
+    deathsWindow = genericWindowFactory->createWindow(DOCK_TITLE_DEATHS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, deathsWindow);
     dockWindows << deathsWindow;
     connect(deathsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(deathsVisibility(bool)));
 
-    thoughtsWindow = genericWindowFactory->createWindow("Thoughts");
+    thoughtsWindow = genericWindowFactory->createWindow(DOCK_TITLE_THOUGHTS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, thoughtsWindow);
     dockWindows << thoughtsWindow;
     connect(thoughtsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(thoughtsVisibility(bool)));
 
-    expWindow = genericWindowFactory->createWindow("Experience");
+    expWindow = genericWindowFactory->createWindow(DOCK_TITLE_EXP);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
     dockWindows << expWindow;
 
-    conversationsWindow = genericWindowFactory->createWindow("Conversations");
+    conversationsWindow = genericWindowFactory->createWindow(DOCK_TITLE_CONVERSATIONS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
     dockWindows << conversationsWindow;
     connect(conversationsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(conversationsVisibility(bool)));
+
+    familiarWindow = genericWindowFactory->createWindow(DOCK_TITLE_FAMILIAR);
+    mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, familiarWindow);
+    dockWindows << familiarWindow;
+    connect(familiarWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(familiarVisibility(bool)));
 
     this->initWindowHighlighters();
 
     if(!clientSettings->hasValue("MainWindow/state")) {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
         mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
-        mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);
+        mainWindow->tabifyDockWidget(deathsWindow, familiarWindow);
+        mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);        
     }
 
     this->updateWindowStyle();    
@@ -179,6 +189,10 @@ void WindowManager::initWindowHighlighters() {
     conversationsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)conversationsWindow->widget(), false);
     connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
     highlighters << conversationsHighlighter;
+
+    familiarHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)familiarWindow->widget(), false);
+    connect(this, SIGNAL(updateFamiliarSettings()), familiarHighlighter, SLOT(updateSettings()));
+    highlighters << familiarHighlighter;
 }
 
 void WindowManager::thoughtsVisibility(bool visibility) {
@@ -200,6 +214,11 @@ void WindowManager::arrivalsVisibility(bool visibility) {
 void WindowManager::conversationsVisibility(bool visibility) {
     conversationsWindow->setWindowTitle(DOCK_TITLE_CONVERSATIONS);
     conversationsVisible = visibility;
+}
+
+void WindowManager::familiarVisibility(bool visibility) {
+    familiarWindow->setWindowTitle(DOCK_TITLE_FAMILIAR);
+    familiarVisible = visibility;
 }
 
 void WindowManager::setVisibilityIndicator(QDockWidget* widget, bool visible, QString title) {
@@ -232,6 +251,10 @@ QDockWidget* WindowManager::getDeathsWindow() {
 
 QDockWidget* WindowManager::getConversationsWindow() {
     return this->conversationsWindow;
+}
+
+QDockWidget* WindowManager::getFamiliarWindow() {
+    return this->familiarWindow;
 }
 
 void WindowManager::copyDock() {
@@ -352,6 +375,16 @@ void WindowManager::updateRoomWindow() {
     }
 }
 
+void WindowManager::updateFamiliarWindow(QString familiarText) {
+    setVisibilityIndicator(familiarWindow, familiarVisible, DOCK_TITLE_FAMILIAR);
+
+    familiarHighlighter->addText(familiarText.trimmed());
+
+    if(!familiarHighlighter->isRunning()) {
+        familiarHighlighter->start();
+    }
+}
+
 void WindowManager::updateRoomWindowTitle(QString title) {
     roomWindow->setWindowTitle("Room " + title);
 }
@@ -359,16 +392,19 @@ void WindowManager::updateRoomWindowTitle(QString title) {
 void WindowManager::writeScriptText(QByteArray text) {
     if(!text.isEmpty() && mainWindow->getScriptService()->isScriptActive()) {
         QString textString = text.constData();
-        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(QRegExp("<[^>]*>")).toLocal8Bit());        
+        //TODO: move remove tags to worker thread
+        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(rxRemoveTags).toLocal8Bit());
     }
 }
 
 void WindowManager::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         gameWindowHighlighter->addText(text);
+        this->writeScriptText(text);
         writePrompt = false;
     } else if(!prompt) {
         gameWindowHighlighter->addText(text);
+        this->writeScriptText(text);
         writePrompt = true;
     }
 

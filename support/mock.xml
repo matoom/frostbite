@@ -541,6 +541,9 @@ Your feet are finally dry.
 <component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
 <prompt time="1325173144">&gt;</prompt>
 <component id='exp Appraisal'></component>
+&lt; Attacking well, a musk hog slams its balled fist at you.  <pushBold/>You attempt to evade.  The fist lands a light hit to your right leg.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
 <prompt time="1325173144">&gt;</prompt>
 <component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
 <roundTime value='1325173148'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='97' text='fatigue 97%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
@@ -712,3 +715,104 @@ Obvious exits: <d>out</d>.
 Obvious exits: <d>out</d>.
 <compass><dir value="out"/></compass><prompt time="1358360269">&gt;</prompt>
 <component id='exp tdp'>            TDPs:  367</component>
+<prompt time="1361728312">&gt;</prompt>
+<pushStream id="talk"/><b>You yell,</b> "Hello."
+<popStream/><b>You yell,</b> "Hello."
+<prompt time="1361728317">&gt;</prompt>
+<pushStream id="logons"/> * Song Weaver Sauron joins the adventure.
+<popStream/><prompt time="1361728320">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><preset id='speech'>Elf says</preset>, "I'll get the wounds in a moment."
+<popStream/><preset id='speech'>Elf says</preset>, "I'll get the wounds in a moment."
+<popStream/><prompt time="1361728424">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>A worker enters pushing a wheelbarrow.  He dumps<popStream/><pushStream id="familiar" ifClosedStyle="watching"/> everything in the barrel into his wheelbarrow and begins<popStream/><pushStream id="familiar" ifClosedStyle="watching"/> to pick through the items....
+<popStream/><pushStream id="familiar" ifClosedStyle="watching"/>Having found nothing of interest to keep or save, he leaves again.
+<popStream/><prompt time="1361728426">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Hobbit nods.
+<popStream/><prompt time="1361728426">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='95' text='concentration 95%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1361728428">&gt;</prompt>
+<component id='exp Mechanical Lore'></component>
+<component id='exp Appraisal'>       Appraisal:  559 26% intrigued    </component>
+<prompt time="1361728430">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='95' text='concentration 95%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1361728434">&gt;</prompt>
+<pushStream id="logons"/> * Elf joins the adventure.
+<popStream/><prompt time="1361728436">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Elf puts her orb in her traveler's backpack.
+<popStream/><prompt time="1361728436">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Elf puts her orb in her traveler's backpack.
+<popStream/><prompt time="1361728437">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><preset id='speech'>Elf says</preset>, "Sit and I can tend."
+<popStream/><preset id='speech'>Elf says</preset>, "Sit and I can tend."
+<popStream/><prompt time="1361728437">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Hobbit takes a seat.
+<popStream/><prompt time="1361728438">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Elf gets a gath mysanda from inside a glittering black metal egg.
+<popStream/><prompt time="1361728439">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Hobbit grins<popStream/><pushStream id="familiar" ifClosedStyle="watching"/>.
+<popStream/><prompt time="1361728439">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/>Elf gestures.
+<popStream/><pushStream id="familiar" ifClosedStyle="watching"/>Rutilant sparks of light encircle Kaelie, seeping into her skin and bathing her<popStream/><pushStream id="familiar" ifClosedStyle="watching"/> in a warm glow.
+<popStream/><prompt time="1361728440">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='concentration' value='95' text='concentration 95%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1361728440">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><preset id='speech'>Hobbit says</preset>, "Thanks."
+<popStream/><preset id='speech'>Hobbit says</preset>, "Thanks."
+<popStream/><prompt time="1361728441">&gt;</prompt>
+<pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><b>Frodo yells,</b> "Hello."
+<popStream/><b>Frodo yells,</b> "Hello."
+<prompt time="1361728440">&gt;</prompt>
+<roundTime value='1325173145'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='98' text='fatigue 98%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+&lt; You kick your foot at a musk hog.  A musk hog fails to evade, taking the full blow.  <pushBold/>The foot lands a massive strike that blasts hard into the left arm and causes purple welts to appear almost immediately, lightly stunning it.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173142">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173144">&gt;</prompt>
+<component id='exp Appraisal'></component>
+&lt; Attacking well, a musk hog slams its balled fist at you.  You attempt to evade.  <pushBold/>The fist lands a light hit to your right leg.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173144">&gt;</prompt>
+<component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
+<roundTime value='1325173148'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='97' text='fatigue 97%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+&lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173145">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173146">&gt;</prompt>
+&lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173145">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog that appears stunned.</component>
+<prompt time="1325173146">&gt;</prompt>
+A musk hog hisses viciously and lunges at you!
+* Moving inexpertly, a musk hog charges wide at you.  You evade.
+[You're incredibly balanced and overwhelming your opponent.]
+<prompt time="1325173146">&gt;</prompt>
+&lt; Attacking well, a musk hog slams its balled fist at you.  You attempt to dodge. <pushBold/>  The fist lands a good hit that scratches the right forearm.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<prompt time="1325173144">&gt;</prompt>
+* Driving in like an unbeatable force, a Misenseor resuscitant slams its balled fist at you.  You fail to evade.  <pushBold/>The fist lands a good strike that barely punctures the skin on the upper chest causing a slight welt.<popBold/>
+[You're hurt, adeptly balanced and in very strong position.]
+<prompt time="1325173144">&gt;</prompt>
+<pushStream id="logons"/> * Aragorn returns home from a hard day of adventuring.
+<popStream/><prompt time="1325173146">&gt;</prompt>
+<dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='100' text='fatigue 100%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<dialogData id='minivitals'><progressBar id='concentration' value='46' text='concentration 46%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<component id='room players'></component>
+<prompt time="1325173148">&gt;</prompt>
+<component id='room objs'>You also see a musk hog, a musk hog which appears dead and a musk hog.</component>
+<prompt time="1325173148">&gt;</prompt>
+A musk hog hisses viciously and lunges at you!
+* Inexpertly, a musk hog lowers its head, snorting angrily and charges at you.  You evade.
+[You're incredibly balanced and overwhelming your opponent.]
+<prompt time="1325173148">&gt;</prompt>
+<roundTime value='1361967188'/><pushStream id="ooc"/>Legolaz rolled 19 (1 to 100).
+<popStream/>You rolled 19 (1 to 100).
+Roundtime: 2 sec.
+<prompt time="1361967186">&gt;</prompt>

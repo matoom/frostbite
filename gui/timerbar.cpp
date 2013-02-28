@@ -39,12 +39,14 @@ void TimerBar::intervalEvent() {
     timerProgress->setValue(value);
 }
 
-void TimerBar::loadProgressbar() {
+void TimerBar::load() {
     timerProgress = new QProgressBar();
     timerProgress->setValue(100);
     timerProgress->setMaximumHeight(2);
     timerProgress->setTextVisible(false);
+}
 
+void TimerBar::add() {
     mainWindow->addWidgetMainLayout(timerProgress);
 }
 

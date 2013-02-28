@@ -26,12 +26,12 @@ end
 
 def sell_pouch color
   contents = get_contents color
+  pause 0.1
   contents.each do |item|
     if item == "stuff"
       sell_pouch color
     end
 
-    pause 0.1
     put "get #{item} from my #{color} pouch"
     wait
     put "sell my #{item}"

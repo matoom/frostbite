@@ -85,6 +85,8 @@ private:
     QStringList container;
     QStringList inventory;
 
+    QRegExp rxNumber;
+
     QStringList extractExp(QString, bool brief);
     QReadWriteLock lock;
 

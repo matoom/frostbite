@@ -20,6 +20,7 @@ private:
     QStringList matchesFound;
     int order;
     int commandCount;
+    QRegExp rx;
 
     void findMatches(QStringList);
     

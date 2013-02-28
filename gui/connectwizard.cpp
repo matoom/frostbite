@@ -10,23 +10,28 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     movie = new QMovie(":/window/images/loading.gif");
 
     this->registerFields();
+    this->populateGameList();
 
     connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(pageSelected(int)));
 
-    connect(this, SIGNAL(loadCharacterList(QString, QString)),
+
+    connect(this, SIGNAL(gameSelected(QString)),
+            mainWindow->getConnectionManager(), SLOT(gameSelected(QString)));
+
+    connect(this, SIGNAL(initSession(QString, QString)),
             mainWindow->getConnectionManager(), SLOT(initEauthSession(QString, QString)));
 
     connect(mainWindow->getConnectionManager(), SIGNAL(characterFound(QString, QString)),
             this, SLOT(addCharacterList(QString, QString)));
 
-    connect(this, SIGNAL(retrieveSessionKey(QString)),
-            mainWindow->getConnectionManager(), SLOT(retrieveEauthSessionKey(QString)));
+    connect(this, SIGNAL(retrieveSession(QString)),
+            mainWindow->getConnectionManager(), SLOT(retrieveEauthSession(QString)));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(sessionKeyRetrieved(QString)),
-            this, SLOT(setSession(QString)));
+    connect(mainWindow->getConnectionManager(), SIGNAL(sessionRetrieved(QString, QString, QString)),
+            this, SLOT(setSession(QString, QString, QString)));
 
-    connect(this, SIGNAL(connectToServer(QString)),
-            mainWindow->getConnectionManager(), SLOT(connectToHost(QString)));
+    connect(this, SIGNAL(connectToServer(QString, QString, QString)),
+            mainWindow->getConnectionManager(), SLOT(connectToHost(QString, QString, QString)));
 
     connect(this, SIGNAL(resetConnection()),
             mainWindow->getConnectionManager(), SLOT(resetEauthSession()));
@@ -36,6 +41,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     connect(mainWindow->getConnectionManager(), SIGNAL(resetPassword()),
             this, SLOT(resetPassword()));
+
+    connect(mainWindow->getConnectionManager(), SIGNAL(enableGameSelect()),
+            this, SLOT(enableGameSelect()));
 }
 
 void ConnectWizard::showEvent(QShowEvent* event) {
@@ -44,22 +52,35 @@ void ConnectWizard::showEvent(QShowEvent* event) {
     this->init();
 }
 
+void ConnectWizard::populateGameList() {
+    gameList.insert("Dragonrealms", "DR");
+    gameList.insert("Dragonrealms The Fallen", "DRF");
+    gameList.insert("Dragonrealms Prime Test", "DRT");
+    gameList.insert("Dragonrealms Platinum", "DRX");
+
+    new QListWidgetItem(tr("Dragonrealms"), ui->gameList);
+    new QListWidgetItem(tr("Dragonrealms The Fallen"), ui->gameList);
+    new QListWidgetItem(tr("Dragonrealms Prime Test"), ui->gameList);
+    new QListWidgetItem(tr("Dragonrealms Platinum"), ui->gameList);
+
+    QList<QListWidgetItem*> selectedItems =
+            ui->gameList->findItems(settings->getParameter("Login/game", "").toString(), Qt::MatchExactly);
+
+    if(selectedItems.count() > 0) {
+        ui->gameList->setCurrentItem(selectedItems.first());
+    } else {
+        ui->gameList->setCurrentRow(0);
+    }
+}
+
 void ConnectWizard::registerFields() {
-    ui->wizardPage1->registerField("gameHost*", ui->gameHostEdit);
-    ui->wizardPage1->registerField("gamePort*", ui->gamePortEdit);
     ui->wizardPage1->registerField("authHost*", ui->authHostEdit);
     ui->wizardPage1->registerField("authPort*", ui->authPortEdit);
     ui->wizardPage1->registerField("user*", ui->userEdit);
     ui->wizardPage1->registerField("password*", ui->passwordEdit);
 }
 
-void ConnectWizard::init() {
-    ui->gameHostEdit->setText(settings->getParameter("Login/gameHost", "dr.simutronics.net").toString());
-    ui->gameHostEdit->setModified(true);
-
-    ui->gamePortEdit->setText(settings->getParameter("Login/gamePort", "11024").toString());
-    ui->gamePortEdit->setModified(true);
-
+void ConnectWizard::init() {            
     ui->authHostEdit->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());
     ui->authHostEdit->setModified(true);
 
@@ -91,14 +112,23 @@ void ConnectWizard::saveField(QString name, QString value) {
 }
 
 void ConnectWizard::saveSettings() {
-    this->saveField("Login/gameHost", ui->gameHostEdit->text());
-    this->saveField("Login/gamePort", ui->gamePortEdit->text());
     this->saveField("Login/authHost", ui->authHostEdit->text());
     this->saveField("Login/authPort", ui->authPortEdit->text());
     this->saveField("Login/user", ui->userEdit->text());
 }
 
-void ConnectWizard::setLoading(bool loading) {
+void ConnectWizard::saveHistory() {
+    this->saveField("Login/character", selectedCharacter);
+    this->saveField("Login/game", selectedGame);
+}
+
+void ConnectWizard::enableGameSelect() {
+    this->setGameListLoading(false);
+    this->button(QWizard::NextButton)->setEnabled(true);
+    ui->gameList->setEnabled(true);
+}
+
+void ConnectWizard::setCharacterListLoading(bool loading) {
     if(loading) {
         ui->loadingLabel->setMovie(movie);
         movie->start();
@@ -107,29 +137,50 @@ void ConnectWizard::setLoading(bool loading) {
     }
 }
 
+void ConnectWizard::setGameListLoading(bool loading) {
+    if(loading) {
+        ui->gameListLoading->setMovie(movie);
+        movie->start();
+    } else {
+        ui->gameListLoading->clear();
+    }
+}
+
 void ConnectWizard::pageSelected(int id) {
     switch (id) {
     case Page::login:
         characterList.clear();
         ui->characterBox->clear();
+        ui->gameList->setEnabled(false);
 
         emit resetConnection();
         break;
+    case Page::game:
+        this->setGameListLoading(true);
+        emit initSession(ui->userEdit->text(), ui->passwordEdit->text());
+        this->button(QWizard::NextButton)->setEnabled(false);
+        break;
     case Page::character:
+        selectedGame = ui->gameList->currentItem()->text();
+        emit gameSelected(gameList.value(selectedGame));
+
         if(characterList.isEmpty()) {
             this->saveSettings();
             this->password = ui->passwordEdit->text();
             ui->errorLabel->setText("");
 
-            this->setLoading(true);
+            this->setCharacterListLoading(true);
 
-            emit loadCharacterList(ui->userEdit->text(), ui->passwordEdit->text());
             this->button(QWizard::NextButton)->setEnabled(false);
         }
         break;
     case Page::connect:
+        selectedCharacter = ui->characterBox->currentText();
+
+        this->saveHistory();
+
         this->button(QWizard::FinishButton)->setEnabled(false);
-        emit retrieveSessionKey(characterList.value(ui->characterBox->currentText()));
+        emit retrieveSession(characterList.value(selectedCharacter));
         ui->finishLabel->setText("Retrieving session key ...");
         break;
     }
@@ -145,14 +196,20 @@ void ConnectWizard::addCharacterList(QString id, QString name) {
     int index = ui->characterBox->findText(name);
     if(index == -1) {
         ui->characterBox->addItem(name);
+
+        int index = ui->characterBox->findData(settings->getParameter("Login/character", ""), Qt::MatchExactly);
+        ui->characterBox->setCurrentIndex(index);
     }
 
-    this->setLoading(false);
+    this->setCharacterListLoading(false);
     this->button(QWizard::NextButton)->setEnabled(true);
 }
 
-void ConnectWizard::setSession(QString sessionKey) {
+void ConnectWizard::setSession(QString host, QString port, QString sessionKey) {
+    this->sessionHost = host;
+    this->sessionPort = port;
     this->sessionKey = sessionKey;
+
     this->button(QWizard::FinishButton)->setEnabled(true);
     this->button(QWizard::FinishButton)->setFocus();
     ui->finishLabel->setText("Press finish to connect with " + ui->characterBox->currentText() + ".");
@@ -161,7 +218,7 @@ void ConnectWizard::setSession(QString sessionKey) {
 void ConnectWizard::accept() {
     QDialog::accept();
 
-    emit connectToServer(sessionKey);
+    emit connectToServer(sessionHost, sessionPort, sessionKey);
     this->restart();
     this->init();
 }

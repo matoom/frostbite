@@ -11,7 +11,7 @@ path = ["go gate", "w", "w", "s", "s", "w", "w", "s", "w", "w", "w", "w", "w", "
         "go bushes", "n", "ne", "n", "n", "up", "n", "n"]
 
 100.times do
-  exp = Exp::state "climbing"
+  exp = Exp::state "athletics"
 
   echo "*** #{exp} ***"
 

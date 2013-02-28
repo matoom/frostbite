@@ -1,5 +1,4 @@
 class Timer
-
   def repeat_every(interval)
     Thread.new do
       sleep interval
@@ -43,4 +42,7 @@ class Timer
     end
   end
 
+  def stop
+    terminate_thread
+  end
 end

@@ -19,16 +19,19 @@
 #define ECHO_COLOR_RGB 255, 255, 127
 #define SCRIPT_COLOR_HEX "#aaaaff"
 #define SCRIPT_COLOR_RGB 170, 170, 255
+#define DAMAGE_COLOR_HEX "#ff557f"
+#define DAMAGE_COLOR_RGB 255, 85, 127
 
 #define ROOM_NAME "1_roomName"
 #define GAME_MESSAGE "2_gameMessage"
-#define SPEECH "3_speech"
-#define WHISPER "4_whisper"
-#define THINKING "5_thinking"
-#define BONUS "6_bonus"
-#define PENALTY "7_penalty"
-#define SCRIPT "8_script"
-#define ECHO "9_echo"
+#define DAMAGE "3_damage"
+#define SPEECH "4_speech"
+#define WHISPER "5_whisper"
+#define THINKING "6_thinking"
+#define BONUS "7_bonus"
+#define PENALTY "8_penalty"
+#define SCRIPT "9_script"
+#define ECHO "10_echo"
 
 #define DEFAULT_MAIN_FONT "Consolas"
 #define DEFAULT_MAIN_FONT_SIZE 12
@@ -45,6 +48,9 @@
 #define DOCK_TITLE_THOUGHTS "Thoughts"
 #define DOCK_TITLE_ROOM "Room"
 #define DOCK_TITLE_CONVERSATIONS "Conversations"
+#define DOCK_TITLE_FAMILIAR "Familiar"
+#define DOCK_TITLE_EXP "Experience"
+
 
 
 #endif // DEFAULTVALUES_H

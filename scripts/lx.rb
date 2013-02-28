@@ -4,6 +4,14 @@
 
 @arrange_count = 5
 
+def check_health
+  if Vitals::health < 50
+    put "quit"
+  else
+    pause 5
+  end
+end
+
 def start
   put "aim"
   put "appr #{$args.join(" ")} quick"
@@ -18,12 +26,8 @@ def start
       pause 0.5
       start
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      start
     when :next
       pause Rt::value
       circle 0
@@ -50,12 +54,8 @@ def circle count
       put "stand"
       circle count
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause Rt::value
-        start
-      end
+      check_health
+      circle count
     when :next
       if count < 1
         circle count + 1
@@ -81,12 +81,8 @@ def fire
       pause 0.5
       fire
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      fire
     when :load
       load
   end
@@ -114,12 +110,8 @@ def check_status
     when :dead
       arrange 0
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      check_status
     when :continue
       start
   end
@@ -130,7 +122,7 @@ def arrange count
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
             :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
-            :loot => [/arrange what|cannot be skinned/] }
+            :loot => [/arrange what|cannot be skinned|corpse is worthless now/] }
   result = match_wait match
 
   case result
@@ -138,12 +130,8 @@ def arrange count
       pause 0.5
       arrange count
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      arrange count
     when :arrange
       if count < @arrange_count - 1
         arrange count + 1
@@ -170,12 +158,8 @@ def skin
       pause 0.5
       skin
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      skin
     when :loot
       loot
   end
@@ -196,12 +180,8 @@ def loot
       pause 0.5
       loot
     when :health_check
-      if Vitals::health < 60
-        put "quit"
-      else
-        pause 5
-        start
-      end
+      check_health
+      loot
     when :aim
       pause 0.5
       start

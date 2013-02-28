@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QLibrary>
+#include <QDebug>
 
 class DataService : public QObject {
     Q_OBJECT
@@ -16,6 +17,8 @@ public:
     typedef void (*Set_b)(bool);
     typedef void (*Set_s)(const char*);
     typedef void (*Set_i)(int);
+
+    bool isLoaded();
 
     AddExp addExpField;
     RemoveExp removeExpField;
@@ -61,6 +64,7 @@ private:
     void loadDataLib();
 
     QLibrary* dataLib;
+    bool loaded;
 
 signals:
 

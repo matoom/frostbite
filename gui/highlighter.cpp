@@ -8,6 +8,7 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     healthAlert = true;
 
     connect(this, SIGNAL(playAudio(QString)), audioPlayer, SLOT(play(QString)));
+    connect(this, SIGNAL(setTimer(int)), mainWindow->getTimerBar(), SLOT(setTimer(int)));
 }
 
 void Highlighter::reloadSettings() {
@@ -16,12 +17,12 @@ void Highlighter::reloadSettings() {
 
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
-        QList<HighlightSettingsEntry>* highlightList = highlightSettings->getSettings("TextHighlight");
+        highlightList = highlightSettings->getSettings("TextHighlight");
 
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry entry = highlightList->at(i);
+
             // match whole or partial words
-            QRegExp rx;
             if(entry.options.at(1)) {
                 rx.setPattern(entry.value);
             } else {
@@ -30,22 +31,8 @@ QString Highlighter::highlight(QString text) {
 
             int indexStart = text.indexOf(rx);                        
             if(indexStart != -1) {
-                QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
-                QString endTag = "</span>";
-
-                int indexEnd = indexStart + startTag.length() + entry.value.length();
-                //entire row
-                if(entry.options.at(0)) {
-                    indexEnd = text.length() + startTag.length();
-                    // starting with
-                    if(!entry.options.at(2)) {
-                        indexStart = 0;
-                    }
-                    text.insert(indexStart, startTag);
-                    text.insert(indexEnd, endTag);
-                } else {
-                    text.replace(rx, startTag + entry.value + endTag);
-                }
+                // highlight text
+                this->highlightText(entry, text, indexStart);
 
                 // play alert
                 this->highlightAlert(entry);
@@ -58,6 +45,25 @@ QString Highlighter::highlight(QString text) {
     return text;
 }
 
+void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart) {
+    QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
+    QString endTag = "</span>";
+
+    int indexEnd = indexStart + startTag.length() + entry.value.length();
+    //entire row
+    if(entry.options.at(0)) {
+        indexEnd = text.length() + startTag.length();
+        // starting with
+        if(!entry.options.at(2)) {
+            indexStart = 0;
+        }
+        text.insert(indexStart, startTag);
+        text.insert(indexEnd, endTag);
+    } else {
+        text.replace(rx, startTag + entry.value + endTag);
+    }
+}
+
 void Highlighter::highlightAlert(HighlightSettingsEntry entry) {
     if(entry.alert) {
         emit playAudio(entry.alertValue);
@@ -65,8 +71,6 @@ void Highlighter::highlightAlert(HighlightSettingsEntry entry) {
 }
 
 void Highlighter::highlightTimer(HighlightSettingsEntry entry) {
-    connect(this, SIGNAL(setTimer(int)), mainWindow->getTimerBar(), SLOT(setTimer(int)));
-
     if(entry.timer) {
         if (entry.timerAction == "Ignore") {
             if(!mainWindow->getTimerBar()->isActive()){

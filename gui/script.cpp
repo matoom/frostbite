@@ -8,6 +8,8 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
     connect(script_proc, SIGNAL(started()), this, SLOT(start()));
     connect(script_proc, SIGNAL(finished(int)), this, SLOT(finish(int)));
 
+    path = QDir::currentPath() + "/scripts/lib/main.rb";
+
     running = false;
 }
 
@@ -19,7 +21,6 @@ bool Script::isRunning() {
 }
 
 void Script::execute(QString fileName, QList<QString> userArgs) {
-    QString path = QDir::currentPath() + "/scripts/lib/main.rb";
     QString file = QDir::currentPath() + "/scripts/" + fileName + ".rb";
 
     QStringList arguments;

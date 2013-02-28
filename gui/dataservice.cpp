@@ -14,10 +14,14 @@ DataService::DataService(QObject *parent) : QObject(parent) {
     this->loadDataLib();
 }
 
+bool DataService::isLoaded() {
+    return loaded;
+}
+
 void DataService::loadDataLib() {
     dataLib = new QLibrary();
     dataLib->setFileName("data");
-    dataLib->load();
+    loaded = dataLib->load();
 
     addExpField = (AddExp)dataLib->resolve("addExpField");
     removeExpField = (RemoveExp)dataLib->resolve("removeExpField");

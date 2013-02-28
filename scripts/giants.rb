@@ -2,6 +2,26 @@
 # requirements: -
 # run: rossman's landing east gate
 
+def climb
+  put "climb rope"
+  match = { :wait_climb => [/You'll have to wait/],
+            :climb => [/\[On a Rope Bridge, Above a Ravine\]/],
+            :stow => [/You can't possibly manage to cross/] }
+
+  case match_wait match
+    when :wait_climb
+      put "hide"
+      wait_for(/finally|on the other side/)
+      climb
+    when :stow
+      put "stow left"
+      wait
+      put "stow right"
+      wait
+      climb
+  end
+end
+
 move "e"
 move "se"
 move "e"
@@ -19,25 +39,7 @@ move "nw"
 move "ne"
 move "nw"
 
-put "climb rope"
-match = { :wait_climb => [/You'll have to wait/],
-          :climb => [/\[On a Rope Bridge, Above a Ravine\]/],
-          :stow => [/You can't possibly manage to cross/] }
-
-result = match_wait match
-
-case result
-  when :wait_climb
-    put "hide"
-    wait_for(/finally arriving/)
-  when :stow
-    put "stow left"
-    wait
-    put "stow right"
-    wait
-    put "climb"
-    wait
-end
+climb
 
 move "shuffle north"
 move "shuffle north"

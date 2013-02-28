@@ -74,14 +74,17 @@ void MainWindow::setBackgroundColor(QColor color) {
 }
 
 void MainWindow::loadClient() {
-    windowManager = new WindowManager(this);
-    windowManager->loadWindows();
-
     tbm = new ToolbarManager(this);
     tbm->loadToolbar();
 
     timerBar = new TimerBar(this);
-    timerBar->loadProgressbar();
+    timerBar->load();
+
+    windowManager = new WindowManager(this);
+    windowManager->loadWindows();
+
+    // add to layout after main window
+    timerBar->add();
 
     cmdLine = new CommandLine(this);
     ui->mainLayout->addWidget(cmdLine);

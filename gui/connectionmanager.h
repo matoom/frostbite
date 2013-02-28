@@ -48,22 +48,26 @@ private:
 signals:
     void characterFound(QString, QString);
     void retrieveSessionKey(QString);
-    void sessionKeyRetrieved(QString);
+    void eAuthGameSelected(QString);
+    void sessionRetrieved(QString, QString, QString);
     void eAuthError(QString);
     void addToQueue(QByteArray);
     void updateHighlighterSettings();
     void resetPassword();
+    void enableGameSelect();
 
 public slots:
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError);
-    void connectToHost(QString);
+    void connectToHost(QString, QString, QString);
     void disconnectedFromHost();
     void initEauthSession(QString, QString);
+    void selectGame();
+    void gameSelected(QString);
     void resetEauthSession();
     void addCharacter(QString, QString);
-    void retrieveEauthSessionKey(QString);
-    void eAuthsessionKeyRetrieved(QString);
+    void retrieveEauthSession(QString);
+    void eAuthSessionRetrieved(QString, QString, QString);
     void connectWizardError(QString);
     void authError();
 };

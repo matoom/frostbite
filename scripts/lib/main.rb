@@ -334,12 +334,12 @@ sleep Rt::value
 
 # run timer, check for "every_(n)s_do"
 # method and set up interrupt mechanics
-timer = Timer.new
-Thread.new { timer.run }
+@timer = Timer.new
+Thread.new { @timer.run }
 
 # run script file here
 require @_file
 
 # end threads after finished
 end_command_thread
-timer.terminate_thread
+@timer.terminate_thread

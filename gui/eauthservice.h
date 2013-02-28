@@ -31,19 +31,24 @@ private:
     QString key;
     QString user;
 
+    QString gameId;
+
     QString errorMessage;
 
     char* sge_encrypt_password(char *passwd, char *hash);
     void negotiateSession(QByteArray);
+    QByteArray extractValue(QByteArray);
 
 signals:
-     void sessionKeyRetrieved(QString);
+     void sessionRetrieved(QString, QString, QString);
      void addCharacter(QString, QString);
+     void selectGame();
      void connectionError(QString);
      void authError();
 
 public slots:
     void retrieveSessionKey(QString);
+    void gameSelected(QString id);
 
 private slots:
     void socketReadyRead();

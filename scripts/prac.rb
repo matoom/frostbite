@@ -15,7 +15,7 @@ put "get bones"
 
 100.times do
   pause 0.2
-  put "play battle on my bones"
+  put "play elegy on my bones"
   wait
   put "climb practice #{$args.join(" ")}"
 

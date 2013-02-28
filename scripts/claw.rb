@@ -1,11 +1,19 @@
 @arrange_count = 5
 
+def check_health
+  if Vitals::health < 50
+    put "quit"
+  else
+    pause 5
+  end
+end
+
 def arrange count
   put "arrange"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
             :quit => [/You are still stunned/],
             :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
-            :loot => [/arrange what|cannot be skinned/] }
+            :loot => [/arrange what|cannot be skinned|corpse is worthless now/] }
   result = match_wait match
 
   case result
@@ -13,7 +21,8 @@ def arrange count
       pause 0.5
       arrange count
     when :quit
-      put "quit"
+      check_health
+      arrange count
     when :arrange
       if count < @arrange_count - 1
         arrange count + 1
@@ -40,7 +49,8 @@ def skin
       pause 0.5
       skin
     when :quit
-      put "quit"
+      check_health
+      skin
     when :loot
       loot
   end
@@ -58,13 +68,15 @@ def loot
       pause 0.5
       loot
     when :quit
-      put "quit"
+      check_health
+      loot
   end
 end
 
 10000.times do
   put "claw"
-  match = { :wait => [/\.\.\.wait|entangled in a web|still stunned/],
+  match = { :wait => [/\.\.\.wait|entangled in a web/],
+            :stunned => [/still stunned/],
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",
                       "sharp halt", "crumbles", "life force fades away"],
@@ -83,5 +95,7 @@ end
     when :adv
       put "advance"
       pause 2
+    when :stunned
+      check_health
   end
 end

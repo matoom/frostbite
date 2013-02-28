@@ -19,15 +19,14 @@ void HighlighterThread::addText(QString text) {
     mMutex.lock();
     dataQueue.enqueue(text);
     mMutex.unlock();
-
-    /*QWriteLocker locker(&lock);
-    dataQueue.enqueue(text);*/
 }
 
 void HighlighterThread::run() {
-    //QReadLocker locker(&lock);
     while(!dataQueue.isEmpty()) {
-        process(dataQueue.dequeue());
+        mMutex.lock();
+        localData = dataQueue.dequeue();
+        mMutex.unlock();
+        process(localData);
     }
 }
 
@@ -49,6 +48,7 @@ void HighlighterThread::process(QString data) {
     } else {
         text = highlighter->highlight(data);
     }
+
     emit writeText("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">" + text + "</SPAN>");
 }
 

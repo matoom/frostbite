@@ -26,6 +26,8 @@ private:
     ScriptService* scriptService;
     QProcess* script_proc;
 
+    QString path;
+
     bool running;
 
 signals:

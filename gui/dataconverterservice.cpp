@@ -12,6 +12,8 @@ DataConverterService* DataConverterService::Instance() {
 
 DataConverterService::DataConverterService(QObject *parent) : QObject(parent) {
     this->populateExpStates();
+
+    rxNumber.setPattern("(\\d+)");
 }
 
 void DataConverterService::populateExpStates() {
@@ -40,9 +42,8 @@ int DataConverterService::expStateToNumeric(QString state) {
 }
 
 int DataConverterService::expBriefToNumeric(QString state) {
-    QRegExp rx("(\\d+)");
-    rx.indexIn(state, 0);
-    return rx.cap(1).toInt();
+    rxNumber.indexIn(state, 0);
+    return rxNumber.cap(1).toInt();
 }
 
 QString DataConverterService::expNumericToState(int index) {

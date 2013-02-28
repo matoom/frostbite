@@ -4,6 +4,8 @@ MacroService::MacroService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     macroSettings = MacroSettings::Instance();
 
+    rxCmd.setPattern("\\$n|\\$s");
+
     macroThread = new MacroThread();
 
     connect(this, SIGNAL(init(QHash<QString, QStringList>, int)), macroThread, SLOT(init(QHash<QString, QStringList>, int)));
@@ -47,9 +49,8 @@ void MacroService::writeCommand(QString text) {
 }
 
 QHash<QString, QStringList> MacroService::processCommands(QString macroString) {
-    QHash<QString, QStringList> macro;
-
-    QStringList commands(macroString.split(QRegExp("\\$n|\\$s"), QString::SkipEmptyParts));
+    QHash<QString, QStringList> macro;   
+    QStringList commands(macroString.split(rxCmd, QString::SkipEmptyParts));
     macro.insert("commands", commands);
 
     QByteArray bytes(macroString.toLocal8Bit());

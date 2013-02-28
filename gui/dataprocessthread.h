@@ -36,7 +36,7 @@ private:
     QMutex mMutex;
 
     bool filterPlainText(QDomElement, QDomNode);
-    void filterDataTags(QDomElement, QDomNode);
+    void filterDataTags(QDomElement, QDomNode, QByteArray);
 
     MainWindow* mainWindow;
     WindowManager* windowManager;
@@ -58,12 +58,19 @@ private:
     bool initRoundtime;
     bool prompt;
 
+    int familiarElementCount;
+
     void processGameData(QByteArray);
     void processPushStream(QByteArray);
     void writeGameText(QByteArray);
-    void writeScript(QByteArray);
+    //void writeScript(QByteArray);
     void fixMonoTags(QString&);
     QString stripTags(QString);
+
+    QRegExp rxAmp;
+    QRegExp rxDmg;
+
+    QByteArray localData;
 
 signals:
     void updateConversationsWindow(QString);
@@ -75,6 +82,7 @@ signals:
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);
+    void updateFamiliarWindow(QString);
 
     void updateVitals(QString, QString);
     void updateStatus(QString, QString);

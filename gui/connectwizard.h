@@ -8,7 +8,7 @@
 #include <mainwindow.h>
 
 namespace Page {
-    enum { login, character, connect };
+    enum { login, game, character, connect };
 }
 
 class ClientSettings;
@@ -30,15 +30,25 @@ private:
     ClientSettings* settings;
     MainWindow* mainWindow;
     QHash<QString, QString> characterList;
+    QHash<QString, QString> gameList;
     QMovie* movie;
+
     QString sessionKey;
+    QString sessionPort;
+    QString sessionHost;
     QString password;
+
+    QString selectedCharacter;
+    QString selectedGame;
 
     void init();
     void saveField(QString, QString);
     void saveSettings();
+    void saveHistory();
     void registerFields();
-    void setLoading(bool);
+    void populateGameList();
+    void setCharacterListLoading(bool);
+    void setGameListLoading(bool);
     void showEvent(QShowEvent*);
 
     void accept();
@@ -47,14 +57,16 @@ private:
 private slots:
     void pageSelected(int);
     void addCharacterList(QString, QString);
-    void setSession(QString);
+    void setSession(QString, QString, QString);
     void showError(QString);
     void resetPassword();
+    void enableGameSelect();
 
 signals:
-    void loadCharacterList(QString, QString);
-    void retrieveSessionKey(QString);
-    void connectToServer(QString);
+    void initSession(QString, QString);
+    void gameSelected(QString);
+    void retrieveSession(QString);
+    void connectToServer(QString, QString, QString);
     void resetConnection();
 };
 

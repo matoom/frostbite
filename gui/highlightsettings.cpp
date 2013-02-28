@@ -2,8 +2,6 @@
 
 HighlightSettings::HighlightSettings() {
     this->init();
-
-    settingsList = NULL;
 }
 
 void HighlightSettings::init() {

@@ -15,14 +15,20 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
                 this, SLOT(startSession()));
     }
 
+    connect(this, SIGNAL(selectGame()),
+            connectionManager, SLOT(selectGame()));
+
     connect(this, SIGNAL(addCharacter(QString, QString)),
             connectionManager, SLOT(addCharacter(QString, QString)));
 
     connect(connectionManager, SIGNAL(retrieveSessionKey(QString)),
             this, SLOT(retrieveSessionKey(QString)));
 
-    connect(this, SIGNAL(sessionKeyRetrieved(QString)),
-            connectionManager, SLOT(eAuthsessionKeyRetrieved(QString)));
+    connect(connectionManager, SIGNAL(eAuthGameSelected(QString)),
+            this, SLOT(gameSelected(QString)));
+
+    connect(this, SIGNAL(sessionRetrieved(QString, QString, QString)),
+            connectionManager, SLOT(eAuthSessionRetrieved(QString, QString, QString)));
 
     connect(this, SIGNAL(connectionError(QString)),
             connectionManager, SLOT(connectWizardError(QString)));
@@ -59,6 +65,14 @@ void EAuthService::retrieveSessionKey(QString id) {
     }
 }
 
+void EAuthService::gameSelected(QString id) {
+    this->gameId = id;
+
+    if(tcpSocket) {
+        tcpSocket->write("F\t" + id.toLocal8Bit() + "\n");
+    }
+}
+
 /* @source: http://warlockclient.wikia.com/wiki/EAccess_Protocol */
 char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
     char *final = (char*)malloc(sizeof (char)* 33);
@@ -82,11 +96,17 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         }
         tcpSocket->write("M\n");
     } else if(buffer.startsWith("M\t")) {
-        tcpSocket->write("F\tDR\n");
+        emit selectGame();
     } else if(buffer.startsWith("F\t")) {
-        tcpSocket->write("G\tDR\n");
+        QList<QByteArray> fResponse = buffer.split('\t');
+        if(fResponse.takeLast().trimmed() == "NEW_TO_GAME") {
+            emit connectionError("Subscription error.");
+            tcpSocket->disconnectFromHost();
+            return;
+        }
+        tcpSocket->write("G\t" + this->gameId.toLocal8Bit() + "\n");
     } else if(buffer.startsWith("G\t")) {
-        tcpSocket->write("P\tDR\n");
+        tcpSocket->write("P\t" + this->gameId.toLocal8Bit() + "\n");
     } else if(buffer.startsWith("P\t")) {
         tcpSocket->write("C\n");
     } else if(buffer.startsWith("C\t")) {
@@ -95,7 +115,11 @@ void EAuthService::negotiateSession(QByteArray buffer) {
                 QString::fromLocal8Bit(cResponse.takeLast().trimmed()));
     } else if(buffer.startsWith("L\t")) {
         QList<QByteArray> lResponse = buffer.split('\t');
-        emit sessionKeyRetrieved(lResponse.takeLast().mid(4).trimmed());
+
+        emit sessionRetrieved(this->extractValue(lResponse.takeLast()),
+                              this->extractValue(lResponse.takeLast()),
+                              this->extractValue(lResponse.takeLast().trimmed()));
+
         tcpSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
         emit connectionError("Invalid user or password.");
@@ -111,6 +135,11 @@ void EAuthService::negotiateSession(QByteArray buffer) {
             emit connectionError("Unable to obtain session key.");
         }
     }
+}
+
+QByteArray EAuthService::extractValue(QByteArray valuePair) {
+    int index = valuePair.indexOf('=');
+    return valuePair.mid(index + 1);
 }
 
 void EAuthService::socketReadyRead() {

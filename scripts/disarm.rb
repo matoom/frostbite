@@ -5,7 +5,7 @@
 
 @harvest = true
 
-if $args.join(" ").include? "noh"
+if $args.join(" ").include? "h"
   @harvest = false;
 end
 
@@ -14,9 +14,10 @@ def ident(box)
   put "disarm my #{box} ident"
   match = { :wait => [/\.\.wait/],
             :ident => ["fails to reveal to you what"],
-            :quick => ["can take down any time", "a simple matter", "should not take long",
+            :quick => ["a simple matter", "should not take long",
                        "aged grandmother could defeat", "could do it blindfolded"],
-            :normal => ["this trap is precisely at your", "only minor troubles", "has the edge on you"],
+            :normal => ["can take down any time", "this trap is precisely at your", "only minor troubles",
+                        "has the edge on you"],
             :careful => ["have some chance of being able to", "odds are against you", "would be a longshot"],
             :hard => ["really don't have any", "prayer would be a good start", "same shot as a snowball",
                       "pitiful snowball encased", "just jump off a cliff"],
@@ -76,7 +77,7 @@ def disarm(box, method)
         ident box
       end
     when :analyze_last
-      if method == :blind or method == :quick
+      if @harvest and (method == :blind or method == :quick)
         analyze box, true
       else
         exit_script("*** box disarmed! ***")

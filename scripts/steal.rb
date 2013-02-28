@@ -4,6 +4,7 @@
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start focus hasten darken dampen shadowstep plunder"
+@mark = false
 @debug_mode = false
 
 @crossing_items =
@@ -17,21 +18,21 @@
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => "gold brocade tail coat", :amount => 3 }, #[Brisson's Haberdashery, Sales Salon]
       :tannery => { :item => "lotion", :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "bucket", :amount => 1 } #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "bucket", :amount => 2 } #[Chizili's Alchemical Goods, Salesroom]
     }
 
 @arthe_items =
     {
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
-      :odds => { :item  => "hat", :amount => 1 }, #[Odds 'n Ends, Sales Room]
-      :bardic => { :item  => "peri'el's", :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
+      :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
+      :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "map", :amount => 1 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "map", :amount => 2 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
-      :alberdeen => { :item  => "arm pouch", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room]
+      :alberdeen => { :item  => "arm pouch", :amount => 2 }, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]
       :ongadine => { :item  => "ebony silk mantle", :amount => 3 }, #[Ongadine's Garb and Gear]
       :bardic_leth => { :item  => "hat", :amount => 1 }, #[Sinjian's Bardic Requisites, Workshop]
@@ -40,68 +41,70 @@
       :shack => { :item  => "brass shield", :amount => 2 } #[Leth Deriel, Wooden Shack]
     }
 
+@ilaya_pier_items = [{:name => "flask", :amount => 2},
+                     {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
+                     {:name => "skirt", :desc => "white velvet skirt cinched at the waist", :amount => 1},
+                     {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 1},
+                     {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
+                     {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
+                     {:name => "moonstone lily", :amount => 1},
+                     {:name => "earrings", :desc =>"dangling golden earrings", :amount => 1},
+                     {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                     {:name => "vial", :desc => "jade glass vial", :amount => 1},
+                     {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
+                     {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2}]
+
 @ilaya_items =
     {
         :tower => { :item  => "pike", :amount => 1 },
-        :fish => {:item => "fishbowl", :amount => 1}, #[Fernwyk's Fish]
-        :fishmonger => {:item => "pole", :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
-        :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
-        :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
-        :backfence_gossip => { :items => [{:name => "skirt", :desc => "green velvet skirt", :amount => 1},
-                                          {:name => "vial", :desc =>"citrine glass vial", :amount => 2},
-                                          {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2}] },
-        :blood_bane => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
-                                    {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
-                                    {:name => "skirt", :desc => "trumpet skirt", :amount => 1}] },
+        :fish => {:item => "fishbowl", :amount => 1 }, #[Fernwyk's Fish]
+        :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
+        :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
+        :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
+        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
+        :backfence_gossip => { :items =>  @ilaya_pier_items },
+        :blood_bane => { :items => @ilaya_pier_items },
         :bloody_barnacle => {}, #furniture
-        :ninth_life => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                                    {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
-        :dark_nighttrawler => { :items => [{:name => "ring", :desc => "jade glass vial", :amount => 1}]},
+        :ninth_life => { :items => @ilaya_pier_items },
+        :dark_nighttrawler => { :items => @ilaya_pier_items },
         :drunken_sage => { :items => [], :amount => 0 }, #food
         :dusktide_rising => {},
-        :winged_duck => { :items => [{ :name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1 }] },
+        :winged_duck => { :items => @ilaya_pier_items },
         :fleetwing_gull => { :items => [], :amount => 0 }, #food
         :golden_apple => { :items => [], :amount => 0 }, #furniture
-        :harper_song => {:items => [{:name => "vial", :desc => "jade glass vial", :amount => 1}] },
+        :harper_song => {:items => @ilaya_pier_items },
         :marsh_skipper => {},
         :merelew_wench => { :items => [], :amount => 0 }, #food
-        :mermaid_fall => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
+        :mermaid_fall => { :items => @ilaya_pier_items },
         :moveable_feast => {},
         :night_sky_hair => {},
         :north_wind_skimmer => {},
-        :paper_lion => { :items => [{:name => "flask", :amount => 2},
-                                    {:name => "skirt", :desc =>"white velvet skirt cinched at the waist", :amount => 1},
-                                    {:name => "ring", :desc =>"copper ring shaped like a pair of clasped", :amount => 1},
-                                    {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1}] },
-        :river_dreamer => { :items => [{:name => "moonstone lily", :amount => 1},
-                                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
-                                      {:name => "earrings", :desc =>"dangling golden earrings", :amount => 1}] },
+        :paper_lion => { :items => @ilaya_pier_items },
+        :river_dreamer => { :items => @ilaya_pier_items },
         :rusty_barnacle => {},
         :spinning_jenny => { :items => [], :amount => 0 }, #furniture
         :talking_salmon => { :items => [], :amount => 0 }, #food
         :thornberry_dart => { :items => [], :amount => 0 }, #food
         :tipsy_barmaid => { :items => [], :amount => 0 }, #food
-        :tropic_night => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1}] },
-        :wavecrester => { :items => [{:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1}] },
+        :tropic_night => { :items => @ilaya_pier_items },
+        :wavecrester => { :items => @ilaya_pier_items },
         :weaving_minstrel => { :items => [], :amount => 0 }, #furniture
         :whitehaven_hope => { :items => [], :amount => 0 } #food
     }
-
 
 @current_container = 0
 @stolen_items = []
 @shops_stolen_from = []
 @leave = false
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
-@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest"]
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bin", "display"]
 @body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
 
 def jail_check
-  put "look"
+  if Room::title == "[Gallows Tree, Cell]"
+    echo "*** Jailed! ***"
+    exit
+  end
 end
 
 #override
@@ -224,6 +227,11 @@ def item_position list, item_desc
   end
 end
 
+def mark item
+  put "mark #{item}"
+  match_wait({ :wait => [/\.\.\.wait|Mark what|Roundtime/] })
+end
+
 def steal item, amount_of
   do_hide
 
@@ -246,6 +254,10 @@ def steal_shop list, shop_name
       item = "#{pos} #{item} #{@leth_items[shop_name][:location]}"
     elsif list[shop_name].has_key?(:location)
       item = "#{item} #{@leth_items[shop_name][:location]}"
+    end
+
+    if @mark
+      mark item
     end
 
     if @debug_mode
@@ -989,7 +1001,6 @@ echo @stolen_items.inspect
     wait
     put "put #{item.at(0)} in bin"
     wait
-    pause 0.2
   end
 end
 

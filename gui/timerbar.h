@@ -13,7 +13,8 @@ public:
     explicit TimerBar(QObject *parent = 0);
     ~TimerBar();
 
-    void loadProgressbar();
+    void load();
+    void add();
     bool isActive();
 
 private:

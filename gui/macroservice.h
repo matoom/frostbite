@@ -29,6 +29,7 @@ private:
     MainWindow* mainWindow;
     MacroThread* macroThread;
     MacroSettings* macroSettings;
+    QRegExp rxCmd;
 
     QHash<QString, QStringList>  processCommands(QString);
 

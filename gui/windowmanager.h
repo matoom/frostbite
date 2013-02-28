@@ -54,11 +54,13 @@ public:
     QDockWidget* getExpWindow();
     QDockWidget* getDeathsWindow();
     QDockWidget* getConversationsWindow();
+    QDockWidget* getFamiliarWindow();
 
     bool thoughtsVisible;
     bool deathsVisible;
     bool arrivalsVisible;
     bool conversationsVisible;
+    bool familiarVisible;
     bool writePrompt;
 
 public slots:
@@ -73,12 +75,14 @@ public slots:
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);
+    void updateFamiliarWindow(QString);
 
 private slots:
     void thoughtsVisibility(bool);    
     void deathsVisibility(bool);
     void arrivalsVisibility(bool);
     void conversationsVisibility(bool);
+    void familiarVisibility(bool);
 
 private:
     GenericWindowFactory* genericWindowFactory;
@@ -97,7 +101,10 @@ private:
     QDockWidget* expWindow;
     QDockWidget* deathsWindow;
     QDockWidget* conversationsWindow;
+    QDockWidget* familiarWindow;
     QList<QDockWidget*> dockWindows;
+
+    QRegExp rxRemoveTags;
 
     HighlighterThread* gameWindowHighlighter;
     HighlighterThread* roomHighlighter;
@@ -106,6 +113,7 @@ private:
     HighlighterThread* thoughtsHighlighter;
     HighlighterThread* deathsHighlighter;
     HighlighterThread* conversationsHighlighter;
+    HighlighterThread* familiarHighlighter;
     QList<HighlighterThread*> highlighters;
 
     QString textColor(QString, QString);
@@ -119,6 +127,7 @@ signals:
     void updateThoughtsSettings();
     void updateDeathsSettings();
     void updateConversationsSettings();
+    void updateFamiliarSettings();
 };
 
 #endif // WINDOWMANAGER_H
