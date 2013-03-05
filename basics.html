@@ -132,29 +132,7 @@
         put "put my #{$args.first} in my backpack"
     }
     </code></pre>
-
-        <p>
-            The frostbite API includes a timer module for creating independant repetitive mechanics in the script flow.
-            The repetitive block has to be declared in the script header -- meaning it has to be declared before any
-            blocking part of the code. Otherwise if no repetitive block is declared or it does not follow the proper naming
-            conventions the repetitive functions will not be implemented. The name of the repetitive block has to be declared
-            in the following format - <i>"every_(n)s_do"</i>, where (n) denominates the number of seconds (minimum of 1)
-            in the execution interval. When executed, the repetitive block calls an interrupt on the script flow for the
-            period of execution and continues running the script after it ends.
-        </p>
-
-    <pre><code>
-    def every_25s_do {
-        put "exp perception"
-        match = { :end => [/% mind lock/, /% nearly locked/],
-                  :forage => [/EXP HELP/] }
-
-        case match_wait match
-            when :end
-                exit
-        end
-    }
-    </code></pre>
+        <br />
 
         <p>
             There are different ways to set up the script flow in Ruby. With some additions to the standard library
@@ -267,37 +245,6 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
 :exit => ["study this chart again", "need to be holding"]
 </code></pre>
     <br/>
-
-    <p>
-        Regular expression reference:
-    </p>
-
-<pre><code>
-[abc] 	#A single character of: a, b or c
-[^abc] 	#Any single character except: a, b, or c
-[a-z] 	#Any single character in the range a-z
-[a-zA-Z] #Any single character in the range a-z or A-Z
-^ 	#Start of line
-$ 	#End of line
-\A 	#Start of string
-\z 	#End of string
-. 	#Any single character
-\s 	#Any whitespace character
-\S 	#Any non-whitespace character
-\d 	#Any digit
-\D 	#Any non-digit
-\w 	#Any word character (letter, number, underscore)
-\W 	#Any non-word character
-\b 	#Any word boundary
-(...) 	#Capture everything enclosed
-(a|b) 	#a or b
-a? 	#Zero or one of a
-a* 	#Zero or more of a
-a+ 	#One or more of a
-a{3} 	#Exactly 3 of a
-a{3,} 	#3 or more of a
-a{3,6} 	#Between 3 and 6 of a
-</code></pre>
 
     </div>
 	<footer>
