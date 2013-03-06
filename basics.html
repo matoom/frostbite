@@ -193,6 +193,57 @@
     end
     </code></pre>
         <br/>
+        <h3>Observer event module</h3>
+        <p>
+            The observer module can be set up to watch for pattern matches in the game text. It runs in parallel with the
+            script flow and will not be disturbed by any blocking parts of the script, other than the matching mechanics.
+            The observer will wait for any matching to be finished until it can execute the callback method for the specified
+            event or otherwise it is not possible to use the matching mechanics in the callback method's body. Once the
+            observer runs into a specified event, the script flow will be interrupted for the time it takes to execute the
+            callback method.
+        </p>
+        <p>
+            To set up the observer module it is required to register at least one observer event. The observer event
+            contains the name of the callback method and the text match pattern which is being tracked by the observer.
+            Each event has a specified callback method and it has to be defined in the script body or otherwise the script
+            will fail to execute.
+        </p>
+        <p>The observer module is a singleton object and only one instance of the observer object can be created in each
+            script. The singleton instance can be obtained by calling the <i>"instance"</i> method of the observer object.
+            The observer is a lazy initation object, meaning that it will only start running once the <i>"register_event"</i>
+            is called.
+        </p>
+    <pre><code>
+    Observer.instance.register_event({ :on_roundtime =>
+                                       "Roundtime" })
+    Observer.instance.register_event({ :stop_observer =>
+                                       "were you referring" })
+
+    # callback method for first event
+    def on_roundtime
+        echo "Found roundtime!"
+        wait_for_roundtime # wait until the round time ends
+        put "look"         # this action cannot produce a
+                           # roundtime or it will get stuck in
+                           # an infinite loop
+    end
+
+    # callback method for second event
+    def stop_observer
+        Observer.instance.terminate # just to demonstrate how to
+                                    # terminate the observer
+    end
+
+    100.times do
+        put "collect " + $args.join(" ")
+        wait_for_roundtime
+        put "kick pile"
+    end
+
+    </code></pre>
+
+
+        <br/>
         <h3>Functions and models</h3>
         <p>
             The standard API functions have mostly been set up to provide Wizard-like scripting style. Different kind of
