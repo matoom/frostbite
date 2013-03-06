@@ -67,7 +67,6 @@ public slots:
     void updateConversationsWindow(QString);
     void writeGameText(QByteArray, bool);
     void writeGameWindow(QByteArray);
-    void writeScriptText(QByteArray);
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
     void updateExpWindow();

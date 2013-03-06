@@ -2,27 +2,31 @@
 # requirements: ??
 # run: valid foraging spot
 
+Observer.instance.register_event({ :test => "The Crossing, Haven's End" })
+Observer.instance.register_event({ :test2 => "Roundtime" })
+
+def test
+  echo "first event"
+  #wait_for_roundtime
+  #put "hunt"
+  #wait_for_roundtime
+
+  #Observer.instance.terminate
+end
+
+def test2
+  echo "second event"
+end
+
 if $args.empty?
-  echo "Item name missing!"
+  echo "Specify collectable item!"
   exit!
 end
 
 def finally_do
+  pause 0.5
   put "kick pile"
 end
-
-#def every_10s_do
-#  put "exp perception"
-=begin
-  match = { :end => [/% mind lock/, /% nearly locked/],
-            :forage => [/EXP HELP/] }
-
-  case match_wait match
-    when :end
-      exit
-  end
-=end
-#end
 
 100.times do
   put "collect " + $args.join(" ")

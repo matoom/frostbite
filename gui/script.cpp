@@ -14,14 +14,20 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
 }
 
 bool Script::isRunning() {
-    if(!running) {
+    // TODO FIX THIS ??
+    /*if(!running) {
         return false;
-    }
+    }*/
     return running;
 }
 
-void Script::execute(QString fileName, QList<QString> userArgs) {
+QString Script::currentFileName() {
+    return this->fileName;
+}
+
+void Script::execute(QString fileName, QList<QString> userArgs) {   
     QString file = QDir::currentPath() + "/scripts/" + fileName + ".rb";
+    this->fileName = fileName;
 
     QStringList arguments;
     arguments << "-w" << path << file << userArgs;

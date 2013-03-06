@@ -33,7 +33,7 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeOutgoingMessage(QByteArray)));
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
     connect(this, SIGNAL(writeText(QByteArray, bool)), windowManager, SLOT(writeGameText(QByteArray, bool)));
-    connect(this, SIGNAL(writeScriptText(QByteArray)), windowManager, SLOT(writeScriptText(QByteArray)));
+    //connect(this, SIGNAL(writeScriptText(QByteArray)), windowManager, SLOT(writeScriptText(QByteArray)));
 
     pushStream = false;
     inv = false;

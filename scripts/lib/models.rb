@@ -361,6 +361,10 @@ class CommandThread
       if line.start_with? "game_text#"
         line.slice! "game_text#"
         $_data_queue << line
+
+        if $_observer_started
+          $_observer_queue << line
+        end
       elsif line.start_with? "exit#"
         Kernel::abort
       end

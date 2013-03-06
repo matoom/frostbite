@@ -47,12 +47,15 @@
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 1},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
+                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 2},
                      {:name => "moonstone lily", :amount => 1},
-                     {:name => "earrings", :desc =>"dangling golden earrings", :amount => 1},
+                     {:name => "golden earrings", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                      {:name => "vial", :desc => "jade glass vial", :amount => 1},
                      {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
-                     {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2}]
+                     {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2},
+                     {:name => "brass bowl", :amount => 2},
+                     {:name => "brass cauldron", :amount => 1} ]
 
 @ilaya_items =
     {
@@ -62,26 +65,27 @@
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
         :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
+        # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
-        :bloody_barnacle => {}, #furniture
+        :bloody_barnacle => { :items => [], :amount => 0 }, #furniture
         :ninth_life => { :items => @ilaya_pier_items },
         :dark_nighttrawler => { :items => @ilaya_pier_items },
         :drunken_sage => { :items => [], :amount => 0 }, #food
-        :dusktide_rising => {},
+        :dusktide_rising => { :items => @ilaya_pier_items },
         :winged_duck => { :items => @ilaya_pier_items },
         :fleetwing_gull => { :items => [], :amount => 0 }, #food
         :golden_apple => { :items => [], :amount => 0 }, #furniture
         :harper_song => {:items => @ilaya_pier_items },
-        :marsh_skipper => {},
+        :marsh_skipper => { :items => @ilaya_pier_items },
         :merelew_wench => { :items => [], :amount => 0 }, #food
         :mermaid_fall => { :items => @ilaya_pier_items },
-        :moveable_feast => {},
-        :night_sky_hair => {},
-        :north_wind_skimmer => {},
+        :moveable_feast => { :items => @ilaya_pier_items },
+        :night_sky_hair => { :items => @ilaya_pier_items },
+        :north_wind_skimmer => { :items => @ilaya_pier_items },
         :paper_lion => { :items => @ilaya_pier_items },
         :river_dreamer => { :items => @ilaya_pier_items },
-        :rusty_barnacle => {},
+        :rusty_barnacle => { :items => @ilaya_pier_items },
         :spinning_jenny => { :items => [], :amount => 0 }, #furniture
         :talking_salmon => { :items => [], :amount => 0 }, #food
         :thornberry_dart => { :items => [], :amount => 0 }, #food
@@ -97,11 +101,12 @@
 @shops_stolen_from = []
 @leave = false
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
-@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bin", "display"]
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bucket", "bin", "display"]
 @body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
 
 def jail_check
-  if Room::title == "[Gallows Tree, Cell]"
+  room = Room::title
+  if room == "[Gallows Tree, Cell]" or room == "[Guard House, Jail Cell]"
     echo "*** Jailed! ***"
     exit
   end
@@ -997,12 +1002,15 @@ echo @stolen_items.inspect
 
 @stolen_items.each do |item|
   if item.at(1)
+    pause 0.1
     put "get #{item.at(0)} from my #{item.at(1)}"
     wait
     put "put #{item.at(0)} in bin"
     wait
   end
 end
+
+pause 0.5
 
 check_for_mites
 

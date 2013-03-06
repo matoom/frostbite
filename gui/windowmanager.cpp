@@ -302,7 +302,7 @@ void WindowManager::updateExpWindow() {
     QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
-    foreach (QString value, exp) {
+    foreach (QString value, exp) {       
         expString += value + "\n";
     }
 
@@ -389,22 +389,14 @@ void WindowManager::updateRoomWindowTitle(QString title) {
     roomWindow->setWindowTitle("Room " + title);
 }
 
-void WindowManager::writeScriptText(QByteArray text) {
-    if(!text.isEmpty() && mainWindow->getScriptService()->isScriptActive()) {
-        QString textString = text.constData();
-        //TODO: move remove tags to worker thread
-        mainWindow->getScriptService()->writeOutgoingMessage(textString.remove(rxRemoveTags).toLocal8Bit());
-    }
-}
-
 void WindowManager::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         gameWindowHighlighter->addText(text);
-        this->writeScriptText(text);
+        mainWindow->getScriptService()->writeScriptText(text);
         writePrompt = false;
     } else if(!prompt) {
         gameWindowHighlighter->addText(text);
-        this->writeScriptText(text);
+        mainWindow->getScriptService()->writeScriptText(text);
         writePrompt = true;
     }
 

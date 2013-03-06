@@ -18,7 +18,7 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(addToQueue(QByteArray)), dataProcessThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), dataProcessThread, SLOT(updateHighlighterSettings()));
 
-    this->loadMockData();
+    //this->loadMockData();
 }
 
 void ConnectionManager::updateSettings() {
@@ -82,14 +82,20 @@ void ConnectionManager::authError() {
 }
 
 void ConnectionManager::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
+    windowManager->writeGameWindow("Connecting ...");
+
     waitForSettings = true;
 
     mainWindow->connectEnabled(false);
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
 
-    tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
-                     "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
+    if(tcpSocket->state() == QAbstractSocket::HostLookupState ||
+       tcpSocket->state() == QAbstractSocket::ConnectedState) {
+
+        tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
+                         "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
+    }
 }
 
 void ConnectionManager::disconnectedFromHost() {
@@ -169,8 +175,8 @@ void ConnectionManager::socketError(QAbstractSocket::SocketError error) {
         this->showError("Connection timed out.");
     } else if (error == QAbstractSocket::HostNotFoundError) {
         this->showError("Unable to resolve game host.");
-        mainWindow->connectEnabled(true);
-    }
+    }    
+    mainWindow->connectEnabled(true);
 
     qDebug() << error;
 }

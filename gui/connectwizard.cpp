@@ -150,7 +150,7 @@ void ConnectWizard::pageSelected(int id) {
     switch (id) {
     case Page::login:
         characterList.clear();
-        ui->characterBox->clear();
+        ui->characterList->clear();
         ui->gameList->setEnabled(false);
 
         emit resetConnection();
@@ -175,7 +175,7 @@ void ConnectWizard::pageSelected(int id) {
         }
         break;
     case Page::connect:
-        selectedCharacter = ui->characterBox->currentText();
+        selectedCharacter = ui->characterList->currentItem()->text();
 
         this->saveHistory();
 
@@ -193,12 +193,15 @@ void ConnectWizard::resetPassword() {
 void ConnectWizard::addCharacterList(QString id, QString name) {
     characterList.insert(name, id);
 
-    int index = ui->characterBox->findText(name);
-    if(index == -1) {
-        ui->characterBox->addItem(name);
+    new QListWidgetItem(name, ui->characterList);
 
-        int index = ui->characterBox->findData(settings->getParameter("Login/character", ""), Qt::MatchExactly);
-        ui->characterBox->setCurrentIndex(index);
+    QList<QListWidgetItem*> selectedItems =
+            ui->characterList->findItems(settings->getParameter("Login/character", "").toString(), Qt::MatchExactly);
+
+    if(selectedItems.count() > 0) {
+        ui->characterList->setCurrentItem(selectedItems.first());
+    } else if(characterList.size() == 1) {
+        ui->characterList->setCurrentRow(0);
     }
 
     this->setCharacterListLoading(false);
@@ -212,7 +215,7 @@ void ConnectWizard::setSession(QString host, QString port, QString sessionKey) {
 
     this->button(QWizard::FinishButton)->setEnabled(true);
     this->button(QWizard::FinishButton)->setFocus();
-    ui->finishLabel->setText("Press finish to connect with " + ui->characterBox->currentText() + ".");
+    ui->finishLabel->setText("Press finish to connect with " + ui->characterList->currentItem()->text() + ".");
 }
 
 void ConnectWizard::accept() {

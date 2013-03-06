@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     dataprocessthread.cpp \
     profileadddialog.cpp \
     generalsettings.cpp \
-    highlighterthread.cpp
+    highlighterthread.cpp \
+    scriptwriterthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -121,7 +122,8 @@ HEADERS  += mainwindow.h \
     dataprocessthread.h \
     profileadddialog.h \
     generalsettings.h \
-    highlighterthread.h
+    highlighterthread.h \
+    scriptwriterthread.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

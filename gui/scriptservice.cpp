@@ -5,6 +5,7 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     commandLine = mainWindow->getCommandLine();
     windowManager = mainWindow->getWindowManager();
     dataConverterService = DataConverterService::Instance();
+    scriptWriter = new ScriptWriterThread(this);
 
     script = new Script(this);
     terminateFlag = false;    
@@ -27,12 +28,16 @@ void ScriptService::runScript(QString input) {
     if(fileList.contains(fileName + ".rb")) {
         if(!script->isRunning()) {
             windowManager->scriptRunning(true);
-            windowManager->writeGameWindow("[Executing script: " + fileName.toLocal8Bit() + ".rb, Press ESC to abort.]");
+            windowManager->writeGameWindow("[Executing script: " +
+                                           fileName.toLocal8Bit() +
+                                           ".rb, Press ESC to abort.]");
             timer.start();
             terminateFlag = false;
             script->execute(fileName, args);
         } else {
-            windowManager->writeGameWindow("[Script " + fileName.toLocal8Bit() + ".rb already executing.]");
+            windowManager->writeGameWindow("[Script " +
+                                           script->currentFileName().toLocal8Bit() +
+                                           ".rb already executing.]");
         }
     } else {
         windowManager->writeGameWindow("[Script not found.]");
@@ -76,6 +81,16 @@ void ScriptService::writeGameWindow(QByteArray command) {
     windowManager->writeGameWindow(command);
 }
 
+void ScriptService::writeScriptText(QByteArray text) {
+    if(!text.isEmpty() && this->isScriptActive()) {
+        scriptWriter->addText(text.data());
+
+        if(!scriptWriter->isRunning()) {
+            scriptWriter->start();
+        }
+    }
+}
+
 void ScriptService::writeOutgoingMessage(QByteArray message) {
     if(script != NULL && script->isRunning()) {
         script->sendMessage("game_text#" + message + "\n");
@@ -100,4 +115,5 @@ void ScriptService::processCommand(QByteArray msg) {
 
 ScriptService::~ScriptService() {
     delete script;
+    delete scriptWriter;
 }

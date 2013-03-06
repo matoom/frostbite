@@ -18,15 +18,18 @@ public:
     ~Script();
 
     void execute(QString, QList<QString>);
+
     void killScript();
     bool isRunning();
     void sendMessage(QByteArray);    
+    QString currentFileName();
 
 private:
     ScriptService* scriptService;
     QProcess* script_proc;
 
     QString path;
+    QString fileName;
 
     bool running;
 

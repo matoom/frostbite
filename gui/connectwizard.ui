@@ -285,12 +285,12 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QComboBox" name="characterBox"/>
+       <widget class="QListWidget" name="characterList"/>
       </item>
       <item>
        <widget class="QLabel" name="loadingLabel">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -298,17 +298,20 @@
         <property name="minimumSize">
          <size>
           <width>22</width>
-          <height>22</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>22</width>
-          <height>22</height>
+          <height>100000</height>
          </size>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>

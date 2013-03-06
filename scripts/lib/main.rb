@@ -1,6 +1,6 @@
 require "#{File.dirname(__FILE__)}/models.rb"
 require "#{File.dirname(__FILE__)}/ruby_goto.rb"
-require "#{File.dirname(__FILE__)}/timer.rb"
+require "#{File.dirname(__FILE__)}/observer.rb"
 
 $args = []
 ARGV.each do |arg|
@@ -13,13 +13,18 @@ STDOUT.sync = true
 
 @_file = $args.shift
 
+# globals
 $_data_queue = []
+$_observer_queue = []
 
-#@rt_adjust = 0
 $_interrupt_time = -1
+$_exec_status = :running
+$_observer_started = false
+$_current_rt = 0
 
 @_command_thread = Thread.new { CommandThread.new.run }
 
+$rt_adjust = 0
 
 # Waits for roundtime in game text and pauses for the duration.
 #
@@ -30,11 +35,15 @@ $_interrupt_time = -1
 #   wait_for_roundtime
 #   put "unhide"
 def wait_for_roundtime
+  if $_current_rt > 0
+    sleep_for_rt $_current_rt + $rt_adjust
+    return
+  end
+
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/Roundtime/)
-        rt = $_data_queue.at(i)[/\d+/].to_i
-        sleep_for_rt rt
+        sleep_for_rt $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
         return
       end
       $_data_queue.delete_at(i)
@@ -72,6 +81,7 @@ end
 #     echo "next"
 #   end
 def match_wait(pattern)
+  $_exec_status = :match_wait
   match_found = false
   match = :not_found
   sleep = 0
@@ -92,13 +102,14 @@ def match_wait(pattern)
       end
 
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep += $_data_queue.at(i)[/\d+/].to_i
+        sleep += $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
       end
 
       if match_found
-        if $_data_queue.at(i).match(/^>/)
-          rt = sleep
-          sleep_for_rt rt
+        $_exec_status = :running
+
+        if $_data_queue.at(i).match(/>$/)
+          sleep_for_rt sleep
           return match
         end
       end
@@ -119,6 +130,7 @@ end
 #   result = match_get match
 #   result #=> You open the steel trunk...
 def match_get(pattern)
+  $_exec_status = :match_get
   match_found = false
   match = :not_found
   sleep = 0
@@ -139,13 +151,14 @@ def match_get(pattern)
       end
 
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep += $_data_queue.at(i)[/\d+/].to_i
+        sleep += $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
       end
 
       if match_found
-        if $_data_queue.at(i).match(/^>/)
-          rt = sleep
-          sleep_for_rt rt
+        $_exec_status = :running
+
+        if $_data_queue.at(i).match(/>$/)
+          sleep_for_rt sleep
           return match
         end
       end
@@ -176,6 +189,7 @@ end
 #
 #   labels_end
 def match_wait_goto(pattern)
+  $_exec_status = :match_wait_goto
   match_found = false
   match = :not_found
   sleep = 0
@@ -196,13 +210,14 @@ def match_wait_goto(pattern)
       end
 
       if $_data_queue.at(i).match(/Roundtime/)
-        sleep += $_data_queue.at(i)[/\d+/].to_i
+        sleep += $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
       end
 
       if match_found
-        if $_data_queue.at(i).match(/^>/)
-          rt = sleep
-          sleep_for_rt rt
+        $_exec_status = :running
+
+        if $_data_queue.at(i).match(/>$/)
+          sleep_for_rt sleep
           goto match
         end
       end
@@ -255,7 +270,7 @@ end
 #   put "remove my shield"
 def wait
   $_data_queue.clear
-  wait_for(/^>/)
+  wait_for(/>$/)
 end
 
 # Sends a message to client main window.
@@ -291,7 +306,7 @@ end
 # @param
 # @return [Integer] current round time value
 def get_match_rt
-  @match_rt
+  $_current_rt
 end
 
 # @private
@@ -307,6 +322,7 @@ end
 
 # @private
 def sleep_for_rt(rt)
+  $_current_rt = rt
   return if rt <= 0
   sleep 1
   if $_interrupt_time != -1
@@ -332,14 +348,8 @@ end
 # before executing script
 sleep Rt::value
 
-# run timer, check for "every_(n)s_do"
-# method and set up interrupt mechanics
-@timer = Timer.new
-Thread.new { @timer.run }
-
 # run script file here
 require @_file
 
 # end threads after finished
 end_command_thread
-@timer.terminate_thread

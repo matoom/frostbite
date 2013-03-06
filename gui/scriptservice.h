@@ -7,11 +7,13 @@
 #include <commandline.h>
 #include <script.h>
 #include <dataconverterservice.h>
+#include <scriptwriterthread.h>
 
 class MainWindow;
 class CommandLine;
 class Script;
 class DataConverterService;
+class ScriptWriterThread;
 
 class ScriptService : public QObject {
     Q_OBJECT
@@ -21,6 +23,7 @@ public:
     ~ScriptService();
 
     void writeGameWindow(QByteArray);
+    void writeScriptText(QByteArray);
     void processCommand(QByteArray);
     void runScript(QString);
     void terminateScript();
@@ -31,6 +34,7 @@ public:
 
 private:
     DataConverterService* dataConverterService;
+    ScriptWriterThread* scriptWriter;
     MainWindow* mainWindow;
     CommandLine* commandLine;
     WindowManager* windowManager;

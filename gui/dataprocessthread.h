@@ -94,7 +94,7 @@ signals:
     void writeScriptMessage(QByteArray);
     void setMainTitle(QString);
     void writeText(QByteArray, bool);
-    void writeScriptText(QByteArray);
+    //void writeScriptText(QByteArray);
 
 public slots:
     void addData(QByteArray);
