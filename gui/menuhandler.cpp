@@ -13,6 +13,10 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     profileAddDialog = new ProfileAddDialog();
 }
 
+void MenuHandler::openConnectDialog() {
+    connectWizard->show();
+}
+
 void MenuHandler::updateDialogSettings() {
     highlightDialog->updateSettings();
     highlightDialog->loadSettings();

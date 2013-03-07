@@ -2,7 +2,6 @@
 # requirements: 150+ swimming
 # run: south side of faldesu
 
-@rt_adjust = 0
 
 labels_start
 
@@ -66,5 +65,3 @@ label(:end) {
 }
 
 labels_end
-
-@match_rt_adjustment = 0

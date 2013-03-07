@@ -31,6 +31,7 @@ public:
     ~MenuHandler();
 
     void updateDialogSettings();
+    void openConnectDialog();
 
 private:
     MainWindow* mainWindow;

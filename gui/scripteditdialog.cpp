@@ -8,7 +8,7 @@ ScriptEditDialog::ScriptEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     model = new QStringListModel();
 
     scriptPath.setPath(QDir::currentPath() + "/scripts");
-    notepadPath.setPath(QDir::currentPath() + "/notepad2/Notepad2.exe");
+    notepadPath.setPath(QDir::currentPath() + "/notepad/Notepad2.exe");
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/frost.png</file>
         <file>images/bleeding.png</file>
         <file>images/stars.png</file>
         <file>images/death.png</file>

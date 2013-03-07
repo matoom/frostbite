@@ -54,6 +54,10 @@ void MainWindow::updateProfileSettings() {
     menuHandler->updateDialogSettings();
 }
 
+void MainWindow::openConnectDialog() {
+    menuHandler->openConnectDialog();
+}
+
 void MainWindow::initSettings() {
     QColor color = generalSettings->gameWindowBackground();
 

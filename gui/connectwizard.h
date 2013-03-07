@@ -41,6 +41,8 @@ private:
     QString selectedCharacter;
     QString selectedGame;
 
+    bool gamesLoaded;
+
     void init();
     void saveField(QString, QString);
     void saveSettings();

@@ -149,16 +149,20 @@ void ConnectWizard::setGameListLoading(bool loading) {
 void ConnectWizard::pageSelected(int id) {
     switch (id) {
     case Page::login:
-        characterList.clear();
-        ui->characterList->clear();
+        gamesLoaded = false;
         ui->gameList->setEnabled(false);
 
         emit resetConnection();
         break;
     case Page::game:
-        this->setGameListLoading(true);
-        emit initSession(ui->userEdit->text(), ui->passwordEdit->text());
-        this->button(QWizard::NextButton)->setEnabled(false);
+        characterList.clear();
+        ui->characterList->clear();
+        if(!gamesLoaded) {
+            this->setGameListLoading(true);
+            emit initSession(ui->userEdit->text(), ui->passwordEdit->text());
+            this->button(QWizard::NextButton)->setEnabled(false);
+            gamesLoaded = true;
+        }
         break;
     case Page::character:
         selectedGame = ui->gameList->currentItem()->text();
@@ -174,7 +178,9 @@ void ConnectWizard::pageSelected(int id) {
             this->button(QWizard::NextButton)->setEnabled(false);
         }
         break;
-    case Page::connect:
+    case Page::connect:        
+        this->button(QWizard::BackButton)->setEnabled(false);
+
         selectedCharacter = ui->characterList->currentItem()->text();
 
         this->saveHistory();

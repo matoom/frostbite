@@ -7,11 +7,9 @@ Observer.instance.register_event({ :test2 => "Roundtime" })
 
 def test
   echo "first event"
-  #wait_for_roundtime
-  #put "hunt"
-  #wait_for_roundtime
-
-  #Observer.instance.terminate
+  wait_for_roundtime
+  put "hunt"
+  wait_for_roundtime
 end
 
 def test2

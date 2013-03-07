@@ -1,6 +1,7 @@
 # desc: stealing in crossing area
-# requirements: thieves only
+# requirements: thieves only, 250? first aid
 # run: in front of crossing bank
+# recommend on first run use @mark = true and @debug_mode = true
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start focus hasten darken dampen shadowstep plunder"
@@ -18,7 +19,10 @@
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => "gold brocade tail coat", :amount => 3 }, #[Brisson's Haberdashery, Sales Salon]
       :tannery => { :item => "lotion", :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "bucket", :amount => 2 } #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
+      :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
+      :emmiline_sales => { :item => "broadsword", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Dwarven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
@@ -64,7 +68,7 @@
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
@@ -255,10 +259,10 @@ def steal_shop list, shop_name
     item = list[shop_name][:item]
 
     if list[shop_name].has_key?(:location) and list[shop_name].has_key?(:desc)
-      pos = get_item_position @leth_items[shop_name][:location], @leth_items[shop_name][:desc]
-      item = "#{pos} #{item} #{@leth_items[shop_name][:location]}"
+      pos = get_item_position list[shop_name][:location], list[shop_name][:desc]
+      item = "#{pos} #{item} #{list[shop_name][:location]}"
     elsif list[shop_name].has_key?(:location)
-      item = "#{item} #{@leth_items[shop_name][:location]}"
+      item = "#{item} #{list[shop_name][:location]}"
     end
 
     if @mark
@@ -336,10 +340,10 @@ end
 def find_pier_item ship
   containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
 
-  endIndex = containers.length
-  containers.each_with_index do |container, startIndex|
+  end_index = containers.length
+  containers.each_with_index do |container, start_index|
     count = 1
-    (startIndex + 1..endIndex).each do |index|
+    (start_index + 1..end_index).each do |index|
       if container == containers[index]
         containers[index] = "#{@ordinal_numbers[count]} #{container}"
         count = count + 1
@@ -583,6 +587,35 @@ steal_shop @crossing_items, :alchemy
 
 move "out"
 move "e"
+move "go gate"
+move "n"
+move "n"
+move "e"
+move "e"
+move "go path"
+move "go step"
+move "go door"
+move "go arch"
+
+steal_shop @crossing_items, :emmiline_pantry
+
+move "go arch"
+move "w"
+
+steal_shop @crossing_items, :emmiline_parlor
+
+move "e"
+
+steal_shop @crossing_items, :emmiline_sales
+
+move "go door"
+move "go step"
+move "go path"
+move "w"
+move "w"
+move "s"
+move "s"
+move "go gate"
 move "s"
 move "e"
 move "e"

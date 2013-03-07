@@ -60,6 +60,7 @@ public:
     void toggleFullScreen();
     void toggleMaximized();
     void updateProfileSettings();
+    void openConnectDialog();
 
     WindowManager* getWindowManager();
     ToolbarManager* getToolbarManager();
