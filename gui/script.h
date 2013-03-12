@@ -42,6 +42,7 @@ private slots:
     void displayErrorMsg();
     void start();
     void finish(int);
+    void handleError(QProcess::ProcessError);
 };
 
 #endif // SCRIPT_H

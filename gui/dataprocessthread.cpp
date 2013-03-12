@@ -9,7 +9,7 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     highlighter = new Highlighter(parent);
 
     rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
-    rxDmg.setPattern("fail to\\b|attempt to\\b");
+    rxDmg.setPattern("fail to\\b|attempt to\\b|counter little of\\b");
 
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));
@@ -33,7 +33,6 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeOutgoingMessage(QByteArray)));
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
     connect(this, SIGNAL(writeText(QByteArray, bool)), windowManager, SLOT(writeGameText(QByteArray, bool)));
-    //connect(this, SIGNAL(writeScriptText(QByteArray)), windowManager, SLOT(writeScriptText(QByteArray)));
 
     pushStream = false;
     inv = false;
@@ -247,9 +246,11 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
             QString title = e.attribute("subtitle");
-            gameDataContainer->setRoomName(title.mid(3));
+            gameDataContainer->setRoomName(title.mid(3));            
             emit setMainTitle(title);
             emit updateRoomWindowTitle(title);
+        } else if(e.tagName() == "nav") {
+            emit writeScriptMessage("{nav}");
         } else if(e.tagName() == "component") {
             if(e.attribute("id").startsWith("exp")) {
                 QString text = e.text();
@@ -372,8 +373,6 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            //emit writeScriptText(line.toLocal8Bit());
-
             if(bold) {
                 line.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BOLD\">");
                 line.append("</SPAN>");
@@ -382,7 +381,6 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
             emit writeText(line.toLocal8Bit(), false);
         }
     } else if(gameText != "") {
-        //emit writeScriptText(gameText.toLocal8Bit());
         emit writeText(gameText.toLocal8Bit(), prompt);
     }
 }
@@ -412,17 +410,6 @@ QString DataProcessThread::stripTags(QString line) {
     }
     return textString;
 }
-
-/*void DataProcessThread::writeScript(QByteArray rawData) {
-    QXmlStreamReader xml(rawData);
-    QString textString;
-    while (!xml.atEnd()) {
-        if (xml.readNext() == QXmlStreamReader::Characters) {
-            textString += xml.text();
-        }
-    }
-    emit writeScriptMessage(textString.toLocal8Bit());
-}*/
 
 DataProcessThread::~DataProcessThread() {
     delete highlighter;

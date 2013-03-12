@@ -19,7 +19,7 @@ public:
     ~EAuthService();
 
     void init(QString, QString);
-    void initSession();
+    void initSession(QString, QString);
     void resetSession();
 
 private:

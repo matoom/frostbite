@@ -65,7 +65,7 @@ private slots:
     void enableGameSelect();
 
 signals:
-    void initSession(QString, QString);
+    void initSession(QString, QString, QString, QString);
     void gameSelected(QString);
     void retrieveSession(QString);
     void connectToServer(QString, QString, QString);

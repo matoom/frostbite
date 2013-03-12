@@ -22,6 +22,8 @@ $_exec_status = :running
 $_observer_started = false
 $_current_rt = 0
 
+@_move_history = []
+
 @_command_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
@@ -179,8 +181,7 @@ end
 #
 #   label(:retry){
 #     match = { :retry => [/\.\.\.wait/], :next => [/you open/] }
-#     match_wait match
-#     echo "retry"
+#     match_wait_goto match
 #   }
 #
 #   label(:next){
@@ -246,14 +247,24 @@ end
 #   move "n"
 #   move "e"
 #   move "go gate"
-def move(value)
-  puts "put#" + value.to_s
+def move(dir)
+  puts "put#" + dir.to_s
   STDOUT.flush
-  case match_wait({ :room => [/^\[.*?\]$/],
-                    :wait => [/\.\.\.wait/, /you may only type ahead/] })
+
+  @_move_history << dir
+  if @_move_history.size > 2
+    @_move_history.delete_at 0
+  end
+
+  case match_wait({ :room => [/^\{nav\}$/],
+                    :wait => [/\.\.\.wait/],
+                    :ahead => [/you may only type ahead/] })
     when :wait
       pause 0.5
-      move value
+      move @_move_history.shift
+    when :ahead
+      pause 0.5
+      move dir
   end
 end
 
@@ -281,7 +292,8 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  puts "echo#" + value.to_s
+
+puts "echo#" + value.to_s
 end
 
 # Pauses for given time.
@@ -338,7 +350,7 @@ at_exit do
     unless @_command_thread.alive?
       @_command_thread = Thread.new { CommandThread.new.run }
     end
-    sleep Rt::value
+    sleep Rt::value + 0.5
     finally_do
     end_command_thread
   end

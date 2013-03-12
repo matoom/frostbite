@@ -80,7 +80,7 @@ end
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",
                       "sharp halt", "crumbles", "life force fades away"],
-            :wait_for => ["At what are you trying to attack?"],
+            :wait_for => ["trying to attack"],
             :adv => ["You aren't close enough to attack."],
             :continue => ["Roundtime"] }
   result = match_wait match
@@ -91,7 +91,8 @@ end
     when :skin
       arrange 0
     when :wait_for
-      wait_for(/begins to advance you|closes to melee range/)
+      echo "*** WAITING ***"
+      wait_for(/begins to advance on you|closes to melee range/)
     when :adv
       put "advance"
       pause 2

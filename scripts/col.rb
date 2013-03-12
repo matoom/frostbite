@@ -22,7 +22,6 @@ if $args.empty?
 end
 
 def finally_do
-  pause 0.5
   put "kick pile"
 end
 

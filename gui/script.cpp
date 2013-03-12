@@ -7,6 +7,7 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
     connect(script_proc, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorMsg()));
     connect(script_proc, SIGNAL(started()), this, SLOT(start()));
     connect(script_proc, SIGNAL(finished(int)), this, SLOT(finish(int)));
+    connect(script_proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
 
     path = QDir::currentPath() + "/scripts/lib/main.rb";
 
@@ -14,10 +15,6 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
 }
 
 bool Script::isRunning() {
-    // TODO FIX THIS ??
-    /*if(!running) {
-        return false;
-    }*/
     return running;
 }
 
@@ -70,6 +67,18 @@ void Script::finish(int exit) {
 
     if(exit == 0) {
         scriptService->scriptFinished();
+    }
+    scriptService->scriptEnded();
+
+    running = false;
+}
+
+void Script::handleError(QProcess::ProcessError error) {
+    if (error == QProcess::FailedToStart) {
+        scriptService->writeGameWindow("The script process failed to start. "
+                                       "Either the Ruby installation is missing, "
+                                       "or you may have insufficient permissions to "
+                                       "invoke Ruby installation.");
     }
     scriptService->scriptEnded();
 

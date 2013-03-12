@@ -18,8 +18,8 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
     statusLabel->setFixedWidth(32);
 
     statusLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
-                             "background: #383533;"                             
-                             "background-image: url(:/images/frame_bg.png);"
+                             "background: #383533;"
+                             /*"background-image: url(:/images/frame_bg.png);"*/
                              "border-radius: 5px;}");
 
     return statusLabel;

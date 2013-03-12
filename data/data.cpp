@@ -8,7 +8,7 @@ QReadWriteLock lock;
 /* windows specific - mingw32 */
 #define SHARED __attribute__((section(".shr"), shared))
 
-char exp[Data::expX][Data::expY][Data::expZ] SHARED = {{"", "", ""}};
+char exp[Data::expRows][Data::expY][Data::expZ] SHARED = {{"", "", ""}};
 
 bool standing SHARED = false;
 bool sitting SHARED = false;
@@ -22,64 +22,64 @@ bool webbed SHARED = false;
 bool joined SHARED = false;
 bool dead SHARED = false;
 
-char inventory[Data::inventoryX] SHARED = "";
+char inventory[Data::inventorySize] SHARED = "";
 
-char container[Data::containerX] SHARED = "";
+char container[Data::containerSize] SHARED = "";
 
-char wieldRight[Data::wieldX] SHARED = "";
-char wieldRightNoun[Data::wieldX] SHARED = "";
-char wieldLeft[Data::wieldX] SHARED = "";
-char wieldLeftNoun[Data::wieldX] SHARED = "";
+char wieldRight[Data::wieldSize] SHARED = "";
+char wieldRightNoun[Data::wieldSize] SHARED = "";
+char wieldLeft[Data::wieldSize] SHARED = "";
+char wieldLeftNoun[Data::wieldSize] SHARED = "";
 
 int health SHARED = 0;
 int concentration SHARED = 0;
 int spirit SHARED = 0;
 int fatigue SHARED = 0;
 
-char roomTitle[Data::roomTitleX] SHARED = "";
-char roomDescription[Data::roomDescriptionX] SHARED = "";
-char roomObjects[Data::roomObjectsX] SHARED = "";
-char roomPlayers[Data::roomPlayersX] SHARED = "";
-char roomExits[Data::roomExitsX] SHARED = "";
+char roomTitle[Data::roomTitleSize] SHARED = "";
+char roomDescription[Data::roomDescriptionSize] SHARED = "";
+char roomObjects[Data::roomObjectsSize] SHARED = "";
+char roomPlayers[Data::roomPlayersSize] SHARED = "";
+char roomExits[Data::roomExitsSize] SHARED = "";
 
 int rt SHARED = 0;
 #else
 /* other platforms - gcc ??*/
-char exp[Data::expX][Data::expY][Data::expZ] __attribute__((section(".SHARED")) = {{"", "", ""}};
+char exp[Data::expRows][Data::expY][Data::expZ] = {{"", "", ""}};
 
-bool standing __attribute__((section(".SHARED")) = false;
-bool sitting __attribute__((section(".SHARED")) = false;
-bool kneeling __attribute__((section(".SHARED")) = false;
-bool prone __attribute__((section(".SHARED")) = false;
-bool stunned __attribute__((section(".SHARED")) = false;
-bool bleeding __attribute__((section(".SHARED")) = false;
-bool hidden __attribute__((section(".SHARED")) = false;
-bool invisible __attribute__((section(".SHARED")) = false;
-bool webbed __attribute__((section(".SHARED")) = false;
-bool joined __attribute__((section(".SHARED")) = false;
-bool dead __attribute__((section(".SHARED")) = false;
+bool standing = false;
+bool sitting = false;
+bool kneeling = false;
+bool prone = false;
+bool stunned = false;
+bool bleeding = false;
+bool hidden = false;
+bool invisible = false;
+bool webbed = false;
+bool joined = false;
+bool dead = false;
 
-char inventory[Data::inventoryX] __attribute__((section(".SHARED"))  = "";
+char inventory[Data::inventorySize] = "";
 
-char container[Data::containerX] __attribute__((section(".SHARED"))  = "";
+char container[Data::containerSize] = "";
 
-char wieldRight[Data::wieldX] __attribute__((section(".SHARED"))  = "";
-char wieldRightNoun[Data::wieldX] __attribute__((section(".SHARED"))  = "";
-char wieldLeft[Data::wieldX] __attribute__((section(".SHARED"))  = "";
-char wieldLeftNoun[Data::wieldX] __attribute__((section(".SHARED"))  = "";
+char wieldRight[Data::wieldSize] = "";
+char wieldRightNoun[Data::wieldSize] = "";
+char wieldLeft[Data::wieldSize] = "";
+char wieldLeftNoun[Data::wieldSize] = "";
 
-int health __attribute__((section(".SHARED"))  = 0;
-int concentration __attribute__((section(".SHARED"))  = 0;
-int spirit __attribute__((section(".SHARED"))  = 0;
-int fatigue __attribute__((section(".SHARED"))  = 0;
+int health = 0;
+int concentration = 0;
+int spirit = 0;
+int fatigue = 0;
 
-char roomTitle[Data::roomTitleX] __attribute__((section(".SHARED"))  = "";
-char roomDescription[Data::roomDescriptionX] __attribute__((section(".SHARED"))  = "";
-char roomObjects[Data::roomObjectsX] __attribute__((section(".SHARED"))  = "";
-char roomPlayers[Data::roomPlayersX] __attribute__((section(".SHARED"))  = "";
-char roomExits[Data::roomExitsX] __attribute__((section(".SHARED"))  = "";
+char roomTitle[Data::roomTitleSize] = "";
+char roomDescription[Data::roomDescriptionSize] = "";
+char roomObjects[Data::roomObjectsSize] = "";
+char roomPlayers[Data::roomPlayersSize] = "";
+char roomExits[Data::roomExitsSize] = "";
 
-int rt __attribute__((section(".SHARED"))  = 0;
+int rt = 0;
 
 #endif
 
@@ -153,7 +153,7 @@ extern "C" EXPORT_FUNCTION void removeExpField(const char name[]) {
 
 extern "C" EXPORT_FUNCTION int getExpRank(int index) {
     QReadLocker locker(&lock);
-    if(index >= 0 && index < Data::expX) {
+    if(index >= 0 && index < Data::expRows) {
         return atoi(exp[index][1]);
     }
     return 0;
@@ -161,7 +161,7 @@ extern "C" EXPORT_FUNCTION int getExpRank(int index) {
 
 extern "C" EXPORT_FUNCTION int getExpState(int index) {
     QReadLocker locker(&lock);
-    if(index >= 0 && index < Data::expX) {
+    if(index >= 0 && index < Data::expRows) {
         return atoi(exp[index][2]);
     }
     return 0;

@@ -15,6 +15,8 @@ path.each { |p|
 
 echo "*** trail ***"
 
+#move_rt "ne"
+
 path = ["ne", "go flow", "ne", "n", "go tunnel", "n", "n", "n", "ne", "ne", "n", "nw", "n",
         "go brid", "n", "n", "nw", "w", "w", "w", "w", "w", "w", "w", "w", "w", "nw", "n",
         "nw", "n", "n", "n", "nw"]

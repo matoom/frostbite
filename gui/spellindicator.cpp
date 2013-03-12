@@ -9,9 +9,8 @@ QLabel* SpellIndicator::wieldImageLabel(const char* img) {
     imageLabel->setToolTip("None");
     imageLabel->setObjectName("image");
     imageLabel->setAlignment(Qt::AlignCenter);
-    imageLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"
+    imageLabel->setStyleSheet("QLabel { border: 1px solid rgb(190, 190, 190);"                             
                              "background: #383533;"
-                             "background-image: url(:/images/frame_bg.png);"
                              "padding-right: 5px;"
                              "padding-left: 5px;"
                              "border-radius: 5px}");

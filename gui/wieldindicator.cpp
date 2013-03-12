@@ -16,7 +16,6 @@ QLabel *WieldIndicator::wieldTextLabel(const char* text) {
                              "font: 10pt \"MS UI Gothic\";"
                              "font-weight: normal;"
                              "background: #383533;"
-                             "background-image: url(:/images/frame_bg.png);"
                              "border: 1px solid rgb(190, 190, 190);"
                              "border-bottom-right-radius: 10px");
 

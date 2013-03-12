@@ -302,7 +302,7 @@ void WindowManager::updateExpWindow() {
     QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
-    foreach (QString value, exp) {       
+    foreach (QString value, exp) {
         expString += value + "\n";
     }
 

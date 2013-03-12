@@ -18,8 +18,8 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     connect(this, SIGNAL(gameSelected(QString)),
             mainWindow->getConnectionManager(), SLOT(gameSelected(QString)));
 
-    connect(this, SIGNAL(initSession(QString, QString)),
-            mainWindow->getConnectionManager(), SLOT(initEauthSession(QString, QString)));
+    connect(this, SIGNAL(initSession(QString, QString, QString, QString)),
+            mainWindow->getConnectionManager(), SLOT(initEauthSession(QString, QString, QString, QString)));
 
     connect(mainWindow->getConnectionManager(), SIGNAL(characterFound(QString, QString)),
             this, SLOT(addCharacterList(QString, QString)));
@@ -158,8 +158,10 @@ void ConnectWizard::pageSelected(int id) {
         characterList.clear();
         ui->characterList->clear();
         if(!gamesLoaded) {
+            this->saveSettings();
             this->setGameListLoading(true);
-            emit initSession(ui->userEdit->text(), ui->passwordEdit->text());
+            emit initSession(ui->authHostEdit->text(), ui->authPortEdit->text(),
+                             ui->userEdit->text(), ui->passwordEdit->text());
             this->button(QWizard::NextButton)->setEnabled(false);
             gamesLoaded = true;
         }
@@ -168,8 +170,7 @@ void ConnectWizard::pageSelected(int id) {
         selectedGame = ui->gameList->currentItem()->text();
         emit gameSelected(gameList.value(selectedGame));
 
-        if(characterList.isEmpty()) {
-            this->saveSettings();
+        if(characterList.isEmpty()) {            
             this->password = ui->passwordEdit->text();
             ui->errorLabel->setText("");
 

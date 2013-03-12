@@ -3,6 +3,7 @@
 # run: hunting area
 
 @arrange_count = 5
+@ammo = "quadrello"
 
 def check_health
   if Vitals::health < 50
@@ -17,7 +18,7 @@ def start
   put "appr #{$args.join(" ")} quick"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
-            :wait_arrive => [/At what are you trying to aim?|cannot appraise that/],
+            :wait_arrive => [/you trying to attack/],
             :next => [/Roundtime/] }
   result = match_wait match
 
@@ -32,7 +33,8 @@ def start
       pause Rt::value
       circle 0
     when :wait_arrive
-      wait_for(/advance you|melee range/)
+      echo "*** WAITING ***"
+      wait_for(/advance on you|melee range/)
       start
   end
 end
@@ -90,7 +92,7 @@ end
 
 def load
   pause 0.5
-  put "get bolt"
+  put "get #{@ammo}"
   put "load"
   wait_for_roundtime
   check_status

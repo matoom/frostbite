@@ -91,7 +91,8 @@ end
     when :skin
       arrange 0
     when :wait_for
-      wait_for(/advance you|melee range/)
+      echo "*** WAITING ***"
+      wait_for(/advance on you|melee range/)
     when :adv
       put "advance"
       pause 2

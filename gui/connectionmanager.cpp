@@ -42,9 +42,9 @@ void ConnectionManager::loadMockData() {
     }
 }
 
-void ConnectionManager::initEauthSession(QString user, QString password) {
+void ConnectionManager::initEauthSession(QString host, QString port, QString user, QString password) {
     eAuth->init(user, password);
-    eAuth->initSession();
+    eAuth->initSession(host, port);
 }
 
 void ConnectionManager::selectGame() {

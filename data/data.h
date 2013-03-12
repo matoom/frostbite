@@ -18,7 +18,7 @@ public:
     Data();
 
     /* exp */
-    static const int expX = 50;
+    static const int expRows = 50;
     static const int expY = 3;
     static const int expZ = 18;
 
@@ -54,17 +54,17 @@ public:
     void setDead(bool);
 
     /* inventory */
-    static const int inventoryX = 2048;
+    static const int inventorySize = 8192;
     char* getInventory();
     void setInventory(const char[]);
 
-    /* inventory */
-    static const int containerX = 2048;
+    /* container */
+    static const int containerSize = 8192;
     char* getContainer();
     void setContainer(const char[]);
 
     /* wield */
-    static const int wieldX = 50;
+    static const int wieldSize = 50;
     char* getWieldRight();
     void setWieldRight(const char[]);
     char* getWieldRightNoun();
@@ -85,11 +85,11 @@ public:
     void setFatigue(int);
 
     /* room */
-    static const int roomTitleX = 256;
-    static const int roomDescriptionX = 1024;
-    static const int roomObjectsX = 2048;
-    static const int roomPlayersX = 2048;
-    static const int roomExitsX = 256;
+    static const int roomTitleSize = 256;
+    static const int roomDescriptionSize = 4096;
+    static const int roomObjectsSize = 8192;
+    static const int roomPlayersSize = 8192;
+    static const int roomExitsSize = 256;
 
     char* getRoomTitle();
     void setRoomTitle(const char[]);

@@ -40,7 +40,7 @@ void HighlighterThread::process(QString data) {
         for(int i = 0; i < size; ++i) {
             text += highlighter->highlight(lines.at(i));
 
-            if(i < size) {
+            if(i < size - 1) {
                 text += "\n";
             }
         }

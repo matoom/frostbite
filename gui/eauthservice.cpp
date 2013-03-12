@@ -46,12 +46,9 @@ void EAuthService::resetSession() {
     tcpSocket->disconnectFromHost();
 }
 
-void EAuthService::initSession() {
+void EAuthService::initSession(QString host, QString port) {
     if(tcpSocket->state() == QAbstractSocket::UnconnectedState) {
-        QString host = settings->getParameter("Login/authHost", "").toString();
-        int port = settings->getParameter("Login/authPort", "").toInt();
-
-        tcpSocket->connectToHost(host, port);
+        tcpSocket->connectToHost(host, port.toInt());
     }
 }
 

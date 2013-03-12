@@ -61,7 +61,7 @@ public slots:
     void socketError(QAbstractSocket::SocketError);
     void connectToHost(QString, QString, QString);
     void disconnectedFromHost();
-    void initEauthSession(QString, QString);
+    void initEauthSession(QString, QString, QString, QString);
     void selectGame();
     void gameSelected(QString);
     void resetEauthSession();
