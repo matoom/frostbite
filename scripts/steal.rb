@@ -18,7 +18,8 @@
       :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => "gold brocade tail coat", :amount => 3 }, #[Brisson's Haberdashery, Sales Salon]
-      :tannery => { :item => "lotion", :amount => 2 }, #[Falken's Tannery, Supply Room]
+      :artificer => { :item => "reticule", :amount => 2 }, #[Brisson's Haberdashery, Sales Salon]
+      :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "broadsword", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
@@ -28,7 +29,7 @@
 @arthe_items =
     {
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
-      :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
+      :odds => { :item  => "hat", :amount => 1 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
       :lobby => { :item  => "map", :amount => 2 } #[Yulugri Wala, Lobby]
@@ -553,6 +554,13 @@ steal_shop @crossing_items, :brisson
 
 move "out"
 move "n"
+move "w"
+move "go shop"
+
+steal_shop @crossing_items, :artificer
+
+move "out"
+move "e"
 move "n"
 move "n"
 move "ne"
@@ -683,13 +691,7 @@ path.each { |dir|
 
 put "open trap"
 
-path = ["go trap", "go river", "w", "n", "go panel", "climb step"]
-
-path.each { |dir|
-  move dir
-}
-
-path = ["s", "s", "sw", "sw", "down", "s", "sw", "sw",
+path = ["go trap", "go river", "w", "n", "go panel", "climb step", "s", "s", "sw", "sw", "down", "s", "sw", "sw",
         "s", "up", "sw", "w", "sw", "climb ladder", "go gap"]
 
 path.each { |dir|

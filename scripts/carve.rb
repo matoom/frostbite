@@ -1,11 +1,13 @@
 def finally_do
-  if Wield::right_noun != ""
-    put "stow right"
+  right = Wield::right_noun
+  if right != ""
+    put "put my #{right} in my backpack"
     wait
   end
 
+  left = Wield::left_noun
   if Wield::left_noun != ""
-    put "stow left"
+    put "put my #{left} in my backpack"
     wait
   end
 end
@@ -14,7 +16,7 @@ def prep
   put "get my knife in my toolbelt"
 end
 
-def stow
+def stow_knife
   put "put my knife in my toolbelt"
 end
 
@@ -31,7 +33,7 @@ def start
     when :carve
       carve "keyblank"
     when :end
-      stow
+      stow_knife
       exit
   end
 end
@@ -57,7 +59,7 @@ def carve item
 end
 
 def finished
-  put "stow left"
+  put "put my #{Wield::left_noun} in my backpack"
   start
 end
 

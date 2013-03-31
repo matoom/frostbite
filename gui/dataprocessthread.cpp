@@ -9,7 +9,7 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     highlighter = new Highlighter(parent);
 
     rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
-    rxDmg.setPattern("fail to\\b|attempt to\\b|counter little of\\b");
+    rxDmg.setPattern("fail to\\b|attempt to\\b|counter little of\\b|You evade, barely\\b");
 
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));

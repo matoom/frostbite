@@ -22,8 +22,6 @@ $_exec_status = :running
 $_observer_started = false
 $_current_rt = 0
 
-@_move_history = []
-
 @_command_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
@@ -46,6 +44,7 @@ def wait_for_roundtime
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/Roundtime/)
         sleep_for_rt $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
+        $_data_queue.delete_at(i)
         return
       end
       $_data_queue.delete_at(i)
@@ -62,6 +61,7 @@ def wait_for(pattern)
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(pattern)
+        $_data_queue.delete_at(i)
         return
       end
       $_data_queue.delete_at(i)
@@ -112,6 +112,7 @@ def match_wait(pattern)
 
         if $_data_queue.at(i).match(/>$/)
           sleep_for_rt sleep
+          $_data_queue.delete_at(i)
           return match
         end
       end
@@ -161,6 +162,7 @@ def match_get(pattern)
 
         if $_data_queue.at(i).match(/>$/)
           sleep_for_rt sleep
+          $_data_queue.delete_at(i)
           return match
         end
       end
@@ -219,6 +221,7 @@ def match_wait_goto(pattern)
 
         if $_data_queue.at(i).match(/>$/)
           sleep_for_rt sleep
+          $_data_queue.delete_at(i)
           goto match
         end
       end
@@ -251,18 +254,9 @@ def move(dir)
   puts "put#" + dir.to_s
   STDOUT.flush
 
-  @_move_history << dir
-  if @_move_history.size > 2
-    @_move_history.delete_at 0
-  end
-
   case match_wait({ :room => [/^\{nav\}$/],
-                    :wait => [/\.\.\.wait/],
-                    :ahead => [/you may only type ahead/] })
+                    :wait => [/\.\.\.wait|you may only type ahead/] })
     when :wait
-      pause 0.5
-      move @_move_history.shift
-    when :ahead
       pause 0.5
       move dir
   end
