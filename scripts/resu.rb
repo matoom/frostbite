@@ -1,5 +1,24 @@
 #Zoluren - From NE Gate to Snaer Hafwa
 
+def check_armor
+  put "inv armor"
+  match = { :wait => [/\.\.\.wait/],
+            :exit => [/INVENTORY HELP/],
+            :continue => [/aren't wearing anything like/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+      prepare_armor
+    when :exit
+      echo "*** Wearing armor! ***"
+      exit
+  end
+end
+
+check_armor
+
 move "n"
 move "n"
 move "n"

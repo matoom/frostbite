@@ -3,7 +3,7 @@
 # run: hunting area
 
 @arrange_count = 5
-@ammo = "quadrello"
+@ammo = "bolt"
 
 def check_health
   if Vitals::health < 50
@@ -75,7 +75,7 @@ def fire
   put "fire"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
-            :load => [/Roundtime/] }
+            :load => [/Roundtime|isn't loaded/] }
   result = match_wait match
 
   case result

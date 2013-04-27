@@ -7,23 +7,25 @@
 @khri = "khri start focus hasten darken dampen shadowstep plunder"
 @mark = false
 @debug_mode = false
+@name = "Defol"
 
 @crossing_items =
     {
       :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
       :locksmith => { :item => "ring", :amount => 2 }, #[Ragge's Locksmithing, Salesroom]
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
+      :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
       :armor => { :item => "leather cuirbouilli coat", :amount => 2 }, #[Tembeg's Armory, Salesroom]
       :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
-      :brisson => { :item => "gold brocade tail coat", :amount => 3 }, #[Brisson's Haberdashery, Sales Salon]
-      :artificer => { :item => "reticule", :amount => 2 }, #[Brisson's Haberdashery, Sales Salon]
+      :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] - gold brocade tail coat (trivial 670)
+      :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "broadsword", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
-      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Dwarven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Halfling anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
@@ -48,7 +50,7 @@
 
 @ilaya_pier_items = [{:name => "flask", :amount => 2},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
-                     {:name => "skirt", :desc => "white velvet skirt cinched at the waist", :amount => 1},
+                     {:name => "velvet skirt", :amount => 1},
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 1},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
@@ -106,7 +108,7 @@
 @shops_stolen_from = []
 @leave = false
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
-@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bucket", "bin", "display"]
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bucket", "bin", "display", "tub"]
 @body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
 
 def jail_check
@@ -502,6 +504,11 @@ move "go shop"
 
 steal_shop @crossing_items, :bard
 
+move "go curtain"
+
+steal_shop @crossing_items, :bard_private
+
+move "go curtain"
 move "out"
 move "e"
 move "e"
@@ -1041,7 +1048,13 @@ echo @stolen_items.inspect
     put "get #{item.at(0)} from my #{item.at(1)}"
     wait
     put "put #{item.at(0)} in bin"
-    wait
+    match = { :continue => ["#{@name}", "were you referring"],
+              :redo => ["only type ahead 1 command"] }
+
+    case match_wait match
+      when :redo
+        redo
+    end
   end
 end
 
