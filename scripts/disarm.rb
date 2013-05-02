@@ -5,7 +5,7 @@
 
 @harvest = true
 
-if $args.join(" ").include? "h"
+if $args.join(" ").include? "skip.harvest"
   @harvest = false;
 end
 

@@ -7,7 +7,7 @@
 
 def check_health
   if Vitals::health < 50
-    put "quit"
+    echo "*** LOW HP! ***"
   else
     pause 5
   end

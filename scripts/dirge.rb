@@ -1,23 +1,3 @@
-#Zoluren - From NE Gate to Snaer Hafwa
-
-def check_armor
-  put "inv armor"
-  match = { :wait => [/\.\.\.wait/],
-            :armor => [/INVENTORY HELP/],
-            :continue => [/aren't wearing anything like/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      prepare_armor
-    when :continue
-      echo "*** NOT Wearing armor! ***"
-  end
-end
-
-check_armor
-
 move "n"
 move "n"
 move "n"
@@ -83,24 +63,34 @@ move "nw"
 move "nw"
 move "n"
 move "n"
-
-move "go copse"
-move "e"
-move "sw"
-move "sw"
-move "e"
-move "e"
-move "go rope bridge"
+move "ne"
+move "ne"
+move "ne"
 move "n"
-move "go stair"
-move "go arch"
-move "go door"
-put "turn sco"
-move "go iron door"
-
-move "go hatch"
-move "down"
-move "down"
-put "down"
-wait
-put "hide"
+move "n"
+move "ne"
+move "nw"
+move "n"
+move "n"
+move "n"
+move "ne"
+move "ne"
+move "ne"
+move "ne"
+move "n"
+move "nw"
+move "nw"
+move "nw"
+move "nw"
+move "go path"
+move "e"
+move "ne"
+move "e"
+move "ne"
+move "w"
+move "nw"
+move "sw"
+move "w"
+move "n"
+move "n"
+move "n"

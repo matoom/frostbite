@@ -15,7 +15,7 @@
       :locksmith => { :item => "ring", :amount => 2 }, #[Ragge's Locksmithing, Salesroom]
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "leather cuirbouilli coat", :amount => 2 }, #[Tembeg's Armory, Salesroom]
+      :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom]
       :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
@@ -62,11 +62,12 @@
                      {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
                      {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2},
                      {:name => "brass bowl", :amount => 2},
-                     {:name => "brass cauldron", :amount => 1} ]
+                     {:name => "unicorn pin", :amount => 1},
+                     {:name => "brass cauldron", :amount => 1}]
 
 @ilaya_items =
     {
-        :tower => { :item  => "pike", :amount => 1 },
+        :tower => { :item  => "scimitar", :amount => 1 }, #[Harbor Tower, First Floor]
         :fish => {:item => "fishbowl", :amount => 1 }, #[Fernwyk's Fish]
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
@@ -104,6 +105,7 @@
     }
 
 @current_container = 0
+@fails = 0
 @stolen_items = []
 @shops_stolen_from = []
 @leave = false
@@ -124,7 +126,7 @@ undef :move
 def move(value)
   puts "put#" + value.to_s
   STDOUT.flush
-  res = match_wait({ :room => [/^\[.*?\]$/],
+  res = match_wait({ :room => [/^\{nav\}$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
                      :lost => [/can't go there|were you referring/],
                      :retreat => [/You'll have better luck if you first retreat|You are engaged|do that while engaged/],
@@ -201,7 +203,8 @@ end
 def take item
   put "steal #{item}"
   match = { :wait => [/\.\.\.wait|appears different about/],
-            :leave => [/Guards!|begins to shout|trivial|should back off|You haven't picked|You can't steal/],
+            :fail => [/Guards!|begins to shout/],
+            :leave => [/trivial|should back off|You haven't picked|You can't steal/],
             :stow => [/You need at least one/],
             :continue => [/Roundtime/] }
   result = match_wait match
@@ -214,6 +217,8 @@ def take item
       stow_items
       do_hide
       take item
+    when :fail
+      @fails += 1
   end
 
   result
@@ -249,7 +254,7 @@ def steal item, amount_of
 
   amount_of.times do
     case take item
-      when :leave
+      when :fail, :leave
         break
     end
   end
@@ -474,6 +479,67 @@ unless @debug_mode
   prepare_armor
 
   prepare_khri
+end
+
+def pawn_items
+  if @stolen_items.count == 0 or @fails > 1
+    return
+  end
+
+  move "go shop"
+  echo @stolen_items.inspect
+
+  no_sell_item = ""
+  @stolen_items.each_with_index do |item, i|
+    if item.at(1)
+      if item.at(0) == no_sell_item
+        next
+      end
+      echo "#{i} #{item.at(0)}"
+      pause 0.1
+      put "get #{item.at(0)} from my #{item.at(1)}"
+      wait
+      put "sell my #{item.at(0)}"
+      match = { :continue => ["referring to"],
+                :sell => ["he hands you"],
+                :redo => ["only type ahead 1 command"],
+                :no_sell => ["isn't worth my time"] }
+
+      case match_wait match
+        when :redo
+          redo
+        when :no_sell
+          no_sell_item = item.at(0)
+          put "put my #{item.at(0)} in my #{item.at(1)}"
+          wait
+        when :sell
+          @stolen_items[i][1] = :pawned
+          no_sell_item = ""
+      end
+    end
+  end
+
+  move "out"
+end
+
+def bin_items
+  echo @stolen_items.inspect
+
+  @stolen_items.each do |item|
+    if item.at(1) != :pawned
+      pause 0.1
+      put "get #{item.at(0)} from my #{item.at(1)}"
+      wait
+      put "put #{item.at(0)} in bin"
+      match = { :continue => ["#{@name}", "were you referring"],
+                :redo => ["only type ahead 1 command"] }
+
+      case match_wait match
+        when :redo
+          redo
+      end
+    end
+  end
 end
 
 #Crossing
@@ -1031,34 +1097,23 @@ path.each { |p|
   move p
 }
 
+#pawn if not caught stealing
+to_pawn = ["nw", "n", "n", "n", "n", "n", "n", "w", "w", "w", "w", "go brid", "s"]
+to_pawn.each { |dir|
+  move dir
+}
+
+pawn_items
+
 #bin items
-
-to_guild = ["nw", "n", "n", "n", "n", "n", "n", "w", "w", "w", "w", "go brid", "w", "w", "w",
-            "s", "s", "s", "s", "s", "s", "w", "w", "w", "go ruin", "w", "go space"]
-
+to_guild = ["w", "s", "s", "s", "s", "w", "w", "s", "s", "w", "w", "w", "go ruin", "w", "go space"]
 to_guild.each { |dir|
   move dir
 }
 
-echo @stolen_items.inspect
+bin_items
 
-@stolen_items.each do |item|
-  if item.at(1)
-    pause 0.1
-    put "get #{item.at(0)} from my #{item.at(1)}"
-    wait
-    put "put #{item.at(0)} in bin"
-    match = { :continue => ["#{@name}", "were you referring"],
-              :redo => ["only type ahead 1 command"] }
-
-    case match_wait match
-      when :redo
-        redo
-    end
-  end
-end
-
-pause 0.5
+pause 1
 
 check_for_mites
 
