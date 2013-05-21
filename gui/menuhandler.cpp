@@ -25,6 +25,7 @@ void MenuHandler::updateDialogSettings() {
     appearanceDialog->loadSettings();
 
     macroDialog->updateSettings();
+    macroDialog->clearMacros();
     macroDialog->loadSettings();
     macroDialog->loadSequenceTime();
 }

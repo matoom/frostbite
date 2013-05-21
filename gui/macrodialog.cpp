@@ -33,6 +33,10 @@ void MacroDialog::updateSettings() {
     macroSettings->init();
 }
 
+void MacroDialog::clearMacros() {
+    keys.clear();
+}
+
 void MacroDialog::loadSettings() {
     this->buildKeys("alt", Qt::AltModifier, 0x41, 0x5a);
     this->loadKeys("alt", ui->altTable);

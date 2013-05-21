@@ -13,7 +13,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setReadOnly(true);
     this->setUndoRedoEnabled(false);
 
-    this->document()->setMaximumBlockCount(2000);
+    this->document()->setMaximumBlockCount(5000);
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 

@@ -2,6 +2,8 @@
 # requirements: ?
 # run: climbing available
 
+@song_type = "dirge"
+
 def finally_do
   put "stop climb"
   wait
@@ -15,7 +17,7 @@ put "get bones"
 
 100.times do
   pause 0.2
-  put "play elegy on my bones"
+  put "play #{@song_type} on my bones"
   wait
   put "climb practice #{$args.join(" ")}"
 

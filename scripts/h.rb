@@ -59,7 +59,7 @@ label(:hide) {
 
 label(:stop_stalk) {
   put "stop stalk"
-  pause Rt::value
+  #pause Rt::value
   goto :feint
 }
 

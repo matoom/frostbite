@@ -2,18 +2,10 @@
 # requirements: ??
 # run: valid foraging spot
 
-Observer.instance.register_event({ :test => "The Crossing, Haven's End" })
-Observer.instance.register_event({ :test2 => "Roundtime" })
+Observer.instance.register_event({ :test => "Roundtime" })
 
 def test
-  echo "first event"
-  wait_for_roundtime
-  put "hunt"
-  wait_for_roundtime
-end
-
-def test2
-  echo "second event"
+  echo Exp::state "perc"
 end
 
 if $args.empty?

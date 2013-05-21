@@ -1,9 +1,13 @@
 # desc: trains brawling, appraisal and crossbow
 # requirements: arm worn shield, set up stow containers
 # run: hunting area
+# use: .lx <target>
 
 @arrange_count = 5
 @ammo = "bolt"
+
+@start_time = Time.now
+@kill_count = 0
 
 def check_health
   if Vitals::health < 50
@@ -14,6 +18,7 @@ def check_health
 end
 
 def start
+  @kill_count = @kill_count + 1
   put "aim"
   put "appr #{$args.join(" ")} quick"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
@@ -110,6 +115,10 @@ def check_status
     when :wait
       check_status
     when :dead
+      echo "Time to kill: #{Time.now - @start_time - 10}"
+      echo "Shots to kill: #{@kill_count}"
+      @start_time = Time.now
+      @kill_count = 0
       arrange 0
     when :health_check
       check_health

@@ -1,5 +1,11 @@
 #Zoluren - From NE Gate to Snaer Hafwa
 
+@is_armor = false
+
+def show_warning
+  echo "*** NOT Wearing armor! ***"
+end
+
 def check_armor
   put "inv armor"
   match = { :wait => [/\.\.\.wait/],
@@ -12,7 +18,9 @@ def check_armor
       pause 0.5
       prepare_armor
     when :continue
-      echo "*** NOT Wearing armor! ***"
+      show_warning
+    when :armor
+      @is_armor	= true
   end
 end
 
@@ -104,3 +112,7 @@ move "down"
 put "down"
 wait
 put "hide"
+
+if !@is_armor
+  show_warning
+end

@@ -8,6 +8,7 @@
 @mark = false
 @debug_mode = false
 @name = "Defol"
+@pawn_threshold = 1
 
 @crossing_items =
     {
@@ -45,7 +46,7 @@
       :bardic_leth => { :item  => "hat", :amount => 1 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
-      :shack => { :item  => "brass shield", :amount => 2 } #[Leth Deriel, Wooden Shack]
+      :shack => { :item  => "shavi", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
 @ilaya_pier_items = [{:name => "flask", :amount => 2},
@@ -304,7 +305,7 @@ def identify_pier
               :marsh_skipper => ["Marsh Skipper"],
               :merelew_wench => ["Merelew Wench"],
               :mermaid_fall => ["Mermaid's Fall"],
-              :moveable_feast => ["Moveable Feast"],
+              :moveable_feast => ["Movable Feast"],
               :night_sky_hair => ["Night Sky's Hair"],
               :north_wind_skimmer => ["North Wind's Skimmer"],
               :paper_lion => ["Paper Lion"],
@@ -482,7 +483,9 @@ unless @debug_mode
 end
 
 def pawn_items
-  if @stolen_items.count == 0 or @fails > 1
+  echo @fails
+
+  if @stolen_items.count == 0 or @fails > @pawn_threshold
     return
   end
 
@@ -495,7 +498,6 @@ def pawn_items
       if item.at(0) == no_sell_item
         next
       end
-      echo "#{i} #{item.at(0)}"
       pause 0.1
       put "get #{item.at(0)} from my #{item.at(1)}"
       wait
@@ -503,7 +505,7 @@ def pawn_items
       match = { :continue => ["referring to"],
                 :sell => ["he hands you"],
                 :redo => ["only type ahead 1 command"],
-                :no_sell => ["isn't worth my time"] }
+                :no_sell => ["isn't worth my time", "can't pawn"] }
 
       case match_wait match
         when :redo

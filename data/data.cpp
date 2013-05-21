@@ -224,7 +224,6 @@ extern "C" EXPORT_FUNCTION void setHidden(bool _hidden) {
 }
 
 extern "C" EXPORT_FUNCTION bool getInvisible() {
-    QReadLocker locker(&lock);
     return invisible;
 }
 
@@ -259,7 +258,6 @@ extern "C" EXPORT_FUNCTION void setDead(bool _dead) {
 /* inventory */
 
 extern "C" EXPORT_FUNCTION char* getInventory() {
-    QReadLocker locker(&lock);
     return inventory;
 }
 
@@ -270,7 +268,6 @@ extern "C" EXPORT_FUNCTION void setInventory(const char inv[]) {
 /* container */
 
 extern "C" EXPORT_FUNCTION char* getContainer() {
-    QReadLocker locker(&lock);
     return container;
 }
 

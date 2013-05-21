@@ -22,6 +22,7 @@ public:
     ~MacroDialog();
 
     void updateSettings();
+    void clearMacros();
     void loadSettings();
     void loadSequenceTime();
     

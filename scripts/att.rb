@@ -1,5 +1,8 @@
 @arrange_count = 5
 
+@start_time = Time.now
+@kill_count = 0
+
 def check_health
   if Vitals::health < 50
     echo "*** LOW HP! ***"
@@ -74,6 +77,7 @@ def loot
 end
 
 10000.times do
+  @kill_count = @kill_count + 1
   put "attack"
   match = { :wait => [/\.\.\.wait|entangled in a web/],
             :stunned => [/still stunned/],
@@ -89,6 +93,10 @@ end
     when :wait
       pause 0.4
     when :skin
+      echo "Time to kill: #{Time.now - @start_time}"
+      echo "Swings to kill: #{@kill_count}"
+      @start_time = Time.now
+      @kill_count = 0
       arrange 0
     when :wait_for
       echo "*** WAITING ***"
