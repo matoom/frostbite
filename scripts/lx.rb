@@ -10,7 +10,7 @@ execute("lx_stat")
 @circle_count = 1
 
 def finally_do
-  Stat::report_total_stats
+  Stats::report_total_stats
 end
 
 def check_health
@@ -46,7 +46,7 @@ def start
     when :wait_arrive
       echo "*** WAITING ***"
       wait_for(/advance on you|melee range/)
-      Stat::reset_timer
+      Stats::reset_timer
       start
   end
 end
@@ -84,7 +84,7 @@ def circle count
 end
 
 def fire
-  Stat::register_shot
+  Stats::register_shot
   put "fire"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
@@ -123,7 +123,7 @@ def check_status
     when :wait
       check_status
     when :dead
-      Stat::register_kill
+      Stats::register_kill
       arrange 0
     when :health_check
       check_health
@@ -199,7 +199,7 @@ def loot
       check_health
       loot
     when :aim
-      Stat::reset_timer
+      Stats::reset_timer
       pause 0.5
       start
   end

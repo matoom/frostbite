@@ -1,4 +1,4 @@
-class Stat
+class Stats
   @load_time = 6
   @start_time = Time.now
   @shot_count = @total_shot_count = 0.0
@@ -25,8 +25,8 @@ class Stat
   end
 
   def self.report_stats
-    echo "Time to kill: #{@time} - #{@total_time / @kill_count}"
-    echo "Shots to kill: #{@shot_count} - #{@total_shot_count / @kill_count}"
+    echo "Time to kill: #{@time}"
+    echo "Shots to kill: #{@shot_count}"
   end
 
   private
