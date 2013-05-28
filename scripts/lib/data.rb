@@ -6,9 +6,8 @@ module GameData
   extend DL::Importer
   dlload 'data.dll'
 
-  extern 'int getExpIndex(const char[])'
-  extern 'int getExpRank(int)'
-  extern 'int getExpState(int)'
+  extern 'int getExpRank(const char[])'
+  extern 'int getExpState(const char[])'
 
   extern 'char* getInventory()'
   extern 'char* getContainer()'

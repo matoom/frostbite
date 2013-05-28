@@ -35,11 +35,6 @@ $rt_adjust = 0
 #   wait_for_roundtime
 #   put "unhide"
 def wait_for_roundtime
-  if $_current_rt > 0
-    sleep_for_rt $_current_rt + $rt_adjust
-    return
-  end
-
   (0..1000000).each do
     $_data_queue.each_index do |i|
       if $_data_queue.at(i).match(/Roundtime/)
@@ -50,6 +45,16 @@ def wait_for_roundtime
       $_data_queue.delete_at(i)
     end
     sleep 0.01
+  end
+end
+
+# Pauses for current roundtime
+#
+# @param
+# @return [void]
+def pause_for_roundtime
+  if $_current_rt > 0
+    sleep_for_rt $_current_rt + $rt_adjust
   end
 end
 
@@ -344,7 +349,6 @@ at_exit do
     unless @_command_thread.alive?
       @_command_thread = Thread.new { CommandThread.new.run }
     end
-    sleep Rt::value + 0.5
     finally_do
     end_command_thread
   end

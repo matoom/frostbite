@@ -19,6 +19,8 @@ end
 # executed in the end of the script
 # or if script is aborted by the user
 def finally_do
+  pause_for_roundtime
+
   right = Wield::right_noun
   unless right.empty?
     put "put my #{right} in bucket"

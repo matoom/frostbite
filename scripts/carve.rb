@@ -1,4 +1,5 @@
 def finally_do
+  pause_for_roundtime
   right = Wield::right_noun
   if right != ""
     put "put my #{right} in my backpack"

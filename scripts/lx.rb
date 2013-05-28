@@ -3,22 +3,24 @@
 # run: hunting area
 # use: .lx <target>
 
+execute("lx_stat")
+
 @arrange_count = 5
 @ammo = "bolt"
+@circle_count = 1
 
-@start_time = Time.now
-@kill_count = 0
+def finally_do
+  Stat::report_total_stats
+end
 
 def check_health
   if Vitals::health < 50
     echo "*** LOW HP! ***"
-  else
-    pause 5
   end
+  pause 5
 end
 
 def start
-  @kill_count = @kill_count + 1
   put "aim"
   put "appr #{$args.join(" ")} quick"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
@@ -35,11 +37,16 @@ def start
       check_health
       start
     when :next
-      pause Rt::value
-      circle 0
+      if(@circle_count > 0)
+        pause Rt::value
+        circle 0
+      else
+        fire
+      end
     when :wait_arrive
       echo "*** WAITING ***"
       wait_for(/advance on you|melee range/)
+      Stat::reset_timer
       start
   end
 end
@@ -64,7 +71,7 @@ def circle count
       check_health
       circle count
     when :next
-      if count < 1
+      if count < @circle_count - 1
         circle count + 1
       else
         fire
@@ -77,6 +84,7 @@ def circle count
 end
 
 def fire
+  Stat::register_shot
   put "fire"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
@@ -115,10 +123,7 @@ def check_status
     when :wait
       check_status
     when :dead
-      echo "Time to kill: #{Time.now - @start_time - 10}"
-      echo "Shots to kill: #{@kill_count}"
-      @start_time = Time.now
-      @kill_count = 0
+      Stat::register_kill
       arrange 0
     when :health_check
       check_health
@@ -194,6 +199,7 @@ def loot
       check_health
       loot
     when :aim
+      Stat::reset_timer
       pause 0.5
       start
   end

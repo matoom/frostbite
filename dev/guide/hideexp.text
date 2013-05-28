@@ -1,0 +1,14 @@
+void WindowManager::updateExpWindow() {
+...
+
+        /*QRegExp rex("(\\d+)");
+        rex.indexIn(value, 0);
+        int end = rex.cap(1).size();
+        int start = value.indexOf(rex);
+
+        QString mask = "";
+        for(int i = 0; i < end; i++) {
+            mask += "x";
+        }
+
+        value.replace(start, end, mask);*/

@@ -4,7 +4,7 @@
 @target = $args.join(" ")
 
 def finally_do
-  pause Rt::value
+  pause_for_roundtime
   put "stow #{@weapon}"
 end
 

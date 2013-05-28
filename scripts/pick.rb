@@ -5,6 +5,7 @@
 @box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
 
 def finally_do
+  pause_for_roundtime
   stow_lockpick
 end
 

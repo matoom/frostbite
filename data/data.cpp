@@ -91,11 +91,8 @@ extern "C" EXPORT_FUNCTION int getExpIndex(const char name[]) {
     size_t nameSize = strlen(name);
 
     for(unsigned int i = 0; i < expSize; i++) {
-        if(exp[i][0][0] == 0) {
-            return -1;
-        }
         for(unsigned int j = 0; j < nameSize; j++) {
-            if(exp[i][0][j] != name[j]) {
+            if(exp[i][0][j] == 0 || exp[i][0][j] != name[j]) {
                 break;
             } else {
                 if(j == nameSize - 1) {
@@ -125,7 +122,7 @@ void setExp(int index, const char name[], const char rank[], const char state[])
 }
 
 void removeExp(int index) {
-    strcpy(exp[index][0], "");
+    //strcpy(exp[index][0], "");
     strcpy(exp[index][1], "");
     strcpy(exp[index][2], "");
 }
@@ -151,14 +148,18 @@ extern "C" EXPORT_FUNCTION void removeExpField(const char name[]) {
     }
 }
 
-extern "C" EXPORT_FUNCTION int getExpRank(int index) {
+extern "C" EXPORT_FUNCTION int getExpRank(const char name[]) {
+    int index = getExpIndex(name);
+
     if(index >= 0 && index < Data::expRows) {
         return atoi(exp[index][1]);
     }
     return 0;
 }
 
-extern "C" EXPORT_FUNCTION int getExpState(int index) {
+extern "C" EXPORT_FUNCTION int getExpState(const char name[]) {
+    int index = getExpIndex(name);
+
     if(index >= 0 && index < Data::expRows) {
         return atoi(exp[index][2]);
     }

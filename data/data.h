@@ -18,7 +18,7 @@ public:
     Data();
 
     /* exp */
-    static const int expRows = 50;
+    static const int expRows = 100;
     static const int expY = 3;
     static const int expZ = 18;
 
@@ -26,8 +26,8 @@ public:
     void removeExpField(const char[]);
 
     int getExpIndex(const char[]);
-    int getExpRank(int);
-    int getExpState(int);
+    int getExpRank(const char[]);
+    int getExpState(const char[]);
 
     /* status getters/setters */
     bool getStanding();

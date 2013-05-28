@@ -31,29 +31,29 @@ QStringList GameDataContainer::extractExp(QString exp, bool brief) {
 }
 
 void GameDataContainer::setExpField(QString name, QString exp) {
-    QWriteLocker locker(&lock);
-    /* setting exp for exp window */    
-    this->exp.insert(name, converter->addNumericStateToExp(exp));
-
     /* extracting exp values for scripting */
     if(dataService->isLoaded()) {
         QStringList expList = this->extractExp(exp, false);
         dataService->addExpField(name.toLower().toLocal8Bit().data(),
             expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());
     }
+
+    QWriteLocker locker(&lock);
+    /* setting exp for exp window */
+    this->exp.insert(name, converter->addNumericStateToExp(exp));
 }
 
 void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
-    QWriteLocker locker(&lock);
-    /* setting exp brief for exp window */
-    this->exp.insert(name, exp);
-
     /* extracting exp brief values for scripting */
     if(dataService->isLoaded()) {
         QStringList expList = this->extractExp(exp, true);
         dataService->addExpField(name.toLower().toLocal8Bit().data(),
             expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());
     }
+
+    QWriteLocker locker(&lock);
+    /* setting exp brief for exp window */
+    this->exp.insert(name, exp);
 }
 
 void GameDataContainer::setContainer(QStringList container) {
@@ -75,9 +75,6 @@ void GameDataContainer::setInventory(QStringList inventory) {
 }
 
 void GameDataContainer::removeExpField(QString name) {
-    if(dataService->isLoaded()) {
-        dataService->removeExpField(name.toLower().toLocal8Bit().data());
-    }
     QWriteLocker locker(&lock);
     exp.remove(name);
 }
