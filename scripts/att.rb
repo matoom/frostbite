@@ -83,7 +83,7 @@ end
             :stunned => [/still stunned/],
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",
-                      "sharp halt", "crumbles", "life force fades away"],
+                      "sharp halt", "crumbles", "life force fades away", "slumps dead", "falls dead"],
             :wait_for => ["trying to attack"],
             :adv => ["You aren't close enough to attack."],
             :continue => ["Roundtime"] }

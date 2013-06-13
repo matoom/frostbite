@@ -27,7 +27,7 @@ void Script::execute(QString fileName, QList<QString> userArgs) {
     this->fileName = fileName;
 
     QStringList arguments;
-    arguments << "-w" << path << file << userArgs;
+    arguments << path << file << userArgs;
 
     QString program = "ruby";
 

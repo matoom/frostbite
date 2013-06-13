@@ -5,7 +5,7 @@
 
 @harvest = true
 
-if $args.join(" ").include? "skip.harvest"
+if $args.join(" ").include? "no.harvest"
   @harvest = false;
 end
 
@@ -28,7 +28,8 @@ def ident(box)
       pause 0.5
       ident box
     when :end
-      exit_script("*** Box is disarmed! ***")
+        echo "*** box disarmed! ***<br/>"
+        return
     when :hard
       exit_script("*** Unable to disarm! ***")
     else
@@ -79,7 +80,8 @@ def disarm(box, method)
       if @harvest and (method == :blind or method == :quick)
         analyze box, true
       else
-        exit_script("*** box disarmed! ***")
+        echo "*** box disarmed! ***<br/>"
+        return
       end
     else
       exit_script "*** ERROR in - disarm(box, method)! ***"
@@ -101,12 +103,14 @@ def analyze(box, last)
       analyze box, last
     when :ident
       if last
-        exit_script("*** Box disamed! ***")
+        echo "*** box disarmed! ***<br/>"
+        return
       else
         ident box
       end
     when :end
-      exit_script "*** Box disarmed! ***"
+        echo "*** box disarmed! ***<br/>"
+        return
     when :harvest
       harvest box, last
     else
@@ -128,14 +132,16 @@ def harvest(box, last)
       harvest box, last
     when :end
       if last
-        exit_script("*** Box disamed! ***")
+        echo "*** box disarmed! ***<br/>"
+        return
       else
         ident box
       end
     when :stow
       put "stow left"
       if last
-        exit_script("*** Box disamed! ***")
+        echo "*** box disarmed! ***<br/>"
+        return
       else
         ident box
       end
@@ -149,34 +155,37 @@ def exit_script(message)
   exit
 end
 
-
-
 @box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
 @disarm_methods = ["blind", "quick", "normal", "careful"]
 
 wield_right = Wield::right_noun
-if wield_right != ""
+
+if !wield_right.empty?
   @box_types.each do |box|
     if wield_right == box
       ident box
+      break
     end
   end
-end
+elsif wield_right.empty?
+  catch :break do
+    @box_types.each_with_index do |box|
+      put "get my first #{box}"
+      match = { :wait => [/\.\.\.wait/],
+                :next => ["were you referring"],
+                :open => ["You get"] }
 
-@box_types.each_with_index do |box|
-  put "get my first #{box}"
-  match = { :wait => [/\.\.\.wait/],
-            :next => ["were you referring"],
-            :open => ["You get"] }
-  res = match_wait match
-
-  case res
-    when :open
-      ident box
-    when :wait
-      pause 0.5
-      redo
+      case match_wait match
+        when :open
+          ident box
+          throw :break
+        when :wait
+          pause 0.5
+          redo
+      end
+    end
+    exit_script "*** All boxes disarmed! ***"
   end
 end
 
-exit_script "*** All boxes disarmed! ***"
+

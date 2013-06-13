@@ -2,6 +2,9 @@ require "#{File.dirname(__FILE__)}/models.rb"
 require "#{File.dirname(__FILE__)}/ruby_goto.rb"
 require "#{File.dirname(__FILE__)}/observer.rb"
 
+# show warnings
+#$VERBOSE = true
+
 $args = []
 ARGV.each do |arg|
   $args << arg
@@ -329,6 +332,12 @@ end
 def exit
   end_command_thread
   Kernel::exit
+end
+
+# @private
+def abort
+  end_command_thread
+  Kernel::abort
 end
 
 # @private

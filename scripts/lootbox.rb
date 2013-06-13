@@ -6,6 +6,9 @@
 @container = "backpack"
 @junk = ["runestone", "flower", "leaf", "grass", "mortar", "pestle"]
 
+def finally_do
+end
+
 def open
   put "open my #{@wield_right}"
   match = { :wait => [/\.\.wait/],

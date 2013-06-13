@@ -19,9 +19,11 @@ class Stats
   end
 
   def self.report_total_stats
-    echo "Total kills: #{@kill_count}"
-    echo "Avg. Time to kill: #{@total_time / @kill_count}"
-    echo "Avg. Shots to kill: #{@total_shot_count / @kill_count}"
+    if @kill_count > 0
+      echo "Total kills: #{@kill_count}"
+      echo "Avg. Time to kill: #{@total_time / @kill_count}"
+      echo "Avg. Shots to kill: #{@total_shot_count / @kill_count}"
+    end
   end
 
   def self.report_stats

@@ -33,10 +33,21 @@ def sell_pouch color
     end
 
     put "get #{item} from my #{color} pouch"
-    wait
-    put "sell my #{item}"
-    wait
+    sell_gem item
   end
+end
+
+def sell_gem gem
+    put "sell my #{gem}"
+    match = { :repeat => ["ahead 1 command"],
+              :next => ["You ask"] }
+    result = match_wait match
+
+    case result
+      when :repeat
+        pause 0.5
+        sell_gem gem
+    end
 end
 
 $args.each do |color|

@@ -3,10 +3,13 @@
 # run: anywhere
 
 @box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
+@finally_do = true
 
 def finally_do
-  pause_for_roundtime
-  stow_lockpick
+  if @finally_do
+    pause_for_roundtime
+    stow_lockpick
+  end
 end
 
 def get_lockpick
@@ -21,6 +24,7 @@ def ident
   put "pick ident"
   match = { :wait => [/\.\.wait/],
             :get_pick => ["Find a more appropriate tool and try again!"],
+            :end => ["not even locked"],
             :ident => ["teach you anything about the"],
             :blind => ["aged grandmother could open", "blindfolded"],
             :quick => ["junk barely worth your time", "a simple matter", "should not take long"],
@@ -37,6 +41,9 @@ def ident
     when :get_pick
       get_lockpick
       ident
+    when :end
+      end_script "*** DONE ***"
+      return
     when :hard
       exit_script("*** Unable to open! ***")
     else
@@ -84,13 +91,20 @@ def pick method
     when :ident
       ident
     when :end
-      exit_script("*** DONE ***")
+      end_script "*** DONE ***"
+      return
   end
 end
 
 def exit_script(message)
   echo message
   exit
+end
+
+def end_script(message)
+  @finally_do = false
+  echo message
+  stow_lockpick
 end
 
 # start script

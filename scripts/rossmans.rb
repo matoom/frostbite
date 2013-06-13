@@ -75,7 +75,7 @@ case result
     move "w"
 end
 
-move "w"
+#move "w"
 move "nw"
 move "n"
 move "nw"
