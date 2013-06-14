@@ -1,5 +1,5 @@
 put "open my haversack"
 wait
-put "put my #{$args.join(" ")} in my haversack"
+put "put my #{Wield::right_noun} in my haversack"
 wait
 put "close my haversack"

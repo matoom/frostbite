@@ -94,7 +94,8 @@ label(:start) {
 label(:hide) {
   pause Rt::value
   put "stalk"
-  match = { :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
+  match = { :wait_for => ["Stalk what?"],
+            :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
             :stop_stalk => ["You're already stalking"],
             :hide => ["ruining your hiding"],
             :pause => ["You are still stunned"],
@@ -131,6 +132,7 @@ label(:dead) {
 }
 
 label(:wait_for) {
+  echo "*** WAITING ***<br/>"
   wait_for(/begins to advance you|closes to melee range/)
   goto :start
 }
