@@ -123,30 +123,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#execute-instance_method" title="#execute (instance method)">- (Void) <strong>execute</strong>(name) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Execute a script by name.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#get_match_rt-instance_method" title="#get_match_rt (instance method)">- (Integer) <strong>get_match_rt</strong> </a>
     
 
@@ -164,6 +140,30 @@
     <span class="summary_desc"><div class='inline'>
 <p>Current match round time -- can be used in secondary threads while main
 thread is stuck in round time.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load-instance_method" title="#load (instance method)">- (Void) <strong>load</strong>(name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Load a script by name.</p>
 </div></span>
   
 </li>
@@ -247,7 +247,7 @@ label.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#move-instance_method" title="#move (instance method)">- (void) <strong>move</strong>(value) </a>
+      <a href="#move-instance_method" title="#move (instance method)">- (void) <strong>move</strong>(dir) </a>
     
 
     
@@ -295,6 +295,30 @@ label.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#pause_for_roundtime-instance_method" title="#pause_for_roundtime (instance method)">- (void) <strong>pause_for_roundtime</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Pauses for current roundtime.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#put-instance_method" title="#put (instance method)">- (void) <strong>put</strong>(value) </a>
     
 
@@ -311,6 +335,30 @@ label.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Sends a command to server.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#require-instance_method" title="#require (instance method)">- (Void) <strong>require</strong>(name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Require a script by name.</p>
 </div></span>
   
 </li>
@@ -457,89 +505,17 @@ the server is responding.</p>
       <pre class="lines">
 
 
-268
-269
-270</pre>
+296
+297
+298
+299</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 296</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>echo#</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="execute-instance_method">
-  
-    - (<tt>Void</tt>) <strong>execute</strong>(name) 
-  
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Execute a script by name.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>name of the file</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Void</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-284
-285
-286</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 284</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_execute'>execute</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_load'>load</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rbrace'>}</span><span class='tstring_content'>/scripts/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>.rb</span><span class='tstring_end'>&quot;</span></span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>echo#</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -606,15 +582,89 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-293
-294
-295</pre>
+330
+331
+332</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 293</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 330</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_match_rt'>get_match_rt</span>
-  <span class='ivar'>@match_rt</span>
+  <span class='gvar'>$_current_rt</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="load-instance_method">
+  
+    - (<tt>Void</tt>) <strong>load</strong>(name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Load a script by name.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name of the file</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Void</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+313
+314
+315</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'main.rb', line 313</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+  <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rbrace'>}</span><span class='tstring_content'>/scripts/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>.rb</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -700,28 +750,6 @@ line.</p>
       <pre class="lines">
 
 
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
 143
 144
 145
@@ -736,12 +764,38 @@ line.</p>
 154
 155
 156
-157</pre>
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_get'>match_get</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+  <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:match_get</span>
   <span class='id identifier rubyid_match_found'>match_found</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='symbol'>:not_found</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -762,13 +816,15 @@ line.</p>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='id identifier rubyid_match_found'>match_found</span>
-        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^&gt;</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-          <span class='id identifier rubyid_rt'>rt</span> <span class='op'>=</span> <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>-</span> <span class='int'>1</span> <span class='op'>+</span> <span class='ivar'>@rt_adjust</span>
-          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_rt'>rt</span>
+        <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:running</span>
+
+        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_sleep'>sleep</span>
+          <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
           <span class='kw'>return</span> <span class='id identifier rubyid_match'>match</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
@@ -865,25 +921,6 @@ the matching pattern.</p>
       <pre class="lines">
 
 
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
 93
 94
 95
@@ -901,12 +938,35 @@ the matching pattern.</p>
 107
 108
 109
-110</pre>
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+  <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:match_wait</span>
   <span class='id identifier rubyid_match_found'>match_found</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='symbol'>:not_found</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -927,13 +987,15 @@ the matching pattern.</p>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='id identifier rubyid_match_found'>match_found</span>
-        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^&gt;</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-          <span class='id identifier rubyid_rt'>rt</span> <span class='op'>=</span> <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>-</span> <span class='int'>1</span> <span class='op'>+</span> <span class='ivar'>@rt_adjust</span>
-          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_rt'>rt</span>
+        <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:running</span>
+
+        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_sleep'>sleep</span>
+          <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
           <span class='kw'>return</span> <span class='id identifier rubyid_match'>match</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
@@ -980,8 +1042,7 @@ label.</p>
 
 <span class='id identifier rubyid_label'>label</span><span class='lparen'>(</span><span class='symbol'>:retry</span><span class='rparen'>)</span><span class='lbrace'>{</span>
   <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:retry</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:next</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>you open</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_match_wait'>match_wait</span> <span class='id identifier rubyid_match'>match</span>
-  <span class='id identifier rubyid_echo'>echo</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>retry</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_match_wait_goto'>match_wait_goto</span> <span class='id identifier rubyid_match'>match</span>
 <span class='rbrace'>}</span>
 
 <span class='id identifier rubyid_label'>label</span><span class='lparen'>(</span><span class='symbol'>:next</span><span class='rparen'>)</span><span class='lbrace'>{</span>
@@ -1032,30 +1093,6 @@ label.</p>
       <pre class="lines">
 
 
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
 202
 203
 204
@@ -1068,12 +1105,40 @@ label.</p>
 211
 212
 213
-214</pre>
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 178</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_wait_goto'>match_wait_goto</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+  <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:match_wait_goto</span>
   <span class='id identifier rubyid_match_found'>match_found</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='symbol'>:not_found</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -1094,13 +1159,15 @@ label.</p>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+        <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>+=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
       <span class='kw'>end</span>
 
       <span class='kw'>if</span> <span class='id identifier rubyid_match_found'>match_found</span>
-        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^&gt;</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-          <span class='id identifier rubyid_rt'>rt</span> <span class='op'>=</span> <span class='id identifier rubyid_sleep'>sleep</span> <span class='op'>-</span> <span class='int'>1</span> <span class='op'>+</span> <span class='ivar'>@rt_adjust</span>
-          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_rt'>rt</span>
+        <span class='gvar'>$_exec_status</span> <span class='op'>=</span> <span class='symbol'>:running</span>
+
+        <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_sleep'>sleep</span>
+          <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
           <span class='id identifier rubyid_goto'>goto</span> <span class='id identifier rubyid_match'>match</span>
         <span class='kw'>end</span>
       <span class='kw'>end</span>
@@ -1118,7 +1185,7 @@ label.</p>
       <div class="method_details ">
   <h3 class="signature " id="move-instance_method">
   
-    - (<tt>void</tt>) <strong>move</strong>(value) 
+    - (<tt>void</tt>) <strong>move</strong>(dir) 
   
 
   
@@ -1175,28 +1242,30 @@ label.</p>
       <pre class="lines">
 
 
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243</pre>
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 234</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 261</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>put#</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>put#</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_dir'>dir</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
   <span class='const'>STDOUT</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
-  <span class='kw'>case</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='symbol'>:room</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\[.*?\]$</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-                    <span class='symbol'>:wait</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>you may only type ahead</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+
+  <span class='kw'>case</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='symbol'>:room</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\{nav\}$</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+                    <span class='symbol'>:wait</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait|you may only type ahead</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='kw'>when</span> <span class='symbol'>:wait</span>
       <span class='id identifier rubyid_pause'>pause</span> <span class='float'>0.5</span>
-      <span class='id identifier rubyid_move'>move</span> <span class='id identifier rubyid_value'>value</span>
+      <span class='id identifier rubyid_move'>move</span> <span class='id identifier rubyid_dir'>dir</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1265,15 +1334,75 @@ label.</p>
       <pre class="lines">
 
 
-276
-277
-278</pre>
+305
+306
+307</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 276</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 305</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause'>pause</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>1</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="pause_for_roundtime-instance_method">
+  
+    - (<tt>void</tt>) <strong>pause_for_roundtime</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+<p>Pauses for current roundtime</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'></span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61
+62</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'main.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_pause_for_roundtime'>pause_for_roundtime</span>
+  <span class='kw'>if</span> <span class='gvar'>$_current_rt</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='gvar'>$_current_rt</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1326,19 +1455,93 @@ label.</p>
       <pre class="lines">
 
 
-220
-221
-222
-223
-224</pre>
+247
+248
+249
+250
+251</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 220</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 247</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>put#</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
   <span class='const'>STDOUT</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="require-instance_method">
+  
+    - (<tt>Void</tt>) <strong>require</strong>(name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Require a script by name. Only loads file once per script execution.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name of the file</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Void</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+321
+322
+323</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'main.rb', line 321</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_require'>require</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+  <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rbrace'>}</span><span class='tstring_content'>/scripts/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>.rb</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1403,17 +1606,17 @@ the server is responding</p>
       <pre class="lines">
 
 
-256
-257
-258
-259</pre>
+284
+285
+286
+287</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 256</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 284</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span>
   <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^&gt;</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;$</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1466,25 +1669,27 @@ the server is responding</p>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60</pre>
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
     <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_each_index'>each_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
       <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+        <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
         <span class='kw'>return</span>
       <span class='kw'>end</span>
       <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
@@ -1552,29 +1757,29 @@ the server is responding</p>
       <pre class="lines">
 
 
-32
-33
-34
-35
-36
-37
-38
-39
 40
 41
 42
 43
-44</pre>
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_roundtime'>wait_for_roundtime</span>
   <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
     <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_each_index'>each_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
       <span class='kw'>if</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_rt'>rt</span> <span class='op'>=</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>-</span> <span class='int'>1</span> <span class='op'>+</span> <span class='ivar'>@rt_adjust</span>
-        <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='id identifier rubyid_rt'>rt</span>
+        <span class='id identifier rubyid_sleep_for_rt'>sleep_for_rt</span> <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
+        <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
         <span class='kw'>return</span>
       <span class='kw'>end</span>
       <span class='gvar'>$_data_queue</span><span class='period'>.</span><span class='id identifier rubyid_delete_at'>delete_at</span><span class='lparen'>(</span><span class='id identifier rubyid_i'>i</span><span class='rparen'>)</span>
@@ -1592,7 +1797,7 @@ the server is responding</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Feb  8 13:17:33 2013 by
+  Generated on Tue Jun 25 10:12:40 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>
