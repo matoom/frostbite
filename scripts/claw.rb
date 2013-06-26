@@ -1,4 +1,4 @@
-@arrange_count = 5
+require "defines"
 
 @start_time = Time.now
 @kill_count = 0
@@ -27,7 +27,7 @@ def arrange count
       check_health
       arrange count
     when :arrange
-      if count < @arrange_count - 1
+      if count < GD::ARRANGE_COUNT - 1
         arrange count + 1
       else
         skin
@@ -81,9 +81,7 @@ end
   put "claw"
   match = { :wait => [/\.\.\.wait|entangled in a web/],
             :stunned => [/still stunned/],
-            :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
-                      "ceases all movement", "collapses into a massive heap","massive heap before",
-                      "sharp halt", "crumbles", "life force fades away", "falls dead"],
+            :skin => GD::MATCH_DEAD,
             :wait_for => ["trying to attack"],
             :adv => ["You aren't close enough to attack."],
             :continue => ["Roundtime"] }

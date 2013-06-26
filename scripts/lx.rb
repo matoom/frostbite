@@ -3,9 +3,9 @@
 # run: hunting area
 # use: .lx <target>
 
-execute("lx_stat")
+require "lx_stat"
+require "defines"
 
-@arrange_count = 5
 @ammo = "bolt"
 @circle_count = 1
 
@@ -149,7 +149,7 @@ def arrange count
       check_health
       arrange count
     when :arrange
-      if count < @arrange_count - 1
+      if count < GD::ARRANGE_COUNT - 1
         arrange count + 1
       else
         skin

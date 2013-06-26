@@ -1,3 +1,3 @@
-execute("disarm")
-execute("pick")
-execute("lootbox")
+load("disarm")
+load("pick")
+load("lootbox")

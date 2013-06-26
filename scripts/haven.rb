@@ -28,5 +28,5 @@ path.each { |p|
 echo "*** CROSSING FALDESU ***"
 pause 2
 
-execute "faldesu"
+load "faldesu"
 

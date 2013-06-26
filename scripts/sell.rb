@@ -40,10 +40,9 @@ end
 def sell_gem gem
     put "sell my #{gem}"
     match = { :repeat => ["ahead 1 command"],
-              :next => ["You ask"] }
-    result = match_wait match
+              :next => ["You ask", "Sell what?"] }
 
-    case result
+    case match_wait match
       when :repeat
         pause 0.5
         sell_gem gem

@@ -3,7 +3,7 @@
 # run: east gate, riverhaven
 
 if Room::title == "[Riverhaven, Stone Bridge]"
-    execute "xfaldesu"
+    load "xfaldesu"
 end
 
 path = ["se", "s", "s", "s", "se", "s", "se", "e", "e", "e", "e", "e", "e", "e", "e",

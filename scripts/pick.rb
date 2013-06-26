@@ -2,6 +2,12 @@
 # requirements: ?
 # run: anywhere
 
+@quick = false
+
+if $args.join(" ").include? "quick"
+  @quick = true;
+end
+
 @box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
 @finally_do = true
 

@@ -2,8 +2,9 @@
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
+require "defines"
+
 @rt_adjust = 0
-@arrange_count = 5
 
 if !$args.first
   echo '*** hide from what? usage: .h &lt;critter_name&gt; ***'
@@ -35,7 +36,7 @@ def arrange count
       pause 0.5
       arrange count
     when :arrange
-      if count < @arrange_count - 1
+      if count < GD::ARRANGE_COUNT - 1
         arrange count + 1
       else
         skin
@@ -111,7 +112,7 @@ label(:stop_stalk) {
 
 label(:feint) {
   put "backstab"
-  match = { :dead => ["and collapses", "sharp halt", "ceases all movement", "fades away"],
+  match = { :dead => GD::MATCH_DEAD,
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime", "hidden to backstab"],
             :face => ["You can't backstab that."],

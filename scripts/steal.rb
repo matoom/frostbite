@@ -2,6 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
+# 721
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start focus hasten darken dampen shadowstep plunder"
@@ -20,13 +21,13 @@
       :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
-      :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] - gold brocade tail coat (trivial 670)
+      :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
       :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "broadsword", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
-      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Halfling anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
@@ -42,7 +43,7 @@
     {
       :alberdeen => { :item  => "arm pouch", :amount => 2 }, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]
-      :ongadine => { :item  => "ebony silk mantle", :amount => 3 }, #[Ongadine's Garb and Gear]
+      :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "hat", :amount => 1 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]

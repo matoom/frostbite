@@ -9,7 +9,6 @@ if $args.join(" ").include? "no.harvest"
   @harvest = false;
 end
 
-
 def ident(box)
   put "disarm my #{box} ident"
   match = { :wait => [/\.\.wait/],

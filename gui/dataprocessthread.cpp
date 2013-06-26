@@ -280,7 +280,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                     gameDataContainer->setRoomExits(e.text());
                 } else if (id.endsWith("extra")) {
                     gameDataContainer->setRoomExtra(e.text());
-                }
+                }                                
                 emit updateRoomWindow();
             }
         } else if(e.tagName() == "pushStream") {

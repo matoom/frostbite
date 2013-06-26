@@ -1,4 +1,4 @@
-@tiers = ["big bronze valve that seems oversized", "an obscure opening beside", "a narrow crevice beside", "a large pipe, just big"]
+@tiers = ["big bronze valve that seems oversized", "an obscure opening beside", "hardly more than a wide connection", "a large pipe, just big"]
 @destination = $args.first
 
 room = Room::description

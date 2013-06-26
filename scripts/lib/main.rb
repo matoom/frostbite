@@ -1,6 +1,6 @@
-require "#{File.dirname(__FILE__)}/models.rb"
-require "#{File.dirname(__FILE__)}/ruby_goto.rb"
-require "#{File.dirname(__FILE__)}/observer.rb"
+Kernel.require "#{File.dirname(__FILE__)}/models.rb"
+Kernel.require "#{File.dirname(__FILE__)}/ruby_goto.rb"
+Kernel.require "#{File.dirname(__FILE__)}/observer.rb"
 
 # show warnings
 #$VERBOSE = true
@@ -306,12 +306,20 @@ def pause(value = 1)
   sleep value
 end
 
-# Execute a script by name.
+# Load a script by name.
 #
 # @param [String] name name of the file
 # @return [Void]
-def execute(name)
-  load "#{Dir.pwd}/scripts/#{name}.rb"
+def load(name)
+  Kernel.load "#{Dir.pwd}/scripts/#{name}.rb"
+end
+
+# Require a script by name. Only loads file once per script execution.
+#
+# @param [String] name name of the file
+# @return [Void]
+def require(name)
+  Kernel.require "#{Dir.pwd}/scripts/#{name}.rb"
 end
 
 # Current match round time -- can be used in
@@ -368,7 +376,7 @@ end
 sleep Rt::value
 
 # run script file here
-require @_file
+Kernel.require @_file
 
 # end threads after finished
 end_command_thread

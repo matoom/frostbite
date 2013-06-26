@@ -2,9 +2,9 @@
 # requirements: ??
 # run: valid foraging spot
 
-Observer.instance.register_event({ :test => "Roundtime" })
+Observer.instance.register_event({ :perc => "Roundtime" })
 
-def test
+def perc
   echo Exp::state "perc"
 end
 
