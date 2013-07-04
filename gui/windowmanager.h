@@ -12,6 +12,11 @@
 #include <defaultvalues.h>
 #include <highlightsettings.h>
 #include <highlighterthread.h>
+#include <mainlogger.h>
+#include <thoughtslogger.h>
+#include <conversationslogger.h>
+#include <deathslogger.h>
+#include <arrivalslogger.h>
 
 class MainWindow;
 class GameWindow;
@@ -21,6 +26,11 @@ class GameDataContainer;
 class ClientSettings;
 class Highlighter;
 class HighlighterThread;
+class MainLogger;
+class ThoughtsLogger;
+class ConversationsLogger;
+class DeathsLogger;
+class ArrivalsLogger;
 
 typedef QList<QString> DirectionsList;
 
@@ -37,6 +47,7 @@ public:
     void scriptRunning(bool);
     void updateWindowStyle();
     void initWindowHighlighters();
+    void initLoggers();
     void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
@@ -46,7 +57,7 @@ public:
     void copyDock();
     void saveArrivals();
     void reloadSettings();
-    void reloadHighlighterSettings();
+    void reloadHighlighterSettings();    
 
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
@@ -65,16 +76,22 @@ public:
 
 public slots:
     void updateConversationsWindow(QString);
-    void writeGameText(QByteArray, bool);
-    void writeGameWindow(QByteArray);
+    void writeGameText(QByteArray, bool);    
+    void writeGameWindow(QByteArray);    
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
     void updateExpWindow();
     void updateRoomWindow();
     void updateDeathsWindow(QString);
-    void updateThoughtsWindow(QString);
+    void updateThoughtsWindow(QString);    
     void updateArrivalsWindow(QString);
     void updateFamiliarWindow(QString);
+
+    void logThoughtsText(QString);
+    void logConversationsText(QString);
+    void logGameText(QByteArray, char type = '\0');
+    void logDeathsText(QString);
+    void logArrivalsText(QString);
 
 private slots:
     void thoughtsVisibility(bool);    
@@ -114,6 +131,12 @@ private:
     HighlighterThread* conversationsHighlighter;
     HighlighterThread* familiarHighlighter;
     QList<HighlighterThread*> highlighters;
+
+    MainLogger* mainLogger;
+    ThoughtsLogger* thoughtsLogger;
+    ConversationsLogger* conversationsLogger;
+    DeathsLogger* deathsLogger;
+    ArrivalsLogger* arrivalsLogger;
 
     QString textColor(QString, QString);
     void setVisibilityIndicator(QDockWidget*, bool, QString);

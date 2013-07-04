@@ -7,6 +7,8 @@ ConnectionManager::ConnectionManager(QObject *parent) : QObject(parent) {
     windowManager = mainWindow->getWindowManager();
     settings = ClientSettings::Instance();
 
+    debugLogger = new DebugLogger();
+
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
         connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
@@ -131,10 +133,18 @@ void ConnectionManager::socketReadyRead() {
         }
         //qDebug() << buffer;
 
+        // process raw data
         emit addToQueue(buffer);
-
         if(!dataProcessThread->isRunning()) {
             dataProcessThread->start();
+        }
+
+        // log raw data
+        if(settings->getParameter("Logging/debug", false).toBool()) {
+            debugLogger->addText(buffer);
+            if(!debugLogger->isRunning()) {
+                debugLogger->start();
+            }
         }
 
         buffer.clear();
@@ -200,7 +210,8 @@ void ConnectionManager::disconnectFromServer() {
 ConnectionManager::~ConnectionManager() {
     this->disconnectFromServer();
 
+    delete debugLogger;
     delete tcpSocket;
     delete dataProcessThread;
-    delete eAuth;
+    delete eAuth;    
 }

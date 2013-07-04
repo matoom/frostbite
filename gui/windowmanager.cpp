@@ -150,6 +150,7 @@ void WindowManager::loadWindows() {
     connect(familiarWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(familiarVisibility(bool)));
 
     this->initWindowHighlighters();
+    this->initLoggers();
 
     if(!clientSettings->hasValue("MainWindow/state")) {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
@@ -193,6 +194,14 @@ void WindowManager::initWindowHighlighters() {
     familiarHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)familiarWindow->widget(), false);
     connect(this, SIGNAL(updateFamiliarSettings()), familiarHighlighter, SLOT(updateSettings()));
     highlighters << familiarHighlighter;
+}
+
+void WindowManager::initLoggers() {
+    mainLogger = new MainLogger();
+    thoughtsLogger = new ThoughtsLogger();
+    conversationsLogger = new ConversationsLogger();
+    deathsLogger = new DeathsLogger();
+    arrivalsLogger = new ArrivalsLogger();
 }
 
 void WindowManager::thoughtsVisibility(bool visibility) {
@@ -321,6 +330,17 @@ void WindowManager::updateConversationsWindow(QString conversationText) {
     if(!conversationsHighlighter->isRunning()) {
         conversationsHighlighter->start();
     }
+    this->logConversationsText(conversationText);
+}
+
+void WindowManager::logConversationsText(QString conversationText) {
+    if(clientSettings->getParameter("Logging/conversations", false).toBool()) {
+        conversationsLogger->addText(conversationText.trimmed());
+
+        if(!conversationsLogger->isRunning()) {
+            conversationsLogger->start();
+        }
+    }
 }
 
 void WindowManager::updateDeathsWindow(QString deathText) {
@@ -330,6 +350,17 @@ void WindowManager::updateDeathsWindow(QString deathText) {
 
     if(!deathsHighlighter->isRunning()) {
         deathsHighlighter->start();
+    }
+    this->logDeathsText(deathText);
+}
+
+void WindowManager::logDeathsText(QString deathsText) {
+    if(clientSettings->getParameter("Logging/deaths", false).toBool()) {
+        deathsLogger->addText(deathsText.trimmed());
+
+        if(!deathsLogger->isRunning()) {
+            deathsLogger->start();
+        }
     }
 }
 
@@ -341,6 +372,17 @@ void WindowManager::updateThoughtsWindow(QString thoughtText) {
     if(!thoughtsHighlighter->isRunning()) {
         thoughtsHighlighter->start();
     }
+    this->logThoughtsText(thoughtText);
+}
+
+void WindowManager::logThoughtsText(QString thoughtText) {
+    if(clientSettings->getParameter("Logging/thoughts", false).toBool()) {
+        thoughtsLogger->addText(thoughtText.trimmed());
+
+        if(!thoughtsLogger->isRunning()) {
+            thoughtsLogger->start();
+        }
+    }
 }
 
 void WindowManager::updateArrivalsWindow(QString arrivalText) {
@@ -350,6 +392,17 @@ void WindowManager::updateArrivalsWindow(QString arrivalText) {
 
     if(!arrivalsHighlighter->isRunning()) {
         arrivalsHighlighter->start();
+    }
+    this->logArrivalsText(arrivalText);
+}
+
+void WindowManager::logArrivalsText(QString arrivalText) {
+    if(clientSettings->getParameter("Logging/arrivals", false).toBool()) {
+        arrivalsLogger->addText(arrivalText);
+
+        if(!arrivalsLogger->isRunning()) {
+            arrivalsLogger->start();
+        }
     }
 }
 
@@ -393,10 +446,12 @@ void WindowManager::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         gameWindowHighlighter->addText(text);
         mainWindow->getScriptService()->writeScriptText(text);
+        this->logGameText(text, 'p');
         writePrompt = false;
     } else if(!prompt) {
         gameWindowHighlighter->addText(text);
         mainWindow->getScriptService()->writeScriptText(text);
+        this->logGameText(text);
         writePrompt = true;
     }
 
@@ -410,6 +465,17 @@ void WindowManager::writeGameWindow(QByteArray text) {
 
     if(!gameWindowHighlighter->isRunning()) {
         gameWindowHighlighter->start();
+    }
+    this->logGameText(text);
+}
+
+void WindowManager::logGameText(QByteArray text, char type) {
+    if(clientSettings->getParameter("Logging/main", false).toBool()) {
+        mainLogger->addText(text, type);
+
+        if(!mainLogger->isRunning()) {
+            mainLogger->start();
+        }
     }
 }
 
@@ -425,6 +491,12 @@ WindowManager::~WindowManager() {
     foreach(HighlighterThread* highlighter, highlighters) {
         delete highlighter;
     }
+
+    delete mainLogger;
+    delete thoughtsLogger;
+    delete conversationsLogger;
+    delete arrivalsLogger;
+    delete deathsLogger;
 
     delete settings;
     delete generalSettings;

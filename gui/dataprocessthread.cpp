@@ -188,7 +188,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                 time.setTime_t(e.attribute("time").toInt());
 
                 int t_to = time.secsTo(roundTime);
-                emit setTimer(t_to > 100 ? 100 : t_to);
+                emit setTimer(t_to > 300 ? 300 : t_to);
 
                 initRoundtime = false;
             }
@@ -280,7 +280,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                     gameDataContainer->setRoomExits(e.text());
                 } else if (id.endsWith("extra")) {
                     gameDataContainer->setRoomExtra(e.text());
-                }                                
+                }
                 emit updateRoomWindow();
             }
         } else if(e.tagName() == "pushStream") {
@@ -290,7 +290,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
             }
 
             if(e.attribute("id") == "logons") {
-                emit updateArrivalsWindow(root.text() +
+                emit updateArrivalsWindow(root.text().trimmed() +
                     " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "thoughts") {
                 QString thought = root.text().trimmed();
@@ -299,7 +299,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                 emit updateThoughtsWindow(thought +
                     " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "death") {
-                emit updateDeathsWindow(root.text() +
+                emit updateDeathsWindow(root.text().trimmed() +
                     " [" + QTime::currentTime().toString("hh:mm ap") + "]");
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();

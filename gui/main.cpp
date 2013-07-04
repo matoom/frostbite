@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
-
+#include "log4qt/logger.h"
+#include <log4qt/propertyconfigurator.h>
 
 int main(int argc, char *argv[]) {
     /* Prohibit running more than one copy of appliction to
@@ -11,6 +12,8 @@ int main(int argc, char *argv[]) {
     if(!shared.create(512, QSharedMemory::ReadWrite)) {
         exit(0);
     }
+
+    Log4Qt::PropertyConfigurator::configure(QDir::currentPath() + "/log.ini");
 
     QApplication a(argc, argv);
 

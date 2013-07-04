@@ -54,6 +54,12 @@ public:
     void addToolbarSpacer(int);
     void addToolbarWidget(QWidget*);
     void insertProfilesMenu(QMenu*);
+    void setLogMain(bool);
+    void setLogThoughts(bool);
+    void setLogConversations(bool);
+    void setLogArrivals(bool);
+    void setLogDeaths(bool);
+    void setLogDebug(bool);
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);

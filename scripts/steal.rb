@@ -17,9 +17,9 @@
       :locksmith => { :item => "ring", :amount => 2 }, #[Ragge's Locksmithing, Salesroom]
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom]
+      :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
       :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
-      :jewelry => { :item => "platinum ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
+      :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
       :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
@@ -33,18 +33,18 @@
 @arthe_items =
     {
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
-      :odds => { :item  => "hat", :amount => 1 }, #[Odds 'n Ends, Sales Room]
+      :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "map", :amount => 2 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe",:location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
       :alberdeen => { :item  => "arm pouch", :amount => 2 }, #[Alberdeen's Meats and Provisions, Front Room]
-      :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]
+      :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
-      :bardic_leth => { :item  => "hat", :amount => 1 }, #[Sinjian's Bardic Requisites, Workshop]
+      :bardic_leth => { :item  => "hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "shavi", :amount => 1 } #[Leth Deriel, Wooden Shack]
@@ -65,7 +65,7 @@
                      {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2},
                      {:name => "brass bowl", :amount => 2},
                      {:name => "unicorn pin", :amount => 1},
-                     {:name => "brass cauldron", :amount => 1}]
+                     {:name => "brass cauldron", :amount => 1, :dump => true}]
 
 @ilaya_items =
     {
@@ -111,6 +111,7 @@
 @stolen_items = []
 @shops_stolen_from = []
 @leave = false
+@dump = false
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
 @valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bucket", "bin", "display", "tub"]
 @body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
@@ -182,10 +183,11 @@ def stow_items
   right_hand = Wield::right_noun
 
   if left_hand != ""
-      stow_item left_hand
+    @dump ? drop(left_hand) : stow_item(left_hand)
   end
+
   if right_hand != ""
-      stow_item right_hand
+    @dump ? drop(right_hand) : stow_item(right_hand)
   end
 end
 
@@ -206,7 +208,7 @@ def take item
   put "steal #{item}"
   match = { :wait => [/\.\.\.wait|appears different about/],
             :fail => [/Guards!|begins to shout/],
-            :leave => [/trivial|should back off|You haven't picked|You can't steal/],
+            :leave => [/You haven't picked|You can't steal/],
             :stow => [/You need at least one/],
             :continue => [/Roundtime/] }
   result = match_wait match
@@ -221,6 +223,7 @@ def take item
       take item
     when :fail
       @fails += 1
+      echo "Failed attempt recorded! - total fails: #{@fails}"
   end
 
   result
@@ -275,18 +278,27 @@ def steal_shop list, shop_name
       item = "#{item} #{list[shop_name][:location]}"
     end
 
+    # set extra options for items
+    set_options list[shop_name]
+
     if @mark
       mark item
     end
 
     if @debug_mode
       echo "*** #{item} => #{list[shop_name][:amount]} ***"
+      echo "opts => dump: #{@dump}"
     else
       steal item, list[shop_name][:amount]
     end
 
     @shops_stolen_from << shop_name
   end
+end
+
+def set_options list
+  # drop stolen item
+  @dump = list.has_key?(:dump) ? list[:dump] : false
 end
 
 def identify_pier
@@ -332,8 +344,10 @@ def identify_pier
         #no action
       else
         if @ilaya_items[result].has_key?(:items) and !@ilaya_items[result][:items].empty?
+
           if @debug_mode
             echo "*** #{match[result]} ***"
+            echo "opts => dump: #{@dump}"
             echo find_pier_item result
           else
             echo "*** #{match[result]} ***"
@@ -350,6 +364,7 @@ end
 def find_pier_item ship
   containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
 
+  # map containers
   end_index = containers.length
   containers.each_with_index do |container, start_index|
     count = 1
@@ -361,6 +376,7 @@ def find_pier_item ship
     end
   end
 
+  # find items in containers
   containers.each do |container|
     item = find_stealable_item ship, container
     if !item.empty?
@@ -389,6 +405,10 @@ end
 
 def get_item_description ship, container, contents
   @ilaya_items[ship][:items].each do |item|
+
+    # set extra options for items
+    set_options item
+
     if item.has_key?(:desc) and contents.include?(item[:desc])
       return { :name => "#{item_position contents, item[:desc]} #{item[:name]} in #{container}",
                :amount => item[:amount] }
@@ -431,7 +451,7 @@ end
 def prepare_khri
   put @khri
   match = { :wait => [/\.\.\.wait/],
-            :exit => [/enough to manage that/],
+            :exit => [/enough to manage that|already using/],
             :continue => [/Roundtime/] }
   result = match_wait match
 
@@ -484,7 +504,7 @@ unless @debug_mode
 end
 
 def pawn_items
-  echo @fails
+  echo "Total failed attempts recorded - #{@fails}"
 
   if @stolen_items.count == 0 or @fails > @pawn_threshold
     return

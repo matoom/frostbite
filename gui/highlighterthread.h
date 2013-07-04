@@ -7,11 +7,15 @@
 #include <QMutex>
 
 #include <highlighter.h>
+#include <globaldefines.h>
+
+#include <log4qt/logger.h>
 
 class Highlighter;
 
 class HighlighterThread : public QThread {
     Q_OBJECT
+    LOG4QT_DECLARE_QCLASS_LOGGER
 
 public:
     HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool multiLine);
@@ -26,6 +30,8 @@ private:
     MainWindow* mainWindow;
     QMutex mMutex;
     bool multiLine;
+    QList<QString> logWindows;
+    QRegExp rxRemoveTags;
 
     QString localData;
     void process(QString data);

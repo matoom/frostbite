@@ -6,6 +6,9 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     settings = new GeneralSettings();
 
     this->loadSettings();
+
+    this->setObjectName("GameText");
+
     this->buildContextMenu();
 
     this->setFocusPolicy(Qt::NoFocus);

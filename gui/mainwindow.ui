@@ -209,8 +209,21 @@ QDialogButtonBox {
     <addaction name="actionCreate_new_profile"/>
     <addaction name="actionLoad_profile"/>
    </widget>
+   <widget class="QMenu" name="menuLogging">
+    <property name="title">
+     <string>Logging</string>
+    </property>
+    <addaction name="actionLogMain"/>
+    <addaction name="actionLogThoughts"/>
+    <addaction name="actionLogConversations"/>
+    <addaction name="actionLogArrivals"/>
+    <addaction name="actionLogDeaths"/>
+    <addaction name="separator"/>
+    <addaction name="actionLogDebug"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
+   <addaction name="menuLogging"/>
    <addaction name="menuWindow"/>
    <addaction name="menuScript"/>
    <addaction name="menuProfile"/>
@@ -328,6 +341,54 @@ QDialogButtonBox {
   <action name="actionLoad_profile">
    <property name="text">
     <string>Load profile</string>
+   </property>
+  </action>
+  <action name="actionLogMain">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Main</string>
+   </property>
+  </action>
+  <action name="actionLogThoughts">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Thoughts</string>
+   </property>
+  </action>
+  <action name="actionLogConversations">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Conversations</string>
+   </property>
+  </action>
+  <action name="actionLogArrivals">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Arrivals</string>
+   </property>
+  </action>
+  <action name="actionLogDeaths">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Deaths</string>
+   </property>
+  </action>
+  <action name="actionLogDebug">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Debug</string>
    </property>
   </action>
  </widget>

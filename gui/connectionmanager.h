@@ -10,6 +10,7 @@
 #include <clientsettings.h>
 #include <eauthservice.h>
 #include <dataprocessthread.h>
+#include <debuglogger.h>
 
 #include <environment.h>
 
@@ -18,6 +19,7 @@ class WindowManager;
 class ClientSettings;
 class EAuthService;
 class DataProcessThread;
+class DebugLogger;
 
 class ConnectionManager : public QObject {
     Q_OBJECT
@@ -40,6 +42,7 @@ private:
     EAuthService *eAuth;
     QString sessionKey;
     DataProcessThread* dataProcessThread;
+    DebugLogger* debugLogger;
 
     bool waitForSettings;
 

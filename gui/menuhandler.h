@@ -48,6 +48,8 @@ private:
     QMenu* profilesMenu;
     QAction* action;
 
+    void loadLoggingMenu();
+
 signals:
 
 public slots:

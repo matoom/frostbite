@@ -1,7 +1,8 @@
 move "go gate"
-move "down"
-move "down"
+move "up"
+move "up"
 
+move "w"
 move "s"
 move "s"
 move "se"

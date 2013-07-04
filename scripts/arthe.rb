@@ -14,6 +14,6 @@ move "n"
 move "n"
 
 move "e"
-move "up"
-move "up"
+move "down"
+move "down"
 move "go gate"

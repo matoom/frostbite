@@ -164,7 +164,31 @@ void MainWindow::addToolbarSeparator() {
 }
 
 void MainWindow::insertProfilesMenu(QMenu* menu) {
-    ui->actionLoad_profile->setMenu(menu);
+    ui->actionLoad_profile->setMenu(menu);    
+}
+
+void MainWindow::setLogMain(bool enabled) {
+    ui->actionLogMain->setChecked(enabled);
+}
+
+void MainWindow::setLogThoughts(bool enabled) {
+    ui->actionLogThoughts->setChecked(enabled);
+}
+
+void MainWindow::setLogConversations(bool enabled) {
+    ui->actionLogConversations->setChecked(enabled);
+}
+
+void MainWindow::setLogArrivals(bool enabled) {
+    ui->actionLogArrivals->setChecked(enabled);
+}
+
+void MainWindow::setLogDeaths(bool enabled) {
+    ui->actionLogDeaths->setChecked(enabled);
+}
+
+void MainWindow::setLogDebug(bool enabled) {
+    ui->actionLogDebug->setChecked(enabled);
 }
 
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {

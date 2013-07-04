@@ -11,6 +11,8 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
     profileAddDialog = new ProfileAddDialog();
+
+    this->loadLoggingMenu();
 }
 
 void MenuHandler::openConnectDialog() {
@@ -52,6 +54,18 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->text() == "User Guide") {
         QDesktopServices::openUrl(QUrl("file:///" +
             QDir::currentPath() + "/docs/index.html", QUrl::TolerantMode));
+    } else if(action->objectName() == "actionLogMain") {
+        clientSettings->setParameter("Logging/main", action->isChecked());
+    } else if(action->objectName() == "actionLogThoughts") {
+        clientSettings->setParameter("Logging/thoughts", action->isChecked());
+    } else if(action->objectName() == "actionLogConversations") {
+        clientSettings->setParameter("Logging/conversations", action->isChecked());
+    } else if(action->objectName() == "actionLogArrivals") {
+        clientSettings->setParameter("Logging/arrivals", action->isChecked());
+    } else if(action->objectName() == "actionLogDeaths") {
+        clientSettings->setParameter("Logging/deaths", action->isChecked());
+    } else if(action->objectName() == "actionLogDebug") {
+        clientSettings->setParameter("Logging/debug", action->isChecked());
     }
 
     if(action->data() == "profile") {        
@@ -64,6 +78,7 @@ void MenuHandler::menuTriggered(QAction* action) {
     }
 
     //qDebug() << action->text();
+    //qDebug() << action->objectName();
 }
 
 void MenuHandler::menuHovered(QAction* action) {
@@ -92,6 +107,15 @@ void MenuHandler::loadProfilesMenu() {
         profilesMenu->addAction(action);
     }
     mainWindow->insertProfilesMenu(profilesMenu);
+}
+
+void MenuHandler::loadLoggingMenu() {
+    mainWindow->setLogMain(clientSettings->getParameter("Logging/main", false).toBool());
+    mainWindow->setLogThoughts(clientSettings->getParameter("Logging/thoughts", false).toBool());
+    mainWindow->setLogConversations(clientSettings->getParameter("Logging/conversations", false).toBool());
+    mainWindow->setLogArrivals(clientSettings->getParameter("Logging/arrivals", false).toBool());
+    mainWindow->setLogDeaths(clientSettings->getParameter("Logging/deaths", false).toBool());
+    mainWindow->setLogDebug(clientSettings->getParameter("Logging/debug", false).toBool());
 }
 
 MenuHandler::~MenuHandler() {

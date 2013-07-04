@@ -8,6 +8,8 @@
     error("Could not find the common.pri file!")
 }
 
+include(../log4qt/src/log4qt/log4qt.pri)
+
 QT       += core gui network xml
 
 TARGET = ../../FrostBite
@@ -65,7 +67,13 @@ SOURCES += main.cpp\
     profileadddialog.cpp \
     generalsettings.cpp \
     highlighterthread.cpp \
-    scriptwriterthread.cpp
+    scriptwriterthread.cpp \
+    mainlogger.cpp \
+    thoughtslogger.cpp \
+    deathslogger.cpp \
+    conversationslogger.cpp \
+    arrivalslogger.cpp \
+    debuglogger.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -123,7 +131,14 @@ HEADERS  += mainwindow.h \
     profileadddialog.h \
     generalsettings.h \
     highlighterthread.h \
-    scriptwriterthread.h
+    scriptwriterthread.h \
+    globaldefines.h \
+    mainlogger.h \
+    thoughtslogger.h \
+    deathslogger.h \
+    conversationslogger.h \
+    arrivalslogger.h \
+    debuglogger.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

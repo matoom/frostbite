@@ -1,11 +1,8 @@
 #include "data.h"
 
-#include <QReadWriteLock>
-
-QReadWriteLock lock;
-
 #ifdef WIN32
 /* windows specific - mingw32 */
+// http://gcc.gnu.org/onlinedocs/gcc/Variable-Attributes.html - shared
 #define SHARED __attribute__((section(".shr"), shared))
 
 char exp[Data::expRows][Data::expY][Data::expZ] SHARED = {{"", "", ""}};
@@ -44,7 +41,7 @@ char roomExits[Data::roomExitsSize] SHARED = "";
 
 int rt SHARED = 0;
 #else
-/* other platforms - gcc ??*/
+/* not shared in other platforms */
 char exp[Data::expRows][Data::expY][Data::expZ] = {{"", "", ""}};
 
 bool standing = false;
@@ -122,7 +119,7 @@ void setExp(int index, const char name[], const char rank[], const char state[])
 }
 
 void removeExp(int index) {
-    //strcpy(exp[index][0], "");
+    //strcpy(exp[index][0], ""); -- produces duplicate values
     strcpy(exp[index][1], "");
     strcpy(exp[index][2], "");
 }
