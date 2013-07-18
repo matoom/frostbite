@@ -33,7 +33,7 @@ public:
 
     void historyBack();
     void historyForward();
-    void writeCommand(QString, QString style = "_BODY");
+    void writeCommand(QString, QString style = "body");
     void moveCursor(int);
     void completeCommand();
     bool runMacro(QString);
@@ -57,6 +57,8 @@ private:
 
     void addHistory();    
     QVector<QString> history;
+
+signals:
 
 public slots:
     virtual void sendCommand();

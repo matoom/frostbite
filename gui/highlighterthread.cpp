@@ -1,9 +1,9 @@
 #include "highlighterthread.h"
 
-HighlighterThread::HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool multiLine) {
+HighlighterThread::HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool append) {
     mainWindow = (MainWindow*)parent;
     this->textEdit = textEdit;
-    this->multiLine = multiLine;
+    this->append = append;
 
     highlighter = new Highlighter(parent);
 
@@ -23,7 +23,7 @@ void HighlighterThread::addText(QString text) {
 }
 
 void HighlighterThread::run() {
-    if(multiLine) {
+    if(!append) {
         scrollValue = textEdit->verticalScrollBar()->value();
         scrollMax = textEdit->verticalScrollBar()->maximum();
     }
@@ -37,7 +37,9 @@ void HighlighterThread::run() {
 }
 
 void HighlighterThread::process(QString data) {
-    if(multiLine) {
+    if(append) {
+        setText(highlighter->highlight(data));
+    } else {
         QString text = "";
         QList<QString> lines = data.split('\n');
 
@@ -50,20 +52,22 @@ void HighlighterThread::process(QString data) {
             }
         }
 
-        emit clearText();        
+        emit clearText();
         setText(text);
         if(scrollValue != scrollMax) {
             emit setScrollBarValue(scrollValue);
         }
-    } else {
-        setText(highlighter->highlight(data));
     }
 }
 
 void HighlighterThread::setText(QString text) {
-    emit writeText("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BODY\">"
+    if(text.isEmpty()) {
+        text = "&nbsp;";
+    }
+
+    emit writeText("<span class=\"body\">"
                    + text +
-                   "</SPAN>");
+                   "</span>");
 }
 
 HighlighterThread::~HighlighterThread() {

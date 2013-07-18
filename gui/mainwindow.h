@@ -63,6 +63,7 @@ public:
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
+    QColor getBackgroundColor();
     void toggleFullScreen();
     void toggleMaximized();
     void updateProfileSettings();

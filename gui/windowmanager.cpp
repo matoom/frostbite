@@ -90,22 +90,27 @@ void WindowManager::setDockFont(QFont font) {
 }
 
 void WindowManager::updateWindowStyle() {
-    QString style = "#_SPEECH {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}"
-        "#_WHISPER {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";}"
-        "#_BONUS {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}"
-        "#_PENALTY {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";}"
-        "#_THINKING {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}"
-        "#_ROOM_NAME {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}"
-        "#_ECHO {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}"
-        "#_SCRIPT {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";}"
-        "#_BOLD {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}"
-        "#_DAMAGE {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";}";
+    style = ".speech {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}\n"
+            ".whisper {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";}\n"
+            ".bonus {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}\n"
+            ".penalty {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";}\n"
+            ".thinking {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}\n"
+            ".room-name {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}\n"
+            ".echo {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}\n"
+            ".script {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";}\n"
+            ".bold {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}\n"
+            ".damage {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";}\n"
+            "span {white-space:pre-wrap;}";
 
     foreach(QDockWidget* dock, dockWindows) {
         ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
     }
 
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
+}
+
+QString WindowManager::getStyle() {
+    return style;
 }
 
 void WindowManager::loadWindows() {                
@@ -163,35 +168,35 @@ void WindowManager::loadWindows() {
 }
 
 void WindowManager::initWindowHighlighters() {
-    gameWindowHighlighter = new HighlighterThread(mainWindow, gameWindow, false);
+    gameWindowHighlighter = new HighlighterThread(mainWindow, gameWindow, true);
     connect(this, SIGNAL(updateGameWindowSettings()), gameWindowHighlighter, SLOT(updateSettings()));
     highlighters << gameWindowHighlighter;
 
-    roomHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)roomWindow->widget(), true);
+    roomHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)roomWindow->widget(), false);
     connect(this, SIGNAL(updateRoomSettings()), roomHighlighter, SLOT(updateSettings()));
     highlighters << roomHighlighter;
 
-    arrivalsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)arrivalsWindow->widget(), false);
+    arrivalsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)arrivalsWindow->widget(), true);
     connect(this, SIGNAL(updateArrivalsSettings()), arrivalsHighlighter, SLOT(updateSettings()));
     highlighters << arrivalsHighlighter;
 
-    deathsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)deathsWindow->widget(), false);
+    deathsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)deathsWindow->widget(), true);
     connect(this, SIGNAL(updateDeathsSettings()), deathsHighlighter, SLOT(updateSettings()));
     highlighters << deathsHighlighter;
 
-    thoughtsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)thoughtsWindow->widget(), false);
+    thoughtsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)thoughtsWindow->widget(), true);
     connect(this, SIGNAL(updateThoughtsSettings()), thoughtsHighlighter, SLOT(updateSettings()));
     highlighters << thoughtsHighlighter;
 
-    expHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)expWindow->widget(), true);
+    expHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)expWindow->widget(), false);
     connect(this, SIGNAL(updateExpSettings()), expHighlighter, SLOT(updateSettings()));
     highlighters << expHighlighter;
 
-    conversationsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)conversationsWindow->widget(), false);
+    conversationsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)conversationsWindow->widget(), true);
     connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
     highlighters << conversationsHighlighter;
 
-    familiarHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)familiarWindow->widget(), false);
+    familiarHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)familiarWindow->widget(), true);
     connect(this, SIGNAL(updateFamiliarSettings()), familiarHighlighter, SLOT(updateSettings()));
     highlighters << familiarHighlighter;
 }

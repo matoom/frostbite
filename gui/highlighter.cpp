@@ -24,9 +24,11 @@ QString Highlighter::highlight(QString text) {
 
             // match whole or partial words
             if(entry.options.at(1)) {
-                rx.setPattern(entry.value);
+                // do not match inside tags
+                rx.setPattern(entry.value + "(?=[^>]*(<|$))");
             } else {
-                rx.setPattern("\\b" + entry.value + "\\b");
+                // do not match inside tags
+                rx.setPattern("\\b" + entry.value + "\\b" + "(?=[^>]*(<|$))");
             }
 
             int indexStart = text.indexOf(rx);                        

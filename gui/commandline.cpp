@@ -121,15 +121,16 @@ void CommandLine::writeCommand(QString text, QString style) {
     cursor.movePosition(QTextCursor::PreviousCharacter);
     cursor.select(QTextCursor::WordUnderCursor);
 
+    QString html = "<span class=\"" + style + "\">" + text + "</span>";
+
     if(cursor.selectedText() == ">") {
         cursor.movePosition(QTextCursor::PreviousRow);
         cursor.movePosition(QTextCursor::EndOfLine);
-        cursor.insertHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" +
-            style + "\">" + text + "</SPAN>");        
+        cursor.insertHtml(html);
     } else {
-        windowManager->getGameWindow()->appendHtml("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"" +
-            style + "\">" + text + "</SPAN>");
+        windowManager->getGameWindow()->appendHtml(html);
     }
+
     windowManager->logGameText(text.toLocal8Bit(), 'c');
 }
 

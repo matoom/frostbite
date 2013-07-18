@@ -77,6 +77,10 @@ void MainWindow::setBackgroundColor(QColor color) {
     ui->centralWidget->setPalette(palette);
 }
 
+QColor MainWindow::getBackgroundColor() {
+    return ui->centralWidget->palette().color(QPalette::Window);
+}
+
 void MainWindow::loadClient() {
     tbm = new ToolbarManager(this);
     tbm->loadToolbar();

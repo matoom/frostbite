@@ -122,52 +122,58 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
     if(!mono && !pushStream) {
         /* Process game text with start tag only */
         if(e.tagName() == "style" && e.attribute("id") == "roomName") {
-            gameText += "<SPAN ID=\"_ROOM_NAME\">" + root.text() + "</SPAN>";
+            gameText += "<span class=\"room-name\">" + root.text().trimmed() + "</span>";
             return false;
         /* All plain text without tags */
         } else if(n.isText()) {
             // compensate for qdomnode discarding &lt
             QString textData = n.toText().data();
+
+            // remove CRs
+            if(textData.endsWith("\r")) {
+                textData.chop(1);
+            }
+
             textData.replace("<", "&lt;");
 
             if(bold) {
                 if(root.text().contains(rxDmg)) {
-                    gameText += "<SPAN ID=\"_DAMAGE\">" + textData + "</SPAN>";
+                    gameText += "<span class=\"damage\">" + textData + "</span>";
                 } else {
-                    gameText += "<SPAN ID=\"_BOLD\">" + textData + "</SPAN>";
+                    gameText += "<span class=\"bold\">" + textData + "</span>";
                 }
             } else {
                 gameText += textData;
             }
         /* Process game text between tags */
         } else if(e.tagName() == "d") {
-            gameText += e.text();
+            gameText += e.text().trimmed();
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
-            gameText += e.text();
+            gameText += e.text().trimmed();
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
-            gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
+            gameText += "<span class=\"speech\">" + e.text().trimmed() + "</span>";
 
             QString speech = root.text().trimmed();
-            speech.insert(speech.indexOf("\""), "</SPAN>");
-            speech.prepend("<SPAN ID=\"_SPEECH\">");
+            speech.insert(speech.indexOf("\""), "</span>");
+            speech.prepend("<span class=\"speech\">");
 
             emit updateConversationsWindow(speech +
             " [" + QTime::currentTime().toString("h:mm ap") + "]");
         } else if(e.tagName() == "preset" && e.attribute("id") == "whisper") {
-            gameText += "<SPAN ID=\"_WHISPER\">" + e.text() + "</SPAN>";
+            gameText += "<span class=\"whisper\">" + e.text().trimmed() + "</span>";
 
             QString whisper = root.text().trimmed();
-            whisper.insert(whisper.indexOf("\""), "</SPAN>");
-            whisper.prepend("<SPAN ID=\"_WHISPER\">");
+            whisper.insert(whisper.indexOf("\""), "</span>");
+            whisper.prepend("<span class=\"whisper\">");
 
             emit updateConversationsWindow(whisper +
             " [" + QTime::currentTime().toString("h:mm ap") + "]");
         } else if(e.tagName() == "b") {
-            gameText += "<SPAN ID=\"_SPEECH\">" + e.text() + "</SPAN>";
+            gameText += "<span class=\"speech\">" + e.text().trimmed() + "</span>";
 
             QString yell = root.text().trimmed();
-            yell.insert(yell.indexOf("\""), "</SPAN>");
-            yell.prepend("<SPAN ID=\"_SPEECH\">");
+            yell.insert(yell.indexOf("\""), "</span>");
+            yell.prepend("<span class=\"speech\">");
 
             emit updateConversationsWindow(yell +
             " [" + QTime::currentTime().toString("h:mm ap") + "]");
@@ -294,15 +300,15 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                     " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "thoughts") {
                 QString thought = root.text().trimmed();
-                thought.insert(thought.indexOf("\""), "</SPAN>");
-                thought.prepend("<SPAN ID=\"_THINKING\">");
+                thought.insert(thought.indexOf("\""), "</span>");
+                thought.prepend("<span class=\"thinking\">");
                 emit updateThoughtsWindow(thought +
                     " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "death") {
                 emit updateDeathsWindow(root.text().trimmed() +
                     " [" + QTime::currentTime().toString("hh:mm ap") + "]");
             } else if(e.attribute("id") == "atmospherics") {
-                gameText += root.text();
+                gameText += root.text().trimmed();
             } else if(e.attribute("id") == "inv") {
                 inv = true;
             } else if(e.attribute("id") == "familiar") {
@@ -312,11 +318,11 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
 
                     if(root.firstChildElement("preset").attribute("id") == "speech" ||
                        root.firstChildElement("b").tagName() == "b") {
-                        text.insert(text.indexOf("\""), "</SPAN>");
-                        text.prepend("<SPAN ID=\"_SPEECH\">");
+                        text.insert(text.indexOf("\""), "</span>");
+                        text.prepend("<span class=\"speech\">");
                     } else if(root.firstChildElement("preset").attribute("id") == "whisper") {
-                        text.insert(text.indexOf("\""), "</SPAN>");
-                        text.prepend("<SPAN ID=\"_WHISPER\">");
+                        text.insert(text.indexOf("\""), "</span>");
+                        text.prepend("<span class=\"whisper\">");
                     } else {
                         gameText += text;
                     }
@@ -324,7 +330,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                     emit updateFamiliarWindow(text);
                 }
             } else if(e.attribute("id") == "ooc") {
-                gameText += root.text();
+                gameText += root.text().trimmed();
             }
         } else if(e.tagName() == "popStream") {
             pushStream = false;
@@ -370,12 +376,17 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
         before tags are not recognized as text */
         QString line = rawData;
 
+        // remove CRs
+        if(line.endsWith("\r")) {
+            line.chop(1);
+        }
+
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
             if(bold) {
-                line.prepend("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_BOLD\">");
-                line.append("</SPAN>");
+                line.prepend("<span class=\"bold\">");
+                line.append("</span>");
             }
 
             emit writeText(line.toLocal8Bit(), false);
@@ -389,9 +400,9 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
 void DataProcessThread::fixMonoTags(QString& line) {
     // fix style ids
     if(line.contains("preset id=\"thought\"")) {
-        line.replace("preset id=\"thought\"", "PRESET ID=\"_PENALTY\"");
+        line.replace("preset id=\"thought\"", "preset class=\"penalty\"");
     } else if(line.contains("preset id=\"speech\"")) {
-        line.replace("preset id=\"speech\"", "PRESET ID=\"_BONUS\"");
+        line.replace("preset id=\"speech\"", "preset class=\"bonus\"");
     } else if(line.startsWith("  <d cmd=\"flag")) {
         line = stripTags("<temp>" + line + "</temp>");
         if(line.endsWith('\n')) {

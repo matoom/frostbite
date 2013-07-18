@@ -1,6 +1,6 @@
 #ifndef GLOBALDEFINES_H
 #define GLOBALDEFINES_H
 
-#define LOG_WINDOWS "GameText" << "ThoughtsText" << "DeathsText"
+#define GAME_WINDOW_LIMIT 5000
 
 #endif // GLOBALDEFINES_H

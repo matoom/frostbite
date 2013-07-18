@@ -73,7 +73,8 @@ SOURCES += main.cpp\
     deathslogger.cpp \
     conversationslogger.cpp \
     arrivalslogger.cpp \
-    debuglogger.cpp
+    debuglogger.cpp \
+    snapshot.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -138,7 +139,9 @@ HEADERS  += mainwindow.h \
     deathslogger.h \
     conversationslogger.h \
     arrivalslogger.h \
-    debuglogger.h
+    debuglogger.h \
+    snapshot.h \
+    windowinterface.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

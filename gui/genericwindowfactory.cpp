@@ -23,7 +23,7 @@ QPlainTextEdit* GenericWindowFactory::textBox(QString name) {
 
     GenericWindow* genericWindow = new GenericWindow(mainWindow);
     ((QPlainTextEdit*)genericWindow)->setFont(font);
-    ((QPlainTextEdit*)genericWindow)->setObjectName(name + "Text");
+    ((QPlainTextEdit*)genericWindow)->setObjectName(name);
     ((QPlainTextEdit*)genericWindow)->setPalette(this->palette());
 
     return (QPlainTextEdit*)genericWindow;

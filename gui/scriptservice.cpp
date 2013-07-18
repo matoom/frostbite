@@ -102,10 +102,10 @@ void ScriptService::processCommand(QByteArray msg) {
     foreach (QByteArray line, msgLines) {
         if(!line.isEmpty()){
             if(line.startsWith("put#")) {
-                commandLine->writeCommand(line.mid(4).trimmed(), "_SCRIPT");
+                commandLine->writeCommand(line.mid(4).trimmed(), "script");
             } else if (line.startsWith("echo#")) {
-                windowManager->writeGameWindow("<SPAN STYLE=\"WHITE-SPACE:PRE;\" ID=\"_ECHO\">" +
-                    line.mid(5).trimmed() + "</SPAN>");
+                windowManager->writeGameWindow("<span class=\"echo\">" +
+                    line.mid(5).trimmed() + "</span>");
             } else if (line.startsWith("end#")) {
                 script->sendMessage("end#\n");
             }

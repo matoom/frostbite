@@ -18,7 +18,7 @@ class HighlighterThread : public QThread {
     LOG4QT_DECLARE_QCLASS_LOGGER
 
 public:
-    HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool multiLine);
+    HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool append);
     ~HighlighterThread();
 
     virtual void run();
@@ -29,13 +29,13 @@ private:
     Highlighter* highlighter;
     MainWindow* mainWindow;
     QMutex mMutex;
-    bool multiLine;
+    bool append;
     QList<QString> logWindows;
     QRegExp rxRemoveTags;
-
     QString localData;
-    void process(QString data);
-    void setText(QString text);
+
+    void process(QString);
+    void setText(QString);
 
     int scrollValue;
     int scrollMax;

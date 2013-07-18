@@ -46,6 +46,7 @@ public:
     void paintNavigationDisplay();
     void scriptRunning(bool);
     void updateWindowStyle();
+    QString getStyle();
     void initWindowHighlighters();
     void initLoggers();
     void updateWindowColors();
@@ -137,6 +138,8 @@ private:
     ConversationsLogger* conversationsLogger;
     DeathsLogger* deathsLogger;
     ArrivalsLogger* arrivalsLogger;
+
+    QString style;
 
     QString textColor(QString, QString);
     void setVisibilityIndicator(QDockWidget*, bool, QString);
