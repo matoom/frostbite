@@ -2,10 +2,10 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 721
+# 770
 
 @containers = ["backpack", "haversack"]
-@khri = "khri start focus hasten darken dampen shadowstep plunder"
+@khri = "khri start calm focus guile hasten darken plunder"
 @mark = false
 @debug_mode = false
 @name = "Defol"
@@ -14,7 +14,7 @@
 @crossing_items =
     {
       :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
-      :locksmith => { :item => "ring", :amount => 2 }, #[Ragge's Locksmithing, Salesroom]
+      :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
       :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
@@ -26,7 +26,7 @@
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
-      :emmiline_sales => { :item => "broadsword", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
@@ -41,40 +41,42 @@
 
 @leth_items =
     {
-      :alberdeen => { :item  => "arm pouch", :amount => 2 }, #[Alberdeen's Meats and Provisions, Front Room]
+      :alberdeen => { :item  => "tunic", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
-      :bardic_leth => { :item  => "hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
+      :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "shavi", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
-@ilaya_pier_items = [{:name => "flask", :amount => 2},
-                     {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
-                     {:name => "velvet skirt", :amount => 1},
-                     {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 1},
+@ilaya_pier_items = [{:name => "flask", :amount => 1},
+                     {:name => "skirt", :desc => "green velvet skirt", :amount => 2},
+                     {:name => "velvet skirt", :amount => 2},
+                     {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
                      {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 2},
                      {:name => "moonstone lily", :amount => 1},
-                     {:name => "golden earrings", :amount => 1},
+                     {:name => "golden earrings", :amount => 2},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
-                     {:name => "vial", :desc => "jade glass vial", :amount => 1},
-                     {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 1},
-                     {:name => "stole", :desc =>"lavender linsey-woolsey stole", :amount => 2},
+                     {:name => "vial", :desc => "jade glass vial", :amount => 2},
+                     {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2},
+                     #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
                      {:name => "brass bowl", :amount => 2},
                      {:name => "unicorn pin", :amount => 1},
+                     {:name => "spidersilk sack", :amount => 1},
+                     {:name => "silver bracelet", :amount => 1},
                      {:name => "brass cauldron", :amount => 1, :dump => true}]
 
 @ilaya_items =
     {
-        :tower => { :item  => "scimitar", :amount => 1 }, #[Harbor Tower, First Floor]
+        :tower => { :item  => "scimitar", :location => "on rack", :amount => 1 }, #[Harbor Tower, First Floor]
         :fish => {:item => "fishbowl", :amount => 1 }, #[Fernwyk's Fish]
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
@@ -112,9 +114,15 @@
 @shops_stolen_from = []
 @leave = false
 @dump = false
-@ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"]
-@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest", "tub", "basket", "bucket", "bin", "display", "tub"]
-@body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm", "right hand", "left hand", "neck", "head", "right eye", "left eye"]
+
+@ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
+                    "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth"]
+
+@valid_pier_containers = ["crate", "box", "barrel", "trunk", "coffer", "case", "chest",
+                          "tub", "basket", "bucket", "bin", "display", "tub"]
+
+@body_parts = ["right leg", "left leg", "abdomen", "back", "chest", "right arm", "left arm",
+               "right hand", "left hand", "neck", "head", "right eye", "left eye"]
 
 def jail_check
   room = Room::title
@@ -256,6 +264,7 @@ end
 
 def steal item, amount_of
   do_hide
+  exp_before = Exp::state "thievery"
 
   amount_of.times do
     case take item
@@ -263,6 +272,11 @@ def steal item, amount_of
         break
     end
   end
+
+  exp_after = Exp::state "thievery"
+  exp_gain = exp_after - exp_before
+
+  echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
 
   stow_items
 end
@@ -472,6 +486,17 @@ def prepare_containers
   end
 end
 
+def prepare_hands
+  if Wield::left_noun != ""
+    put "stow left"
+  end
+
+  if Wield::right_noun != ""
+    put "stow right"
+  end
+end
+
+
 def prepare_armor
   put "inv armor"
   match = { :wait => [/\.\.\.wait/],
@@ -498,6 +523,8 @@ end
 unless @debug_mode
   prepare_containers
 
+  prepare_hands
+
   prepare_armor
 
   prepare_khri
@@ -507,6 +534,7 @@ def pawn_items
   echo "Total failed attempts recorded - #{@fails}"
 
   if @stolen_items.count == 0 or @fails > @pawn_threshold
+    echo "Binning everything!"
     return
   end
 

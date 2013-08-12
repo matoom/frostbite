@@ -294,8 +294,8 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-
-puts "echo#" + value.to_s
+  puts "echo#" + value.to_s
+  STDOUT.flush
 end
 
 # Pauses for given time.

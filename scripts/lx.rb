@@ -138,7 +138,7 @@ def arrange count
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :health_check => [/You are still stunned/],
             :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
-            :loot => [/arrange what|cannot be skinned|corpse is worthless now/] }
+            :loot => [/Arrange what|cannot be skinned|corpse is worthless now/] }
   result = match_wait match
 
   case result

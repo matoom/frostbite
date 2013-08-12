@@ -1,12 +1,9 @@
-move "nw"
-move "w"
-move "w"
-move "w"
-move "w"
-move "w"
+@recently_stolen = false
+
+move "e"
 move "n"
 move "n"
-move "go door"
+move "go shop"
 
 put "mark ring"
 match = { :back => ["Roundtime"],
@@ -15,21 +12,18 @@ result = match_wait match
 
 case result
   when :alert
-    echo ""
-    echo "***********************"
-    echo "*** RECENTLY STOLEN ***"
-    echo "***********************"
-    echo ""
+    @recently_stolen = true
 end
 
 move "out"
 move "s"
 move "s"
-move "e"
-move "e"
-move "e"
-move "e"
-move "e"
-move "se"
+move "w"
 
-
+if @recently_stolen
+  echo ""
+  echo "***********************"
+  echo "*** RECENTLY STOLEN ***"
+  echo "***********************"
+  echo ""
+end

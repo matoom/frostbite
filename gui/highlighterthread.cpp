@@ -23,11 +23,6 @@ void HighlighterThread::addText(QString text) {
 }
 
 void HighlighterThread::run() {
-    if(!append) {
-        scrollValue = textEdit->verticalScrollBar()->value();
-        scrollMax = textEdit->verticalScrollBar()->maximum();
-    }
-
     while(!dataQueue.isEmpty()) {
         mMutex.lock();
         localData = dataQueue.dequeue();
@@ -52,21 +47,21 @@ void HighlighterThread::process(QString data) {
             }
         }
 
+        //scrollValue = textEdit->verticalScrollBar()->value();
+        //scrollMax = textEdit->verticalScrollBar()->maximum();
+
         emit clearText();
         setText(text);
-        if(scrollValue != scrollMax) {
+
+        /*if(scrollValue != scrollMax) {
             emit setScrollBarValue(scrollValue);
-        }
+        }*/
     }
 }
 
 void HighlighterThread::setText(QString text) {
-    if(text.isEmpty()) {
-        text = "&nbsp;";
-    }
-
     emit writeText("<span class=\"body\">"
-                   + text +
+                   + (text.isEmpty() ? "&nbsp;" : text) +
                    "</span>");
 }
 

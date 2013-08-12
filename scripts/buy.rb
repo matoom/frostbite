@@ -24,8 +24,8 @@ end
   put "buy #{@item}"
   match = { :price => [/d+/] }
   result = match_get match
-  echo "## #{result}"
   price = result.scan(/\d+/).first
+  echo "--> #{price} <--"
 
   if price
     put "offer #{price}"
