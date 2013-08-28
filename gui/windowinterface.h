@@ -15,6 +15,9 @@ public:
     virtual QTextDocument* getDocument() = 0;
     virtual QString getObjectName() = 0;
 
+    virtual void setAppend(bool) = 0;
+    virtual bool append() = 0;
+
 public slots:
 
 };

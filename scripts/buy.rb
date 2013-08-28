@@ -1,6 +1,8 @@
 @item = $args.join(" ")
 
 def stow_item
+  pause 0.2
+
   stow = false
   if !Wield::right_noun.empty?
     stow = true
@@ -25,7 +27,7 @@ end
   match = { :price => [/d+/] }
   result = match_get match
   price = result.scan(/\d+/).first
-  echo "--> #{price} <--"
+  echo result
 
   if price
     put "offer #{price}"

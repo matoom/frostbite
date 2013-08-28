@@ -14,7 +14,34 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setUndoRedoEnabled(false);
     this->document()->setMaximumBlockCount(1000);
 
+    _append = true;
+    vScroll = 0;
+    vMax = 0;
+
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
+}
+
+void GenericWindow::setAppend(bool append) {
+    this->_append = append;
+}
+
+bool GenericWindow::append() {
+    return this->_append;
+}
+
+void GenericWindow::clear() {
+    vMax = this->verticalScrollBar()->maximum();
+    vScroll = this->verticalScrollBar()->value();
+
+    QPlainTextEdit::clear();
+}
+
+void GenericWindow::appendHtml(const QString &html) {
+    QPlainTextEdit::appendHtml(html);
+
+    if(!this->_append && (vScroll < vMax)) {
+        this->verticalScrollBar()->setValue(vScroll);
+    }
 }
 
 void GenericWindow::loadSettings() {

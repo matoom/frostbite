@@ -168,35 +168,37 @@ void WindowManager::loadWindows() {
 }
 
 void WindowManager::initWindowHighlighters() {
-    gameWindowHighlighter = new HighlighterThread(mainWindow, gameWindow, true);
+    gameWindowHighlighter = new HighlighterThread(mainWindow, (GameWindow*)gameWindow);
     connect(this, SIGNAL(updateGameWindowSettings()), gameWindowHighlighter, SLOT(updateSettings()));
     highlighters << gameWindowHighlighter;
 
-    roomHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)roomWindow->widget(), false);
+    ((GenericWindow*)roomWindow->widget())->setAppend(false);
+    roomHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)roomWindow->widget());
     connect(this, SIGNAL(updateRoomSettings()), roomHighlighter, SLOT(updateSettings()));
     highlighters << roomHighlighter;
 
-    arrivalsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)arrivalsWindow->widget(), true);
+    arrivalsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)arrivalsWindow->widget());
     connect(this, SIGNAL(updateArrivalsSettings()), arrivalsHighlighter, SLOT(updateSettings()));
     highlighters << arrivalsHighlighter;
 
-    deathsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)deathsWindow->widget(), true);
+    deathsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)deathsWindow->widget());
     connect(this, SIGNAL(updateDeathsSettings()), deathsHighlighter, SLOT(updateSettings()));
     highlighters << deathsHighlighter;
 
-    thoughtsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)thoughtsWindow->widget(), true);
+    thoughtsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)thoughtsWindow->widget());
     connect(this, SIGNAL(updateThoughtsSettings()), thoughtsHighlighter, SLOT(updateSettings()));
     highlighters << thoughtsHighlighter;
 
-    expHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)expWindow->widget(), false);
+    ((GenericWindow*)expWindow->widget())->setAppend(false);
+    expHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)expWindow->widget());
     connect(this, SIGNAL(updateExpSettings()), expHighlighter, SLOT(updateSettings()));
     highlighters << expHighlighter;
 
-    conversationsHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)conversationsWindow->widget(), true);
+    conversationsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)conversationsWindow->widget());
     connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
     highlighters << conversationsHighlighter;
 
-    familiarHighlighter = new HighlighterThread(mainWindow, (QPlainTextEdit*)familiarWindow->widget(), true);
+    familiarHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)familiarWindow->widget());
     connect(this, SIGNAL(updateFamiliarSettings()), familiarHighlighter, SLOT(updateSettings()));
     highlighters << familiarHighlighter;
 }

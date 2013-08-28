@@ -18,7 +18,7 @@ class HighlighterThread : public QThread {
     LOG4QT_DECLARE_QCLASS_LOGGER
 
 public:
-    HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool append);
+    HighlighterThread(QObject *parent, WindowInterface* window);
     ~HighlighterThread();
 
     virtual void run();
@@ -33,6 +33,7 @@ private:
     QList<QString> logWindows;
     QRegExp rxRemoveTags;
     QString localData;
+    WindowInterface *window;
 
     void process(QString);
     void setText(QString);

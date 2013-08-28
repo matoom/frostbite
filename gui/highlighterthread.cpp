@@ -1,15 +1,16 @@
 #include "highlighterthread.h"
 
-HighlighterThread::HighlighterThread(QObject *parent, QPlainTextEdit* textEdit, bool append) {
+HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
     mainWindow = (MainWindow*)parent;
-    this->textEdit = textEdit;
+    this->textEdit = dynamic_cast<QPlainTextEdit*>(window);
+    this->window = window;
     this->append = append;
 
     highlighter = new Highlighter(parent);
 
-    connect(this, SIGNAL(writeText(const QString&)), textEdit, SLOT(appendHtml(const QString&)));
-    connect(this, SIGNAL(clearText()), textEdit, SLOT(clear()));
-    connect(this, SIGNAL(setScrollBarValue(int)), textEdit->verticalScrollBar(), SLOT(setValue(int)));
+    connect(this, SIGNAL(writeText(const QString&)), this->textEdit, SLOT(appendHtml(const QString&)));
+    connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
+    connect(this, SIGNAL(setScrollBarValue(int)), this->textEdit->verticalScrollBar(), SLOT(setValue(int)));
 }
 
 void HighlighterThread::updateSettings() {
@@ -32,7 +33,7 @@ void HighlighterThread::run() {
 }
 
 void HighlighterThread::process(QString data) {
-    if(append) {
+    if(window->append()) {
         setText(highlighter->highlight(data));
     } else {
         QString text = "";
@@ -47,15 +48,8 @@ void HighlighterThread::process(QString data) {
             }
         }
 
-        //scrollValue = textEdit->verticalScrollBar()->value();
-        //scrollMax = textEdit->verticalScrollBar()->maximum();
-
         emit clearText();
         setText(text);
-
-        /*if(scrollValue != scrollMax) {
-            emit setScrollBarValue(scrollValue);
-        }*/
     }
 }
 

@@ -13,15 +13,19 @@ if $args.empty?
   exit!
 end
 
+def kick_pile
+  put "kick pile"
+end
+
 def finally_do
   pause_for_roundtime
-  put "kick pile"
+  kick_pile
 end
 
 100.times do
   put "collect " + $args.join(" ")
   wait_for_roundtime
-  put "kick pile"
+  kick_pile
 end
 
 Kernel::exit

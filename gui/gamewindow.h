@@ -16,7 +16,7 @@ class MainWindow;
 class WindowManager;
 class Snapshot;
 
-class GameWindow : public QPlainTextEdit, WindowInterface {
+class GameWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT
 
 public:
@@ -28,6 +28,9 @@ public:
     QTextDocument* getDocument();
     QString getObjectName();
     QPlainTextEdit* getMainWindow();
+
+    void setAppend(bool append);
+    bool append();
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
@@ -50,6 +53,7 @@ private:
     QAction* saveAct;
     QMenu* menu;
 
+    bool _append;
 
 signals:    
 

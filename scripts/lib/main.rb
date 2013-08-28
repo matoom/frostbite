@@ -263,9 +263,19 @@ def move(dir)
   STDOUT.flush
 
   case match_wait({ :room => [/^\{nav\}$/],
+                    :stand => [/You can't do that while/],
+                    :retreat => [/You'll have better luck if you first retreat|You are engaged|do that while engaged/],
                     :wait => [/\.\.\.wait|you may only type ahead/] })
     when :wait
       pause 0.5
+      move dir
+    when :stand
+      pause 0.5
+      put "stand"
+      move dir
+    when :retreat
+      put "retreat"
+      put "retreat"
       move dir
   end
 end

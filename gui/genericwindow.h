@@ -15,7 +15,7 @@ class WindowManager;
 class GeneralSettings;
 class Snapshot;
 
-class GenericWindow : public QPlainTextEdit, WindowInterface {
+class GenericWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT
 
 public:
@@ -27,6 +27,9 @@ public:
     QTextDocument* getDocument();
     QString getObjectName();
     QPlainTextEdit* getMainWindow();
+
+    void setAppend(bool);
+    bool append();
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
@@ -45,6 +48,11 @@ private:
     QAction* clearAct;
     QMenu* menu;
 
+    int vScroll;
+    int vMax;
+
+    bool _append;
+
 signals:
 
 private slots:
@@ -53,7 +61,8 @@ private slots:
     void saveAsHtml();
     
 public slots:
-    
+    void appendHtml(const QString &html);
+    void clear();
 };
 
 #endif // GENERICWINDOW_H

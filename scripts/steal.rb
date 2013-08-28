@@ -36,7 +36,7 @@
       :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe",:location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
@@ -47,11 +47,16 @@
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
-      :shack => { :item  => "shavi", :amount => 1 } #[Leth Deriel, Wooden Shack]
+      :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
     }
 
 @ilaya_pier_items = [{:name => "flask", :amount => 1},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 2},
+                     {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
+                     {:name => "bush", :desc => "bare-root rose bush", :amount => 1},
+                     {:name => "chimney", :desc => "crumbling brick chimney", :amount => 1},
+                     {:name => "polished broadsword", :amount => 1},
+                     {:name => "ring", :desc => "delicate gold rose ring", :amount => 1},
                      {:name => "velvet skirt", :amount => 2},
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
@@ -61,7 +66,7 @@
                      {:name => "golden earrings", :amount => 2},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
-                     {:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2},
+                     #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
                      {:name => "brass bowl", :amount => 2},
                      {:name => "unicorn pin", :amount => 1},

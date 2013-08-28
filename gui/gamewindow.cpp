@@ -16,10 +16,20 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setUndoRedoEnabled(false);
     this->document()->setMaximumBlockCount(GAME_WINDOW_LIMIT);
 
+    _append = true;
+
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
     setViewportMargins(0, 0, 0, -6);
+}
+
+void GameWindow::setAppend(bool append) {
+    this->_append = append;
+}
+
+bool GameWindow::append() {
+    return this->_append;
 }
 
 void GameWindow::showEvent(QShowEvent* event) {
