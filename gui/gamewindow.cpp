@@ -38,6 +38,7 @@ void GameWindow::showEvent(QShowEvent* event) {
 
 void GameWindow::loadSettings() {
     QFont font = settings->gameWindowFont();
+    font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 
     QColor fontColor = settings->gameWindowFontColor();
@@ -81,7 +82,7 @@ void GameWindow::buildContextMenu() {
 
     menu->addSeparator();
 
-    saveAct = new QAction(tr("&Save\t"), this);
+    saveAct = new QAction(tr("&Save as HTML\t"), this);
     menu->addAction(saveAct);
     connect(saveAct, SIGNAL(triggered()), this, SLOT(saveAsHtml()));
 

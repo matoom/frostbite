@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 770
+# 800
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -18,7 +18,7 @@
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
       :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
-      :weapon => { :item => "heavy crossbow", :amount => 2 }, #[Milgrym's Weapons, Showroom]
+      :weapon => { :item => "heavy crossbow", :amount => 3 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
@@ -41,12 +41,12 @@
 
 @leth_items =
     {
-      :alberdeen => { :item  => "tunic", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room]
+      :alberdeen => { :item  => "tunic", :amount => 1, :alt => {:item => "arm pouch", :amount => 2}}, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
-      :trueflight => { :item  => "heavy crossbow", :amount => 2 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :trueflight => { :item  => "heavy crossbow", :amount => 3 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
     }
 
@@ -61,9 +61,9 @@
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
-                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 2},
+                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 1},
                      {:name => "moonstone lily", :amount => 1},
-                     {:name => "golden earrings", :amount => 2},
+                     {:name => "golden earrings", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
                      #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
@@ -76,7 +76,8 @@
 
 @ilaya_items =
     {
-        :tower => { :item  => "scimitar", :location => "on rack", :amount => 1 }, #[Harbor Tower, First Floor]
+        :tower => { :item  => "scimitar", :location => "on rack", :amount => 1, :alt =>
+                  {:item  => "scimitar", :location => "on second rack", :amount => 1} }, #[Harbor Tower, First Floor]
         :fish => {:item => "fishbowl", :amount => 1 }, #[Fernwyk's Fish]
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
@@ -116,7 +117,6 @@
 @current_container = 0
 @fails = 0
 @stolen_items = []
-@shops_stolen_from = []
 @leave = false
 @dump = false
 
@@ -205,15 +205,17 @@ def stow_items
 end
 
 def do_hide
-  put "hide"
-  match = { :wait => [/\.\.\.wait/],
-            :continue => [/You melt|You slip|You blend|But you|ruining your|Behind what|You look around/] }
-  result = match_wait match
+  if !Status::hidden
+    put "hide"
+    match = { :wait => [/\.\.\.wait/],
+              :continue => [/You melt|You slip|You blend|But you|ruining your|Behind what|You look around/] }
+    result = match_wait match
 
-  case result
-    when :wait
-      pause 0.5
-      do_hide
+    case result
+      when :wait
+        pause 0.5
+        do_hide
+    end
   end
 end
 
@@ -221,7 +223,7 @@ def take item
   put "steal #{item}"
   match = { :wait => [/\.\.\.wait|appears different about/],
             :fail => [/Guards!|begins to shout/],
-            :leave => [/You haven't picked|You can't steal/],
+            :alt => [/can't steal that|You haven't picked/],
             :stow => [/You need at least one/],
             :continue => [/Roundtime/] }
   result = match_wait match
@@ -273,7 +275,9 @@ def steal item, amount_of
 
   amount_of.times do
     case take item
-      when :fail, :leave
+      when :alt
+        return :alt
+      when :fail
         break
     end
   end
@@ -286,33 +290,43 @@ def steal item, amount_of
   stow_items
 end
 
-def steal_shop list, shop_name
-  if list[shop_name][:item] != :none and !@shops_stolen_from.include?(shop_name) and !@leave
-    item = list[shop_name][:item]
-
-    if list[shop_name].has_key?(:location) and list[shop_name].has_key?(:desc)
-      pos = get_item_position list[shop_name][:location], list[shop_name][:desc]
-      item = "#{pos} #{item} #{list[shop_name][:location]}"
-    elsif list[shop_name].has_key?(:location)
-      item = "#{item} #{list[shop_name][:location]}"
-    end
+def steal_shop shop_attrs
+  if shop_attrs[:item] != :none and !@leave
+    item = get_item shop_attrs
 
     # set extra options for items
-    set_options list[shop_name]
+    set_options shop_attrs
 
     if @mark
       mark item
     end
 
     if @debug_mode
-      echo "*** #{item} => #{list[shop_name][:amount]} ***"
+      echo "*** #{item} => #{shop_attrs[:amount]} ***"
       echo "opts => dump: #{@dump}"
     else
-      steal item, list[shop_name][:amount]
+      case steal item, shop_attrs[:amount]
+        when :alt
+          if shop_attrs.has_key?(:alt)
+            steal_shop shop_attrs[:alt]
+          end
+      end
     end
 
-    @shops_stolen_from << shop_name
   end
+end
+
+def get_item attrs
+  item = attrs[:item]
+
+  if attrs.has_key?(:location) and attrs.has_key?(:desc)
+    pos = get_item_position attrs[:location], attrs[:desc]
+    item = "#{pos} #{item} #{attrs[:location]}"
+  elsif attrs.has_key?(:location)
+    item = "#{item} #{attrs[:location]}"
+  end
+
+  item
 end
 
 def set_options list
@@ -546,10 +560,10 @@ def pawn_items
   move "go shop"
   echo @stolen_items.inspect
 
-  no_sell_item = ""
+  cant_sell = ""
   @stolen_items.each_with_index do |item, i|
     if item.at(1)
-      if item.at(0) == no_sell_item
+      if item.at(0) == cant_sell
         next
       end
       pause 0.1
@@ -565,12 +579,12 @@ def pawn_items
         when :redo
           redo
         when :no_sell
-          no_sell_item = item.at(0)
+          cant_sell = item.at(0)
           put "put my #{item.at(0)} in my #{item.at(1)}"
           wait
         when :sell
           @stolen_items[i][1] = :pawned
-          no_sell_item = ""
+          cant_sell = ""
       end
     end
   end
@@ -606,7 +620,7 @@ move "w"
 move "w"
 move "go bath"
 
-steal_shop @crossing_items, :bathhouse
+steal_shop @crossing_items[:bathhouse]
 
 move "out"
 move "w"
@@ -615,7 +629,7 @@ move "n"
 move "n"
 move "go door"
 
-steal_shop @crossing_items, :locksmith
+steal_shop @crossing_items[:locksmith]
 
 move "out"
 move "n"
@@ -624,11 +638,11 @@ move "e"
 move "e"
 move "go shop"
 
-steal_shop @crossing_items, :bard
+steal_shop @crossing_items[:bard]
 
 move "go curtain"
 
-steal_shop @crossing_items, :bard_private
+steal_shop @crossing_items[:bard_private]
 
 move "go curtain"
 move "out"
@@ -637,13 +651,13 @@ move "e"
 move "n"
 move "go shop"
 
-steal_shop @crossing_items, :armor
+steal_shop @crossing_items[:armor]
 
 move "out"
 move "e"
 move "go shop"
 
-steal_shop @crossing_items, :weapon
+steal_shop @crossing_items[:weapon]
 
 move "out"
 move "s"
@@ -652,14 +666,14 @@ move "e"
 move "e"
 move "go shop"
 
-steal_shop @crossing_items, :jewelry
+steal_shop @crossing_items[:jewelry]
 
 move "out"
 move "n"
 move "e"
 move "go shop"
 
-steal_shop @crossing_items, :macipur
+steal_shop @crossing_items[:macipur]
 
 move "out"
 move "w"
@@ -679,14 +693,14 @@ move "w"
 move "n"
 move "go haberdashery"
 
-steal_shop @crossing_items, :brisson
+steal_shop @crossing_items[:brisson]
 
 move "out"
 move "n"
 move "w"
 move "go shop"
 
-steal_shop @crossing_items, :artificer
+steal_shop @crossing_items[:artificer]
 
 move "out"
 move "e"
@@ -705,7 +719,7 @@ move "go shop"
 move "w"
 move "w"
 
-steal_shop @crossing_items, :tannery
+steal_shop @crossing_items[:tannery]
 
 move "e"
 move "e"
@@ -720,7 +734,7 @@ move "e"
 move "s"
 move "go shop"
 
-steal_shop @crossing_items, :alchemy
+steal_shop @crossing_items[:alchemy]
 
 move "out"
 move "e"
@@ -734,16 +748,16 @@ move "go step"
 move "go door"
 move "go arch"
 
-steal_shop @crossing_items, :emmiline_pantry
+steal_shop @crossing_items[:emmiline_pantry]
 
 move "go arch"
 move "w"
 
-steal_shop @crossing_items, :emmiline_parlor
+steal_shop @crossing_items[:emmiline_parlor]
 
 move "e"
 
-steal_shop @crossing_items, :emmiline_sales
+steal_shop @crossing_items[:emmiline_sales]
 
 move "go door"
 move "go step"
@@ -773,32 +787,32 @@ end
 
 move "go door"
 
-steal_shop @arthe_items, :thread
+steal_shop @arthe_items[:thread]
 
 move "out"
 move "e"
 move "go door"
 
-steal_shop @arthe_items, :odds
+steal_shop @arthe_items[:odds]
 
 move "out"
 move "e"
 move "go shop"
 
-steal_shop @arthe_items, :bardic
+steal_shop @arthe_items[:bardic]
 
 move "out"
 move "ne"
 move "go entryway"
 
-steal_shop @arthe_items, :bobba
+steal_shop @arthe_items[:bobba]
 
 move "out"
 move "ne"
 move "e"
 move "go door"
 
-steal_shop @arthe_items, :lobby
+steal_shop @arthe_items[:lobby]
 
 move "out"
 
@@ -866,7 +880,7 @@ move "e"
 move "e"
 move "go stump"
 
-steal_shop @leth_items, :alberdeen
+steal_shop @leth_items[:alberdeen]
 
 move "out"
 move "w"
@@ -875,14 +889,14 @@ move "sw"
 move "sw"
 move "go door"
 
-steal_shop @leth_items, :yerui
+steal_shop @leth_items[:yerui]
 
 move "go door"
 move "sw"
 move "n"
 move "go shop"
 
-steal_shop @leth_items, :ongadine
+steal_shop @leth_items[:ongadine]
 
 move "out"
 move "s"
@@ -892,7 +906,7 @@ move "go knothole"
 move "up"
 move "go arch"
 
-steal_shop @leth_items, :bardic_leth
+steal_shop @leth_items[:bardic_leth]
 
 move "go arch"
 move "down"
@@ -904,7 +918,7 @@ move "nw"
 move "nw"
 move "go tent"
 
-steal_shop @leth_items, :origami
+steal_shop @leth_items[:origami]
 
 move "out"
 move "nw"
@@ -913,7 +927,7 @@ move "w"
 move "go path"
 move "go door"
 
-steal_shop @leth_items, :trueflight
+steal_shop @leth_items[:trueflight]
 
 move "out"
 move "go path"
@@ -926,7 +940,7 @@ move "ne"
 move "cli stair"
 move "go shack"
 
-steal_shop @leth_items, :shack
+steal_shop @leth_items[:shack]
 
 move "out"
 move "cli stair"
@@ -974,7 +988,7 @@ move "n"
 move "ne"
 move "go tower"
 
-steal_shop @ilaya_items, :tower
+steal_shop @ilaya_items[:tower]
 
 move "out"
 move "sw"
@@ -1009,7 +1023,7 @@ move "n"
 move "n"
 move "go cottage"
 
-steal_shop @ilaya_items, :fish
+steal_shop @ilaya_items[:fish]
 
 move "out"
 move "n"
@@ -1019,7 +1033,7 @@ move "nw"
 move "go stall"
 move "go door"
 
-steal_shop @ilaya_items, :fishmonger
+steal_shop @ilaya_items[:fishmonger]
 
 move "out"
 move "out"
@@ -1028,19 +1042,19 @@ move "se"
 move "sw"
 move "go shop"
 
-steal_shop @ilaya_items, :pearls
+steal_shop @ilaya_items[:pearls]
 
 move "out"
 move "w"
 move "go shop"
 
-steal_shop @ilaya_items, :clothing
+steal_shop @ilaya_items[:clothing]
 
 move "out"
 move "nw"
 move "go shack"
 
-steal_shop @ilaya_items, :stuff
+steal_shop @ilaya_items[:stuff]
 
 move "out"
 move "se"

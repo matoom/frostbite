@@ -48,9 +48,6 @@ private:
     QAction* clearAct;
     QMenu* menu;
 
-    int vScroll;
-    int vMax;
-
     bool _append;
 
 signals:
@@ -61,8 +58,7 @@ private slots:
     void saveAsHtml();
     
 public slots:
-    void appendHtml(const QString &html);
-    void clear();
+
 };
 
 #endif // GENERICWINDOW_H

@@ -15,8 +15,6 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->document()->setMaximumBlockCount(1000);
 
     _append = true;
-    vScroll = 0;
-    vMax = 0;
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 }
@@ -29,23 +27,9 @@ bool GenericWindow::append() {
     return this->_append;
 }
 
-void GenericWindow::clear() {
-    vMax = this->verticalScrollBar()->maximum();
-    vScroll = this->verticalScrollBar()->value();
-
-    QPlainTextEdit::clear();
-}
-
-void GenericWindow::appendHtml(const QString &html) {
-    QPlainTextEdit::appendHtml(html);
-
-    if(!this->_append && (vScroll < vMax)) {
-        this->verticalScrollBar()->setValue(vScroll);
-    }
-}
-
 void GenericWindow::loadSettings() {
     QFont font = settings->dockWindowFont();
+    font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 }
 
@@ -83,7 +67,7 @@ void GenericWindow::buildContextMenu() {
 
     menu->addSeparator();
 
-    saveAct = new QAction(tr("&Save\t"), this);
+    saveAct = new QAction(tr("&Save as HTML\t"), this);
     menu->addAction(saveAct);
     connect(saveAct, SIGNAL(triggered()), this, SLOT(saveAsHtml()));
 

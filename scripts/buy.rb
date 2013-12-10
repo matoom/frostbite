@@ -22,6 +22,24 @@ def stow_item
   end
 end
 
+=begin
+>offer 250
+Ragge sighs.  "Despite the rarity of this lockpick, I'm prepared to offer it to you for 250 kronars."
+
+Ragge hands over your lockpick.
+>stow left
+You put your lockpick in your locksmith's toolbelt.
+>buy stout lock
+Ragge looks up from his work and says, "I've got time to pick open boxes now if you want to put them on the counter here."
+>
+
+Ragge sighs.  "Despite the rarity of this lockpick, I'm prepared to offer it to you for 250 kronars."
+>
+Ragge looks up from his work and says, "I've got time to pick open boxes now if you want to put them on the counter here."
+*** Can't buy item! ***
+[Script finished, Execution time - 00:19.]
+=end
+
 25.times do 
   put "buy #{@item}"
   match = { :price => [/d+/] }
