@@ -236,7 +236,7 @@ class Status
   #   echo Status::standing
   #   => 1
   def self.standing
-    GameData.getStanding().to_i
+    !GameData.getStanding().to_i.zero?
   end
 
   # Kneeling
@@ -247,7 +247,7 @@ class Status
   #   echo Status::kneeling
   #   => 0
   def self.kneeling
-    GameData.getKneeling().to_i
+    !GameData.getKneeling().to_i.zero?
   end
 
   # Sitting
@@ -258,7 +258,7 @@ class Status
   #   echo Status::sitting
   #   => 0
   def self.sitting
-    GameData.getSitting().to_i
+    !GameData.getSitting().to_i.zero?
   end
 
   # Prone
@@ -269,7 +269,7 @@ class Status
   #   echo Status::prone
   #   => 0
   def self.prone
-    GameData.getProne().to_i
+    !GameData.getProne().to_i.zero?
   end
 
   # Stunned
@@ -280,7 +280,7 @@ class Status
   #   echo Status::stunned
   #   => 0
   def self.stunned
-    GameData.getStunned().to_i
+    !GameData.getStunned().to_i.zero?
   end
 
   # Dead
@@ -291,7 +291,7 @@ class Status
   #   echo Status::dead
   #   => 0
   def self.dead
-    GameData.getDead().to_i
+    !GameData.getDead().to_i.zero?
   end
 
   # Bleeding
@@ -302,7 +302,7 @@ class Status
   #   echo Status::bleeding
   #   => 1
   def self.bleeding
-    GameData.getBleeding().to_i
+    !GameData.getBleeding().to_i.zero?
   end
 
   # Hidden
@@ -315,7 +315,7 @@ class Status
   #   end
   #   => 1
   def self.hidden
-    GameData.getHidden().to_i
+    !GameData.getHidden().to_i.zero?
   end
 
   # Invisible
@@ -326,7 +326,7 @@ class Status
   #   echo Status::invisible
   #   => 0
   def self.invisible
-    GameData.getInvisible().to_i
+    !GameData.getInvisible().to_i.zero?
   end
 
   # Webbed
@@ -337,7 +337,7 @@ class Status
   #   echo Status::webbed
   #   => 0
   def self.webbed
-    GameData.getWebbed().to_i
+    !GameData.getWebbed().to_i.zero?
   end
 
   # Joined
@@ -348,7 +348,7 @@ class Status
   #   echo Status::joined
   #   => 1
   def self.joined
-    GameData.getJoined().to_i
+    !GameData.getJoined().to_i.zero?
   end
 end
 

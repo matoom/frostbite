@@ -17,10 +17,10 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "ring mail", :amount => 2 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
-      :weapon => { :item => "heavy crossbow", :amount => 3 }, #[Milgrym's Weapons, Showroom]
+      :armor => { :item => "ring mail", :amount => 3 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
+      :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
-      :macipur => { :item => "gold brocade long coat", :amount => 3 }, #[Marcipur's Stitchery, Workshop]
+      :macipur => { :item => "gold brocade long coat", :amount => 4 }, #[Marcipur's Stitchery, Workshop]
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
       :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
@@ -46,12 +46,12 @@
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
-      :trueflight => { :item  => "heavy crossbow", :amount => 3 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :trueflight => { :item  => "heavy crossbow", :amount => 4 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
     }
 
-@ilaya_pier_items = [{:name => "flask", :amount => 1},
-                     {:name => "skirt", :desc => "green velvet skirt", :amount => 2},
+@ilaya_pier_items = [{:name => "flask", :amount => 2},
+                     {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
                      {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
                      {:name => "bush", :desc => "bare-root rose bush", :amount => 1},
                      {:name => "chimney", :desc => "crumbling brick chimney", :amount => 1},
@@ -60,7 +60,7 @@
                      {:name => "velvet skirt", :amount => 2},
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
-                     {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 1},
+                     {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 2},
                      {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 1},
                      {:name => "moonstone lily", :amount => 1},
                      {:name => "golden earrings", :amount => 1},
@@ -82,7 +82,7 @@
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
