@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 800
+# 810
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -20,11 +20,11 @@
       :armor => { :item => "ring mail", :amount => 3 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
       :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
-      :macipur => { :item => "gold brocade long coat", :amount => 4 }, #[Marcipur's Stitchery, Workshop]
+      :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
       :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "bucket", :amount => 1 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
@@ -35,7 +35,7 @@
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
       :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
-      :bobba => { :item  => "ring mail", :amount => 2 }, #[Bobba's Arms and Armor]
+      :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
       :lobby => { :item  => "pipe", :location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
     }
 
@@ -68,7 +68,7 @@
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
                      #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
-                     {:name => "brass bowl", :amount => 2},
+                     #{:name => "brass bowl", :amount => 2}, # trivial < 815
                      {:name => "unicorn pin", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
@@ -278,7 +278,8 @@ def steal item, amount_of
       when :alt
         return :alt
       when :fail
-        break
+        echo "FAIL!"
+        return :fail
     end
   end
 
@@ -310,6 +311,8 @@ def steal_shop shop_attrs
           if shop_attrs.has_key?(:alt)
             steal_shop shop_attrs[:alt]
           end
+        when :fail
+          return :fail
       end
     end
 

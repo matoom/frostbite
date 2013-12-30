@@ -29,7 +29,7 @@ $_current_rt = 0
 
 $rt_adjust = 0
 
-# Waits for roundtime in game text and pauses for the duration.
+# Waits for roundtime and pauses for the duration.
 #
 # @param
 # @return [void]
@@ -61,7 +61,7 @@ def pause_for_roundtime
   end
 end
 
-# Waits until specified match is found in game text.
+# Runs until match pattern is found in game text.
 #
 # @param [String] pattern regex pattern.
 # @return [void]
@@ -78,8 +78,8 @@ def wait_for(pattern)
   end
 end
 
-# Matches regex patterns with each line of game text
-# and returns the name of the matching pattern.
+# Matches regex patterns and returns
+# the name of the matching pattern.
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [Symbol] pattern name
@@ -131,8 +131,7 @@ def match_wait(pattern)
   end
 end
 
-# Matches regex patterns with each line of game text
-# and returns the matched line.
+# Matches regex patterns and returns the matched line.
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [String] line of text
@@ -181,7 +180,59 @@ def match_get(pattern)
   end
 end
 
-# Matches regex patterns with each line of game text
+# Match get verbose.
+#
+# Matches regex patterns and returns
+# the matched line with match key.
+#
+# @param [Hash] pattern list of regex patterns and names
+# @return [Hash] line of text
+# @example Using multi match patterns to make decisions in script.
+#   match = { :m => [/you open/i] }
+#   result = match_get match
+#   result #=> { :key => :loot, :match => "You open the steel trunk..." }
+def match_get_v(pattern)
+  $_exec_status = :match_get
+  match_found = false
+  match = :not_found
+  sleep = 0
+
+  (0..1000000).each do
+    $_data_queue.each_index do |i|
+      unless match_found
+        pattern.each_pair do |k, v|
+          v.each do |m|
+            if $_data_queue.at(i).match(m)
+              match = {:key => k, :match => $_data_queue.at(i)}
+              match_found = true
+              break
+            end
+          end
+          break if match_found
+        end
+      end
+
+      if $_data_queue.at(i).match(/Roundtime/)
+        sleep += $_data_queue.at(i)[/\d+/].to_i + $rt_adjust
+      end
+
+      if match_found
+        $_exec_status = :running
+
+        if $_data_queue.at(i).match(/>$/)
+          sleep_for_rt sleep
+          $_data_queue.delete_at(i)
+          return match
+        end
+      end
+
+      $_data_queue.delete_at(i)
+    end
+    sleep 0.01
+  end
+end
+
+# Matches regex patterns
 # and goes to defined label.
 #
 # @param [Hash] pattern list of regex patterns and names
@@ -250,7 +301,8 @@ def put(value)
   STDOUT.flush
 end
 
-# Sends a command to client and waits for room title.
+# Sends a move command to client and
+# waits for navigation message.
 #
 # @param [String] value command.
 # @return [void]
@@ -263,8 +315,8 @@ def move(dir)
   STDOUT.flush
 
   case match_wait({ :room => [/^\{nav\}$/],
-                    :stand => [/You can't do that while/],
-                    :retreat => [/You'll have better luck if you first retreat|You are engaged|do that while engaged/],
+                    :stand => [/sitting|kneeling|lying/],
+                    :retreat => [/if you first retreat|You are engaged|do that while engaged/],
                     :wait => [/\.\.\.wait|you may only type ahead/] })
     when :wait
       pause 0.5
@@ -280,8 +332,7 @@ def move(dir)
   end
 end
 
-# Waits for a prompt character after a command is issued to
-# make sure that the server is responding
+# Waits for a prompt character.
 #
 # @param
 # @return [void]

@@ -1,9 +1,11 @@
 # global defines
 module GD
-  ARRANGE_COUNT = 5
+  ARRANGE_COUNT = 0
+end
 
+module COMBAT
   MATCH_DEAD = ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                 "ceases all movement", "collapses into a massive heap","massive heap before",
                 "sharp halt", "life force fades away", "slumps dead", "falls dead", "into a heap",
-                "collapses over"]
+                "collapses over", "and lies still"]
 end

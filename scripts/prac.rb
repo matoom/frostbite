@@ -1,4 +1,4 @@
-# desc: practice climbing on climbable objects
+# desc: practice athletics on climbable objects
 # requirements: ?
 # run: climbing available
 

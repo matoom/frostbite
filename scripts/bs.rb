@@ -16,68 +16,10 @@ def go_wait(label, back_label)
     pause 0.5
     goto back_label
   elsif label == :pause
-    pause 1
+    pause 3
     goto back_label
   else
     goto label
-  end
-end
-
-def arrange count
-  put "arrange"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
-            :pause => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
-            :loot => [/arrange what|cannot be skinned/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      arrange count
-    when :arrange
-      if count < GD::ARRANGE_COUNT - 1
-        arrange count + 1
-      else
-        skin
-      end
-    when :loot
-      loot
-  end
-end
-
-def skin
-  if Wield::left_noun != ""
-    put "stow left"
-  end
-  put "skin"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
-            :pause => [/You are still stunned/],
-            :loot => [/Skin what|cannot be skinned|Roundtime/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      skin
-    when :loot
-      loot
-  end
-end
-
-def loot
-  put "loot"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|Roundtime|still stunned/],
-            :pause => [/You are still stunned/],
-            :continue => [/could not find what|You search/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      loot
-    when :continue
-      goto :start
   end
 end
 
@@ -112,7 +54,7 @@ label(:stop_stalk) {
 
 label(:feint) {
   put "backstab"
-  match = { :dead => GD::MATCH_DEAD,
+  match = { :dead => COMBAT::MATCH_DEAD,
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime", "hidden to backstab"],
             :face => ["You can't backstab that."],
@@ -129,7 +71,8 @@ label(:advance) {
 }
 
 label(:dead) {
-  arrange 0
+  load "skin"
+  goto :start
 }
 
 label(:wait_for) {

@@ -42,10 +42,9 @@ Ragge looks up from his work and says, "I've got time to pick open boxes now if 
 
 25.times do 
   put "buy #{@item}"
-  match = { :price => [/d+/] }
+  match = { :price => [/\d+/] }
   result = match_get match
   price = result.scan(/\d+/).first
-  echo result
 
   if price
     put "offer #{price}"

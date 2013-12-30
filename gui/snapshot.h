@@ -7,6 +7,7 @@
 #include <QDate>
 #include <QTime>
 #include <QDebug>
+#include <QTextDocumentFragment>
 
 #include <windowinterface.h>
 

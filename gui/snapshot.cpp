@@ -16,7 +16,17 @@ void Snapshot::save() {
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
-    QString html = window->getDocument()->toHtml();
+    QString html = "";
+
+    QTextCursor cursor = window->getMainWindow()->textCursor();
+    if(cursor.hasSelection()) {
+        QTextDocument* doc = window->getDocument()->clone();
+        doc->setHtml(cursor.selection().toHtml());
+
+        html = doc->toHtml();
+    } else {
+        html = window->getDocument()->toHtml();
+    }
 
     // set style for background and font colors
     QString bodyStyle = "<body style=\"";
