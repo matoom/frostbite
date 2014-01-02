@@ -245,15 +245,13 @@
 
 97
 98
-99
-100</pre>
+99</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'models.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_rank'>rank</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_index'>index</span> <span class='op'>=</span> <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpIndex'>getExpIndex</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
-  <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpRank'>getExpRank</span><span class='lparen'>(</span><span class='id identifier rubyid_index'>index</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpRank'>getExpRank</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -333,17 +331,15 @@
       <pre class="lines">
 
 
+109
 110
-111
-112
-113</pre>
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_index'>index</span> <span class='op'>=</span> <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpIndex'>getExpIndex</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
-  <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpState'>getExpState</span><span class='lparen'>(</span><span class='id identifier rubyid_index'>index</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='const'>GameData</span><span class='period'>.</span><span class='id identifier rubyid_getExpState'>getExpState</span><span class='lparen'>(</span><span class='id identifier rubyid_exp_string'>exp_string</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -355,7 +351,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sat Nov 24 14:04:42 2012 by
+  Generated on Thu Jan  2 12:55:28 2014 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.9.3).
 </div>
