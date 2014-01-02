@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 810
+# 820
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -44,7 +44,7 @@
       :alberdeen => { :item  => "tunic", :amount => 1, :alt => {:item => "arm pouch", :amount => 2}}, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
-      :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]   ?? 2
+      :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 4 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
@@ -68,6 +68,7 @@
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
                      #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
+                     {:name => "stole", :desc => "cobwebby silver lace", :amount => 1},
                      #{:name => "brass bowl", :amount => 2}, # trivial < 815
                      {:name => "unicorn pin", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
@@ -78,7 +79,7 @@
     {
         :tower => { :item  => "scimitar", :location => "on rack", :amount => 1, :alt =>
                   {:item  => "scimitar", :location => "on second rack", :amount => 1} }, #[Harbor Tower, First Floor]
-        :fish => {:item => "fishbowl", :amount => 1 }, #[Fernwyk's Fish]
+        :fish => {:item => "tank", :amount => 1 }, #[Fernwyk's Fish]
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
@@ -239,9 +240,10 @@ def take item
     when :fail
       @fails += 1
       echo "Failed attempt recorded! - total fails: #{@fails}"
+      return :fail
+    when :alt
+      return :alt
   end
-
-  result
 end
 
 def get_item_position location, item_desc
@@ -271,24 +273,13 @@ end
 
 def steal item, amount_of
   do_hide
-  exp_before = Exp::state "thievery"
 
   amount_of.times do
     case take item
-      when :alt
-        return :alt
-      when :fail
-        echo "FAIL!"
-        return :fail
+      when :alt, :fail
+        break;
     end
   end
-
-  exp_after = Exp::state "thievery"
-  exp_gain = exp_after - exp_before
-
-  echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
-
-  stow_items
 end
 
 def steal_shop shop_attrs
@@ -306,16 +297,22 @@ def steal_shop shop_attrs
       echo "*** #{item} => #{shop_attrs[:amount]} ***"
       echo "opts => dump: #{@dump}"
     else
+      exp_before = Exp::state "thievery"
+
       case steal item, shop_attrs[:amount]
         when :alt
           if shop_attrs.has_key?(:alt)
             steal_shop shop_attrs[:alt]
           end
-        when :fail
-          return :fail
       end
-    end
 
+      exp_after = Exp::state "thievery"
+      exp_gain = exp_after - exp_before
+
+      echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
+
+      stow_items
+    end
   end
 end
 

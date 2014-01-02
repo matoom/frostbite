@@ -33,7 +33,7 @@ $rt_adjust = 0
 #
 # @param
 # @return [void]
-# @example Wait for the duration of the round time before executing next command.
+# @example Wait for the duration of round time before executing next command.
 #   put "hide"
 #   wait_for_roundtime
 #   put "unhide"
@@ -83,7 +83,7 @@ end
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [Symbol] pattern name
-# @example Using multi match patterns to make decisions in script.
+# @example Match for game text.
 #   match = { :retry => [/\.\.\.wait/], :next => [/you open/] }
 #   result = match_wait match
 #   result #=> :retry or :next
@@ -135,7 +135,7 @@ end
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [String] line of text
-# @example Using multi match patterns to make decisions in script.
+# @example Retrieve the text from a matching pattern.
 #   match = { :m => [/you open/i] }
 #   result = match_get match
 #   result #=> You open the steel trunk...
@@ -180,19 +180,19 @@ def match_get(pattern)
   end
 end
 
-# Match get verbose.
+# Match verbose.
 #
 # Matches regex patterns and returns
-# the matched line with match key.
+# verbouse match data.
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [Hash] line of text
-# @example Using multi match patterns to make decisions in script.
+# @example Finding a match for a pattern with verbouse results.
 #   match = { :m => [/you open/i] }
-#   result = match_get match
+#   result = match_v match
 #   result #=> { :key => :loot, :match => "You open the steel trunk..." }
-def match_get_v(pattern)
-  $_exec_status = :match_get
+def match_v(pattern)
+  $_exec_status = :match_v
   match_found = false
   match = :not_found
   sleep = 0
@@ -237,7 +237,7 @@ end
 #
 # @param [Hash] pattern list of regex patterns and names
 # @return [Void]
-# @example Using match patterns to go to predefined labels
+# @example Using match patterns and jumping to labels on a successful match.
 #   labels_start
 #
 #   label(:retry){

@@ -1,5 +1,20 @@
 require "defines"
 
+
+=begin
+< Driving in like the irresistable force of a cyclone, you lunge a haralun stiletto at a Misenseor resuscitant.  A Misenseor resuscitant dodges.  The stiletto lands a solid hit to the resuscitant right leg.
+
+< As if effort and skill were a bad thing, you chop a two-handed sword at a Misenseor resuscitant.  A Misenseor resuscitant evades, stepping aside.
+
+< Looking as if this were a bad idea, you chop a two-handed sword at a Misenseor resuscitant.  A Misenseor resuscitant fends off most of the sword with its decaying forearm.
+
+< Moving in like a timid schoolboy, you chop a two-handed sword at a Misenseor resuscitant.  A Misenseor resuscitant evades, twisting easily away from the blow.
+
+< As if fumbling muscle flab were natural, you chop a two-handed sword at a Misenseor resuscitant.  A Misenseor resuscitant dodges, leaping aside.
+
+< You jab a haralun stiletto at a Misenseor resuscitant.  A Misenseor resuscitant deflects little of the stiletto with its decaying forearm.
+=end
+
 def advance
   put "advance"
   pause 3
@@ -32,7 +47,7 @@ def analyze
             :adv => [/closer to use tactical abilities/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/by landing a/] }
-  result = match_get_v match
+  result = match_v match
 
   case result[:key]
     when :wait, :fail
@@ -58,7 +73,7 @@ def do_maneuver maneuver
   match = { :wait => [/\.\.\.wait/],
             :dead => COMBAT::MATCH_DEAD,
             :adv => [/aren't close enough/],
-            :redo => [/evades|dodges|A .* of the .* its/],
+            :redo => [/evades,|dodges,|A .* of the .* its/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/Roundtime/] }
   result = match_wait match
