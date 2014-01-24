@@ -14,7 +14,7 @@ void DeathsLogger::run() {
         mMutex.lock();
         localData = dataQueue.dequeue();
         mMutex.unlock();
-        logger()->info(localData + "\n");
+        logger()->info(localData);
     }
 }
 

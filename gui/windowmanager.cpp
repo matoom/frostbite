@@ -453,7 +453,7 @@ void WindowManager::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         gameWindowHighlighter->addText(text);
         mainWindow->getScriptService()->writeScriptText(text);
-        this->logGameText(text, 'p');
+        this->logGameText(text, MainLogger::PROMPT);
         writePrompt = false;
     } else if(!prompt) {
         gameWindowHighlighter->addText(text);

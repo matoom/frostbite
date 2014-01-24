@@ -315,7 +315,7 @@ def move(dir)
   STDOUT.flush
 
   case match_wait({ :room => [/^\{nav\}$/],
-                    :stand => [/sitting|kneeling|lying/],
+                    :stand => [/sitting|kneeling|lying|must be standing/],
                     :retreat => [/if you first retreat|You are engaged|do that while engaged/],
                     :wait => [/\.\.\.wait|you may only type ahead/] })
     when :wait

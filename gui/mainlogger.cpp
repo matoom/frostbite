@@ -18,20 +18,21 @@ void MainLogger::run() {
         mMutex.lock();
         localData = dataQueue.dequeue();
         mMutex.unlock();
-
         log(localData);
     }
 }
 
 void MainLogger::log(LogEntry logEntry) {
-    if(logEntry.type == 'c' && prevType == 'p') {
-        logEntry.text.remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&");
+    if(logEntry.type == COMMAND && prevType == PROMPT) {
+        logger()->info(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&").prepend(">"));
     } else {
-        logEntry.text.remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&").prepend("\n");
+        if (logEntry.type != PROMPT) {
+            if(prevType == PROMPT) {
+                logger()->info(">");
+            }
+            logger()->info(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&"));
+        }
     }
-
-    logger()->info(logEntry.text);
-
     prevType = logEntry.type;
 }
 

@@ -15,7 +15,7 @@ void ArrivalsLogger::run() {
         localData = dataQueue.dequeue();
         mMutex.unlock();
 
-        logger()->info(localData + "\n");
+        logger()->info(localData);
     }
 }
 

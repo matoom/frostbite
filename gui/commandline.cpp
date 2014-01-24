@@ -131,7 +131,7 @@ void CommandLine::writeCommand(QString text, QString style) {
         windowManager->getGameWindow()->appendHtml(html);
     }
 
-    windowManager->logGameText(text.toLocal8Bit(), 'c');
+    windowManager->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);
 }
 
 void CommandLine::completeCommand() {

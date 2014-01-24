@@ -1,8 +1,8 @@
-# desc: stealing in crossing area
+# desc: stealing in zouluren
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 820
+# 825
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -22,9 +22,9 @@
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
-      :artificer => { :item => "reticule", :amount => 2 }, #[Herilo's Artifacts, Showroom]
+      :artificer => { :item => :none, :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "bucket", :amount => 1 }, #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
@@ -46,15 +46,15 @@
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
-      :trueflight => { :item  => "heavy crossbow", :amount => 4 }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :trueflight => { :item  => "heavy crossbow", :amount => 4, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
     }
 
 @ilaya_pier_items = [{:name => "flask", :amount => 2},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
                      {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
-                     {:name => "bush", :desc => "bare-root rose bush", :amount => 1},
-                     {:name => "chimney", :desc => "crumbling brick chimney", :amount => 1},
+                     {:name => "bush", :amount => 1},
+                     {:name => "chimney", :amount => 1},
                      {:name => "polished broadsword", :amount => 1},
                      {:name => "ring", :desc => "delicate gold rose ring", :amount => 1},
                      {:name => "velvet skirt", :amount => 2},
@@ -117,9 +117,11 @@
 
 @current_container = 0
 @fails = 0
+@exp_before = 0
 @stolen_items = []
 @leave = false
 @dump = false
+@bin = false
 
 @ordinal_numbers = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth",
                     "ninth", "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth"]
@@ -185,7 +187,7 @@ def stow_item name
         @current_container = @current_container + 1
         stow_item name
       when :continue
-        @stolen_items << [name, @containers[@current_container]]
+        @stolen_items << [name, @containers[@current_container], @bin]
     end
   else
     drop name
@@ -238,11 +240,10 @@ def take item
       do_hide
       take item
     when :fail
-      @fails += 1
-      echo "Failed attempt recorded! - total fails: #{@fails}"
-      return :fail
+      echo "Failed attempt recorded! - total fails: #{@fails += 1}"
+      raise result.to_s
     when :alt
-      return :alt
+      raise result.to_s
   end
 end
 
@@ -271,14 +272,30 @@ def mark item
   match_wait({ :wait => [/\.\.\.wait|Mark what|Roundtime/] })
 end
 
-def steal item, amount_of
-  do_hide
+def register_exp
+  @exp_before = Exp::state "thievery"
+end
 
-  amount_of.times do
-    case take item
-      when :alt, :fail
-        break;
+def report_exp_gain
+  exp_after = Exp::state "thievery"
+  exp_gain = exp_after - @exp_before
+
+  echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
+end
+
+def steal item, amount_of
+  begin
+    do_hide
+    register_exp
+
+    amount_of.times do
+      take item
     end
+  rescue Exception => e
+    return e.message.to_sym
+  ensure
+    report_exp_gain
+    stow_items
   end
 end
 
@@ -295,23 +312,14 @@ def steal_shop shop_attrs
 
     if @debug_mode
       echo "*** #{item} => #{shop_attrs[:amount]} ***"
-      echo "opts => dump: #{@dump}"
+      echo "opts => dump: #{@dump}, bin: #{@bin}"
     else
-      exp_before = Exp::state "thievery"
-
       case steal item, shop_attrs[:amount]
         when :alt
           if shop_attrs.has_key?(:alt)
             steal_shop shop_attrs[:alt]
           end
       end
-
-      exp_after = Exp::state "thievery"
-      exp_gain = exp_after - exp_before
-
-      echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
-
-      stow_items
     end
   end
 end
@@ -330,8 +338,8 @@ def get_item attrs
 end
 
 def set_options list
-  # drop stolen item
   @dump = list.has_key?(:dump) ? list[:dump] : false
+  @bin = list.has_key?(:bin) ? list[:bin] : false
 end
 
 def identify_pier
@@ -533,22 +541,6 @@ def prepare_armor
   end
 end
 
-if Room::title != "[The Crossing, Hodierna Way]"
-  echo "*** Need to be in front of Crossing bank! ***"
-  exit
-end
-
-#prepare
-unless @debug_mode
-  prepare_containers
-
-  prepare_hands
-
-  prepare_armor
-
-  prepare_khri
-end
-
 def pawn_items
   echo "Total failed attempts recorded - #{@fails}"
 
@@ -560,10 +552,10 @@ def pawn_items
   move "go shop"
   echo @stolen_items.inspect
 
-  cant_sell = ""
+  skip = ""
   @stolen_items.each_with_index do |item, i|
     if item.at(1)
-      if item.at(0) == cant_sell
+      if item.at(0) == skip or item.at(2)
         next
       end
       pause 0.1
@@ -579,12 +571,12 @@ def pawn_items
         when :redo
           redo
         when :no_sell
-          cant_sell = item.at(0)
+          skip = item.at(0)
           put "put my #{item.at(0)} in my #{item.at(1)}"
           wait
         when :sell
           @stolen_items[i][1] = :pawned
-          cant_sell = ""
+          skip = ""
       end
     end
   end
@@ -610,6 +602,22 @@ def bin_items
       end
     end
   end
+end
+
+if Room::title != "[The Crossing, Hodierna Way]"
+  echo "*** Need to be in front of Crossing bank! ***"
+  exit
+end
+
+#prepare
+unless @debug_mode
+  prepare_containers
+
+  prepare_hands
+
+  prepare_armor
+
+  prepare_khri
 end
 
 #Crossing

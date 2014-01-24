@@ -20,7 +20,7 @@ void ConversationsLogger::run() {
 }
 
 void ConversationsLogger::log(QString logText) {
-    logger()->info(logText.remove(rxRemoveTags) + "\n");
+    logger()->info(logText.remove(rxRemoveTags));
 }
 
 ConversationsLogger::~ConversationsLogger() {

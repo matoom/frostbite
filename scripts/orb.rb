@@ -67,9 +67,11 @@ put "pray"
 
 wait_for "a glowing Phelim orb rests in its place upon the altar."
 
-put "get orb on alt"
+put "get orb from marble altar"
 wait
 put "stow orb"
+wait
+put "stand"
 wait
 
 move "go arch"

@@ -25,6 +25,9 @@ public:
 
     virtual void run();
 
+    static const char COMMAND = 'c';
+    static const char PROMPT = 'p';
+
 private:
     QQueue<LogEntry> dataQueue;
     QMutex mMutex;

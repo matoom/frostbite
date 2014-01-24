@@ -1,6 +1,5 @@
 require "defines"
 
-
 =begin
 < Driving in like the irresistable force of a cyclone, you lunge a haralun stiletto at a Misenseor resuscitant.  A Misenseor resuscitant dodges.  The stiletto lands a solid hit to the resuscitant right leg.
 
@@ -13,6 +12,8 @@ require "defines"
 < As if fumbling muscle flab were natural, you chop a two-handed sword at a Misenseor resuscitant.  A Misenseor resuscitant dodges, leaping aside.
 
 < You jab a haralun stiletto at a Misenseor resuscitant.  A Misenseor resuscitant deflects little of the stiletto with its decaying forearm.
+
+< Moving poorly, you feint a haralun stiletto at a Dragon Priest assassin.  A Dragon Priest assassin knocks aside little of the stiletto with a silver q'zhalata dagger.
 =end
 
 def advance
@@ -73,7 +74,7 @@ def do_maneuver maneuver
   match = { :wait => [/\.\.\.wait/],
             :dead => COMBAT::MATCH_DEAD,
             :adv => [/aren't close enough/],
-            :redo => [/evades,|dodges,|A .* of the .* its/],
+            :redo => [/evades,|dodges,|A .* of the .* with/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/Roundtime/] }
   result = match_wait match

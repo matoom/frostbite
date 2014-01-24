@@ -20,9 +20,8 @@ void ThoughtsLogger::run() {
 }
 
 void ThoughtsLogger::log(QString logText) {
-    logger()->info(logText.remove(rxRemoveTags) + "\n");
+    logger()->info(logText.remove(rxRemoveTags));
 }
 
 ThoughtsLogger::~ThoughtsLogger() {
-
 }
