@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 825
+# 840
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -17,7 +17,7 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "ring mail", :amount => 3 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
+      :armor => { :item => "lorica", :amount => 1 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica -> ring mail/3
       :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
@@ -25,8 +25,8 @@
       :artificer => { :item => :none, :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
-      :emmiline_pantry => { :item => "wedding band", :amount => 1 }, #[Emmiline's Cottage, Pantry]
-      :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
+      :emmiline_sales => { :item => "lancet", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
@@ -47,7 +47,7 @@
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
       :trueflight => { :item  => "heavy crossbow", :amount => 4, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
-      :shack => { :item  => "takouba", :amount => 1 } #[Leth Deriel, Wooden Shack] takouba shavi
+      :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
 @ilaya_pier_items = [{:name => "flask", :amount => 2},
@@ -57,7 +57,7 @@
                      {:name => "chimney", :amount => 1},
                      {:name => "polished broadsword", :amount => 1},
                      {:name => "ring", :desc => "delicate gold rose ring", :amount => 1},
-                     {:name => "velvet skirt", :amount => 2},
+                     {:name => "velvet skirt", :amount => 1},
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 2},
@@ -65,7 +65,11 @@
                      {:name => "moonstone lily", :amount => 1},
                      {:name => "golden earrings", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
+                     {:name => "carnelian jar", :amount => 1},
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
+                     {:name => "moonflower", :amount => 1},
+                     {:name => "sapphire lily", :amount => 1},
+                     {:name => "white pearls", :amount => 1},
                      #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
                      {:name => "stole", :desc => "cobwebby silver lace", :amount => 1},
@@ -73,7 +77,7 @@
                      {:name => "unicorn pin", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
-                     {:name => "brass cauldron", :amount => 1, :dump => true}]
+                     {:name => "bronze cauldron", :amount => 1, :dump => true}]
 
 @ilaya_items =
     {
@@ -83,7 +87,7 @@
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
@@ -902,7 +906,7 @@ steal_shop @leth_items[:yerui]
 move "go door"
 move "sw"
 move "n"
-move "go shop"
+move "go hole"
 
 steal_shop @leth_items[:ongadine]
 

@@ -4,7 +4,7 @@ def dir
 end
 
 dir.each do |dir|
-  next unless dir =~ /west|south|north|east|go/i
+  next unless dir =~ /west|south|north|east|go|out/i
   move dir.downcase
 end
 
