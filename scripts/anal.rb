@@ -48,7 +48,7 @@ def analyze
             :adv => [/closer to use tactical abilities/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/by landing a/] }
-  result = match_v match
+  result = match_get match
 
   case result[:key]
     when :wait, :fail

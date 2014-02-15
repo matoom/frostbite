@@ -44,7 +44,7 @@ Ragge looks up from his work and says, "I've got time to pick open boxes now if 
   put "buy #{@item}"
   match = { :price => [/\d+/] }
   result = match_get match
-  price = result.scan(/\d+/).first
+  price = result[:match].scan(/\d+/).first
 
   if price
     put "offer #{price}"

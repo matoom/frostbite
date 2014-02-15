@@ -12,16 +12,16 @@ def get_contents color
   match = { :repeat => ["ahead 1 command"],
             :match => ["In the"],
             :empty => ["There is nothing"] }
+  result = match_get match
 
-  contents = match_get match
-
-  if contents.include?("nothing in there")
-    return []
-  elsif contents.include?("ahead 1 command")
-    get_contents(color)
+  case result[:key]
+    when :empty
+      return []
+    when :repeat
+      get_contents(color)
   end
 
-  contents.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
+  result[:match].split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
 end
 
 def sell_pouch color

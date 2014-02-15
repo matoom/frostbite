@@ -4,7 +4,7 @@ class Observer
   include Singleton
 
   # @private
-  @@observer_thread = []
+  @@api_observer_thread = []
   # @private
   @@events = []
   # @private
@@ -19,12 +19,11 @@ class Observer
   def init
     @@terminated = false
 
-    @@observer_thread = Thread.new(@@events) { |events|
-      $_observer_started = true
+    @@api_observer_thread = Thread.new(@@events) { |events|
+      $_api_observer_started = true
       until @@terminated
         if events.size > 0
-          while $_observer_queue.size > 0
-            text = $_observer_queue.pop
+          while text = $_api_observer_queue.shift
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
@@ -36,7 +35,7 @@ class Observer
         end
         pause 0.1
       end
-      $_observer_started = false
+      $_api_observer_started = false
     }
   end
 
@@ -71,12 +70,12 @@ class Observer
     Signal.trap("INT") do
       start_time = Time.now
       send(method_name)
-      $_interrupt_time = (Time.now - start_time).floor
+      $_api_interrupt_time = (Time.now - start_time).floor
     end
 
     pid = Process.pid
 
-    while $_exec_status != :running
+    while $_api_exec_state != :running
       sleep 0.1
     end
 

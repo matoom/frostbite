@@ -29,7 +29,7 @@ def list_items
   match = { :match => ["In the"] }
   contents = match_get match
 
-  items = contents.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
+  items = contents[:match].split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
 
   if contents == ""
     dismantle

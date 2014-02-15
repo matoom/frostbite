@@ -28,7 +28,7 @@ end
 
 def ident
   put "pick ident"
-  match = { :wait => [/\.\.wait/],
+  match = { :wait => [/\.\.wait|may only type ahead 1/],
             :get_pick => ["Find a more appropriate tool and try again!"],
             :end => ["not even locked"],
             :ident => ["teach you anything about the"],

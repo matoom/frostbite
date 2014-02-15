@@ -17,7 +17,7 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "lorica", :amount => 1 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica -> ring mail/3
+      :armor => { :item => "ring mail", :amount => 3 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
       :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
@@ -26,8 +26,8 @@
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
-      :emmiline_sales => { :item => "lancet", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
-      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Elven anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
+      :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
@@ -60,10 +60,11 @@
                      {:name => "velvet skirt", :amount => 1},
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
-                     {:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 2},
-                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 1},
+                     #{:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 2}, # trivial < 840
+                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 2},
                      {:name => "moonstone lily", :amount => 1},
                      {:name => "golden earrings", :amount => 1},
+                     {:name => "riding cloak", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                      {:name => "carnelian jar", :amount => 1},
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
@@ -75,6 +76,7 @@
                      {:name => "stole", :desc => "cobwebby silver lace", :amount => 1},
                      #{:name => "brass bowl", :amount => 2}, # trivial < 815
                      {:name => "unicorn pin", :amount => 1},
+                     {:name => "sabre", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
                      {:name => "bronze cauldron", :amount => 1, :dump => true}]
@@ -87,7 +89,7 @@
         :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 2 }, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => { :items =>  @ilaya_pier_items },
         :blood_bane => { :items => @ilaya_pier_items },
@@ -253,13 +255,15 @@ end
 
 def get_item_position location, item_desc
   put "look #{location}"
-  match = { :continue => ["On the", "In the"] }
-  contents = match_get match
+  match = { :wait => ["ahead 1 command"],
+            :contents => ["On the", "In the"] }
+  result = match_get match
 
-  if /On the|In The/ =~ contents
-    item_position contents, item_desc
-  elsif contents.include?("ahead 1 command")
-    get_item_position location, item_desc
+  case result[:key]
+    when :wait
+      get_item_position location, item_desc
+    when :contents
+      item_position result[:match], item_desc
   end
 end
 
@@ -434,15 +438,16 @@ end
 def find_stealable_item ship, container
   if @valid_pier_containers.any? { |word| container.include?(word) }
     put "look in #{container}"
-    match = { :continue => ["In the"],
+    match = { :contents => ["In the"],
               :redo => ["ahead 1 command"],
               :not_found => ["I could not find"] }
-    contents = match_get match
+    result = match_get match
 
-    if contents.include?("In the")
-      return get_item_description ship, container, contents
-    elsif contents.include?("ahead 1 command")
-      find_stealable_item ship, container
+    case result[:key]
+      when :contents
+        return get_item_description ship, container, result[:match]
+      when :redo
+        find_stealable_item ship, container
     end
   end
   return {}
@@ -472,14 +477,14 @@ def check_for_mites
             :continue => [/>/] }
   result = match_get match
 
-  case result
-    when /wait/, /you may only/
+  case result[:key]
+    when :wait
       pause 0.5
       check_for_mites
-    when /mite/
+    when :tend
       echo "*** Found MITES! ***"
-      echo result
-      tend result
+      echo result[:match]
+      tend result[:match]
       check_for_mites
   end
 end

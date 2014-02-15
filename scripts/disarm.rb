@@ -142,7 +142,6 @@ def harvest(box, last)
         echo "*** box disarmed! ***<br/>"
         return
       else
-        pause 1
         ident box
       end
     else
