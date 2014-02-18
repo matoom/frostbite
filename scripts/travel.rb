@@ -32,8 +32,10 @@ if @dest == "shard"
   end
 elsif @dest == "crossing"
   case Room::title
-    when /\[Shard, East City Gates\]/, /\[Shard, East Bridge\]/
+    when /\[Wyvern Trail, Journey's Rest\]/
       from_shard_to_xing
+#    when /\[Shard, East City Gates\]/, /\[Shard, East Bridge\]/
+#      from_shard_to_xing
     else
       echo "Destination not found."
   end

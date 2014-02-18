@@ -5,12 +5,20 @@
 
 require "lx_stat"
 require "defines"
+require "hunt"
 
 @ammo = "bolt"
 @circle_count = 1
 
 def finally_do
   Stats::report_total_stats
+end
+
+def do_hunt
+  if GD::HUNT
+    hunt
+  end
+  start
 end
 
 def start
@@ -91,7 +99,7 @@ def fire
     when :pause
       pause 3
       fire
-    when :load
+    when :reload
       reload
   end
 end
@@ -118,7 +126,8 @@ def check_status
     when :dead
       Stats::register_kill
       load "skin"
-      start
+      Stats::reset_timer
+      do_hunt
     when :pause
       pause 3
       check_status

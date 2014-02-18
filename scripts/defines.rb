@@ -1,6 +1,7 @@
 # global defines
 module GD
   ARRANGE_COUNT = 0
+  HUNT = false
 end
 
 module COMBAT

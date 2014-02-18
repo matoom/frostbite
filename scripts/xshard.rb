@@ -1,3 +1,4 @@
+=begin
 if Room::title == "[Shard, East City Gates]"
   move "go gate"
 end
@@ -28,6 +29,13 @@ move "w"
 move "w"
 move "w"
 move "w"
+=end
+
+move "go trail"
+move "ne"
+move "ne"
+move "e"
+move "e"
 
 echo "*** Trail ***"
 

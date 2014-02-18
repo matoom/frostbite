@@ -167,12 +167,12 @@ end
 #             :match_until => [/>|\.\.\.wait|you may only type ahead/]}
 #    result = match_get_m match
 #    result #=>
-#    {:vitals=>["Your body feels very beat up.", "Your spirit feels full of life."],
-#     :scars=>["You have some tiny scratches to the neck."], :match_until=>[">"]}
+#    #{:vitals=>["Your body feels very beat up.", "Your spirit feels full of life."],
+#    # :scars=>["You have some tiny scratches to the neck."], :match_until=>[">"]}
 def match_get_m(pattern)
   validate_get_m validate_pattern pattern
 
-  $_api_exec_state = :match_get
+  $_api_exec_state = :match_get_m
 
   match_found = false
   match = Hash[pattern.keys.collect{ |v| [v, []] }]

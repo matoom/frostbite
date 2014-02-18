@@ -36,6 +36,14 @@ move "sw"
 
 echo "*** Trail ***"
 
+move "go trail"
+move "w"
+move "sw"
+move "sw"
+move "s"
+
+
+=begin
 move "e"
 move "e"
 move "e"
@@ -62,3 +70,4 @@ move "w"
 move "w"
 move "w"
 move "w"
+=end

@@ -3,6 +3,20 @@
 # requirements: -
 # run: anywhere
 
+@box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
+@disarm_methods = ["blind", "quick", "normal", "careful"]
+@harvest_methods = ["blind", "quick"]
+
+@@shift_count = 0
+
+MAX_SHIFT_COUNT = 3
+
+Observer.instance.register_event({ :shift => "This is not likely to be a good thing." })
+
+def shift
+  @@shift_count += 1
+end
+
 @harvest = true
 
 if $args.join(" ").include? "no.harvest"
@@ -14,8 +28,8 @@ def ident(box)
   match = { :wait => [/\.\.wait/],
             :ident => ["fails to reveal to you what"],
             :quick => ["should not take long", "aged grandmother could defeat", "could do it blindfolded"],
-            :normal => ["a simple matter", "can take down any time", "this trap is precisely at your", "only minor troubles",
-                        "has the edge on you"],
+            :normal => ["a simple matter", "can take down any time", "this trap is precisely at your",
+                        "only minor troubles", "has the edge on you"],
             :careful => ["have some chance of being able to", "odds are against you", "would be a longshot"],
             :hard => ["really don't have any", "prayer would be a good start", "same shot as a snowball",
                       "pitiful snowball encased", "just jump off a cliff"],
@@ -27,7 +41,7 @@ def ident(box)
       pause 0.5
       ident box
     when :end
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
     when :hard
       exit_script("*** Unable to disarm! ***")
@@ -36,54 +50,36 @@ def ident(box)
   end
 end
 
-#>disarm my skippet quick
-#You quickly work at disarming the skippet.
-#You work with the trap for a while but are unable to make any progress.
-#You get the distinct feeling your manipulation caused something to shift inside the trap mechanism.  This is not likely to be a good thing.
-#Roundtime: 1 sec.
-
-#>disarm my coffer normal
-#You begin work at disarming the coffer.
-#You work with the trap for a while but are unable to make any progress.
-#You get the distinct feeling your manipulation caused something to shift inside the trap mechanism.  This is not likely to be a good thing.
-#Roundtime: 4 sec.
-#>disarm my coffer normal
-
-
-#You believe that the crate is not yet fully disarmed.
-
 def disarm(box, method)
-  put "disarm my #{box} #{method.to_s}"
+  return if @@shift_count > MAX_SHIFT_COUNT
+  method = @disarm_methods.fetch(@disarm_methods.index(method.to_s) + @@shift_count, "careful")
+
+  put "disarm my #{box} #{method}"
   match = { :wait => [/\.\.\.wait/],
-            :next_method => ["shift inside the trap"],
-            :continue => ["progress"],
+            :re_try => ["progress"],
             :analyze => ["not yet fully disarmed"],
             :analyze_last => ["Roundtime"] }
   result = match_wait match
 
   case result
-    when :wait, :continue
+    when :wait, :re_try
       pause 0.5
       disarm(box, method)
-    when :next_method
-      #TODO: does not work, need to update!
-      next_index = @disarm_methods.index(method.to_s)
-      disarm(box, @disarm_methods.fetch(next_index + 1, "careful"))
     when :analyze
-      if @harvest and (method == :blind or method == :quick)
+      @@shift_count = 0
+      if @harvest and @harvest_methods.include? method
         analyze box, false
       else
         ident box
       end
     when :analyze_last
-      if @harvest and (method == :blind or method == :quick)
+      @@shift_count = 0
+      if @harvest and @harvest_methods.include? method
         analyze box, true
       else
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
       end
-    else
-      exit_script "*** ERROR in - disarm(box, method)! ***"
   end
 end
 
@@ -102,18 +98,16 @@ def analyze(box, last)
       analyze box, last
     when :ident
       if last
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
       else
         ident box
       end
     when :end
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
     when :harvest
       harvest box, last
-    else
-      exit_script "*** ERROR in - analyze(box)! ***"
   end
 end
 
@@ -131,7 +125,7 @@ def harvest(box, last)
       harvest box, last
     when :end
       if last
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
       else
         ident box
@@ -139,23 +133,22 @@ def harvest(box, last)
     when :stow
       put "stow left"
       if last
-        echo "*** box disarmed! ***<br/>"
+        print_disarmed
         return
       else
         ident box
       end
-    else
-      exit_script "*** ERROR in - harvest(box)! ***"
   end
+end
+
+def print_disarmed
+  echo "*** box disarmed! ***<br/>"
 end
 
 def exit_script(message)
   echo message
   exit
 end
-
-@box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
-@disarm_methods = ["blind", "quick", "normal", "careful"]
 
 wield_right = Wield::right_noun
 

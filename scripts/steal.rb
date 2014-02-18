@@ -70,6 +70,7 @@
                      {:name => "vial", :desc => "jade glass vial", :amount => 2},
                      {:name => "moonflower", :amount => 1},
                      {:name => "sapphire lily", :amount => 1},
+                     {:name => "bodice", :desc => "stitched with tiny violet lilies", :amount => 1},
                      {:name => "white pearls", :amount => 1},
                      #{:name => "scraper", :desc => "scraper set with cabochon sunstones", :amount => 2}, # trivial 765
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
@@ -79,46 +80,64 @@
                      {:name => "sabre", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
-                     {:name => "bronze cauldron", :amount => 1, :dump => true}]
+                     {:name => "bronze cauldron", :amount => 2, :dump => true}]
 
 @ilaya_items =
     {
-        :tower => { :item  => "scimitar", :location => "on rack", :amount => 1, :alt =>
-                  {:item  => "scimitar", :location => "on second rack", :amount => 1} }, #[Harbor Tower, First Floor]
-        :fish => {:item => "tank", :amount => 1 }, #[Fernwyk's Fish]
-        :fishmonger => {:item => :none, :amount => 1 }, #[Ilaya Taipa, Fishmonger's Stall]
-        :pearls => {:item => "thumb ring", :amount => 1 }, #[Pischic's Pearls]
-        :clothing => {:item => "moonsilk fabric", :amount => 1 }, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 1 }, #[Krimand's House of Stuff]
+        :tower => {:item => "scimitar", :location => "on rack", :amount => 1, :alt =>
+            {:item => "scimitar", :location => "on second rack", :amount => 1}}, #[Harbor Tower, First Floor]
+        :fish => {:item => "tank", :amount => 1}, #[Fernwyk's Fish]
+        :fishmonger => {:item => :none, :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
+        :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
+        :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
+        :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
         # piers
-        :backfence_gossip => { :items =>  @ilaya_pier_items },
-        :blood_bane => { :items => @ilaya_pier_items },
-        :bloody_barnacle => { :items => [], :amount => 0 }, #furniture
-        :ninth_life => { :items => @ilaya_pier_items },
-        :dark_nighttrawler => { :items => @ilaya_pier_items },
-        :drunken_sage => { :items => [], :amount => 0 }, #food
-        :dusktide_rising => { :items => @ilaya_pier_items },
-        :winged_duck => { :items => @ilaya_pier_items },
-        :fleetwing_gull => { :items => [], :amount => 0 }, #food
-        :golden_apple => { :items => [], :amount => 0 }, #furniture
-        :harper_song => {:items => @ilaya_pier_items },
-        :marsh_skipper => { :items => @ilaya_pier_items },
-        :merelew_wench => { :items => [], :amount => 0 }, #food
-        :mermaid_fall => { :items => @ilaya_pier_items },
-        :moveable_feast => { :items => @ilaya_pier_items },
-        :night_sky_hair => { :items => @ilaya_pier_items },
-        :north_wind_skimmer => { :items => @ilaya_pier_items },
-        :paper_lion => { :items => @ilaya_pier_items },
-        :river_dreamer => { :items => @ilaya_pier_items },
-        :rusty_barnacle => { :items => @ilaya_pier_items },
-        :spinning_jenny => { :items => [], :amount => 0 }, #furniture
-        :talking_salmon => { :items => [], :amount => 0 }, #food
-        :thornberry_dart => { :items => [], :amount => 0 }, #food
-        :tipsy_barmaid => { :items => [], :amount => 0 }, #food
-        :tropic_night => { :items => @ilaya_pier_items },
-        :wavecrester => { :items => @ilaya_pier_items },
-        :weaving_minstrel => { :items => [], :amount => 0 }, #furniture
-        :whitehaven_hope => { :items => [], :amount => 0 } #food
+        :backfence_gossip => {:items => @ilaya_pier_items},
+        :blood_bane => {:items => @ilaya_pier_items},
+        :bloody_barnacle => {:items => [], :amount => 0}, #furniture
+        :ninth_life => {:items => @ilaya_pier_items},
+        :dark_nighttrawler => {:items => @ilaya_pier_items},
+        :drunken_sage => {:items => [], :amount => 0}, #food
+        :dusktide_rising => {:items => @ilaya_pier_items},
+        :winged_duck => {:items => @ilaya_pier_items},
+        :fleetwing_gull => {:items => [], :amount => 0}, #food
+        :golden_apple => {:items => [], :amount => 0}, #furniture
+        :harper_song => {:items => @ilaya_pier_items},
+        :marsh_skipper => {:items => @ilaya_pier_items},
+        :merelew_wench => {:items => [], :amount => 0}, #food
+        :mermaid_fall => {:items => @ilaya_pier_items},
+        :moveable_feast => {:items => @ilaya_pier_items},
+        :night_sky_hair => {:items => @ilaya_pier_items},
+        :north_wind_skimmer => {:items => @ilaya_pier_items},
+        :paper_lion => {:items => @ilaya_pier_items},
+        :river_dreamer => {:items => @ilaya_pier_items},
+        :rusty_barnacle => {:items => @ilaya_pier_items},
+        :spinning_jenny => {:items => [], :amount => 0}, #furniture
+        :talking_salmon => {:items => [], :amount => 0}, #food
+        :thornberry_dart => {:items => [], :amount => 0}, #food
+        :tipsy_barmaid => {:items => [], :amount => 0}, #food
+        :tropic_night => {:items => @ilaya_pier_items},
+        :wavecrester => {:items => @ilaya_pier_items},
+        :weaving_minstrel => {:items => [], :amount => 0}, #furniture
+        :whitehaven_hope => {:items => [], :amount => 0} #food
+    }
+
+@pier_shops =
+    {
+        :backfence_gossip => "Backfence Gossip", :blood_bane => "Blood Bane",
+        :bloody_barnacle => "Bloody Barnacle", :ninth_life => "Cat's Ninth Life",
+        :dark_nighttrawler => "Dark Nighttrawler", :drunken_sage => "Drunken Sage",
+        :dusktide_rising => "Dusktide Rising", :winged_duck => "Dusk-winged Duck",
+        :fleetwing_gull => "Fleetwing Gull", :golden_apple => "Golden Apple",
+        :harper_song => "Harper's Song", :marsh_skipper => "Marsh Skipper",
+        :merelew_wench => "Merelew Wench", :mermaid_fall => "Mermaid's Fall",
+        :moveable_feast => "Movable Feast", :night_sky_hair => "Night Sky's Hair",
+        :north_wind_skimmer => "North Wind's Skimmer", :paper_lion => "Paper Lion",
+        :river_dreamer => "River Dreamer", :rusty_barnacle => "Rusty Barnacle",
+        :spinning_jenny => "Spinning Jenny", :talking_salmon => "Talking Salmon",
+        :thornberry_dart => "Thornberry Dart", :tipsy_barmaid => "Tipsy Barmaid",
+        :tropic_night => "Tropic Night", :wavecrester => "Wavecrester",
+        :weaving_minstrel => " Weaving Minstrel", :whitehaven_hope => "Whitehaven Hope"
     }
 
 @current_container = 0
@@ -150,7 +169,6 @@ end
 undef :move
 def move(value)
   puts "put#" + value.to_s
-  STDOUT.flush
   res = match_wait({ :room => [/^\{nav\}$/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
                      :lost => [/can't go there|were you referring/],
@@ -296,7 +314,11 @@ def steal item, amount_of
     do_hide
     register_exp
 
-    amount_of.times do
+    amount_of.times do |x|
+      if x % 2 == 1
+        stow_items
+        do_hide
+      end
       take item
     end
   rescue Exception => e
@@ -314,14 +336,16 @@ def steal_shop shop_attrs
     # set extra options for items
     set_options shop_attrs
 
+    if @debug_mode
+      echo "*** #{item} => #{shop_attrs[:amount]} ***"
+      echo "opts => dump: #{@dump}, bin => #{@bin}"
+    end
+
     if @mark
       mark item
     end
 
-    if @debug_mode
-      echo "*** #{item} => #{shop_attrs[:amount]} ***"
-      echo "opts => dump: #{@dump}, bin: #{@bin}"
-    else
+    if !@debug_mode
       case steal item, shop_attrs[:amount]
         when :alt
           if shop_attrs.has_key?(:alt)
@@ -350,67 +374,37 @@ def set_options list
   @bin = list.has_key?(:bin) ? list[:bin] : false
 end
 
-def identify_pier
+def docked_shop shops
+  shops.each do |k,v|
+    if Room::objects.include? v
+      return k
+    end
+  end
+  :none
+end
+
+def steal_pier
   if !@leave
-    put "look"
-    match = { :backfence_gossip => ["Backfence Gossip"],
-              :blood_bane => ["Blood Bane"],
-              :bloody_barnacle => ["Bloody Barnacle"],
-              :ninth_life => ["Cat's Ninth Life"],
-              :dark_nighttrawler => ["Dark Nighttrawler"],
-              :drunken_sage => ["Drunken Sage"],
-              :dusktide_rising => ["Dusktide Rising"],
-              :winged_duck => ["Dusk-winged Duck"],
-              :fleetwing_gull => ["Fleetwing Gull"],
-              :golden_apple => ["Golden Apple"],
-              :harper_song => ["Harper's Song"],
-              :marsh_skipper => ["Marsh Skipper"],
-              :merelew_wench => ["Merelew Wench"],
-              :mermaid_fall => ["Mermaid's Fall"],
-              :moveable_feast => ["Movable Feast"],
-              :night_sky_hair => ["Night Sky's Hair"],
-              :north_wind_skimmer => ["North Wind's Skimmer"],
-              :paper_lion => ["Paper Lion"],
-              :river_dreamer => ["River Dreamer"],
-              :rusty_barnacle => ["Rusty Barnacle"],
-              :spinning_jenny => ["Spinning Jenny"],
-              :talking_salmon => ["Talking Salmon"],
-              :thornberry_dart => ["Thornberry Dart"],
-              :tipsy_barmaid => ["Tipsy Barmaid"],
-              :tropic_night => ["Tropic Night"],
-              :wavecrester => ["Wavecrester"],
-              :weaving_minstrel => [" Weaving Minstrel"],
-              :whitehaven_hope => ["Whitehaven Hope"],
-              :leave => ["Obvious paths"],
-              :repeat => [/\.\.\.wait/, /you may only type ahead/] }
-    result = match_wait match
+    shop = docked_shop @pier_shops
+    if @ilaya_items[shop] and @ilaya_items[shop].has_key?(:items) and
+        !@ilaya_items[shop][:items].empty?
 
-    case result
-      when :repeat
-        pause 0.4
-        identify_pier
-      when :leave
-        #no action
+      if @debug_mode
+        echo "*** #{@pier_shops[shop]} ***"
+        echo "opts => dump: #{@dump}"
+        echo find_pier_item shop
       else
-        if @ilaya_items[result].has_key?(:items) and !@ilaya_items[result][:items].empty?
-
-          if @debug_mode
-            echo "*** #{match[result]} ***"
-            echo "opts => dump: #{@dump}"
-            echo find_pier_item result
-          else
-            echo "*** #{match[result]} ***"
-            item = find_pier_item result
-            if !item.empty?
-              steal item[:name], item[:amount]
-            end
-          end
+        echo "*** #{@pier_shops[shop]} ***"
+        item = find_pier_item shop
+        if !item.empty?
+          steal item[:name], item[:amount]
         end
+      end
     end
   end
 end
 
-def find_pier_item ship
+def find_pier_item shop
   containers = Room::objects.split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
 
   # map containers
@@ -427,7 +421,7 @@ def find_pier_item ship
 
   # find items in containers
   containers.each do |container|
-    item = find_stealable_item ship, container
+    item = find_stealable_item shop, container
     if !item.empty?
       return item
     end
@@ -435,7 +429,7 @@ def find_pier_item ship
   return {}
 end
 
-def find_stealable_item ship, container
+def find_stealable_item shop, container
   if @valid_pier_containers.any? { |word| container.include?(word) }
     put "look in #{container}"
     match = { :contents => ["In the"],
@@ -445,16 +439,16 @@ def find_stealable_item ship, container
 
     case result[:key]
       when :contents
-        return get_item_description ship, container, result[:match]
+        return get_item_description shop, container, result[:match]
       when :redo
-        find_stealable_item ship, container
+        find_stealable_item shop, container
     end
   end
   return {}
 end
 
-def get_item_description ship, container, contents
-  @ilaya_items[ship][:items].each do |item|
+def get_item_description shop, container, contents
+  @ilaya_items[shop][:items].each do |item|
 
     # set extra options for items
     set_options item
@@ -1012,7 +1006,7 @@ move "sw"
 move "s"
 move "go pier"
 
-identify_pier
+steal_pier
 
 move "w"
 move "s"
@@ -1021,14 +1015,14 @@ move "se"
 move "e"
 move "go pier"
 
-identify_pier
+steal_pier
 
 move "s"
 move "se"
 move "e"
 move "go pier"
 
-identify_pier
+steal_pier
 
 move "s"
 move "e"
