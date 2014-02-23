@@ -26,6 +26,8 @@ $_api_exec_state = :running
 $_api_observer_started = false
 $_api_current_rt = 0
 
+MATCH_END_KEY = :match_until
+
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
@@ -353,9 +355,9 @@ end
 
 # @private
 def validate_get_m pattern
-  unless pattern.has_key?(:match_until)
+  unless pattern.has_key?(MATCH_END_KEY)
     raise "MatchError: match pattern does not" +
-          "contain ':match_until' end condition."
+          "contain '#{MATCH_END_KEY}' end condition."
   end
   pattern
 end
@@ -366,8 +368,8 @@ def api_find_match match, line, pattern
     value.each do |m|
       if line.match(m)
         match[key] << line
-        return pattern.has_key?(:match_until) ?
-            key == :match_until : true
+        return pattern.has_key?(MATCH_END_KEY) ?
+            key == MATCH_END_KEY : true
       end
     end
   end

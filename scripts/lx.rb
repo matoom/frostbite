@@ -3,25 +3,13 @@
 # run: hunting area
 # use: .lx <target>
 
-require "lx_stat"
 require "defines"
 require "hunt"
 
 @ammo = "bolt"
 @circle_count = 1
 
-def finally_do
-  Stats::report_total_stats
-end
-
-def do_hunt
-  if GD::HUNT
-    hunt
-  end
-  start
-end
-
-def start
+def shoot
   put "aim"
   put "appr #{$args.join(" ")} quick"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
@@ -38,7 +26,7 @@ def start
       pause 3
       start
     when :next
-      if(@circle_count > 0)
+      if @circle_count > 0
         pause Rt::value
         circle 0
       else
@@ -47,7 +35,6 @@ def start
     when :wait_arrive
       echo "*** WAITING ***"
       wait_for(/advance on you|melee range/)
-      Stats::reset_timer
       start
   end
 end
@@ -85,7 +72,6 @@ def circle count
 end
 
 def fire
-  Stats::register_shot
   put "fire"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :pause => [/You are still stunned/],
@@ -124,18 +110,14 @@ def check_status
     when :wait
       check_status
     when :dead
-      Stats::register_kill
       load "skin"
-      Stats::reset_timer
-      do_hunt
     when :pause
       pause 3
       check_status
-    when :continue
-      start
   end
 end
 
-# call start method
-# to run script
-start
+10000.times do
+  hunt
+  shoot
+end

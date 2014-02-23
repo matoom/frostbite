@@ -50,7 +50,7 @@
       :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
-@ilaya_pier_items = [{:name => "flask", :amount => 2},
+@ilaya_pier_items = [{:name => "flask", :amount => 3},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
                      {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
                      {:name => "bush", :amount => 1},
@@ -61,8 +61,10 @@
                      {:name => "ring", :desc => "copper ring shaped like a pair of clasped", :amount => 2},
                      {:name => "ring", :desc => "burnished copper ring set with an amber", :amount => 1},
                      #{:name => "pendant", :desc =>"carved coral cameo pendant depicting a female", :amount => 2}, # trivial < 840
-                     {:name => "pendant", :desc =>"pendant of a Dwarven battle axe", :amount => 2},
+                     {:name => "pendant", :desc => "pendant of a Dwarven battle axe", :amount => 2},
                      {:name => "moonstone lily", :amount => 1},
+                     {:name => "corset", :desc => "inset with petal-pink panels", :amount => 1},
+                     {:name => "axe", :desc => "with a gnarled oak haft", :amount => 1},
                      {:name => "golden earrings", :amount => 1},
                      {:name => "riding cloak", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
@@ -76,11 +78,12 @@
                      #{:name => "stole", :desc => "lavender linsey-woolsey stole", :amount => 2}, # trivial 760
                      {:name => "stole", :desc => "cobwebby silver lace", :amount => 1},
                      #{:name => "brass bowl", :amount => 2}, # trivial < 815
+                     {:name => "bracelet", :desc => "set with heart-shaped diamonds", :amount => 1},
                      {:name => "unicorn pin", :amount => 1},
                      {:name => "sabre", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
-                     {:name => "bronze cauldron", :amount => 2, :dump => true}]
+                     {:name => "bronze cauldron", :amount => 1, :dump => true}]
 
 @ilaya_items =
     {
@@ -161,6 +164,7 @@ def jail_check
   room = Room::title
   if room == "[Gallows Tree, Cell]" or room == "[Guard House, Jail Cell]"
     echo "*** Jailed! ***"
+    echo @stolen_items.inspect
     exit
   end
 end
@@ -271,7 +275,7 @@ def take item
   end
 end
 
-def get_item_position location, item_desc
+def get_item_position item, location, item_desc
   put "look #{location}"
   match = { :wait => ["ahead 1 command"],
             :contents => ["On the", "In the"] }
@@ -279,14 +283,15 @@ def get_item_position location, item_desc
 
   case result[:key]
     when :wait
-      get_item_position location, item_desc
+      get_item_position item, location, item_desc
     when :contents
-      item_position result[:match], item_desc
+      item_position result[:match], item, item_desc
   end
 end
 
-def item_position list, item_desc
-  list.split(",").each_with_index do |item, index|
+def item_position list, item_name, item_desc
+  items = list.split(/,|\band\b/).select{|item| item.include? item_name}
+  items.each_with_index do |item, index|
     if item.include?(item_desc)
       return @ordinal_numbers[index]
     end
@@ -309,17 +314,17 @@ def report_exp_gain
   echo "<br/>Thievery: #{exp_after} [#{exp_gain > 0 ? "+" : ""}#{exp_gain}]<br/>"
 end
 
-def steal item, amount_of
+def steal item, amount
   begin
     do_hide
     register_exp
 
-    amount_of.times do |x|
-      if x % 2 == 1
+    amount.times do |x|
+      take item
+      if x % 2 == 1 and amount != x + 1
         stow_items
         do_hide
       end
-      take item
     end
   rescue Exception => e
     return e.message.to_sym
@@ -360,7 +365,7 @@ def get_item attrs
   item = attrs[:item]
 
   if attrs.has_key?(:location) and attrs.has_key?(:desc)
-    pos = get_item_position attrs[:location], attrs[:desc]
+    pos = get_item_position item, attrs[:location], attrs[:desc]
     item = "#{pos} #{item} #{attrs[:location]}"
   elsif attrs.has_key?(:location)
     item = "#{item} #{attrs[:location]}"
@@ -454,7 +459,7 @@ def get_item_description shop, container, contents
     set_options item
 
     if item.has_key?(:desc) and contents.include?(item[:desc])
-      return { :name => "#{item_position contents, item[:desc]} #{item[:name]} in #{container}",
+      return { :name => "#{item_position contents, item[:name], item[:desc]} #{item[:name]} in #{container}",
                :amount => item[:amount] }
     elsif !item.has_key?(:desc) and contents.include?(item[:name])
       return { :name => "#{item[:name]} in #{container}",

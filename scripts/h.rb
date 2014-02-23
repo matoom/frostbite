@@ -6,6 +6,8 @@
 #You melt into the background, convinced that your attempt to hide went unobserved.
 #It's hard to stalk if you aren't in a position to move around.
 
+require "hunt"
+
 @rt_adjust = -1
 
 class String
@@ -48,6 +50,7 @@ label(:start) {
 
 label(:hide) {
   pause Rt::value
+  hunt
   put "stalk"
   match = { :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
             :stop_stalk => ["You're already stalking"],

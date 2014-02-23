@@ -6,9 +6,6 @@
 @container = "backpack"
 @junk = ["runestone", "flower", "leaf", "grass", "mortar", "pestle"]
 
-def finally_do
-end
-
 def open
   put "open my #{@wield_right}"
   match = { :wait => [/\.\.wait/],
@@ -68,15 +65,3 @@ if !@box_types.any?{ |box_type| @wield_right.include? box_type }
 end
 
 open
-
-=begin
->open my tru
-You open the steel trunk...
-
-In the steel trunk you see a small grey diamond and a huge grey hematite.
-
-
-
->l in my tru
-In the copper trunk you see a medium purple-blue sapphire, a copper coin, some bronze coins and some gold coins.
-=end

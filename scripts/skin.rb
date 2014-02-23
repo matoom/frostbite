@@ -67,6 +67,6 @@ end
 
 if GD::ARRANGE_COUNT > 0
   arrange 0
-else
+elsif  GD::SKIN
   skin
 end

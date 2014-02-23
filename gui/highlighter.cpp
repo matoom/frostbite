@@ -20,27 +20,27 @@ QString Highlighter::highlight(QString text) {
         highlightList = highlightSettings->getSettings("TextHighlight");
 
         for(int i = 0; i < highlightList->size(); ++i) {
-            HighlightSettingsEntry entry = highlightList->at(i);
+            HighlightSettingsEntry highlightEntry = highlightList->at(i);
 
             // match whole or partial words
-            if(entry.options.at(1)) {
+            if(highlightEntry.options.at(1)) {
                 // do not match inside tags
-                rx.setPattern(entry.value + "(?=[^>]*(<|$))");
+                rx.setPattern(highlightEntry.value + "(?=[^>]*(<|$))");
             } else {
-                // do not match inside tags
-                rx.setPattern("\\b" + entry.value + "\\b" + "(?=[^>]*(<|$))");
+                // do not match inside tags                 
+                rx.setPattern("\\b" + highlightEntry.value + "\\b(?=[^>]*(<|$))");
             }
 
             int indexStart = text.indexOf(rx);                        
             if(indexStart != -1) {
                 // highlight text
-                this->highlightText(entry, text, indexStart);
+                this->highlightText(highlightEntry, text, indexStart);
 
                 // play alert
-                this->highlightAlert(entry);
+                this->highlightAlert(highlightEntry);
 
                 // start timer
-                this->highlightTimer(entry);
+                this->highlightTimer(highlightEntry);
             }
         }
     }

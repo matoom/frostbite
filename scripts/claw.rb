@@ -1,9 +1,7 @@
 require "defines"
+require "hunt"
 
-@start_time = Time.now
-@attack_count = 0
-
-10000.times do
+def claw
   put "claw"
   match = { :wait => [/\.\.\.wait/],
             :pause => [/still stunned|entangled in a web/],
@@ -16,11 +14,6 @@ require "defines"
     when :wait
       pause 0.4
     when :skin
-      @attack_count = @attack_count + 1
-      echo "Time to kill: #{Time.now - @start_time}"
-      echo "Swings to kill: #{@attack_count}"
-      @start_time = Time.now
-      @attack_count = 0
       load "skin"
     when :wait_for
       echo "*** WAITING ***"
@@ -30,7 +23,10 @@ require "defines"
       pause 2
     when :pause
       pause 3
-    when :continue
-      @attack_count = @attack_count + 1
   end
+end
+
+10000.times do
+  hunt
+  claw
 end

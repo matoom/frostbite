@@ -816,3 +816,42 @@ A musk hog hisses viciously and lunges at you!
 <popStream/>You rolled 19 (1 to 100).
 Roundtime: 2 sec.
 <prompt time="1361967186">&gt;</prompt>
+<pushStream id="ooc"/><b>TWEET:  </b>The Shard South Bridge Street Faire is now opening!  Please join us! #Shard #drprime
+<prompt time="1361967186">&gt;</prompt>
+<output class="mono"/>
+
+Shops in this Plaza:
+
+  +------------------------------------+--------------------+-----------------
+  |             Shop Name              |      Location      |   Categories   |
+  +------------------------------------+--------------------+-----------------
+  | Kammae's Kurative Koncoctions      | Keep Room          |                |
+  | Gomi's Wide Range                  | Keep Room          |                |
+<pushBold/>  | Real Steel Company                 | Keep Room          | W              |<popBold/>
+<pushBold/>  | Crimsondae's Collections           | Rose Room          | AWCJFBGN       |<popBold/>
+<pushBold/>  | Nyken's Metals And More            | Rose Room          | WJFN           |<popBold/>
+  | Ciressa's Tiny Haven               | Rose Room          |                |
+  | Bloodbath And Beyond               | Theatre Room       |                |
+  | Variety The Spice Of Life          | Theatre Room       |                |
+  | Lion's Gait                        | Theatre Room       |                |
+  | Special Rares 4U                   | Warrior Room       |                |
+  | 'The Dragon's Armory By Khohan'    | Warrior Room       |                |
+<pushBold/>  | Sereena's Shop                     | Food Plaza         | E              |<popBold/>
+  | Augstawne Lefns Cehs               | Food Plaza         |                |
+  | Inver Brass                        | Dungeon Room       |                |
+  | Deja VooDoo                        | Storage Area       |                |
+  | Keltie's Old-Rare-Fest N' Quest    | Children's Room    |                |
+  | Old World Antiques                 | The Back Room      |                |
+  +------------------------------------+--------------------+-----------------
+      Highlighted shops are open.
+    * The owner of this shop is currently on the sales floor.
+
+ Category Legend:
+
+    E - Everything  A - Armor  W - Weapons  R - Reagents  H - House Items
+    B - Cambrinth   F - Fluff  G - Gweths   J - Jewelry   M - Magic Devices
+    N - Containers  Y - Toys   T - Tools    C - Clothing
+
+  There are 13 shops available for rent here.  4 shops are open.
+<output class=""/>
+<prompt time="1393188066">&gt;</prompt>
