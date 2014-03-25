@@ -10,22 +10,22 @@
 
 QT       -= gui
 
-TARGET = ../../data
+TARGET = ../../shared_win
 TEMPLATE = lib
 
-DEFINES += DATA_LIBRARY
+DEFINES += SHARED_WIN_LIBRARY
 
-SOURCES += data.cpp
+SOURCES += shared_win.cpp
 
-HEADERS += data.h\
-        Data_global.h
+HEADERS += shared_win.h\
+        shared_win_global.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
     TARGET.UID3 = 0xE1A27C64
     TARGET.CAPABILITY = 
     TARGET.EPOCALLOWDLLDATA = 1
-    addFiles.sources = Data.dll
+    addFiles.sources = shared_win.dll
     addFiles.path = !:/sys/bin
     DEPLOYMENT += addFiles
 }

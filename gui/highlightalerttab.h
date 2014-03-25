@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QLabel>
 
 #include <highlightdialog.h>
 #include <highlightsettings.h>

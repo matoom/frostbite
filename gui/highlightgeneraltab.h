@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QListWidget>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QPushButton>
 
 #include <highlightdialog.h>
 #include <highlightsettings.h>

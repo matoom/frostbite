@@ -1,6 +1,6 @@
 #include "debuglogger.h"
 
-DebugLogger::DebugLogger(QObject *parent) {
+DebugLogger::DebugLogger(QObject*) {
 }
 
 void DebugLogger::addText(QString text) {

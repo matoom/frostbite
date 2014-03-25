@@ -1,6 +1,6 @@
 #include "thoughtslogger.h"
 
-ThoughtsLogger::ThoughtsLogger(QObject *parent) {
+ThoughtsLogger::ThoughtsLogger(QObject*) {
     rxRemoveTags.setPattern("<[^>]*>");
 }
 

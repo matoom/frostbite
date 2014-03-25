@@ -1,21 +1,21 @@
-#ifndef DATA_H
-#define DATA_H
+#ifndef SHARED_WIN_H
+#define SHARED_WIN_H
 
-#include "data_global.h"
+#include "shared_win_global.h"
 
 #include <QString>
 #include <QDebug>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #define EXPORT_FUNCTION __declspec(dllexport)
 #else
 #define EXPORT_FUNCTION
 #endif
 
-class DATASHARED_EXPORT Data {
+class DATASHARED_EXPORT SharedWin {
 
 public:
-    Data();
+    SharedWin();
 
     /* exp */
     static const int expRows = 100;
@@ -112,4 +112,4 @@ private:
     void removeExp(int index);
 };
 
-#endif // DATA_H
+#endif // SHARED_WIN_H

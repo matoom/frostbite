@@ -10,9 +10,10 @@ class DataService : public QObject {
 
 public:
     static DataService* Instance();
-    ~DataService();
+    //~DataService();
 
-    typedef void (*AddExp)(const char*, const char*, const char*);
+    //typedef void (*AddExp)(const char*, const char*, const char*);
+    typedef void (*AddExp)(const char*, int, int);
     typedef void (*RemoveExp)(const char*);
     typedef void (*Set_b)(bool);
     typedef void (*Set_s)(const char*);
@@ -54,6 +55,7 @@ public:
     Set_s setRoomExits;
 
     Set_i setRt;
+
 
 private:
     DataService(QObject *parent = 0);

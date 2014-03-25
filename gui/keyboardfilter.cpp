@@ -3,7 +3,7 @@
 
 /* add all keys to map:key, modifier, flags and action text */
 KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {
-    macroSettings = MacroSettings::Instance();        
+    macroSettings = MacroSettings::Instance();
 }
 
 void KeyboardFilter::reloadSettings() {
@@ -12,14 +12,6 @@ void KeyboardFilter::reloadSettings() {
 
 bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
     commandLine = (CommandLine*)object;
-
-    /* workaround to give back focus to command line from alt -> menu */
-    if (event->type() == QEvent::KeyRelease) {
-        QKeyEvent *keyEvent = (QKeyEvent*)event;
-        if(keyEvent->key() == Qt::Key_Alt) {
-            commandLine->setFocus();
-        }
-    }
 
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = (QKeyEvent*)event;
@@ -71,5 +63,13 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
         }
         return false;
     }
+
+    /* workaround to give back focus to
+     * command line from alt -> menu */
+    if (event->type() == QEvent::FocusOut) {
+        commandLine->setFocus();
+        return true;
+    }
+
     return false;
 }

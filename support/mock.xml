@@ -545,7 +545,7 @@ Your feet are finally dry.
 [You're incredibly balanced and overwhelming opponent.]
 [Roundtime 3 sec.]
 <prompt time="1325173144">&gt;</prompt>
-<component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
+<component id='exp Brawling'><preset id='whisper'>        Brawling:   26 49% focused   </preset></component>
 <roundTime value='1325173148'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='97' text='fatigue 97%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 &lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
 [You're incredibly balanced and overwhelming opponent.]
@@ -775,7 +775,7 @@ Obvious exits: <d>out</d>.
 [You're incredibly balanced and overwhelming opponent.]
 [Roundtime 3 sec.]
 <prompt time="1325173144">&gt;</prompt>
-<component id='exp Brawling'><preset id='whisper'>        Brawling:   24 49% thoughtful   </preset></component>
+<component id='exp Brawling'><preset id='whisper'>        Brawling:   27 49% captivated   </preset></component>
 <roundTime value='1325173148'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='97' text='fatigue 97%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 &lt; Attacking well, you slice your fist at a musk hog.  A musk hog attempts to dodge, taking the full blow.  <pushBold/>The fist lands a good strike that tattoos a fine imprint of the fist onto the hog's neck.<popBold/>
 [You're incredibly balanced and overwhelming opponent.]
@@ -817,7 +817,7 @@ A musk hog hisses viciously and lunges at you!
 Roundtime: 2 sec.
 <prompt time="1361967186">&gt;</prompt>
 <pushStream id="ooc"/><b>TWEET:  </b>The Shard South Bridge Street Faire is now opening!  Please join us! #Shard #drprime
-<prompt time="1361967186">&gt;</prompt>
+<popStream/><prompt time="1361967186">&gt;</prompt>
 <output class="mono"/>
 
 Shops in this Plaza:

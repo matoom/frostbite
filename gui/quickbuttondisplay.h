@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QtGui>
+#include <QToolButton>
+#include <QHBoxLayout>
 
 #include <toolbardefines.h>
 #include <toolbarmanager.h>

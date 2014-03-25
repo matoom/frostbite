@@ -1,6 +1,6 @@
 #include "mainlogger.h"
 
-MainLogger::MainLogger(QObject *parent) {
+MainLogger::MainLogger(QObject*) {
     rxRemoveTags.setPattern("<[^>]*>|\\s+$");
     prevType = '\0';
 }

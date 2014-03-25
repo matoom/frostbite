@@ -11,7 +11,6 @@ NavigationDisplay::NavigationDisplay(QObject *parent) : QObject(parent) {
 }
 
 void NavigationDisplay::updateState(QList<QString> directions) {
-    /*TODO: on boat directions (aft, starboard, port, ..)*/
     for(int i = 0; i < state.size(); i++) {
         /* dont update auto pilot (mid circle) */
         if(i != 6) {
@@ -49,23 +48,19 @@ QPixmap NavigationDisplay::paint() {
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    int x = 0;
-    int y = 0;
-    int z = 0;
+    int x = 0, y = 0, z = 0;
 
-    QPixmap image;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 4; j++) {
-            image = images->value(state.at(z)).at(z);
-            painter.drawPixmap(QRectF(x, y, image.width(), image.height()), image,
-                               QRectF(0, 0, image.width(), image.height()));
+            QPixmap image = images->value(state.at(z)).at(z);
+            painter.drawPixmap(x, y, image);
 
             x += image.width();
             z++;
        }
-       x = 0;
-       y += 20;
+       x = 0, y += 20;
     }
+    painter.end();
 
     return collage;
 }

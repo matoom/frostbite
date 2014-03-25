@@ -6,12 +6,11 @@ DataService* DataService::Instance() {
     if (!m_pInstance) {
         m_pInstance = new DataService;
     }
-
     return m_pInstance;
 }
 
 DataService::DataService(QObject *parent) : QObject(parent) {
-    this->loadDataLib();
+    this->loadDataLib();    
 }
 
 bool DataService::isLoaded() {
@@ -20,10 +19,10 @@ bool DataService::isLoaded() {
 
 void DataService::loadDataLib() {
     dataLib = new QLibrary();
-    dataLib->setFileName("data");
+    dataLib->setFileName("shared");
     loaded = dataLib->load();
 
-    addExpField = (AddExp)dataLib->resolve("addExpField");
+    addExpField = (AddExp)dataLib->resolve("setExpField");
     removeExpField = (RemoveExp)dataLib->resolve("removeExpField");
 
     setStanding = (Set_b)dataLib->resolve("setStanding");
@@ -59,9 +58,12 @@ void DataService::loadDataLib() {
     setRoomExits = (Set_s)dataLib->resolve("setRoomExits");
 
     setRt = (Set_i)dataLib->resolve("setRt");
+
+    //destroy = (Destroy)dataLib->resolve("destroy");
 }
 
-DataService::~DataService() {
+/*DataService::~DataService() {
+    destroy();
     dataLib->unload();
     delete dataLib;
-}
+}*/

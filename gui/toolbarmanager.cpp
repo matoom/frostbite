@@ -9,7 +9,7 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     quickButtonDisplay = new QuickButtonDisplay(this);
     wieldLeft = new WieldIndicator(this, LHAND_ICO);
     wieldRight = new WieldIndicator(this, RHAND_ICO);
-    spell = new SpellIndicator(this);
+    spell = new SpellIndicator(this);            
 }
 
 void ToolbarManager::updateQuickButtonSettings() {
@@ -37,7 +37,7 @@ void ToolbarManager::addFullScreenButton() {
     mainWindow->addToolbarWidget(buttonWidget);
 }
 
-void ToolbarManager::loadToolbar() {
+void ToolbarManager::loadToolbar() {    
     mainWindow->setToolbarAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
 
     QWidget* wieldLeftWidget = wieldLeft->create();

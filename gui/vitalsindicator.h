@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QtGui>
+#include <QProgressBar>
+#include <QHBoxLayout>
 
 #include <toolbardefines.h>
 

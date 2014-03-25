@@ -107,7 +107,7 @@ void HighlightGeneralTab::prepareList() {
 
 QHash<QString, QVariant> HighlightGeneralTab::readSettings(QString id, QString name, QColor color) {
     QString nameSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/name", "").toString();
-    QColor colorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/color", NULL).value<QColor>();
+    QColor colorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/color", DEFAULT_MAIN_FONT_COLOR).value<QColor>();
     QString alertSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/alert", "").toString();
 
     QHash<QString, QVariant> item;

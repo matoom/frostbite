@@ -1,11 +1,11 @@
-#include "data.h"
+#include "shared_win.h"
 
 #ifdef WIN32
 /* windows specific - mingw32 */
 // http://gcc.gnu.org/onlinedocs/gcc/Variable-Attributes.html - shared
 #define SHARED __attribute__((section(".shr"), shared))
 
-char exp[Data::expRows][Data::expY][Data::expZ] SHARED = {{"", "", ""}};
+char exp[SharedWin::expRows][SharedWin::expY][SharedWin::expZ] SHARED = {{"", "", ""}};
 
 bool standing SHARED = false;
 bool sitting SHARED = false;
@@ -19,30 +19,30 @@ bool webbed SHARED = false;
 bool joined SHARED = false;
 bool dead SHARED = false;
 
-char inventory[Data::inventorySize] SHARED = "";
+char inventory[SharedWin::inventorySize] SHARED = "";
 
-char container[Data::containerSize] SHARED = "";
+char container[SharedWin::containerSize] SHARED = "";
 
-char wieldRight[Data::wieldSize] SHARED = "";
-char wieldRightNoun[Data::wieldSize] SHARED = "";
-char wieldLeft[Data::wieldSize] SHARED = "";
-char wieldLeftNoun[Data::wieldSize] SHARED = "";
+char wieldRight[SharedWin::wieldSize] SHARED = "";
+char wieldRightNoun[SharedWin::wieldSize] SHARED = "";
+char wieldLeft[SharedWin::wieldSize] SHARED = "";
+char wieldLeftNoun[SharedWin::wieldSize] SHARED = "";
 
 int health SHARED = 0;
 int concentration SHARED = 0;
 int spirit SHARED = 0;
 int fatigue SHARED = 0;
 
-char roomTitle[Data::roomTitleSize] SHARED = "";
-char roomDescription[Data::roomDescriptionSize] SHARED = "";
-char roomObjects[Data::roomObjectsSize] SHARED = "";
-char roomPlayers[Data::roomPlayersSize] SHARED = "";
-char roomExits[Data::roomExitsSize] SHARED = "";
+char roomTitle[SharedWin::roomTitleSize] SHARED = "";
+char roomDescription[SharedWin::roomDescriptionSize] SHARED = "";
+char roomObjects[SharedWin::roomObjectsSize] SHARED = "";
+char roomPlayers[SharedWin::roomPlayersSize] SHARED = "";
+char roomExits[SharedWin::roomExitsSize] SHARED = "";
 
 int rt SHARED = 0;
 #else
 /* not shared in other platforms */
-char exp[Data::expRows][Data::expY][Data::expZ] = {{"", "", ""}};
+char exp[SharedWin::expRows][SharedWin::expY][SharedWin::expZ] = {{"", "", ""}};
 
 bool standing = false;
 bool sitting = false;
@@ -56,25 +56,25 @@ bool webbed = false;
 bool joined = false;
 bool dead = false;
 
-char inventory[Data::inventorySize] = "";
+char inventory[SharedWin::inventorySize] = "";
 
-char container[Data::containerSize] = "";
+char container[SharedWin::containerSize] = "";
 
-char wieldRight[Data::wieldSize] = "";
-char wieldRightNoun[Data::wieldSize] = "";
-char wieldLeft[Data::wieldSize] = "";
-char wieldLeftNoun[Data::wieldSize] = "";
+char wieldRight[SharedWin::wieldSize] = "";
+char wieldRightNoun[SharedWin::wieldSize] = "";
+char wieldLeft[SharedWin::wieldSize] = "";
+char wieldLeftNoun[SharedWin::wieldSize] = "";
 
 int health = 0;
 int concentration = 0;
 int spirit = 0;
 int fatigue = 0;
 
-char roomTitle[Data::roomTitleSize] = "";
-char roomDescription[Data::roomDescriptionSize] = "";
-char roomObjects[Data::roomObjectsSize] = "";
-char roomPlayers[Data::roomPlayersSize] = "";
-char roomExits[Data::roomExitsSize] = "";
+char roomTitle[SharedWin::roomTitleSize] = "";
+char roomDescription[SharedWin::roomDescriptionSize] = "";
+char roomObjects[SharedWin::roomObjectsSize] = "";
+char roomPlayers[SharedWin::roomPlayersSize] = "";
+char roomExits[SharedWin::roomExitsSize] = "";
 
 int rt = 0;
 
@@ -124,7 +124,7 @@ void removeExp(int index) {
     strcpy(exp[index][2], "");
 }
 
-extern "C" EXPORT_FUNCTION void addExpField(const char name[], const char rank[], const char state[]) {
+extern "C" EXPORT_FUNCTION void setExpField(const char name[], const char rank[], const char state[]) {
     int index = getExpIndex(name);
 
     if(index == -1) {
@@ -148,7 +148,7 @@ extern "C" EXPORT_FUNCTION void removeExpField(const char name[]) {
 extern "C" EXPORT_FUNCTION int getExpRank(const char name[]) {
     int index = getExpIndex(name);
 
-    if(index >= 0 && index < Data::expRows) {
+    if(index >= 0 && index < SharedWin::expRows) {
         return atoi(exp[index][1]);
     }
     return 0;
@@ -157,7 +157,7 @@ extern "C" EXPORT_FUNCTION int getExpRank(const char name[]) {
 extern "C" EXPORT_FUNCTION int getExpState(const char name[]) {
     int index = getExpIndex(name);
 
-    if(index >= 0 && index < Data::expRows) {
+    if(index >= 0 && index < SharedWin::expRows) {
         return atoi(exp[index][2]);
     }
     return 0;

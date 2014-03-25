@@ -31,11 +31,15 @@ QStringList GameDataContainer::extractExp(QString exp, bool brief) {
 }
 
 void GameDataContainer::setExpField(QString name, QString exp) {
+    //qDebug() << name;
+
     /* extracting exp values for scripting */
     if(dataService->isLoaded()) {
         QStringList expList = this->extractExp(exp, false);
         dataService->addExpField(name.toLower().toLocal8Bit().data(),
-            expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());
+                                 expList.at(0).toInt(), expList.at(1).toInt());
+        /*dataService->addExpField(name.toLower().toLocal8Bit().data(),
+            expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());*/
     }
 
     QWriteLocker locker(&lock);
@@ -44,11 +48,15 @@ void GameDataContainer::setExpField(QString name, QString exp) {
 }
 
 void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
+    //qDebug() << name;
+
     /* extracting exp brief values for scripting */
     if(dataService->isLoaded()) {
         QStringList expList = this->extractExp(exp, true);
         dataService->addExpField(name.toLower().toLocal8Bit().data(),
-            expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());
+                                 expList.at(0).toInt(), expList.at(1).toInt());
+        /*dataService->addExpField(name.toLower().toLocal8Bit().data(),
+            expList.at(0).toLocal8Bit().data(), expList.at(1).toLocal8Bit().data());*/
     }
 
     QWriteLocker locker(&lock);

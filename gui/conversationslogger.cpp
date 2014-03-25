@@ -1,6 +1,6 @@
 #include "conversationslogger.h"
 
-ConversationsLogger::ConversationsLogger(QObject *parent) {
+ConversationsLogger::ConversationsLogger(QObject*) {
     rxRemoveTags.setPattern("<[^>]*>");
 }
 

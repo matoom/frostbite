@@ -121,7 +121,7 @@ void StatusIndicator::setInvisible(bool visible) {
         invisible->setToolTip(tr("Invisible"));
     } else {
         invisible->setToolTip("");
-        invisible->setPixmap(NULL);
+        invisible->setPixmap(QPixmap());
     }
 }
 
@@ -131,7 +131,7 @@ void StatusIndicator::setImmobile(bool visible) {
         immobile->setToolTip(tr("Immobile"));
     } else {
         immobile->setToolTip("");
-        immobile->setPixmap(NULL);
+        immobile->setPixmap(QPixmap());
     }
 }
 
@@ -141,7 +141,7 @@ void StatusIndicator::setJoined(bool visible) {
         joined->setToolTip(tr("Grouped"));
     } else {
         joined->setToolTip("");
-        joined->setPixmap(NULL);
+        joined->setPixmap(QPixmap());
     }
 }
 
@@ -151,7 +151,7 @@ void StatusIndicator::setHidden(bool visible) {
         hidden->setToolTip(tr("Hidden"));
     } else {
         hidden->setToolTip("");
-        hidden->setPixmap(NULL);
+        hidden->setPixmap(QPixmap());
     }
 }
 
@@ -171,7 +171,7 @@ void StatusIndicator::setCondition(bool visible, QString icon) {
 
 void StatusIndicator::updateCondition(const char* title, QString icon) {
     if(icon.isNull()) {
-        condition->setPixmap(NULL);
+        condition->setPixmap(QPixmap());
     } else {
         condition->setPixmap(QPixmap(icon));
     }

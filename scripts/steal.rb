@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 840
+# 860
 
 @containers = ["backpack", "haversack"]
 @khri = "khri start calm focus guile hasten darken plunder"
@@ -13,6 +13,7 @@
 
 @crossing_items =
     {
+      :scriptorium => { :item  => "case", :location => "on shelf", :desc => "lacquered teak parchment", :amount => 1 }, #[Temple Grounds, Scriptorium]
       :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
@@ -36,12 +37,12 @@
       :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe", :location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
-      :alberdeen => { :item  => "tunic", :amount => 1, :alt => {:item => "arm pouch", :amount => 2}}, #[Alberdeen's Meats and Provisions, Front Room]
+      :alberdeen => { :item  => "tunic", :amount => 1, :alt => {:item => "arm pouch", :amount => 2} }, #[Alberdeen's Meats and Provisions, Front Room]
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
@@ -50,7 +51,7 @@
       :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
-@ilaya_pier_items = [{:name => "flask", :amount => 3},
+@ilaya_pier_items = [{:name => "flask", :amount => 2},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
                      {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
                      {:name => "bush", :amount => 1},
@@ -630,8 +631,28 @@ end
 
 #Crossing
 
+move "sw"
+move "go gate"
+move "n"
+move "w"
 move "nw"
 move "w"
+move "w"
+move "w"
+move "go cottage"
+
+steal_shop @crossing_items[:scriptorium]
+
+move "out"
+move "e"
+move "e"
+move "e"
+move "se"
+move "e"
+move "s"
+move "go gate"
+move "nw"
+move "n"
 move "w"
 move "w"
 move "go bath"

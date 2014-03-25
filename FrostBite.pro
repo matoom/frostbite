@@ -1,4 +1,7 @@
 TEMPLATE = subdirs
 
-SUBDIRS += data \
-           gui
+SUBDIRS += shared_win \
+           gui \
+	   shared
+
+	

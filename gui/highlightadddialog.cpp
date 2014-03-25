@@ -40,8 +40,8 @@ void HighlightAddDialog::okPressed() {
         color.setRgb(0, 0, 0);
     }
 
-    HighlightSettingsEntry entry = HighlightSettingsEntry(NULL, text, group,
-        color, NULL, NULL, NULL, NULL, NULL, QBitArray(3));
+    HighlightSettingsEntry entry = HighlightSettingsEntry(0, text, group,
+        color, false, "", false, 0, "", QBitArray(3));
 
     settings->addParameter("TextHighlight", entry);
 

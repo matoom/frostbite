@@ -62,6 +62,7 @@ private slots:
     void enableCopy(bool);
     void saveAsHtml();
 
+
 public slots:
 
 };

@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QtGui>
+#include <QLabel>
+#include <QHBoxLayout>
 
 class WieldIndicator : public QObject {
     Q_OBJECT

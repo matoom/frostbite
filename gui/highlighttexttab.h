@@ -2,6 +2,7 @@
 #define HIGHLIGHTTEXTTAB_H
 
 #include <QObject>
+#include <QCheckBox>
 
 #include <highlightdialog.h>
 #include <highlightadddialog.h>

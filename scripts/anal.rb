@@ -27,7 +27,6 @@ def face target
 end
 
 def analyze
-  hunt
   put "analyze"
   match = { :wait => [/\.\.\.wait/],
             :fail => [/fail to find/],
@@ -60,7 +59,7 @@ def do_maneuver maneuver
   match = { :wait => [/\.\.\.wait/],
             :dead => COMBAT::MATCH_DEAD,
             :adv => [/aren't close enough/],
-            :redo => [/evades,|dodges,|A .* of the .* with/],
+            :redo => [/evades,|dodges,|A (\w|\s|'|-)+ of the (\w|\s|'|-)+ with/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/Roundtime/] }
   result = match_wait match
@@ -94,5 +93,6 @@ end
 
 face $args.first
 1000.times do
+  hunt
   execute_seq extract_seq analyze
 end

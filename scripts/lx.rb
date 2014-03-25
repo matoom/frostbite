@@ -21,10 +21,10 @@ def shoot
   case result
     when :wait
       pause 0.5
-      start
+      shoot
     when :pause
       pause 3
-      start
+      shoot
     when :next
       if @circle_count > 0
         pause Rt::value
@@ -35,7 +35,7 @@ def shoot
     when :wait_arrive
       echo "*** WAITING ***"
       wait_for(/advance on you|melee range/)
-      start
+      shoot
   end
 end
 

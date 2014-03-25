@@ -104,7 +104,7 @@ void DataProcessThread::processGameData(QByteArray data) {
             break;
         }
         // Process game data tags
-        filterDataTags(root, n, data);
+        filterDataTags(root, n);
 
         n = n.nextSibling();
     }
@@ -182,7 +182,7 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
     return true;
 }
 
-void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray rawData) {
+void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
     prompt = false;
@@ -306,7 +306,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n, QByteArray 
                     " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "death") {
                 emit updateDeathsWindow(root.text().trimmed() +
-                    " [" + QTime::currentTime().toString("hh:mm ap") + "]");
+                    " [" + QTime::currentTime().toString("h:mm ap") + "]");
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text().trimmed();
             } else if(e.attribute("id") == "inv") {
@@ -384,11 +384,6 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            if(bold) {
-                line.prepend("<span class=\"bold\">");
-                line.append("</span>");
-            }
-
             emit writeText(line.toLocal8Bit(), false);
         }
     } else if(gameText != "") {
@@ -398,16 +393,22 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
 
 // custom parsing for mono tags
 void DataProcessThread::fixMonoTags(QString& line) {
-    // fix style ids
-    if(line.contains("preset id=\"thought\"")) {
-        line.replace("preset id=\"thought\"", "preset class=\"penalty\"");
-    } else if(line.contains("preset id=\"speech\"")) {
-        line.replace("preset id=\"speech\"", "preset class=\"bonus\"");
-    } else if(line.startsWith("  <d cmd=\"flag")) {
+    // strip tags from cmd=flag
+    if(line.startsWith("  <d cmd=\"flag")) {
         line = stripTags("<temp>" + line + "</temp>");
         if(line.endsWith('\n')) {
             line.chop(1);
         }
+    } else {
+        // fix ids
+        line.replace("preset id=\"thought\"", "preset class=\"penalty\"");
+        line.replace("preset id=\"speech\"", "preset class=\"bonus\"");
+        // fix bold
+        if(line.contains("pushBold")) {
+            line.replace("pushBold/", "span class=\"bold\"");
+            line.append("</span>");
+        }
+        line.remove("<popBold/>");
     }
 }
 

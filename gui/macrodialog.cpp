@@ -95,22 +95,22 @@ void MacroDialog::buildKeypadKeys(Qt::KeyboardModifiers modifers, int start, int
     keys["keypad"] << keyList;
 }
 
-void MacroDialog::altCommandChanged(QTableWidgetItem* item, QTableWidgetItem* prev) {
+void MacroDialog::altCommandChanged(QTableWidgetItem* item, QTableWidgetItem*) {
     changeList["alt"].insert(item->row(), item);
     ui->applyButton->setEnabled(true);
 }
 
-void MacroDialog::ctrlCommandChanged(QTableWidgetItem* item, QTableWidgetItem* prev) {
+void MacroDialog::ctrlCommandChanged(QTableWidgetItem* item, QTableWidgetItem*) {
     changeList["ctrl"].insert(item->row(), item);
     ui->applyButton->setEnabled(true);
 }
 
-void MacroDialog::functionCommandChanged(QTableWidgetItem* item, QTableWidgetItem* prev) {
+void MacroDialog::functionCommandChanged(QTableWidgetItem* item, QTableWidgetItem*) {
     changeList["function"].insert(item->row(), item);
     ui->applyButton->setEnabled(true);
 }
 
-void MacroDialog::keypadCommandChanged(QTableWidgetItem* item, QTableWidgetItem* prev) {
+void MacroDialog::keypadCommandChanged(QTableWidgetItem* item, QTableWidgetItem*) {
     changeList["keypad"].insert(item->row(), item);
     ui->applyButton->setEnabled(true);
 }
@@ -169,11 +169,9 @@ void MacroDialog::saveChanges() {
 }
 
 void MacroDialog::cancelChanges() {
-    QTableWidget *table;
     QHashIterator<QString, QHash<int, QTableWidgetItem*> > i(changeList);
     while (i.hasNext()) {
         i.next();
-        table = ui->alt->findChild<QTableWidget *>(i.key() + "Table");
         QHashIterator<int, QTableWidgetItem*> j(i.value());
         while (j.hasNext()) {
             j.next();                                    

@@ -2,6 +2,8 @@
 #define TIMER_H
 
 #include <QObject>
+#include <QProgressBar>
+
 #include <mainwindow.h>
 
 class MainWindow;

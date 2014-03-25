@@ -11,7 +11,7 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
 
     rxRemoveTags.setPattern("<[^>]*>");
 
-    writePrompt = true;
+    writePrompt = true;        
 }
 
 void WindowManager::reloadSettings() {
@@ -309,8 +309,10 @@ void WindowManager::paintNavigationDisplay() {
     painter.drawPixmap(QRectF(x, y, image.width(), image.height()), image,
                        QRectF(0, 0, image.width(), image.height()));
 
+
     QPalette palette = gameWindow->viewport()->palette();
     palette.setBrush(QPalette::Base, QBrush(collage));
+
     gameWindow->viewport()->setPalette(palette);
 }
 
@@ -451,16 +453,16 @@ void WindowManager::updateRoomWindowTitle(QString title) {
 
 void WindowManager::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
-        gameWindowHighlighter->addText(text);
         mainWindow->getScriptService()->writeScriptText(text);
+        gameWindowHighlighter->addText(text);        
         this->logGameText(text, MainLogger::PROMPT);
         writePrompt = false;
     } else if(!prompt) {
-        gameWindowHighlighter->addText(text);
         mainWindow->getScriptService()->writeScriptText(text);
+        gameWindowHighlighter->addText(text);        
         this->logGameText(text);
         writePrompt = true;
-    }
+    }    
 
     if(!gameWindowHighlighter->isRunning()) {
         gameWindowHighlighter->start();
@@ -496,6 +498,9 @@ WindowManager::~WindowManager() {
     }
 
     foreach(HighlighterThread* highlighter, highlighters) {
+        // terminate threads
+        // at application exit.
+        highlighter->terminate();
         delete highlighter;
     }
 

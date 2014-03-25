@@ -1,6 +1,6 @@
 #include "arrivalslogger.h"
 
-ArrivalsLogger::ArrivalsLogger(QObject *parent) {
+ArrivalsLogger::ArrivalsLogger(QObject*) {
 }
 
 void ArrivalsLogger::addText(QString text) {

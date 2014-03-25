@@ -1,6 +1,6 @@
 #include "deathslogger.h"
 
-DeathsLogger::DeathsLogger(QObject *parent) {
+DeathsLogger::DeathsLogger(QObject*) {
 }
 
 void DeathsLogger::addText(QString text) {

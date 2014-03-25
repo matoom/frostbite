@@ -17,7 +17,15 @@ def tend wounds, dump
   wounds.each do |wound|
     wound.scan(/#{@match_body_part}/).each do |area|
       put "tend my #{area}"
-      wait_for_roundtime
+      match = {:wait => [/\.\.\.wait|you may only type ahead/],
+               :continue => [/too injured for you to do that|Doing your best|Roundtime/] }
+
+      case match_wait match
+        when :wait
+          pause 0.5
+          redo
+      end
+
       drop_lodged if dump
     end
   end
@@ -26,7 +34,7 @@ end
 def find_wounds
   put "health"
   match = {:wait => [/\.\.\.wait|you may only type ahead/],
-	         :bleed => [/^\s*(#{@match_body_part})\s*[^()]++$/],
+           :bleed => [/^\s*(#{@match_body_part})\s*[^()]++$/],
            :lodged => [/lodged shallowly into/],
            :mites => [/red blood mite/],
            :match_until => [/>|no significant injuries/]}

@@ -1,12 +1,12 @@
-#ifndef DATA_GLOBAL_H
-#define DATA_GLOBAL_H
+#ifndef SHARED_WIN_GLOBAL_H
+#define SHARED_WIN_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 
-#if defined(DATA_LIBRARY)
+#if defined(SHARED_WIN_LIBRARY)
 #  define DATASHARED_EXPORT Q_DECL_EXPORT
 #else
 #  define DATASHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // DATA_GLOBAL_H
+#endif // SARED_WIN_GLOBAL_H

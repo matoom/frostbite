@@ -36,7 +36,7 @@ private:
     QMutex mMutex;
 
     bool filterPlainText(QDomElement, QDomNode);
-    void filterDataTags(QDomElement, QDomNode, QByteArray);
+    void filterDataTags(QDomElement, QDomNode);
 
     MainWindow* mainWindow;
     WindowManager* windowManager;

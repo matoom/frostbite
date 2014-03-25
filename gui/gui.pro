@@ -10,9 +10,24 @@
 
 include(../log4qt/src/log4qt/log4qt.pri)
 
-QT       += core gui network xml
+greaterThan(QT_VERSION, 5){
+   include(../cleanlooks/cleanlooks.pri)
+}
 
-TARGET = ../../FrostBite
+greaterThan(QT_VERSION, 5){
+    QT       += widgets core gui network xml multimedia
+} else {
+    QT       += core gui network xml
+}
+
+win32 {
+    TARGET = ../../FrostBite
+}
+
+unix {
+    TARGET = ../FrostBite
+}
+
 TEMPLATE = app
 
 SOURCES += main.cpp\
@@ -74,7 +89,8 @@ SOURCES += main.cpp\
     conversationslogger.cpp \
     arrivalslogger.cpp \
     debuglogger.cpp \
-    snapshot.cpp
+    snapshot.cpp \
+    guiapplication.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -141,7 +157,8 @@ HEADERS  += mainwindow.h \
     arrivalslogger.h \
     debuglogger.h \
     snapshot.h \
-    windowinterface.h
+    windowinterface.h \
+    guiapplication.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \
@@ -165,8 +182,15 @@ RC_FILE = resources.rc
 OTHER_FILES += \
     resources.rc
 
+#profile
+#custom step: gcc -pg main.cpp -o profile_main
+
 #debug flags
 #CONFIG += DEBUG
 #QMAKE_CXXFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_MT_DBG += -pg
 #QMAKE_LFLAGS_DEBUG += -pg
+
+
+
+

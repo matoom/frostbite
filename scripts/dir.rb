@@ -2,6 +2,10 @@
 #>go northeast gate and you're there.
 #Please rephrase that command.
 
+def finally_do
+  put "dir stop"
+end
+
 def dir
   put "dir #{$args.join(" ")} 100"
   m = match_get({ :go => [/Directions towards|don't know the way/] })
@@ -13,5 +17,3 @@ dir.each do |dir|
     move dir.downcase
   end
 end
-
-put "dir stop"

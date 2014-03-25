@@ -14,6 +14,10 @@
 #include <timerbar.h>
 #include <generalsettings.h>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#include "cleanlooks/qcleanlooksstyle.h"
+#endif
+
 /* test*/
 #include <QtXml>
 
@@ -46,6 +50,8 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    static bool DEBUG;
 
     void addDockWidgetMainWindow(Qt::DockWidgetArea, QDockWidget*);
     void addWidgetMainLayout(QWidget*);

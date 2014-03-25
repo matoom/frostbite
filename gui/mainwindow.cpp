@@ -19,15 +19,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::appSetup() {
     // set cleanlooks as base style
-    QApplication::setStyle("cleanlooks");
+    #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+        QApplication::setStyle(new QCleanlooksStyle());
+    #else
+        QApplication::setStyle("cleanlooks");
+    #endif
 
     // does not open on correct screen in 4.8
     // https://bugreports.qt-project.org/browse/QTBUG-21371
 
     // load client window state
     settings = ClientSettings::Instance();
-    restoreGeometry(settings->getParameter("MainWindow/geometry", NULL).toByteArray());
-    restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
+    restoreGeometry(settings->getParameter("MainWindow/geometry", "").toByteArray());
+    restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
 
     // load general settings
     generalSettings = new GeneralSettings();
@@ -142,7 +146,7 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
 
     if(settings->hasValue("MainWindow/state")) {
         restoreDockWidget(dock);
-        restoreState(settings->getParameter("MainWindow/state", NULL).toByteArray());
+        restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
     } else {
         addDockWidget(area, dock);
     }
@@ -207,7 +211,7 @@ void MainWindow::connectEnabled(bool enabled) {
     ui->actionConnect->setEnabled(enabled);
 }
 
-void MainWindow::closeEvent(QCloseEvent *event){
+void MainWindow::closeEvent(QCloseEvent*){
     /* save client window state */
     settings->setParameter("MainWindow/state", saveState());
     settings->setParameter("MainWindow/geometry", saveGeometry());

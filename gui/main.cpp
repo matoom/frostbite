@@ -1,11 +1,14 @@
-#include <QtGui/QApplication>
+#include <guiapplication.h>
 #include "mainwindow.h"
+
 #include "log4qt/logger.h"
 #include <log4qt/propertyconfigurator.h>
 
+bool MainWindow::DEBUG = true;
+
 int main(int argc, char *argv[]) {
     /* Prohibit running more than one copy of appliction to
-       prevent any conflicts with "data" library shared memory.
+       prevent any conflicts with shared library shared memory.
     */
 
     QSharedMemory shared(QDir::currentPath());
@@ -15,11 +18,20 @@ int main(int argc, char *argv[]) {
 
     Log4Qt::PropertyConfigurator::configure(QDir::currentPath() + "/log.ini");
 
-    QApplication a(argc, argv);
+    try {
+        GuiApplication a(argc, argv);
 
-    MainWindow w;
-    w.show();
-    w.openConnectDialog();
+        MainWindow w;
+        w.show();
 
-    return a.exec();
+        if(!MainWindow::DEBUG) {
+            w.openConnectDialog();
+        }
+
+        return a.exec();
+    } catch (std::exception & e) {
+        Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info(e.what());
+        qFatal(e.what());
+    }
+    return 0;
 }
