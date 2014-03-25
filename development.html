@@ -73,10 +73,10 @@
     <h2 class="contents_head" id="contents">4 Development</h2>
     <div class="about">
         <p>
-            The Frostbite frontend application has been programmed in c/c++ using <a href="http://qt.digia.com/">Qt</a>
-            framework version 4.7. The development project is set up in <a href="http://qt.digia.com/Product/Developer-Tools/">Qt
-            Creator IDE</a>. All the Qt tools are free to use for open source projects and can be downloaded from the
-            <a href="http://qt-project.org/downloads">Qt website</a>.
+            The Frostbite frontend application has been programmed in C/C++ using <a href="http://qt.digia.com/">Qt</a>
+            framework version 4.7 (updated to compile with 5.2). The development project is set up in
+            <a href="http://qt.digia.com/Product/Developer-Tools/">Qt Creator IDE</a>. All the Qt tools are free to use
+            for open source projects and can be downloaded from the <a href="http://qt-project.org/downloads">Qt website</a>.
         </p>
         <br/>
         <h3>Github</h3>
@@ -94,14 +94,14 @@
                 <li>Open <i>Frostbite.pro</i> in Qt Creator;</li>
                 <li>Load the environment settings -> No -> Select Desktop project;</li>
                 <li>In <i>environment.h</i> -> change project path for offline mock file - <i>#define MOCK_DATA_PATH "C:/Projects/FrostBite/support/mock.xml";</i></li>
-                <li>in <i>connectionmanager.cpp</i> -> add "this->loadMockData();" to run client in offline development mode;</li>
+                <li>in <i>main.cpp</i> -> set MainWindow::DEBUG = true;</li>
                 <li>Build for debug target;</li>
                 <li>In projects tab -> add a custom executable -> find exe file in debug build folder;</li>
                 <li>Run project in debug mode.</li>
             </ul>
         <br/>
         <h3>High level architecture</h3>
-        <p>The entry point for the Frostbite application is <i>main.cpp</i> which runs the <i>mainwindow.cpp</i> object.</p>
+        <p>The entry point for the Frostbite application is <i>main.cpp</i> which runs the <i>mainwindow.cpp</i> application.</p>
         <p>The MainWindow class holds instances for some of the main purpose models like:</p>
             <ul class="list">
                 <li>windowmanager.cpp - <span class="gray">everything related to game windows</span></li>

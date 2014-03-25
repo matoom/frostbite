@@ -73,28 +73,28 @@
 
     <div class="about">
         <p class="alert-box">
-            The Frostbite scripting support is provided by the <a href="http://www.ruby-lang.org/en/">Ruby</a>
+            The Frostbite client scripting support is provided by the <a href="http://www.ruby-lang.org/en/">Ruby</a>
             scripting engine and will therefore require the <a href="http://www.ruby-lang.org/en/">Ruby</a> runtime
             libraries to be <a href="installation.html">installed</a>.
         </p>
         <br/>
         <p>
             Ruby scripting engine adds a flexible and powerful scripting support for the game client. It is easy to use
-            for beginners and yet it still enables more complex scripting possibilities for advanced users.
+            for beginners but still offers more complex scripting possibilities for advanced users.
         </p><br/>
         <h3>High level description</h3>
         <p>
             Most of the scripting functionality is created in Ruby and it can be easily re-adjusted to every specific need. The
             game client provides game text over standard output, while rest of the utility functions are available as part
-            of a dynamic library file <i>"data.dll/so"</i>, which can be accessed by any other process -- including the
+            of a dynamic library file <i>"shared.dll/so"</i>, which can be accessed by any external process -- including the
             Ruby scripting module.
         </p>
         <p>
-            The Ruby side API is placed in the <i>"scripts/lib"</i> folder and should only be modified at your own risk. The game client
+            The Ruby based scripting API is placed in the <i>"scripts/lib"</i> folder and should only be modified at your own risk. The game client
             always tries to execute the <i>"main.rb"</i> script and it specifies the script file as part of the passed arguments
             that will remain invisible to the user. The specified file will be in turn executed by the <i>"main.rb"</i> script.
         </p>
-        <p>For example: <i>game client -> main.rb "braid.rb vines" -> braid.rb</i></p>
+        <p>For example: <i>game client -> main.rb "braid.rb vines" -> runs -> braid.rb vines</i></p>
         <p>
             The scripting API includes:
         </p>
