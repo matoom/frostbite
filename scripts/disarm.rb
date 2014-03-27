@@ -15,6 +15,11 @@ Observer.instance.register_event({ :shift => "This is not likely to be a good th
 
 def shift
   @@shift_count += 1
+  echo "Shifted trap mechanism! - total: #{@@shift_count}"
+
+  if MAX_SHIFT_COUNT < @@shift_count
+    exit_script("*** Unable to disarm! ***")
+  end
 end
 
 @harvest = true
@@ -50,10 +55,13 @@ def ident(box)
   end
 end
 
-def disarm(box, method)
-  return if @@shift_count > MAX_SHIFT_COUNT
-  method = @disarm_methods.fetch(@disarm_methods.index(method.to_s) + @@shift_count, "careful")
+def get_method method
+  index = @disarm_methods.index(method.to_s) + @@shift_count
+  @disarm_methods.fetch(index, "careful")
+end
 
+def disarm(box, method)
+  method = get_method method
   put "disarm my #{box} #{method}"
   match = { :wait => [/\.\.\.wait/],
             :re_try => ["progress"],

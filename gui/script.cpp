@@ -41,6 +41,8 @@ void Script::killScript() {
 
 void Script::sendMessage(QByteArray message) {
     script_proc->write(message);
+    // flush stdout
+    script_proc->waitForBytesWritten(-1);
 }
 
 void Script::displayOutputMsg() {
@@ -53,7 +55,7 @@ void Script::displayOutputMsg() {
 void Script::displayErrorMsg() {
     script_proc->setReadChannel(QProcess::StandardError);
     QByteArray msg = script_proc->readAll();
-    msg.prepend("@SCRIPT ERROR\n");
+    //msg.prepend("@SCRIPT ERROR\n");
     scriptService->writeGameWindow(msg);
     //qDebug() << "Error: " << (msg.data());
 }

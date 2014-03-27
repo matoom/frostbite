@@ -10,7 +10,7 @@ def hunt
               :continue => [/Roundtime|unable to hunt/] }
     case match_wait match
       when :wait
-	      pause 0.5
+        pause 0.5
         hunt
     end
   end

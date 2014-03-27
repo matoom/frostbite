@@ -2,9 +2,32 @@ require 'dl'
 require 'dl/import'
 
 # @api private
+module OS
+  def OS.windows?
+    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.mac?
+   (/darwin/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.unix?
+    !OS.windows?
+  end
+
+  def OS.linux?
+    OS.unix? and not OS.mac?
+  end
+end
+
+# @api private
 module GameData
   extend DL::Importer
-  dlload 'data.dll'
+  if OS::windows?
+    dlload 'shared.dll'
+  else
+    dlload "#{Dir.pwd}/libshared.so"
+  end
 
   extern 'int getExpRank(const char[])'
   extern 'int getExpState(const char[])'

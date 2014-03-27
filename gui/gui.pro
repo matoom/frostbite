@@ -28,6 +28,11 @@ unix {
     TARGET = ../FrostBite
 }
 
+# use relative path for libs in unix
+unix:!mac{
+  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+}
+
 TEMPLATE = app
 
 SOURCES += main.cpp\

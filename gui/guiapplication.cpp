@@ -11,18 +11,13 @@ bool GuiApplication::notify(QObject* receiver, QEvent* event) {
                 .arg(e.what(), typeid(*event).name(), qPrintable(receiver->objectName()), typeid(*receiver).name());
 
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info(errorMsg);
-        QMessageBox::critical(this->activeWindow(), "Application error",
-                              "Application encountered an unexpected error. See error log for more details.");
         qFatal(errorMsg.toLocal8Bit().data());
     } catch (...) {
         QString errorMsg = QString("Error <unknown> sending event %1 to object %2 (%3)")
                 .arg(typeid(*event).name(), qPrintable(receiver->objectName()), typeid(*receiver).name());
 
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info(errorMsg);
-        QMessageBox::critical(this->activeWindow(), "Application error",
-                              "Application encountered an unexpected error. See error log for more details.");
         qFatal(errorMsg.toLocal8Bit().data());
     }
-
     return false;
 }

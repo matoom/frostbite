@@ -15,7 +15,19 @@
 
 QT       -= gui
 
-TARGET = ../../shared
+win32 {
+    TARGET = ../../shared
+}
+
+unix {
+    TARGET = ../shared
+}
+
+# use relative path for libs in unix
+unix:!mac{
+  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+}
+
 TEMPLATE = lib
 
 DEFINES += DATA_LIBRARY

@@ -10,7 +10,14 @@
 
 QT       -= gui
 
-TARGET = ../../shared_win
+win32 {
+    TARGET = ../../shared_win
+}
+
+unix {
+    TARGET = ../shared_win
+}
+
 TEMPLATE = lib
 
 DEFINES += SHARED_WIN_LIBRARY

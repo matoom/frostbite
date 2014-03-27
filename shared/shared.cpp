@@ -79,18 +79,24 @@ extern "C" {
 
 #else
 
-void my_load(void) {
-    qDebug() << "INIT";
-}
+extern "C" {
+    void __attribute__ ((constructor)) load(void) {
+        boolMemoryMap = initBoolMemoryMap();
+        intMemoryMap = initIntMemoryMap();
+        stringMemoryMap = initStringMemoryMap();
+        expShm = new QSharedMemory(EXP_SHARED_NAME);
+        strValue = new char[1];
+    }
 
-void my_unload(void) {
-    //qdeleteAll
-    qDebug() << "UNLOAD";
+    void __attribute__ ((destructor)) unload(void) {
+            delete expShm;
+            delete strValue;
+    }
 }
 
 #endif
 
-QMap<QString, QMap<QString, int> > readExpMap() {   
+QMap<QString, QMap<QString, int> > readExpMap() {
     QBuffer buffer;
     QDataStream in(&buffer);
     QMap<QString, QMap<QString, int> > expMap;

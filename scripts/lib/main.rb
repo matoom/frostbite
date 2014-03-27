@@ -2,8 +2,6 @@ Kernel.require "#{File.dirname(__FILE__)}/models.rb"
 Kernel.require "#{File.dirname(__FILE__)}/ruby_goto.rb"
 Kernel.require "#{File.dirname(__FILE__)}/observer.rb"
 
-require 'logger'
-
 # show warnings
 #$VERBOSE = true
 
@@ -33,9 +31,6 @@ MATCH_END_KEY = :match_until
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
-
-@logger = Logger.new('logs/script/match.log', 'daily')
-@logger.level = Logger::DEBUG
 
 # Waits for roundtime and pauses for the duration.
 #
@@ -113,10 +108,8 @@ def match_wait(pattern)
       rt += api_read_rt line
 
       if match_found
-        @logger.debug("match_found! -- #{line}")
         $_api_exec_state = :running
         if line.match(/>$/)
-          @logger.debug("sleep: #{rt}")
           api_sleep rt
           return match.find{ |k, v| !v.empty? }.first
         end
@@ -373,7 +366,6 @@ end
 def api_find_match match, line, pattern
   pattern.each_pair do |key, value|
     value.each do |m|
-      @logger.debug "#{line}"
       if line.match(m)
         match[key] << line
         return pattern.has_key?(MATCH_END_KEY) ?

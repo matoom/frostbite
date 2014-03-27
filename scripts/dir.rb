@@ -9,11 +9,11 @@ end
 def dir
   put "dir #{$args.join(" ")} 100"
   m = match_get({ :go => [/Directions towards|don't know the way/] })
-  m[:match].gsub(/.*:/, '').split(/,/).collect(&:strip)
+  m[:match].gsub(/.*:/, '').split(/,|\band\b/).collect(&:strip)
 end
 
 dir.each do |dir|
-  if dir =~ /west|south|north|east|go|out/i
+  if dir =~ /west|south|north|east|go|out|climb/i
     move dir.downcase
   end
 end
