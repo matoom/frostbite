@@ -1,0 +1,4 @@
+Find dependencies:
+
+On Linux : ldd ./Your_Executable
+On Windows : DependencyWalker http://www.dependencywalker.com/

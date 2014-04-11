@@ -25,8 +25,10 @@ module GameData
   extend DL::Importer
   if OS::windows?
     dlload 'shared.dll'
-  else
+  elsif OS::linux?
     dlload "#{Dir.pwd}/libshared.so"
+  elsif OS::mac?
+    dlload "libshared.dylib"
   end
 
   extern 'int getExpRank(const char[])'

@@ -20,18 +20,30 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
             commandLine->doCopy();
             return true;
         } else if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
+            #ifdef Q_WS_MAC
+            switch(keyEvent->key()) {
+                case Qt::Key_Up:
+                    commandLine->historyBack();
+                break;
+                case Qt::Key_Down:
+                    commandLine->historyForward();
+                break;
+            }
+            #endif
             QString cmd = macroSettings->getParameter("keypad/" +
                 QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();
             return commandLine->runMacro(cmd);
         } else {
             if(keyEvent->modifiers() == Qt::NoModifier) {
                 switch(keyEvent->key()) {
+                    #ifndef Q_WS_MAC
                     case Qt::Key_Up:
                         commandLine->historyBack();
                     break;
                     case Qt::Key_Down:
                         commandLine->historyForward();
                     break;
+                    #endif
                     case Qt::Key_Escape:
                         commandLine->clear();
                         commandLine->historyCounter = -1;

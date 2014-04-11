@@ -10,7 +10,7 @@ ClientSettings* ClientSettings::Instance() {
     return m_pInstance;
 }
 
-ClientSettings::ClientSettings() : QSettings("client.ini", QSettings::IniFormat) {
+ClientSettings::ClientSettings() : QSettings(QApplication::applicationDirPath() + "/client.ini", QSettings::IniFormat) {
 }
 
 void ClientSettings::setParameter(QString name, QVariant value) {
@@ -29,7 +29,7 @@ QString ClientSettings::profilePath() {
     QString profile = value("Profile/name", "").toString();
 
     if(!profile.isEmpty()) {
-        QDir dir(QDir::currentPath() + "/profiles/" + profile);
+        QDir dir(QApplication::applicationDirPath()  + "/profiles/" + profile);
 
         if(dir.exists()) {
             return dir.absolutePath() + "/";

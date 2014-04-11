@@ -8,7 +8,7 @@ end
 
 def dir
   put "dir #{$args.join(" ")} 100"
-  m = match_get({ :go => [/Directions towards|don't know the way/] })
+  m = match_get({ :go => [/Directions towards|don't know the way|Here are all the places/] })
   m[:match].gsub(/.*:/, '').split(/,|\band\b/).collect(&:strip)
 end
 

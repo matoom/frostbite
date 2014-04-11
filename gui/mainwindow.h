@@ -74,6 +74,7 @@ public:
     void toggleMaximized();
     void updateProfileSettings();
     void openConnectDialog();
+    void openAppearanceDialog();
 
     WindowManager* getWindowManager();
     ToolbarManager* getToolbarManager();

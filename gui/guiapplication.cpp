@@ -1,6 +1,6 @@
 #include "guiapplication.h"
 
-GuiApplication::GuiApplication(int& argc, char ** argv) : QApplication(argc, argv) {
+GuiApplication::GuiApplication(int& argc, char ** argv) : QtSingleApplication(argc, argv) {
 }
 
 bool GuiApplication::notify(QObject* receiver, QEvent* event) {

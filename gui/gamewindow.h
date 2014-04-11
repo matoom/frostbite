@@ -47,6 +47,7 @@ private:
 
     Snapshot* snapshot;
 
+    QAction* appearanceAct;
     QAction* copyAct;
     QAction* selectAct;
     QAction* clearAct;
@@ -61,7 +62,7 @@ private slots:
     void copySelected();
     void enableCopy(bool);
     void saveAsHtml();
-
+    void changeAppearance();
 
 public slots:
 

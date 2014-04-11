@@ -37,7 +37,7 @@
       :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
@@ -472,7 +472,8 @@ end
 
 def check_for_mites
   put "health"
-  match = { :wait => [/\.\.\.wait|you may only type ahead/],
+  match = { :match_start => [/Your body/],
+            :wait => [/\.\.\.wait|you may only type ahead/],
             :tend => [/red blood mite/],
             :continue => [/>/] }
   result = match_get match

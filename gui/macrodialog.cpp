@@ -47,6 +47,7 @@ void MacroDialog::loadSettings() {
 
     this->buildKeypadKeys(Qt::NoModifier);
     this->buildKeypadKeys(Qt::ControlModifier);
+
     this->loadKeys("keypad", ui->keypadTable);
 }
 
@@ -79,19 +80,27 @@ void MacroDialog::loadKeys(QString tabName, QTableWidget* table) {
 }
 
 void MacroDialog::buildKeypadKeys(Qt::KeyboardModifiers modifers) {
+    #ifdef Q_WS_MAC
+    this->buildKeypadKeys(modifers, 0x2a, 0x2b);
+    this->buildKeypadKeys(modifers, 0x2d, 0x2d);
+    this->buildKeypadKeys(modifers, 0x2f, 0x2f);
+    this->buildKeypadKeys(modifers, 0x31, 0x39);
+    this->buildKeypadKeys(modifers, 0x1000005, 0x1000005);
+    #else
     this->buildKeypadKeys(modifers, 0x2a, 0x2b);
     this->buildKeypadKeys(modifers, 0x2d, 0x2d);
     this->buildKeypadKeys(modifers, 0x2f, 0x2f);
     this->buildKeypadKeys(modifers, 0x1000005, 0x1000007);
     this->buildKeypadKeys(modifers, 0x100000B, 0x100000B);
     this->buildKeypadKeys(modifers, 0x1000010, 0x1000017);
+    #endif
 }
 
 void MacroDialog::buildKeypadKeys(Qt::KeyboardModifiers modifers, int start, int end) {
     QList<QKeyEvent> keyList;
     for(int keyCode = start; keyCode <= end; keyCode++) {
         keyList << QKeyEvent(QEvent::User, keyCode, Qt::KeypadModifier | modifers, QKeySequence(modifers | keyCode).toString());
-    }
+    }        
     keys["keypad"] << keyList;
 }
 

@@ -23,11 +23,6 @@ unix {
     TARGET = ../shared
 }
 
-# use relative path for libs in unix
-unix:!mac{
-  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
-}
-
 TEMPLATE = lib
 
 DEFINES += DATA_LIBRARY
@@ -57,3 +52,7 @@ unix:!symbian {
     INSTALLS += target
 }
 
+# use relative path for libs in unix
+unix:!mac{
+  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+}

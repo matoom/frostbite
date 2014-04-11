@@ -2,6 +2,7 @@
 
 Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this)) {
     scriptService = (ScriptService*)parent;
+    clientSettings = ClientSettings::Instance();
 
     connect(script_proc, SIGNAL(readyReadStandardOutput()), this, SLOT(displayOutputMsg()));
     connect(script_proc, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorMsg()));
@@ -9,7 +10,9 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
     connect(script_proc, SIGNAL(finished(int)), this, SLOT(finish(int)));
     connect(script_proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
 
-    path = QDir::currentPath() + "/scripts/lib/main.rb";
+    path = QApplication::applicationDirPath() + "/scripts/lib/main.rb";
+
+    rubyPath = clientSettings->getParameter("Ruby/path", "ruby").toString();
 
     running = false;
 }
@@ -23,15 +26,13 @@ QString Script::currentFileName() {
 }
 
 void Script::execute(QString fileName, QList<QString> userArgs) {   
-    QString file = QDir::currentPath() + "/scripts/" + fileName + ".rb";
+    QString file = QApplication::applicationDirPath() + "/scripts/" + fileName + ".rb";
     this->fileName = fileName;
 
     QStringList arguments;
     arguments << path << file << userArgs;
 
-    QString program = "ruby";
-
-    script_proc->start(program, arguments);
+    script_proc->start(rubyPath, arguments);
 }
 
 void Script::killScript() {

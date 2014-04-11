@@ -100,7 +100,7 @@ void HighlightGeneralTab::prepareList() {
             tr(i.value().value("name").toByteArray().data()), listWidget);
         newItem->setData(Qt::UserRole, i.key());
         newItem->setTextColor(i.value().value("color").value<QColor>());
-        newItem->setFont(QFont("Consolas", 12));
+        newItem->setFont(QFont(DEFAULT_FONT, 12));
         ++i;
     }
 }

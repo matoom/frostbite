@@ -19,7 +19,7 @@ bool DataService::isLoaded() {
 
 void DataService::loadDataLib() {
     dataLib = new QLibrary();
-    dataLib->setFileName("shared");
+    dataLib->setFileName(QApplication::applicationDirPath() + "/shared");
     loaded = dataLib->load();
 
     addExpField = (AddExp)dataLib->resolve("setExpField");

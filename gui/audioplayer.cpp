@@ -18,7 +18,7 @@ void AudioPlayer::loadAudioList() {
     QStringList filter;
     filter << "*.wav";
 
-    QDir myDir(QDir::currentPath() + "/sounds");
+    QDir myDir(QApplication::applicationDirPath()  + "/sounds");
     fileList = myDir.entryList(filter, QDir::Files, QDir::Name);
 }
 
@@ -28,6 +28,6 @@ QStringList AudioPlayer::getAudioList() {
 
 void AudioPlayer::play(const QString& fileName) {
     if(!fileName.isEmpty() && fileList.contains(fileName)) {
-        QSound::play(QDir::currentPath() + "/sounds/" + fileName);
+        QSound::play(QApplication::applicationDirPath() + "/sounds/" + fileName);
     }
 }

@@ -7,8 +7,15 @@ ScriptEditDialog::ScriptEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     completer = new QCompleter(this);
     model = new QStringListModel();
 
-    scriptPath.setPath(QDir::currentPath() + "/scripts");
-    notepadPath.setPath(QDir::currentPath() + "/notepad/Notepad2.exe");
+    scriptPath.setPath(QApplication::applicationDirPath() + "/scripts");
+
+    #ifdef Q_OS_WIN
+        notepadPath.setPath("notepad");
+    #elif defined(Q_OS_LINUX)
+        notepadPath.setPath("gedit");
+    #elif defined(Q_OS_MAC)
+        notepadPath.setPath("open -t");
+    #endif
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));

@@ -1,6 +1,6 @@
 #include "shared.h"
 
-static QString locationId = QString(QCryptographicHash::hash(QDir::currentPath().toLocal8Bit(), QCryptographicHash::Md5).toHex());
+QString locationId = QString(QCryptographicHash::hash(QDir::currentPath().toLocal8Bit(), QCryptographicHash::Md5).toHex());
 
 QMap<QString, QSharedMemory*> initStringMemoryMap() {
     QMap<QString, QSharedMemory*> stringMemoryMap;
@@ -44,57 +44,10 @@ QMap<QString, QSharedMemory*> initBoolMemoryMap() {
     return boolMemoryMap;
 }
 
-static QMap<QString, QSharedMemory*> boolMemoryMap;
-static QMap<QString, QSharedMemory*> intMemoryMap;
-static QMap<QString, QSharedMemory*> stringMemoryMap;
-static QSharedMemory *expShm;
-
-char* strValue;
-
-#ifdef Q_OS_WIN
-
-#include "windows.h"
-
-extern "C" {
-    BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
-        switch (fdwReason) {
-        case DLL_PROCESS_ATTACH:
-            boolMemoryMap = initBoolMemoryMap();
-            intMemoryMap = initIntMemoryMap();
-            stringMemoryMap = initStringMemoryMap();
-            expShm = new QSharedMemory(EXP_SHARED_NAME);
-            strValue = new char[1];
-            break;
-        case DLL_PROCESS_DETACH:
-            qDeleteAll(boolMemoryMap);
-            qDeleteAll(intMemoryMap);
-            qDeleteAll(stringMemoryMap);
-            delete expShm;
-            delete strValue;
-            break;
-        }
-        return (TRUE);
-    }
-}
-
-#else
-
-extern "C" {
-    void __attribute__ ((constructor)) load(void) {
-        boolMemoryMap = initBoolMemoryMap();
-        intMemoryMap = initIntMemoryMap();
-        stringMemoryMap = initStringMemoryMap();
-        expShm = new QSharedMemory(EXP_SHARED_NAME);
-        strValue = new char[1];
-    }
-
-    void __attribute__ ((destructor)) unload(void) {
-            delete expShm;
-            delete strValue;
-    }
-}
-
-#endif
+QMap<QString, QSharedMemory*> boolMemoryMap = initBoolMemoryMap();
+QMap<QString, QSharedMemory*> intMemoryMap = initIntMemoryMap();
+QMap<QString, QSharedMemory*> stringMemoryMap = initStringMemoryMap();
+QSharedMemory *expShm = new QSharedMemory(EXP_SHARED_NAME);
 
 QMap<QString, QMap<QString, int> > readExpMap() {
     QBuffer buffer;
@@ -209,6 +162,8 @@ char* getString(QString name) {
 
     sharedMemory->attach(QSharedMemory::ReadOnly);
 
+    char* strValue = (char*)"";
+
     if(!sharedMemory->isAttached()) {
         return strValue;
     }
@@ -232,14 +187,19 @@ void setInt(int value, QString name) {
     if(sharedMemory->isAttached())
         sharedMemory->detach();
 
-    if (!sharedMemory->create(sizeof(int))) {
-        sharedMemory->attach(QSharedMemory::ReadWrite);
+    int size = sizeof(int);
+
+    if (!sharedMemory->create(size)) {
+        if (!sharedMemory->isAttached()) {
+            sharedMemory->attach(QSharedMemory::ReadWrite);
+        }
     }
 
     sharedMemory->lock();
 
-    volatile int *array = (int*)sharedMemory->data();
-    array[0] = value;
+    int* to = (int*)sharedMemory->data();
+
+    memcpy(to, &value, qMin(sharedMemory->size(), size));
 
     sharedMemory->unlock();
 }
@@ -257,8 +217,8 @@ int getInt(QString name) {
 
     sharedMemory->lock();
 
-    int value = *(int*)sharedMemory->data();
-    returnValue = value;
+    int* value = (int*)sharedMemory->data();
+    memcpy(&returnValue, value, sizeof(value));
 
     sharedMemory->unlock();
 
@@ -270,17 +230,20 @@ int getInt(QString name) {
 void setBool(bool value, QString name) {
     QSharedMemory* sharedMemory = boolMemoryMap.value(name);
 
-    if(sharedMemory->isAttached())
+    if(sharedMemory->isAttached()) {
         sharedMemory->detach();
+    }
 
-    if (!sharedMemory->create(sizeof(bool))) {
+    int size = sizeof(bool);
+
+    if (!sharedMemory->create(size)) {
         sharedMemory->attach(QSharedMemory::ReadWrite);
     }
 
     sharedMemory->lock();
 
-    volatile bool *array = (bool*)sharedMemory->data();
-    array[0] = value;
+    bool *array = (bool*)sharedMemory->data();
+    memcpy(array, &value, qMin(sharedMemory->size(), size));
 
     sharedMemory->unlock();
 }
@@ -299,6 +262,7 @@ bool getBool(QString name) {
     sharedMemory->lock();
 
     bool value = *(bool*)sharedMemory->data();
+
     returnValue = value;
 
     sharedMemory->unlock();
@@ -512,11 +476,11 @@ extern "C" EXPORT_FUNCTION char* getRoomTitle() {
     return getString(ROOM_TITLE_SHARED_NAME);
 }
 
-extern "C" EXPORT_FUNCTION void setRoomTitle(const char title[]) {
+extern "C" EXPORT_FUNCTION void setRoomTitle(const char title[]) {    
     setString(title, ROOM_TITLE_SHARED_NAME);
 }
 
-extern "C" EXPORT_FUNCTION char* getRoomDescription() {
+extern "C" EXPORT_FUNCTION char* getRoomDescription() { 
     return getString(ROOM_DESC_SHARED_NAME);
 }
 

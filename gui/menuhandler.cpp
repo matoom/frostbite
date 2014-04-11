@@ -19,6 +19,10 @@ void MenuHandler::openConnectDialog() {
     connectWizard->show();
 }
 
+void MenuHandler::openAppearanceDialog() {
+    appearanceDialog->show();
+}
+
 void MenuHandler::updateDialogSettings() {
     highlightDialog->updateSettings();
     highlightDialog->loadSettings();
@@ -33,27 +37,27 @@ void MenuHandler::updateDialogSettings() {
 }
 
 void MenuHandler::menuTriggered(QAction* action) {
-    if(action->text() == "Connect") {
+    if(action->objectName() == "actionConnect") {
         connectWizard->show();
-    } else if (action->text() == "Disconnect") {
+    } else if (action->objectName() == "actionDisconnect") {
         mainWindow->getConnectionManager()->disconnectFromServer();
-    } else if(action->text() == "Highlight") {
+    } else if(action->objectName() == "actionText_Highlight") {
         highlightDialog->show();
-    } else if (action->text() == "Macros") {
+    } else if (action->objectName() == "actionMacros") {
         macroDialog->show();
-    } else if (action->text() == "Appearance") {
+    } else if (action->objectName() == "actionAppearance") {
         appearanceDialog->show();
-    } else if(action->text() == "Exit") {
+    } else if(action->objectName() == "actionExit") {
         mainWindow->close();
-    } else if(action->text() == "About") {
+    } else if(action->objectName() == "actionAbout") {
         aboutDialog->show();
-    } else if(action->text() == "Edit/Create") {
+    } else if(action->objectName() == "actionEdit") {
         scriptEditDialog->show();        
-    } else if(action->text() == "Create new profile") {
+    } else if(action->objectName() == "actionCreate_new_profile") {
         profileAddDialog->show();
-    } else if(action->text() == "User Guide") {
+    } else if(action->objectName() == "actionReference_Manual") {
         QDesktopServices::openUrl(QUrl("file:///" +
-            QDir::currentPath() + "/docs/index.html", QUrl::TolerantMode));
+            QApplication::applicationDirPath()  + "/docs/index.html", QUrl::TolerantMode));
     } else if(action->objectName() == "actionLogMain") {
         clientSettings->setParameter("Logging/main", action->isChecked());
     } else if(action->objectName() == "actionLogThoughts") {
@@ -67,32 +71,29 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionLogDebug") {
         clientSettings->setParameter("Logging/debug", action->isChecked());
     }
-
-    if(action->data() == "profile") {        
-        if(action->isChecked()) {
-            clientSettings->setParameter("Profile/name", action->text());
-        } else {
-            clientSettings->setParameter("Profile/name", "");
-        }
-        mainWindow->updateProfileSettings();
-    }
-
-    //qDebug() << action->text();
-    //qDebug() << action->objectName();
 }
 
 void MenuHandler::menuHovered(QAction* action) {
-    if(action->text() == "Profile") {
+    if(action->objectName() == "actionLoad_profile") {
         this->loadProfilesMenu();
     }
 }
 
+void MenuHandler::profileTriggered(QAction* action) {
+    if(action->isChecked()) {
+        clientSettings->setParameter("Profile/name", action->text());
+    } else {
+        clientSettings->setParameter("Profile/name", "");
+    }
+    mainWindow->updateProfileSettings();
+}
+
 void MenuHandler::loadProfilesMenu() {
-    QDir dir(QDir::currentPath() + "/profiles");
+    QDir dir(QApplication::applicationDirPath()  + "/profiles");
 
     QStringList dirList = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs, QDir::Name);
 
-    profilesMenu = new QMenu();
+    profilesMenu = new QMenu();    
 
     QString currentProfile = clientSettings->getParameter("Profile/name", "").toString();
 
@@ -107,6 +108,8 @@ void MenuHandler::loadProfilesMenu() {
         profilesMenu->addAction(action);
     }
     mainWindow->insertProfilesMenu(profilesMenu);
+
+    connect(profilesMenu, SIGNAL(triggered(QAction*)), this, SLOT(profileTriggered(QAction*)));
 }
 
 void MenuHandler::loadLoggingMenu() {

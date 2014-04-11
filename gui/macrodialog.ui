@@ -95,7 +95,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="alt">
       <attribute name="title">
@@ -129,7 +129,7 @@
      </widget>
      <widget class="QWidget" name="ctrl">
       <attribute name="title">
-       <string>Ctrl</string>
+       <string>Ctrl ⌘</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>

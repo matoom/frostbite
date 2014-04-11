@@ -7,7 +7,7 @@
 #define VER_PRODUCTVERSION          1,0,0,0
 #define VER_PRODUCTVERSION_STR      "1.0\0"
 
-#define VER_COMPANYNAME_STR         "Defol"
+#define VER_COMPANYNAME_STR         "matoom"
 #define VER_FILEDESCRIPTION_STR     "DragonRealms MUD Frontend"
 #define VER_INTERNALNAME_STR        "frostbite"
 #define VER_LEGALCOPYRIGHT_STR      "MIT"

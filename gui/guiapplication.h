@@ -1,14 +1,14 @@
 #ifndef GUIAPPLICATION_H
 #define GUIAPPLICATION_H
 
-#include <QApplication>
+#include <QtSingleApplication>
 #include <QMessageBox>
 
 #include <typeinfo>
 
 #include "log4qt/logger.h"
 
-class GuiApplication : public QApplication {
+class GuiApplication : public QtSingleApplication {
     Q_OBJECT
 public:
     GuiApplication(int &argc, char **argv);

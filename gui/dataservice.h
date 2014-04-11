@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QLibrary>
 #include <QDebug>
+#include <QDir>
+#include <QApplication>
 
 class DataService : public QObject {
     Q_OBJECT

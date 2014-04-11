@@ -1,0 +1,3 @@
+Compress dll-s with upx for release
+===================================
+upx -9 *.dll

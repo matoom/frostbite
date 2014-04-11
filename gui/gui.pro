@@ -10,6 +10,8 @@
 
 include(../log4qt/src/log4qt/log4qt.pri)
 
+include(../singleapp/qtsingleapplication.pri)
+
 greaterThan(QT_VERSION, 5){
    include(../cleanlooks/cleanlooks.pri)
 }
@@ -26,11 +28,6 @@ win32 {
 
 unix {
     TARGET = ../FrostBite
-}
-
-# use relative path for libs in unix
-unix:!mac{
-  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
 }
 
 TEMPLATE = app
@@ -186,6 +183,13 @@ RC_FILE = resources.rc
 
 OTHER_FILES += \
     resources.rc
+
+# use relative path for libs in unix
+unix:!mac{
+  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+}
+
+ICON = images/shield.icns
 
 #profile
 #custom step: gcc -pg main.cpp -o profile_main

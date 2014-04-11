@@ -62,6 +62,10 @@ void MainWindow::openConnectDialog() {
     menuHandler->openConnectDialog();
 }
 
+void MainWindow::openAppearanceDialog() {
+    menuHandler->openAppearanceDialog();
+}
+
 void MainWindow::initSettings() {
     QColor color = generalSettings->gameWindowBackground();
 

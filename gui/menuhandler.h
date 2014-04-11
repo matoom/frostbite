@@ -32,6 +32,7 @@ public:
 
     void updateDialogSettings();
     void openConnectDialog();
+    void openAppearanceDialog();
 
 private:
     MainWindow* mainWindow;
@@ -55,8 +56,8 @@ signals:
 public slots:
     void menuTriggered(QAction*);
     void menuHovered(QAction*);
-    void loadProfilesMenu();
-
+    void profileTriggered(QAction* action);
+    void loadProfilesMenu();    
 };
 
 #endif // MENUHANDLER_H

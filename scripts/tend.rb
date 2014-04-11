@@ -37,13 +37,14 @@ def find_wounds
            :bleed => [/^\s*(#{@match_body_part})\s*[^()]++$/],
            :lodged => [/lodged shallowly into/],
            :mites => [/red blood mite/],
-           :match_until => [/>|no significant injuries/]}
+           :match_start => [/Your body feels/],
+           :match_end => [/>|no significant injuries/]}
 
   result = match_get_m match
 
   echo result
 
-  return if result[:match_until].first.include? "no significant injuries"
+  return if result[:match_end].first.include? "no significant injuries"
 
   if result.has_key?(:wait)
     find_wounds

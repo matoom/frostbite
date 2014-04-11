@@ -8,6 +8,7 @@
 #include <QTime>
 #include <QDebug>
 #include <QTextDocumentFragment>
+#include <QApplication>
 
 #include <windowinterface.h>
 

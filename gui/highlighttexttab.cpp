@@ -168,7 +168,7 @@ void HighlightTextTab::createListItem(int id, QString value, QColor color) {
     QListWidgetItem *newItem = new QListWidgetItem(QIcon(":/window/images/icon_ph.png"), value, listWidget);
     newItem->setData(Qt::UserRole, id);
     newItem->setTextColor(color);
-    newItem->setFont(QFont("Consolas", 12));
+    newItem->setFont(QFont(DEFAULT_FONT, 12));
 }
 
 void HighlightTextTab::reloadHighlightList() {

@@ -11,7 +11,7 @@ ProfileAddDialog::ProfileAddDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 }
 
 void ProfileAddDialog::createProfile() {
-    QString folder = QDir::currentPath() + "/profiles/" + ui->lineEdit->text();
+    QString folder = QApplication::applicationDirPath() + "/profiles/" + ui->lineEdit->text();
     if(!ui->lineEdit->text().isEmpty()) {
         QDir(folder).exists();
         QDir().mkdir(folder);

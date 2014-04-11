@@ -9,6 +9,8 @@
 
 @@shift_count = 0
 
+@careful = false
+
 MAX_SHIFT_COUNT = 3
 
 Observer.instance.register_event({ :shift => "This is not likely to be a good thing." })
@@ -26,6 +28,10 @@ end
 
 if $args.join(" ").include? "no.harvest"
   @harvest = false;
+end
+
+if $args.join(" ").include? "careful"
+  @careful = true
 end
 
 def ident(box)
@@ -56,6 +62,7 @@ def ident(box)
 end
 
 def get_method method
+  return "careful" if @careful
   index = @disarm_methods.index(method.to_s) + @@shift_count
   @disarm_methods.fetch(index, "careful")
 end

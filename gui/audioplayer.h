@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QSound>
 #include <QDebug>
+#include <QApplication>
 
 class AudioPlayer : public QObject {
     Q_OBJECT

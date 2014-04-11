@@ -22,7 +22,7 @@ void ScriptService::runScript(QString input) {
     QStringList filter;
     filter << "*.rb";
 
-    QDir myDir(QDir::currentPath() + "/scripts");
+    QDir myDir(QApplication::applicationDirPath() + "/scripts");
     QStringList fileList = myDir.entryList(filter, QDir::Files, QDir::Name);
 
     if(fileList.contains(fileName + ".rb")) {

@@ -56,6 +56,12 @@ QPlainTextEdit* GenericWindow::getMainWindow() {
 void GenericWindow::buildContextMenu() {
     menu = new QMenu(this);
 
+    appearanceAct = new QAction(tr("&Appearance\t"), this);
+    menu->addAction(appearanceAct);
+    connect(appearanceAct, SIGNAL(triggered()), this, SLOT(changeAppearance()));
+
+    menu->addSeparator();
+
     copyAct = new QAction(tr("&Copy\t"), this);
     menu->addAction(copyAct);
     copyAct->setEnabled(false);
@@ -76,6 +82,10 @@ void GenericWindow::buildContextMenu() {
     clearAct = new QAction(tr("&Clear\t"), this);
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
+}
+
+void GenericWindow::changeAppearance() {
+    mainWindow->openAppearanceDialog();
 }
 
 void GenericWindow::saveAsHtml() {

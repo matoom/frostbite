@@ -7,6 +7,7 @@
 #include <QDir>
 
 #include <scriptservice.h>
+#include <clientsettings.h>
 
 class ScriptService;
 
@@ -28,7 +29,10 @@ private:
     ScriptService* scriptService;
     QProcess* script_proc;
 
+    ClientSettings* clientSettings;
+
     QString path;
+    QString rubyPath;
     QString fileName;
 
     bool running;

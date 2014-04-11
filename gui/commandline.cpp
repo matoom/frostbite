@@ -10,7 +10,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
 
     historyCounter = -1;
 
-    this->setFont(QFont("Consolas", 12));
+    this->setFont(QFont(DEFAULT_FONT, 12));
 
     this->setStyleSheet("QLineEdit { min-width: 50em;"
                         "padding: 2px;"

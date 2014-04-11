@@ -26,7 +26,8 @@ $_api_exec_state = :running
 $_api_observer_started = false
 $_api_current_rt = 0
 
-MATCH_END_KEY = :match_until
+MATCH_START_KEY = :match_start
+MATCH_END_KEY = :match_end
 
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
@@ -68,6 +69,10 @@ end
 # @param [String] pattern regex pattern.
 # @return [void]
 def wait_for(pattern)
+  if pattern.is_a?(Array)
+    pattern = pattern.join('|')
+  end
+
   (0..1000000).each do
     while line = $_api_queue.shift
       if line.match(pattern)
@@ -94,6 +99,10 @@ end
 def match_wait(pattern)
   validate_pattern pattern
   $_api_exec_state = :match_wait
+
+  if pattern.has_key?(MATCH_START_KEY)
+    wait_for(pattern[MATCH_START_KEY]);
+  end
 
   match_found = false
   match = Hash[pattern.keys.collect{ |v| [v, ""] }]
@@ -131,7 +140,12 @@ end
 #   result #=> {:key =>:m, :match => "You open the steel trunk..."}
 def match_get(pattern)
   validate_pattern pattern
+
   $_api_exec_state = :match_get
+
+  if pattern.has_key?(MATCH_START_KEY)
+    wait_for(pattern[MATCH_START_KEY]);
+  end
 
   match_found = false
   match = Hash[pattern.keys.collect{ |v| [v, ""] }]
@@ -166,7 +180,7 @@ end
 #    put "health"
 #    match = {:vitals => [/Your/],
 #             :scars => [/You have/],
-#             :match_until => [/>|\.\.\.wait|you may only type ahead/]}
+#             :match_end => [/>|\.\.\.wait|you may only type ahead/]}
 #    result = match_get_m match
 #    result #=>
 #    #{:vitals=>["Your body feels very beat up.", "Your spirit feels full of life."],
@@ -175,6 +189,10 @@ def match_get_m(pattern)
   validate_get_m validate_pattern pattern
 
   $_api_exec_state = :match_get_m
+
+  if pattern.has_key?(MATCH_START_KEY)
+    wait_for(pattern[MATCH_START_KEY]);
+  end
 
   match_found = false
   match = Hash[pattern.keys.collect{ |v| [v, []] }]

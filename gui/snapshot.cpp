@@ -7,7 +7,7 @@ Snapshot::Snapshot(WindowInterface* window) : QObject() {
 void Snapshot::save() {
     window->getMainWindow()->appendHtml("<span class=\"echo\">Saving snapshot..</span>");
 
-    QString path = QDir::currentPath() + "/snapshots/" +
+    QString path = QApplication::applicationDirPath() + "/snapshots/" +
             window->getObjectName() + "_" +
             QDate::currentDate().toString("yyyy-MM-dd") + "_" +
             QTime::currentTime().toString("hh-mm-ss") + ".html";
