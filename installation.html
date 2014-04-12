@@ -74,24 +74,50 @@
     <div class="about">
         <h3>Application software</h3>
         <p>
-            Application binary is currently available for Windows only. No installation is required. The binary package
-            is compressed into a ZIP archive and is required to be extracted once downloaded.
+            No installation is required. The binary package is compressed into an archive and has to be extracted once downloaded.
         </p>
 
         <br/>
         Download:
         <ul>
-            <li>- Windows 32 binary ZIP archive - click <a href="download/frostbite-1.0.3.beta.zip">here</a> to download.</li>
+            <li>- Windows 7 zip archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.0.4-beta/FrosBite-win.zip">here</a> to download.</li>
+            <li>- LInux Ubuntu tar.gz archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.0.4-beta/FrostBite-osx.dmg">here</a> to download.</li>
+            <li>- Mac OS X Snow leopard dmg archive - click <a href="">here</a> to download.</li>
         </ul>
 
         <br/>
 
         Install instructions:
         <ol>
-            <li>1. Download ZIP archive.</li>
-            <li>2. Extract the contents of the ZIP file into your desired location.</li>
-            <li>3. Run FrostBite.exe.</li>
+            <li>1. Download archive.</li>
+            <li>2. Extract the contents of the archive into your desired location.</li>
+            <li>3. Run FrostBite(.exe, .app).</li>
         </ol>
+
+        <br/>
+
+        <div class="alert-box">
+            For older versions of Mac OS X (Snow Leopard) shared memory parameters need to be readjusted to allow
+            data exchange between scripting module and frontend (http://support.apple.com/kb/HT4022).
+            <br/>
+            To determine system settings run following command in terminal:
+            <ul>
+                <li><b>sysctl kern.sysv.shmseg</b></li>
+            </ul>
+
+            The value of "kern.sysv.shmseg" needs to be at least 40.
+
+            <ul>
+                <li>Example values for Mountain Lion:</li>
+                <li>kern.sysv.shmmax=134217728</li>
+                <li>kern.sysv.shmmin=1</li>
+                <li>kern.sysv.shmmni=256</li>
+                <li>kern.sysv.shmseg=64</li>
+                <li>kern.sysv.shmall=3276</li>
+             </ul>
+
+            To change shared memory settings create a file called "/etc/sysctl.conf" and copy the values for Mountain Lion.
+        </div>
 
         <br/>
 
@@ -104,6 +130,8 @@
             library which was first introduced into Ruby since version 1.9. Accordingly, versions lower than 1.9 will not
             be suited for running the Frostbite scripting core API.
         </p>
+        <br/>
+        <h3>Windows</h3>
         <p>
             The recommended version of Ruby runtime 1.9.3 installation package for Windows can be downloaded from
             <a href="http://cdn.rubyinstaller.org/archives/1.9.3-p327/rubyinstaller-1.9.3-p327.exe">
@@ -130,11 +158,62 @@
         C:\>ruby --version
         ruby 1.9.3p194 (2012-04-20) [i386-mingw32]
         </pre>
+
+        <br/>
+
+        <h3>Linux Ubuntu</h3>
+        <ol>
+           <li>1. sudo apt-add-repository ppa:brightbox/ruby-ng</li>
+           <li>2. sudo apt-get update</li>
+           <li>3. sudo apt-get install ruby1.9.3</li>
+           <li>4. ruby -v</li>
+        </ol>
+
+        <br/>
+
+        <h3>Mac OS X</h3>
+        Mac OS X already comes with a Ruby installation prepackaged. For OS X it is important to upgrade Ruby
+        if the Ruby version is older than 1.9.3. To find out which version of ruby is installed run the following
+        command in terminal:
+        <br/><br/>
+
+        <pre>
+        ruby -version
+        </pre>
+
+        Updating Ruby using RVM (http://rvm.io/rvm/upgrading):
+         <ol>
+           <li>1. \curl -sSL https://get.rvm.io | bash</li>
+           <li>2. rvm get stable</li>
+           <li>3. rvm reload</li>
+           <li>4. rvm list</li>
+           <li>5. rvm install 1.9.3</li>
+        </ol>
+        <br/>
+        If it was necessary to upgrade Ruby then execute the following steps:
+        <br/><br/>
+        Register new ruby installation in the Frostbite frontend.
+        <ol>
+            <li>1. which ruby</li>
+            <li>for example => /Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby</li>
+        </ol>
+
+        <br/>
+        Navigate to the location where the application was extracted during installation.
+        <ol>
+            <li>1. cd FrostBite.app/Contents/MacOS</li>
+            <li>2. open/create file called client.ini</li>
+            <li>3. copy ruby path to client.ini:</li>
+        </ol>
+        <br/>
+        <pre>
+            [Ruby]
+            path=/Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby
+        </pre>
     </div>
 
     <footer>
         <p><small>Github: https://github.com/matoom/frostbite</small></p>
-        http://rubyinstaller.org/downloads/
     </footer>
 
 </div>

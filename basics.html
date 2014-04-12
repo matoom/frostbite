@@ -103,9 +103,13 @@
             crashes which render the script unable to exit in a normal way, the ESC key has to be pressed once more to
             terminate the script forcefully.
         </p>
+        <p>
+           In case of system-wide crashes terminate the ruby executable in the process list. For Windows look for ruby.exe
+           in the task manager, for Linux or Max OS X, Ruby process can be killed on the command line.
+        </p>
         <br/>
 
-        <h3>Parameter descriptions</h3>
+        <h3>Reserved parameter descriptions</h3>
 
         <pre><code>$args # array, global variable</code></pre>
         <p>Contains the arguments passed on to the script in the command line.</p>
@@ -114,6 +118,22 @@
         <p>This is an adjustment parameter which is added to the round time values used by match functions. It enables to regulate
         the wait times and make the script run faster by tightening the value. This is of course in case the script is
         prepared to deal with the possible outcome of running the commands too early.</p>
+
+        <pre><code>:match_start and :match_end</code></pre>
+        <p>
+            These are the two reserved match pattern names which can be used to determine additional match start and
+            end conditions.
+        </p>
+        <p>For example:</p>
+        <pre><code>
+{:wait => [/\.\.\.wait|you may only type ahead/],
+:lodged => [/lodged shallowly into/],
+:mites => [/red blood mite/],
+# start matching
+:match_start => [/Your body feels/],
+# match end conditions (will match everything in between)
+:match_end => [/>|no significant injuries/]}
+        </code></pre>
 
         <br/>
         <h3>Script structures and blocks</h3>
@@ -222,7 +242,7 @@
         wait_for_roundtime # wait until the round time ends
         put "look"         # this action cannot produce a
                            # roundtime or it will get stuck in
-                           # an infinite loop
+                           # an infinite loop, for this example
     end
 
     # callback method for second event
