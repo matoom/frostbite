@@ -1,7 +1,3 @@
-#Directions towards Northeast Customs: GO Northeast Gate and you're there.
-#>go northeast gate and you're there.
-#Please rephrase that command.
-
 def finally_do
   put "dir stop"
 end

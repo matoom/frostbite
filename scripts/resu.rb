@@ -16,7 +16,7 @@ def check_armor
   case result
     when :wait
       pause 0.5
-      prepare_armor
+      check_armor
     when :continue
       show_warning
     when :armor
