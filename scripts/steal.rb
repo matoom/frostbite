@@ -5,7 +5,7 @@
 # 860
 
 @containers = ["backpack", "haversack"]
-@khri = "khri start calm focus guile hasten darken plunder"
+@khri = "khri darken dampen avoidance liberation plunder focus"
 @mark = false
 @debug_mode = false
 @name = "Defol"

@@ -94,33 +94,31 @@ void ConnectionManager::connectToHost(QString sessionHost, QString sessionPort, 
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
 
-    if(tcpSocket->state() == QAbstractSocket::HostLookupState ||
-       tcpSocket->state() == QAbstractSocket::ConnectedState) {
+    //if(tcpSocket->state() == QAbstractSocket::HostLookupState ||
+    //   tcpSocket->state() == QAbstractSocket::ConnectedState) {
 
         tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
                          "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
-    }
+    //}
 }
 
 void ConnectionManager::disconnectedFromHost() {
     mainWindow->connectEnabled(true);
 }
 
-/* proxy */
-/*void ConnectionManager::socketReadyRead() {
-    buffer.append(tcpSocket->readAll());
-    qDebug() << buffer;
-        if (buffer.endsWith("\r\n")) {
-            if(buffer.contains("200 Connection established")) {
-                qDebug() << "WRITE";
-                tcpSocket->flush();
-                tcpSocket->write("52f84c85522eac4df965bb570aad4993\r\n");
-                tcpSocket->write("FE/JAVA\r\n");
-            }
-            buffer.clear();
-        }
+void ConnectionManager::setProxy(bool enabled, QString proxyHost, QString proxyPort) {
+    if(enabled) {
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(proxyHost);
+        proxy.setPort(proxyPort.toInt());
+
+        QNetworkProxy::setApplicationProxy(proxy);
+    } else {
+        QNetworkProxy proxy(QNetworkProxy::NoProxy);
+        QNetworkProxy::setApplicationProxy(proxy);
+    }
 }
-*/
 
 void ConnectionManager::socketReadyRead() {    
     buffer.append(tcpSocket->readAll());
@@ -152,25 +150,6 @@ void ConnectionManager::socketReadyRead() {
         buffer.clear();
     }
 }
-
-/*void ConnectionManager::socketReadyRead() {
-    while(tcpSocket->canReadLine()) {
-        if(waitForSettings) {
-                this->writeCommand("");
-                this->writeCommand("_STATE CHATMODE OFF");
-                this->writeCommand("");
-                this->writeCommand("_swclose sassess");
-                waitForSettings = false;
-        }
-        QByteArray buff = tcpSocket->readLine();
-        buff.chop(1);
-        emit addToQueue(buff);
-
-        if(!dataProcessThread->isRunning()) {
-            dataProcessThread->start();
-        }
-    }
-}*/
 
 void ConnectionManager::writeCommand(QString cmd) {
     //qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz");

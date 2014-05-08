@@ -65,6 +65,7 @@ label(:feint) {
 label(:advance) {
   put "advance"
   put "shiver"
+  pause 3
   match = { :hide => ["begin to advance", "You are already", "begin to stealthily advance"],
             :wait => [/\.\.\.wait/]}
   go_wait(match_wait(match), :advance)

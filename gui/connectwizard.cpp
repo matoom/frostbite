@@ -21,6 +21,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     connect(this, SIGNAL(initSession(QString, QString, QString, QString)),
             mainWindow->getConnectionManager(), SLOT(initEauthSession(QString, QString, QString, QString)));
 
+    connect(this, SIGNAL(setProxy(bool, QString, QString)),
+            mainWindow->getConnectionManager(), SLOT(setProxy(bool, QString, QString)));
+
     connect(mainWindow->getConnectionManager(), SIGNAL(characterFound(QString, QString)),
             this, SLOT(addCharacterList(QString, QString)));
 
@@ -50,6 +53,7 @@ void ConnectWizard::showEvent(QShowEvent* event) {
     QDialog::showEvent(event);
 
     this->init();
+    this->initProxy();
 }
 
 void ConnectWizard::populateGameList() {
@@ -77,7 +81,13 @@ void ConnectWizard::registerFields() {
     ui->wizardPage1->registerField("authHost*", ui->authHostEdit);
     ui->wizardPage1->registerField("authPort*", ui->authPortEdit);
     ui->wizardPage1->registerField("user*", ui->userEdit);
-    ui->wizardPage1->registerField("password*", ui->passwordEdit);
+    ui->wizardPage1->registerField("password*", ui->passwordEdit);       
+}
+
+void ConnectWizard::initProxy() {
+    ui->proxyEnabled->setChecked(settings->getParameter("Proxy/enabled", false).toBool());
+    ui->proxyHostEdit->setText(settings->getParameter("Proxy/host", "").toString());
+    ui->proxyPortEdit->setText(settings->getParameter("Proxy/port", "").toString());
 }
 
 void ConnectWizard::init() {            
@@ -102,7 +112,7 @@ void ConnectWizard::init() {
         ui->userEdit->setFocus();
     } else {
         ui->passwordEdit->setFocus();
-    }
+    }            
 }
 
 void ConnectWizard::saveField(QString name, QString value) {
@@ -115,6 +125,10 @@ void ConnectWizard::saveSettings() {
     this->saveField("Login/authHost", ui->authHostEdit->text());
     this->saveField("Login/authPort", ui->authPortEdit->text());
     this->saveField("Login/user", ui->userEdit->text());
+
+    settings->setParameter("Proxy/enabled", ui->proxyEnabled->isChecked());
+    this->saveField("Proxy/host", ui->proxyHostEdit->text());
+    this->saveField("Proxy/port", ui->proxyPortEdit->text());
 }
 
 void ConnectWizard::saveHistory() {
@@ -160,6 +174,7 @@ void ConnectWizard::pageSelected(int id) {
         if(!gamesLoaded) {
             this->saveSettings();
             this->setGameListLoading(true);
+            emit setProxy(ui->proxyEnabled->isChecked(), ui->proxyHostEdit->text(), ui->proxyPortEdit->text());
             emit initSession(ui->authHostEdit->text(), ui->authPortEdit->text(),
                              ui->userEdit->text(), ui->passwordEdit->text());
             this->button(QWizard::NextButton)->setEnabled(false);

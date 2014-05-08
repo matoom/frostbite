@@ -44,6 +44,7 @@ private:
     bool gamesLoaded;
 
     void init();
+    void initProxy();
     void saveField(QString, QString);
     void saveSettings();
     void saveHistory();
@@ -66,6 +67,7 @@ private slots:
 
 signals:
     void initSession(QString, QString, QString, QString);
+    void setProxy(bool, QString, QString);
     void gameSelected(QString);
     void retrieveSession(QString);
     void connectToServer(QString, QString, QString);

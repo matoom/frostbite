@@ -31,7 +31,7 @@ public:
     void writeCommand(QString);
     void showError(QString);
     void updateSettings();
-    void disconnectFromServer();
+    void disconnectFromServer();    
 
 private:
     MainWindow *mainWindow;
@@ -60,6 +60,7 @@ signals:
     void enableGameSelect();
 
 public slots:
+    void setProxy(bool, QString, QString);
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError);
     void connectToHost(QString, QString, QString);
