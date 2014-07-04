@@ -2,10 +2,10 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 860
+# 900
 
 @containers = ["backpack", "haversack"]
-@khri = "khri darken dampen avoidance liberation plunder focus"
+@khri = "khri darken sensing serenity sagacity plunder"
 @mark = false
 @debug_mode = false
 @name = "Defol"
@@ -18,7 +18,7 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "ring mail", :amount => 3 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
+      :armor => { :item => "lorica", :amount => 1 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
       :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
@@ -27,17 +27,17 @@
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
-      :emmiline_sales => { :item => "scimitar", :location => "on display", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_sales => { :item => "silver lancet", :location => "on table", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
     {
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
-      :odds => { :item  => "hat", :amount => 2 }, #[Odds 'n Ends, Sales Room]
+      :odds => { :item  => "ribbon", :amount => 1 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe", :location => "in chest", :amount => 1 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2 } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
@@ -51,7 +51,10 @@
       :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
-@ilaya_pier_items = [{:name => "flask", :amount => 2},
+@ilaya_pier_items = [#{:name => "flask", :amount => 2}, # trivial 895
+                     {:name => "charm", :desc => "ruby Trader charm ", :amount => 1},
+                     {:name => "spidersilk slippers", :amount => 1},
+                     {:name => "planter", :amount => 1},
                      {:name => "skirt", :desc => "green velvet skirt", :amount => 1},
                      {:name => "skirt", :desc => "bias-cut jade silk skirt", :amount => 1},
                      {:name => "bush", :amount => 1},
@@ -70,7 +73,7 @@
                      {:name => "riding cloak", :amount => 1},
                      {:name => "jar", :desc => "marble jar with a carved amethyst", :amount => 1},
                      {:name => "carnelian jar", :amount => 1},
-                     {:name => "vial", :desc => "jade glass vial", :amount => 2},
+                     #{:name => "vial", :desc => "jade glass vial", :amount => 2}, # trivial 900
                      {:name => "moonflower", :amount => 1},
                      {:name => "sapphire lily", :amount => 1},
                      {:name => "bodice", :desc => "stitched with tiny violet lilies", :amount => 1},
@@ -94,7 +97,7 @@
         :fishmonger => {:item => :none, :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 1}, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 2}, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => {:items => @ilaya_pier_items},
         :blood_bane => {:items => @ilaya_pier_items},
@@ -175,6 +178,7 @@ undef :move
 def move(value)
   puts "put#" + value.to_s
   res = match_wait({ :room => [/^\{nav\}$/],
+                     :stand => [/brings you to your knees/],
                      :wait => [/\.\.\.wait/, /you may only type ahead/],
                      :lost => [/can't go there|were you referring/],
                      :retreat => [/You'll have better luck if you first retreat|You are engaged|do that while engaged/],
@@ -186,6 +190,9 @@ def move(value)
       move value
     when :lost
       jail_check
+    when :stand
+      put "stand"
+      move value
     when :leave
       @leave = true
     when :retreat

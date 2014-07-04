@@ -2,6 +2,8 @@ Kernel.require "#{File.dirname(__FILE__)}/models.rb"
 Kernel.require "#{File.dirname(__FILE__)}/ruby_goto.rb"
 Kernel.require "#{File.dirname(__FILE__)}/observer.rb"
 
+require 'logger'
+
 # show warnings
 #$VERBOSE = true
 
@@ -32,6 +34,8 @@ MATCH_END_KEY = :match_end
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
+
+@logger = Logger.new('logs/script/debug.log', 10, 1024000)
 
 # Waits for roundtime and pauses for the duration.
 #
@@ -110,7 +114,7 @@ def match_wait(pattern)
   rt = 0
   (0..1000000).each do
     while line = $_api_queue.shift
-      if !match_found
+      unless match_found
         match_found = api_find_match match, line, pattern
       end
 
@@ -118,8 +122,13 @@ def match_wait(pattern)
 
       if match_found
         $_api_exec_state = :running
-        if line.match(/>$/)
+
+        @logger.debug { "match found: " + line }
+
+        if />/ =~ line
           api_sleep rt
+          @logger.debug { "return match_wait" }
+          @logger.debug { "=================\n" }
           return match.find{ |k, v| !v.empty? }.first
         end
       end
@@ -153,7 +162,7 @@ def match_get(pattern)
   rt = 0
   (0..1000000).each do
     while line = $_api_queue.shift
-      if !match_found
+      unless match_found
         match_found = api_find_match match, line, pattern
       end
 
@@ -161,7 +170,8 @@ def match_get(pattern)
 
       if match_found
         $_api_exec_state = :running
-        if line.match(/>$/)
+
+        if />/ =~ line
           api_sleep rt
           m = match.find{ |k, v| !v.empty? }
           return {:key => m[0], :match => m[1]}
@@ -200,7 +210,7 @@ def match_get_m(pattern)
   rt = 0
   (0..1000000).each do
     while line = $_api_queue.shift
-      if !match_found
+      unless match_found
         match_found = api_find_match match, line, pattern
       end
 
@@ -208,7 +218,7 @@ def match_get_m(pattern)
 
       if match_found
         $_api_exec_state = :running
-        if line.match(/>$/)
+        if />/ =~ line
           api_sleep rt
           return match.delete_if{ |k, v| v.empty? }
         end
@@ -244,7 +254,7 @@ def match_wait_goto(pattern)
   rt = 0
   (0..1000000).each do
     while line = $_api_queue.shift
-      if !match_found
+      unless match_found
         match_found = api_find_match match, line, pattern
       end
 
@@ -252,7 +262,7 @@ def match_wait_goto(pattern)
 
       if match_found
         $_api_exec_state = :running
-        if line.match(/>$/)
+        if />/ =~ line
           api_sleep rt
           goto match.find{ |k, v| !v.empty? }.first
         end
@@ -315,7 +325,7 @@ end
 #   put "remove my shield"
 def wait
   $_api_queue.clear
-  wait_for(/>$/)
+  wait_for(/>/)
 end
 
 # Sends a message to client main window.

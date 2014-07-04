@@ -3,10 +3,19 @@
 # run: hunting area
 
 require "defines"
+require "hunt"
 
 @ambushes = ["clout", "stun"]
 @total = @ambushes.size
 @count = @total - 1
+
+if !$args.first
+  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
+  if !$args.first
+    echo '*** ambush what? usage: .amb &lt;critter_name&gt; ***'
+    exit
+  end
+end
 
 def go_wait(label, back_label)
   if label == :wait
@@ -30,12 +39,13 @@ label(:face) {
 
 label(:hide) {
   pause Rt::value
+  hunt
   put "stalk"
   match = { :wait_for => ["Stalk what?"],
             :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
             :stop_stalk => ["You're already stalking"],
             :hide => ["ruining your hiding"],
-            :pause => ["You are still stunned"],
+            :pause_stalk => ["You are still stunned"],
             :wait => [/\.\.\.wait/] }
   go_wait(match_wait(match), :hide)
 }
@@ -68,6 +78,11 @@ label(:advance) {
 label(:dead) {
   load "skin"
   goto :start
+}
+
+label(:pause_stalk) {
+  pause 5
+  goto :hide
 }
 
 label(:wait_for) {

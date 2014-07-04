@@ -7,8 +7,11 @@ require "defines"
 @rt_adjust = 0
 
 if !$args.first
-  echo '*** hide from what? usage: .h &lt;critter_name&gt; ***'
-  exit
+  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
+  if !$args.first
+    echo '*** backstab what? usage: .bs &lt;critter_name&gt; ***'
+    exit
+  end
 end
 
 def go_wait(label, back_label)

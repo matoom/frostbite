@@ -1,0 +1,7 @@
+move "go door"
+move "nw"
+move "go door"
+move "sw"
+move "cli lad"
+move "ne"
+move "go gate"

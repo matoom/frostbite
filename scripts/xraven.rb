@@ -2,8 +2,16 @@ move "go canyon"
 move "w"
 move "w"
 move "go mouth"
-put "turn torch"
-move "go wall"
+
+put "go wall"
+match = { :open => [/could not find/],
+          :continue => [/^\{nav\}$/] }
+case match_wait match
+  when :open
+    put "turn torch"
+    move "go wall"
+end
+
 put "turn basin"
 move "go hole"
 put "stand"

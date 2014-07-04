@@ -7,13 +7,14 @@ def finally_do
   put "put my compendium in my shroud"
 end
 
-put "get my compendium"
+put "get my #{$args.join} compendium"
 
 labels_start
 
 label(:study) {
   put "study my compendium"
   match = { :study => ["You begin studying", "You continue studying", "You continue to study"],
+            :difficult => ["having a difficult"],
             :turn => ["makes sense to you"],
             :exit => ["study this chart again"] }
   match_wait_goto match
@@ -25,8 +26,13 @@ label(:turn) {
   goto :study
 }
 
-label(:exit) {
+label(:difficult) {
+  echo "*** Chart too difficult to study. *** " 
   exit
+}
+
+label(:exit) {
+
 }
 
 labels_end

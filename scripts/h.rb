@@ -16,16 +16,19 @@ class String
   end
 end
 
+if !$args.first
+  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
+  if !$args.first
+    echo '*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***'
+    exit
+  end
+end
+
 @targets = ["right leg", "back", "right arm", "right hand", "abdomen", "chest", "neck", "head", "right eye"]
 
 difficulty_level = ($args.at(1) and $args.at(1).numeric?) ? $args.at(1).to_i : 0
 
 @target = @targets.fetch(difficulty_level - 1)
-
-if !$args.first
-  echo '*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***'
-  exit
-end
 
 def go_wait(label, back_label)
   if label == :wait
