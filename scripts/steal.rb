@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 900
+# 940
 
 @containers = ["backpack", "haversack"]
 @khri = "khri darken sensing serenity sagacity plunder"
@@ -18,12 +18,13 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "lorica", :amount => 1 }, #[Tembeg's Armory, Salesroom] -> Chain Lorica
+      :armor => { :item => "chain hauberk", :amount => 1 }, #[Tembeg's Armory, Salesroom]
       :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
-      :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels]
+      :jewelry_appraisal_room => { :item => "platinum wristcuff", :amount => 1 }, #[Grisgonda's, Appraisal Room]
+      :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
-      :artificer => { :item => :none, :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
+      :artificer => { :item => "parchment scroll", :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
@@ -581,7 +582,7 @@ def pawn_items
       put "sell my #{item.at(0)}"
       match = { :continue => ["referring to"],
                 :sell => ["he hands you"],
-                :redo => ["only type ahead 1 command"],
+                :redo => ["only type ahead 1 command", "...wait"],
                 :no_sell => ["isn't worth my time", "can't pawn"] }
 
       case match_wait match
@@ -710,6 +711,11 @@ move "s"
 move "e"
 move "e"
 move "go shop"
+move "go room"
+
+steal_shop @crossing_items[:jewelry_appraisal_room]
+
+move "out"
 
 steal_shop @crossing_items[:jewelry]
 

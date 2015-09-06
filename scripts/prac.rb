@@ -2,7 +2,7 @@
 # requirements: ?
 # run: climbing available
 
-@song_type = "dirge"
+@song_type = "fantasia"
 
 def finally_do
   put "stop climb"

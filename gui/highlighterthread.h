@@ -41,6 +41,8 @@ private:
     int scrollValue;
     int scrollMax;
 
+    bool exit;
+
 public slots:
     void addText(QString);
     void updateSettings();

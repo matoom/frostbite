@@ -13,12 +13,14 @@ def drop_lodged
   drop Wield::right_noun.scan(/#{@match_lodgeable}/)
 end
 
-def tend wounds, dump
+def tend wounds
+  return unless wounds
   wounds.each do |wound|
     wound.scan(/#{@match_body_part}/).each do |area|
+
       put "tend my #{area}"
-      match = {:wait => [/\.\.\.wait|you may only type ahead/],
-               :continue => [/too injured for you to do that|Doing your best|Roundtime/] }
+      match = { :wait => [/\.\.\.wait|you may only type ahead/],
+                :continue => [/too injured for you to do that|Doing your best|Roundtime/] }
 
       case match_wait match
         when :wait
@@ -26,7 +28,7 @@ def tend wounds, dump
           redo
       end
 
-      drop_lodged if dump
+      drop_lodged
     end
   end
 end
@@ -49,17 +51,9 @@ def find_wounds
   if result.has_key?(:wait)
     find_wounds
   else
-    if result.has_key?(:lodged)
-      tend result[:lodged], true
-    end
-
-    if result.has_key?(:mites)
-      tend result[:mites], false
-    end
-
-    if result.has_key?(:bleed)
-      tend result[:bleed], false
-    end
+    tend result[:lodged]
+    tend result[:mites]
+    tend result[:bleed]
   end
 end
 

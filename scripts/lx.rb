@@ -9,13 +9,7 @@ require "hunt"
 @ammo = "bolt"
 @circle_count = 1
 
-if !$args.first
-  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
-  if !$args.first
-    echo '*** attack what? usage: .lx &lt;critter_name&gt; ***'
-    exit
-  end
-end
+Util::auto_target "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 def shoot
   put "aim"

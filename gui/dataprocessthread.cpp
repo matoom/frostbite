@@ -30,10 +30,11 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(updateSpell(QString)), toolbarManager, SLOT(updateSpell(QString)));
 
     connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
-    connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeOutgoingMessage(QByteArray)));
+    connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeScriptText(QByteArray)));
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
     connect(this, SIGNAL(writeText(QByteArray, bool)), windowManager, SLOT(writeGameText(QByteArray, bool)));
 
+    exit = false;
     pushStream = false;
     inv = false;
     mono = false;
@@ -55,11 +56,14 @@ void DataProcessThread::addData(QByteArray buffer) {
 }
 
 void DataProcessThread::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        process(localData);
+    while(!exit) {
+        while(!dataQueue.isEmpty()) {
+            mMutex.lock();
+            localData = dataQueue.dequeue();
+            mMutex.unlock();
+            process(localData);
+        }
+        msleep(100);
     }
 }
 
@@ -238,13 +242,11 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter player wielding in left hand */
             //<right exist="162134941" noun="sharks">fuzzy sharks</right>
             emit updateWieldLeft(e.text());
-            /* persist wield data in memory */
             gameDataContainer->setLeft(e.text());
             gameDataContainer->setLeftNoun(e.attribute("noun"));
         } else if(e.tagName() == "right") {
             /* filter player wielding in right hand */
             emit updateWieldRight(e.text());
-            /* persist wield data in memory */
             gameDataContainer->setRight(e.text());
             gameDataContainer->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
@@ -424,5 +426,11 @@ QString DataProcessThread::stripTags(QString line) {
 }
 
 DataProcessThread::~DataProcessThread() {
+    this->exit = true;
+    if(!this->wait(1000)) {
+        qWarning("Thread deadlock detected, terminating thread.");
+        this->terminate();
+        this->wait();
+    }
     delete highlighter;
 }

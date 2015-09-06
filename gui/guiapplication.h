@@ -1,8 +1,8 @@
 #ifndef GUIAPPLICATION_H
 #define GUIAPPLICATION_H
 
-#include <QtSingleApplication>
 #include <QMessageBox>
+#include <singleapp/QtSingleApplication>
 
 #include <typeinfo>
 

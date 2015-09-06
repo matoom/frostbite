@@ -13,6 +13,7 @@
 #include <scriptservice.h>
 #include <timerbar.h>
 #include <generalsettings.h>
+#include <tray.h>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include "cleanlooks/qcleanlooksstyle.h"
@@ -43,6 +44,7 @@ class MenuHandler;
 class ScriptService;
 class TimerBar;
 class GeneralSettings;
+class Tray;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -82,6 +84,7 @@ public:
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
     TimerBar* getTimerBar();
+    Tray* getTray();
 
 private:
     Ui::MainWindow* ui;
@@ -93,8 +96,9 @@ private:
     CommandLine* cmdLine;
     MenuHandler* menuHandler;
     ScriptService* scriptService;
+    Tray* tray;
     TimerBar* timerBar;
-    QReadWriteLock lock;
+    QReadWriteLock lock;    
 
     void initSettings();
     void loadClient();

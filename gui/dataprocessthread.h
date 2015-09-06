@@ -51,6 +51,7 @@ private:
     QDateTime time;
     QDateTime roundTime;
 
+    bool exit;
     bool pushStream;
     bool inv;
     bool mono;

@@ -16,13 +16,7 @@ class String
   end
 end
 
-if !$args.first
-  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
-  if !$args.first
-    echo '*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***'
-    exit
-  end
-end
+Util::auto_target "*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***"
 
 @targets = ["right leg", "back", "right arm", "right hand", "abdomen", "chest", "neck", "head", "right eye"]
 

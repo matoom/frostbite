@@ -8,6 +8,8 @@ HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
 
     highlighter = new Highlighter(parent);
 
+    this->exit = false;
+
     connect(this, SIGNAL(writeText(const QString&)), this->textEdit, SLOT(appendHtml(const QString&)));
     connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
     //connect(this, SIGNAL(setScrollBarValue(int)), this->textEdit->verticalScrollBar(), SLOT(setValue(int)));
@@ -24,11 +26,14 @@ void HighlighterThread::addText(QString text) {
 }
 
 void HighlighterThread::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        process(localData);
+    while(!this->exit) {
+        while(!dataQueue.isEmpty()) {
+            mMutex.lock();
+            localData = dataQueue.dequeue();
+            mMutex.unlock();
+            process(localData);
+        }
+        msleep(200);
     }
 }
 
@@ -60,5 +65,11 @@ void HighlighterThread::setText(QString text) {
 }
 
 HighlighterThread::~HighlighterThread() {
+    this->exit = true;
+    if(!this->wait(1000)) {
+        qWarning("Thread deadlock detected, terminating thread.");
+        this->terminate();
+        this->wait();
+    }
     delete highlighter;
 }

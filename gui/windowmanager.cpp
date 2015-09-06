@@ -340,6 +340,7 @@ void WindowManager::updateConversationsWindow(QString conversationText) {
         conversationsHighlighter->start();
     }
     this->logConversationsText(conversationText);
+    mainWindow->getTray()->showMessage(DOCK_TITLE_CONVERSATIONS, conversationText.trimmed());
 }
 
 void WindowManager::logConversationsText(QString conversationText) {

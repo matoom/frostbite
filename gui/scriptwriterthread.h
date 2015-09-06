@@ -26,6 +26,8 @@ private:
 
     QRegExp rxRemoveTags;
 
+    bool exit;
+
     void process(QString data);
     
 signals:

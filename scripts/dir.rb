@@ -9,7 +9,7 @@ def directions
 end
 
 directions.each do |dir|
-  if dir =~ /west|south|north|east|go|out|climb/i
+  if dir =~ /west|south|north|east|go|out|climb|down|up/i
     move dir.downcase
   end
 end

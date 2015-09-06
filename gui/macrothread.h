@@ -11,13 +11,14 @@ class MacroThread : public QThread {
 
 public:
     explicit MacroThread();
+    ~MacroThread();
 
     virtual void run();
 
 private:
     QHash<QString, QStringList> macro;
     int sequenceTime;
-    bool abort;
+    bool abort;    
 
 signals:
     void setText(QString);

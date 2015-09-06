@@ -8,18 +8,18 @@
     error("Could not find the common.pri file!")
 }
 
+greaterThan(QT_VERSION, 5){
+    QT       += widgets core gui network xml multimedia
+} else {
+    QT       += core gui network xml
+}
+
 include(../log4qt/src/log4qt/log4qt.pri)
 
 include(../singleapp/qtsingleapplication.pri)
 
 greaterThan(QT_VERSION, 5){
    include(../cleanlooks/cleanlooks.pri)
-}
-
-greaterThan(QT_VERSION, 5){
-    QT       += widgets core gui network xml multimedia
-} else {
-    QT       += core gui network xml
 }
 
 win32 {
@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     arrivalslogger.cpp \
     debuglogger.cpp \
     snapshot.cpp \
-    guiapplication.cpp
+    guiapplication.cpp \
+    tray.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -160,7 +161,8 @@ HEADERS  += mainwindow.h \
     debuglogger.h \
     snapshot.h \
     windowinterface.h \
-    guiapplication.h
+    guiapplication.h \
+    tray.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

@@ -36,13 +36,9 @@ put "take shield from vault"
 wait
 put "wear shield"
 wait
-put "take coat from vault"
+put "take hauberk from vault"
 wait
-put "wear coat"
-wait
-put "take pants from vault"
-wait
-put "wear pants"
+put "wear hauberk"
 wait
 
 put "close vault"

@@ -9,13 +9,7 @@ require "hunt"
 @total = @ambushes.size
 @count = @total - 1
 
-if !$args.first
-  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
-  if !$args.first
-    echo '*** ambush what? usage: .amb &lt;critter_name&gt; ***'
-    exit
-  end
-end
+Util::auto_target "*** ambush what? usage: .amb &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait

@@ -18,7 +18,8 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
 }
 
 bool Script::isRunning() {
-    return running;
+    return script_proc->state() == QProcess::Running;
+    //return running;
 }
 
 QString Script::currentFileName() {

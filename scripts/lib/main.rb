@@ -2,8 +2,6 @@ Kernel.require "#{File.dirname(__FILE__)}/models.rb"
 Kernel.require "#{File.dirname(__FILE__)}/ruby_goto.rb"
 Kernel.require "#{File.dirname(__FILE__)}/observer.rb"
 
-require 'logger'
-
 # show warnings
 #$VERBOSE = true
 
@@ -23,10 +21,17 @@ STDOUT.sync = true
 $_api_queue = []
 $_api_observer_queue = []
 
+$_api_gets_mutex = Mutex.new
+
 $_api_interrupt_time = -1
-$_api_exec_state = :running
+$_api_exec_state = :idle
 $_api_observer_started = false
 $_api_current_rt = 0
+
+#constants
+API_PUT_PREFIX = "put#"
+API_END_PREFIX = "end#"
+API_ECHO_PREFIX = "echo#"
 
 MATCH_START_KEY = :match_start
 MATCH_END_KEY = :match_end
@@ -34,8 +39,6 @@ MATCH_END_KEY = :match_end
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
-
-@logger = Logger.new('logs/script/debug.log', 10, 1024000)
 
 # Waits for roundtime and pauses for the duration.
 #
@@ -47,7 +50,8 @@ $rt_adjust = 0
 #   put "unhide"
 def wait_for_roundtime
   (0..1000000).each do
-    while line = $_api_queue.shift
+    line = api_sync_read
+    if line
       if line.match(/Roundtime/)
         api_sleep line[/\d+/].to_i + $rt_adjust
         return
@@ -78,7 +82,8 @@ def wait_for(pattern)
   end
 
   (0..1000000).each do
-    while line = $_api_queue.shift
+    line = api_sync_read
+    if line
       if line.match(pattern)
         return
       end
@@ -104,37 +109,8 @@ def match_wait(pattern)
   validate_pattern pattern
   $_api_exec_state = :match_wait
 
-  if pattern.has_key?(MATCH_START_KEY)
-    wait_for(pattern[MATCH_START_KEY]);
-  end
-
-  match_found = false
-  match = Hash[pattern.keys.collect{ |v| [v, ""] }]
-
-  rt = 0
-  (0..1000000).each do
-    while line = $_api_queue.shift
-      unless match_found
-        match_found = api_find_match match, line, pattern
-      end
-
-      rt += api_read_rt line
-
-      if match_found
-        $_api_exec_state = :running
-
-        @logger.debug { "match found: " + line }
-
-        if />/ =~ line
-          api_sleep rt
-          @logger.debug { "return match_wait" }
-          @logger.debug { "=================\n" }
-          return match.find{ |k, v| !v.empty? }.first
-        end
-      end
-    end
-    sleep 0.01
-  end
+  match = api_get_match pattern, Hash[pattern.keys.collect{ |v| [v, ""] }]
+  match.find{ |k, v| !v.empty? }.first
 end
 
 # Matches regex patterns and returns pattern name
@@ -152,34 +128,9 @@ def match_get(pattern)
 
   $_api_exec_state = :match_get
 
-  if pattern.has_key?(MATCH_START_KEY)
-    wait_for(pattern[MATCH_START_KEY]);
-  end
-
-  match_found = false
-  match = Hash[pattern.keys.collect{ |v| [v, ""] }]
-
-  rt = 0
-  (0..1000000).each do
-    while line = $_api_queue.shift
-      unless match_found
-        match_found = api_find_match match, line, pattern
-      end
-
-      rt += api_read_rt line
-
-      if match_found
-        $_api_exec_state = :running
-
-        if />/ =~ line
-          api_sleep rt
-          m = match.find{ |k, v| !v.empty? }
-          return {:key => m[0], :match => m[1]}
-        end
-      end
-    end
-    sleep 0.01
-  end
+  match = api_get_match pattern, Hash[pattern.keys.collect{ |v| [v, ""] }]
+  m = match.find{ |k, v| !v.empty? }
+  {:key => m[0], :match => m[1]}
 end
 
 # Match get for multiple lines.
@@ -194,38 +145,14 @@ end
 #    result = match_get_m match
 #    result #=>
 #    #{:vitals=>["Your body feels very beat up.", "Your spirit feels full of life."],
-#    # :scars=>["You have some tiny scratches to the neck."], :match_until=>[">"]}
+#    # :scars=>["You have some tiny scratches to the neck."], :match_end=>[">"]}
 def match_get_m(pattern)
   validate_get_m validate_pattern pattern
 
   $_api_exec_state = :match_get_m
 
-  if pattern.has_key?(MATCH_START_KEY)
-    wait_for(pattern[MATCH_START_KEY]);
-  end
-
-  match_found = false
-  match = Hash[pattern.keys.collect{ |v| [v, []] }]
-
-  rt = 0
-  (0..1000000).each do
-    while line = $_api_queue.shift
-      unless match_found
-        match_found = api_find_match match, line, pattern
-      end
-
-      rt += api_read_rt line
-
-      if match_found
-        $_api_exec_state = :running
-        if />/ =~ line
-          api_sleep rt
-          return match.delete_if{ |k, v| v.empty? }
-        end
-      end
-    end
-    sleep 0.01
-  end
+  match = api_get_match pattern, Hash[pattern.keys.collect{ |v| [v, []] }]
+  match.delete_if{ |k, v| v.empty? }
 end
 
 # Matches regex patterns and goes to defined label.
@@ -248,28 +175,8 @@ end
 def match_wait_goto(pattern)
   $_api_exec_state = :match_wait_goto
 
-  match_found = false
-  match = Hash[pattern.keys.collect{ |v| [v, ""] }]
-
-  rt = 0
-  (0..1000000).each do
-    while line = $_api_queue.shift
-      unless match_found
-        match_found = api_find_match match, line, pattern
-      end
-
-      rt += api_read_rt line
-
-      if match_found
-        $_api_exec_state = :running
-        if />/ =~ line
-          api_sleep rt
-          goto match.find{ |k, v| !v.empty? }.first
-        end
-      end
-    end
-    sleep 0.01
-  end
+  match = api_get_match pattern, Hash[pattern.keys.collect{ |v| [v, ""] }]
+  goto match.find{ |k, v| !v.empty? }.first
 end
 
 # Sends a command to server.
@@ -278,7 +185,7 @@ end
 # @return [void]
 def put(value)
   $_api_queue.clear
-  puts "put#" + value.to_s
+  puts API_PUT_PREFIX + value.to_s
 end
 
 # Sends a move command to client and
@@ -291,10 +198,10 @@ end
 #   move "e"
 #   move "go gate"
 def move(dir)
-  puts "put#" + dir.to_s
+  puts API_PUT_PREFIX + dir.to_s
 
   p = { :room => [/^\{nav\}$/],
-        :stand => [/You can't do that while (sitting|kneeling|lying)|must be standing/],
+        :stand => [/You can't do that while (sitting|kneeling|lying)|must be standing|cannot manage to stand/],
         :retreat => [/if you first retreat|You are engaged|do that while engaged/],
         :wait => [/\.\.\.wait|you may only type ahead/] }
 
@@ -336,7 +243,7 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  puts "echo#" + value.to_s
+  puts API_ECHO_PREFIX + value.to_s
 end
 
 # Pauses for given time.
@@ -391,13 +298,54 @@ def validate_get_m pattern
 end
 
 # @private
-def api_find_match match, line, pattern
+def api_match_start pattern
+  if pattern.has_key?(MATCH_START_KEY)
+    wait_for(pattern[MATCH_START_KEY]);
+  end
+end
+
+# @private
+def api_sync_read
+  $_api_gets_mutex.synchronize do
+    $_api_queue.shift
+  end
+end
+
+# @private
+def api_get_match pattern, match
+  api_match_start pattern
+
+  match_found, rt = false, 0
+
+  (0..1000000).each do
+    line = api_sync_read
+    if line
+      unless match_found
+        match_found = api_match match, line, pattern
+      end
+
+      rt += api_read_rt line
+
+      if match_found
+        $_api_exec_state = :idle
+
+        if />/ =~ line
+          api_sleep rt
+          return match
+        end
+      end
+    end
+    sleep 0.01
+  end
+end
+
+# @private
+def api_match match, line, pattern
   pattern.each_pair do |key, value|
     value.each do |m|
       if line.match(m)
         match[key] << line
-        return pattern.has_key?(MATCH_END_KEY) ?
-            key == MATCH_END_KEY : true
+        return pattern.has_key?(MATCH_END_KEY) ? key == MATCH_END_KEY : true
       end
     end
   end
@@ -406,13 +354,12 @@ end
 
 # @private
 def api_read_rt line
-  line.match(/Roundtime/) ?
-      line[/\d+/].to_i + $rt_adjust : 0
+  line.match(/Roundtime/) ? line[/\d+/].to_i + $rt_adjust : 0
 end
 
 # @private
 def api_terminate_script
-  puts "end#"
+  puts API_END_PREFIX
 end
 
 # @private

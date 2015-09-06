@@ -6,7 +6,6 @@ ClientSettings* ClientSettings::Instance() {
     if (!m_pInstance) {
         m_pInstance = new ClientSettings;
     }
-
     return m_pInstance;
 }
 

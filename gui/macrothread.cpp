@@ -43,3 +43,11 @@ void MacroThread::run() {
         }
     }
 }
+
+MacroThread::~MacroThread() {
+    if(!this->wait(1000)) {
+        qWarning("Thread deadlock detected, terminating thread.");
+        this->terminate();
+        this->wait();
+    }
+}

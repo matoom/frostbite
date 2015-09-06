@@ -7,11 +7,11 @@
         <file>images/disconnect.png</file>
         <file>images/edit.png</file>
         <file>images/icon_ph.png</file>
-        <file>images/arrow_right.png</file>
         <file>images/window.png</file>
-        <file>images/loading.gif</file>
         <file>images/shield_110.png</file>
         <file>images/shield.png</file>
         <file>images/shield.icns</file>
+        <file>images/arrow_right.png</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>

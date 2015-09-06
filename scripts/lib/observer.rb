@@ -23,7 +23,8 @@ class Observer
       $_api_observer_started = true
       until @@terminated
         if events.size > 0
-          while text = $_api_observer_queue.shift
+          text = sync_read
+          if text
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
@@ -65,6 +66,13 @@ class Observer
   end
 
   # @private
+  def sync_read
+    $_api_gets_mutex.synchronize do
+      $_api_observer_queue.shift
+    end
+  end
+
+  # @private
   private
   def observer_event method_name
     Signal.trap("INT") do
@@ -75,7 +83,7 @@ class Observer
 
     pid = Process.pid
 
-    while $_api_exec_state != :running
+    while $_api_exec_state != :idle
       sleep 0.1
     end
 

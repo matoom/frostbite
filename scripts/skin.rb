@@ -16,7 +16,7 @@ def arrange count
       pause 5
       arrange count
     when :arrange
-      if count < GD::ARRANGE_COUNT - 1
+      if count < GLOBAL::ARRANGE_COUNT - 1
         arrange count + 1
       else
         skin
@@ -65,8 +65,8 @@ def loot
   end
 end
 
-if GD::ARRANGE_COUNT > 0
+if GLOBAL::ARRANGE_COUNT > 0
   arrange 0
-elsif  GD::SKIN
+elsif  GLOBAL::SKIN
   skin
 end

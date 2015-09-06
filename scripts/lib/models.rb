@@ -9,7 +9,7 @@ class Rt
   #   echo Rt::value
   #   => 5
   def self.value
-    GameData.getRt().to_i
+    GameData.getRt.to_i
   end
 end
 
@@ -23,7 +23,7 @@ class Inventory
   #   => ["a lumpy bundle", "an origami-paper envelope", "a heavy burlap haversack",
   #       "a simple belt knife", "a sturdy troll-skin herb pouch"]
   def self.list
-    GameData.getInventory().to_s.split(", ")
+    GameData.getInventory.to_s.split(", ")
   end
 end
 
@@ -37,7 +37,7 @@ class Container
   #   => ["a rock", "a brown pouch", "a misshaped brass chest", "a mud-stained steel chest",
   #       "a blue gem pouch"]
   def self.list
-    GameData.getContainer().to_s.split(", ")
+    GameData.getContainer.to_s.split(", ")
   end
 end
 
@@ -50,7 +50,7 @@ class Wield
   #   echo Wield::right
   #   => fuzzy sharks
   def self.right()
-    GameData.getWieldRight().to_s
+    GameData.getWieldRight.to_s
   end
 
   # Wield right noun
@@ -60,7 +60,7 @@ class Wield
   # @example Using wield right noun in script.
   #   put "put my #{Wield::right_noun} in my backpack"
   def self.right_noun()
-    GameData.getWieldRightNoun().to_s
+    GameData.getWieldRightNoun.to_s
   end
 
   # Wield left
@@ -71,7 +71,7 @@ class Wield
   #   echo Wield::left
   #   => ""
   def self.left()
-    GameData.getWieldLeft().to_s
+    GameData.getWieldLeft.to_s
   end
 
   # Wield left noun
@@ -82,7 +82,7 @@ class Wield
   #   echo Wield::left_noun
   #   => ""
   def self.left_noun()
-    GameData.getWieldLeftNoun().to_s
+    GameData.getWieldLeftNoun.to_s
   end
 end
 
@@ -120,7 +120,7 @@ class Room
   #   echo Room::title
   #   => [Mycthengelde, Flatlands]
   def self.title
-    GameData.getRoomTitle().to_s
+    GameData.getRoomTitle.to_s
   end
 
   # Room description.
@@ -132,7 +132,7 @@ class Room
   #   => Well-worn paths lead through a grove of trees to a gate in The Crossing's
   #      western wall.  Now and again you hear birds ...
   def self.description
-    GameData.getRoomDescription().to_s
+    GameData.getRoomDescription.to_s
   end
 
   # Room objects.
@@ -143,7 +143,7 @@ class Room
   #   echo Room::objects
   #   => You also see a musk hog.
   def self.objects
-    GameData.getRoomObjects().to_s
+    GameData.getRoomObjects.to_s
   end
 
   # Room players.
@@ -154,7 +154,7 @@ class Room
   #   echo Room::players
   #   => ""
   def self.players
-    GameData.getRoomPlayers().to_s
+    GameData.getRoomPlayers.to_s
   end
 
   # Room exits.
@@ -165,7 +165,7 @@ class Room
   #   echo Room::exits
   #   => Obvious paths: northwest.
   def self.exits
-    GameData.getRoomExits().to_s
+    GameData.getRoomExits.to_s
   end
 
   # Counts objects.
@@ -191,7 +191,7 @@ class Vitals
   #     put retreat
   #   end
   def self.health
-    GameData.getHealth().to_i
+    GameData.getHealth.to_i
   end
 
   # Concentration
@@ -202,7 +202,7 @@ class Vitals
   #   echo Vitals::concentration
   #   => 100
   def self.concentration
-    GameData.getConcentration().to_i
+    GameData.getConcentration.to_i
   end
 
   # Fatigue
@@ -213,7 +213,7 @@ class Vitals
   #   echo Vitals::fatigue
   #   => 100
   def self.fatigue
-    GameData.getFatigue().to_i
+    GameData.getFatigue.to_i
   end
 
   # Health
@@ -223,7 +223,7 @@ class Vitals
   # @example Using spirit value in script.
   #   echo Vitals::spirit
   def self.spirit
-    GameData.getSpirit().to_i
+    GameData.getSpirit.to_i
   end
 end
 
@@ -236,7 +236,7 @@ class Status
   #   echo Status::standing
   #   => 1
   def self.standing
-    !GameData.getStanding().to_i.zero?
+    !GameData.getStanding.to_i.zero?
   end
 
   # Kneeling
@@ -247,7 +247,7 @@ class Status
   #   echo Status::kneeling
   #   => 0
   def self.kneeling
-    !GameData.getKneeling().to_i.zero?
+    !GameData.getKneeling.to_i.zero?
   end
 
   # Sitting
@@ -258,7 +258,7 @@ class Status
   #   echo Status::sitting
   #   => 0
   def self.sitting
-    !GameData.getSitting().to_i.zero?
+    !GameData.getSitting.to_i.zero?
   end
 
   # Prone
@@ -269,7 +269,7 @@ class Status
   #   echo Status::prone
   #   => 0
   def self.prone
-    !GameData.getProne().to_i.zero?
+    !GameData.getProne.to_i.zero?
   end
 
   # Stunned
@@ -280,7 +280,7 @@ class Status
   #   echo Status::stunned
   #   => 0
   def self.stunned
-    !GameData.getStunned().to_i.zero?
+    !GameData.getStunned.to_i.zero?
   end
 
   # Dead
@@ -291,7 +291,7 @@ class Status
   #   echo Status::dead
   #   => 0
   def self.dead
-    !GameData.getDead().to_i.zero?
+    !GameData.getDead.to_i.zero?
   end
 
   # Bleeding
@@ -302,7 +302,7 @@ class Status
   #   echo Status::bleeding
   #   => 1
   def self.bleeding
-    !GameData.getBleeding().to_i.zero?
+    !GameData.getBleeding.to_i.zero?
   end
 
   # Hidden
@@ -315,7 +315,7 @@ class Status
   #   end
   #   => 1
   def self.hidden
-    !GameData.getHidden().to_i.zero?
+    !GameData.getHidden.to_i.zero?
   end
 
   # Invisible
@@ -326,7 +326,7 @@ class Status
   #   echo Status::invisible
   #   => 0
   def self.invisible
-    !GameData.getInvisible().to_i.zero?
+    !GameData.getInvisible.to_i.zero?
   end
 
   # Webbed
@@ -337,7 +337,7 @@ class Status
   #   echo Status::webbed
   #   => 0
   def self.webbed
-    !GameData.getWebbed().to_i.zero?
+    !GameData.getWebbed.to_i.zero?
   end
 
   # Joined
@@ -348,25 +348,38 @@ class Status
   #   echo Status::joined
   #   => 1
   def self.joined
-    !GameData.getJoined().to_i.zero?
+    !GameData.getJoined.to_i.zero?
   end
 end
 
 # @private
 class CommandThread
+  TEXT_PREFIX = "game_text#"
+  EXIT_PREFIX = "exit#"
+
   def run
     while line = gets
-      if line.start_with? "game_text#"
-        line.slice! "game_text#"
-        $_api_queue << line
-
-        if $_api_observer_started
-          $_api_observer_queue << line
-        end
-      elsif line.start_with? "exit#"
+      if line.start_with? TEXT_PREFIX
+        sync_write line[TEXT_PREFIX.size, line.size]
+        sync_write_observer line[TEXT_PREFIX.size, line.size]
+      elsif line.start_with? EXIT_PREFIX
         Kernel::abort
       end
       sleep 0.01
+    end
+  end
+
+  def sync_write line
+    $_api_gets_mutex.synchronize do
+      $_api_queue << line
+    end
+  end
+
+  def sync_write_observer line
+    if $_api_observer_started
+      $_api_gets_mutex.synchronize do
+        $_api_observer_queue << line
+      end
     end
   end
 end

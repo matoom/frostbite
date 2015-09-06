@@ -6,7 +6,6 @@ AudioPlayer* AudioPlayer::Instance() {
     if (!m_pInstance) {
         m_pInstance = new AudioPlayer;
     }
-
     return m_pInstance;
 }
 

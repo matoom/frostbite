@@ -6,13 +6,7 @@ require "defines"
 
 @rt_adjust = 0
 
-if !$args.first
-  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
-  if !$args.first
-    echo '*** backstab what? usage: .bs &lt;critter_name&gt; ***'
-    exit
-  end
-end
+Util::auto_target "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait

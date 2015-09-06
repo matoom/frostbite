@@ -1,4 +1,16 @@
-module GD
+class Util
+  def self.auto_target usage_msg
+    unless $args.first
+      $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
+      unless $args.first
+        echo usage_msg
+        exit
+      end
+    end
+  end
+end
+
+module GLOBAL
   ARRANGE_COUNT = 0
   HUNT = true
   SKIN = true
@@ -11,5 +23,4 @@ module COMBAT
                 "collapses over", "and lies still", "falling silent with", "before expiring with",
                 "before falling still"]
   CRITTERS = ["wyvern", "assassin"]
-end             
-
+end

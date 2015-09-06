@@ -9,6 +9,11 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
 
     script = new Script(this);
     terminateFlag = false;    
+
+    if(!scriptWriter->isRunning()) {
+        Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("scriptwriter start..");
+        scriptWriter->start();
+    }
 }
 
 bool ScriptService::isScriptActive() {
@@ -82,12 +87,12 @@ void ScriptService::writeGameWindow(QByteArray command) {
 }
 
 void ScriptService::writeScriptText(QByteArray text) {
+    Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("empty: " + QString(text.isEmpty() ? "true" : "false") + " active: " + QString(this->isScriptActive() ? "true" : "false") + " - " + QString(text));
+
     if(!text.isEmpty() && this->isScriptActive()) {
         scriptWriter->addText(text.data());
 
-        if(!scriptWriter->isRunning()) {
-            scriptWriter->start();
-        }
+        Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("scriptwriter IsRunning: " + QString(scriptWriter->isRunning() ? "true" : "false"));
     }
 }
 

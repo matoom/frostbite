@@ -35,6 +35,9 @@ void MainWindow::appSetup() {
 
     // load general settings
     generalSettings = new GeneralSettings();
+
+    // load tray
+    tray = new Tray(this);
 }
 
 void MainWindow::toggleFullScreen() {
@@ -137,6 +140,10 @@ ScriptService* MainWindow::getScriptService() {
 TimerBar* MainWindow::getTimerBar() {
     QReadLocker locker(&lock);
     return this->timerBar;
+}
+
+Tray* MainWindow::getTray() {
+    return this->tray;
 }
 
 void MainWindow::addWidgetMainLayout(QWidget* widget) {

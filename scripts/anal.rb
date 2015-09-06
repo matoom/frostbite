@@ -3,13 +3,7 @@
 require "defines"
 require "hunt"
 
-if !$args.first
-  $args << COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
-  if !$args.first
-    echo '*** analyze what? usage: .anal &lt;critter_name&gt; ***'
-    exit
-  end
-end
+Util::auto_target "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
 def advance
   put "advance"

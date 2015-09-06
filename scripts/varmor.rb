@@ -36,13 +36,9 @@ put "remove shield"
 wait
 put "put my shield in vault"
 wait
-put "remove coat"
+put "remove hauberk"
 wait
-put "put my coat in vault"
-wait
-put "remove pants"
-wait
-put "put my pants in vault"
+put "put my hauberk in vault"
 wait
 
 put "close vault"
