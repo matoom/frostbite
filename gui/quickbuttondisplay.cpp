@@ -1,7 +1,7 @@
 #include "quickbuttondisplay.h"
 
 QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
-    toolbarManager = (ToolbarManager*)parent;
+    toolBar = (Toolbar*)parent;
     settings = new GeneralSettings();
     editDialog = new QuickButtonEditDialog();
 }
@@ -35,7 +35,7 @@ QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* i
                               "}");
 
     connect(toolButton, SIGNAL(clicked()),
-            toolbarManager, SLOT(quickButtonAction()));
+            toolBar, SLOT(quickButtonAction()));
 
     return toolButton;
 }

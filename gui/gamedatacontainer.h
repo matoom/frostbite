@@ -5,11 +5,11 @@
 #include <QHash>
 #include <QReadLocker>
 
-#include <dataconverterservice.h>
-#include <dataservice.h>
+#include <textutils.h>
+#include <shareddataService.h>
 
-class DataConverterService;
-class DataService;
+class TextUtils;
+class SharedDataService;
 
 class GameDataContainer : public QObject {
     Q_OBJECT
@@ -84,8 +84,8 @@ private:
     GameDataContainer& operator = (GameDataContainer const& copy);
     static GameDataContainer* m_pInstance;
 
-    DataConverterService* converter;
-    DataService* dataService;
+    TextUtils* textUtils;
+    SharedDataService* sharedDataService;
     QHash<QString, QString> exp;
     QStringList container;
     QStringList inventory;

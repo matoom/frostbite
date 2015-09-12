@@ -1,5 +1,5 @@
-#ifndef DATAPROCESSTHREAD_H
-#define DATAPROCESSTHREAD_H
+#ifndef XmlParserThread_H
+#define XmlParserThread_H
 
 #include <QObject>
 #include <QQueue>
@@ -12,20 +12,20 @@
 #include <highlighter.h>
 
 class MainWindow;
-class WindowManager;
-class ToolbarManager;
+class WindowFacade;
+class Toolbar;
 class CommandLine;
 class GameDataContainer;
 class Highlighter;
 
 typedef QList<QString> DirectionsList;
 
-class DataProcessThread : public QThread {
+class XmlParserThread : public QThread {
     Q_OBJECT
 
 public:
-    explicit DataProcessThread(QObject *parent = 0);
-    ~DataProcessThread();
+    explicit XmlParserThread(QObject *parent = 0);
+    ~XmlParserThread();
     
     virtual void run();
 
@@ -39,8 +39,8 @@ private:
     void filterDataTags(QDomElement, QDomNode);
 
     MainWindow* mainWindow;
-    WindowManager* windowManager;
-    ToolbarManager* toolbarManager;
+    WindowFacade* windowFacade;
+    Toolbar* toolBar;
     CommandLine* commandLine;
     GameDataContainer* gameDataContainer;
     Highlighter* highlighter;
@@ -104,4 +104,4 @@ public slots:
     void updateHighlighterSettings();
 };
 
-#endif // DATAPROCESSTHREAD_H
+#endif // XmlParserThread_H

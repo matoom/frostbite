@@ -1,11 +1,11 @@
 #ifndef NAVIGATIONDISPLAY_H
 #define NAVIGATIONDISPLAY_H
 
-#include <windowmanager.h>
+#include <windowfacade.h>
 
 #include <navigationdefines.h>
 
-class WindowManager;
+class WindowFacade;
 
 class NavigationDisplay : public QObject {
     Q_OBJECT
@@ -19,7 +19,7 @@ public:
     void setAutoPilot(bool);
 
 private:
-    WindowManager* wm;
+    WindowFacade* wm;
 
     QHash<bool, QList<QPixmap> > *images;
 

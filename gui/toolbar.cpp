@@ -1,9 +1,9 @@
-#include "toolbarmanager.h"
+#include "toolbar.h"
 
-ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
+Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
-    dataConverterService = DataConverterService::Instance();
+    textUtils = TextUtils::Instance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -14,16 +14,16 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     activeSpell = new ActiveSpellIndicator(this);
 }
 
-void ToolbarManager::updateQuickButtonSettings() {
+void Toolbar::updateQuickButtonSettings() {
     quickButtonDisplay->updateSettings();
     quickButtonDisplay->reloadSettings();
 }
 
-MainWindow* ToolbarManager::getMainWindow() {
+MainWindow* Toolbar::getMainWindow() {
     return mainWindow;
 }
 
-void ToolbarManager::addFullScreenButton() {
+void Toolbar::addFullScreenButton() {
     /* spacer forcing to float right */
     QWidget* spacerWidget = new QWidget(mainWindow);
     spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -39,7 +39,7 @@ void ToolbarManager::addFullScreenButton() {
     mainWindow->addToolbarWidget(buttonWidget);
 }
 
-void ToolbarManager::loadToolbar() {    
+void Toolbar::loadToolbar() {
     mainWindow->setToolbarAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
 
     QWidget* wieldLeftWidget = wieldLeft->create();
@@ -58,23 +58,23 @@ void ToolbarManager::loadToolbar() {
     this->addFullScreenButton();
 }
 
-void ToolbarManager::updateWieldLeft(QString value) {
+void Toolbar::updateWieldLeft(QString value) {
     wieldLeft->textLabel->setText(value);
 }
 
-void ToolbarManager::updateWieldRight(QString value) {
+void Toolbar::updateWieldRight(QString value) {
     wieldRight->textLabel->setText(value);
 }
 
-void ToolbarManager::updateSpell(QString toolTip) {
+void Toolbar::updateSpell(QString toolTip) {
     spell->setToolTip("<table style='margin: 2px;'><tr><td>" + toolTip + "</td></tr></table>");
 }
 
-QHash<QString, bool> ToolbarManager::getStatus() {
+QHash<QString, bool> Toolbar::getStatus() {
     return statusIndicator->getFullStatus();
 }
 
-void ToolbarManager::updateVitals(QString name, QString value) {
+void Toolbar::updateVitals(QString name, QString value) {
     int intValue = value.toInt();
     if(name == "health") {
         gameDataContainer->setHealth(intValue);
@@ -99,37 +99,37 @@ void ToolbarManager::updateVitals(QString name, QString value) {
     }
 }
 
-void ToolbarManager::updateStatus(QString visible, QString icon) {
+void Toolbar::updateStatus(QString visible, QString icon) {
     statusIndicator->updateStatus(visible, icon);
 }
 
-int ToolbarManager::getHealthValue() {
+int Toolbar::getHealthValue() {
     return vitalsIndicator->healthBar->value();
 }
 
-int ToolbarManager::getConcentrationValue() {
+int Toolbar::getConcentrationValue() {
     return vitalsIndicator->concentrationBar->value();
 }
 
-int ToolbarManager::getFatigueValue() {
+int Toolbar::getFatigueValue() {
     return vitalsIndicator->fatigueBar->value();
 }
 
-int ToolbarManager::getSpiritValue() {
+int Toolbar::getSpiritValue() {
     return vitalsIndicator->spiritBar->value();
 }
 
-void ToolbarManager::quickButtonAction() {
+void Toolbar::quickButtonAction() {
     QToolButton *button = (QToolButton *)sender();
 
     mainWindow->getCommandLine()->setText(button->text());
     emit mainWindow->getCommandLine()->sendCommand();
 }
 
-void ToolbarManager::updateActiveSpells() {
+void Toolbar::updateActiveSpells() {
     QStringList activeSpells = gameDataContainer->getActiveSpells();
 
-    activeSpell->setText(dataConverterService->findLowestActiveValue(activeSpells));
+    activeSpell->setText(textUtils->findLowestActiveValue(activeSpells));
 
     QString text = "<table style='margin: 4px;'>";
     foreach(QString activeSpell, activeSpells) {
@@ -140,12 +140,12 @@ void ToolbarManager::updateActiveSpells() {
     activeSpell->setToolTip(text);
 }
 
-void ToolbarManager::clearActiveSpells() {
+void Toolbar::clearActiveSpells() {
     activeSpell->setText("-");
     activeSpell->setToolTip("<table style='margin: 2px;'><tr><td>None</td></tr></table>");
 }
 
-ToolbarManager::~ToolbarManager() {
+Toolbar::~Toolbar() {
     delete vitalsIndicator;
     delete statusIndicator;
     delete quickButtonDisplay;

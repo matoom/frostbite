@@ -2,7 +2,7 @@
 
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
-    windowManager = mainWindow->getWindowManager();
+    windowFacade = mainWindow->getWindowFacade();
     settings = new GeneralSettings();
     snapshot = new Snapshot(this);
 
@@ -112,7 +112,7 @@ void GameWindow::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void GameWindow::resizeEvent(QResizeEvent *event) {
-    windowManager->paintNavigationDisplay();
+    windowFacade->paintNavigationDisplay();
     QPlainTextEdit::resizeEvent(event);
 }
 

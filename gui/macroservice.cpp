@@ -31,7 +31,7 @@ bool MacroService::execute(QString macroString) {
 void MacroService::abortSequence() {
     if(macroThread->isRunning()) {
         emit exit();
-        mainWindow->getWindowManager()->writeGameWindow("[Sequence terminated.]");
+        mainWindow->getWindowFacade()->writeGameWindow("[Sequence terminated.]");
     }
 }
 

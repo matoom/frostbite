@@ -171,11 +171,11 @@ QComboBox* HighlightDialog::getWebbedSelect(){
 }
 
 void HighlightDialog::reloadWindowStyles() {
-    mainWindow->getWindowManager()->updateWindowStyle();
+    mainWindow->getWindowFacade()->updateWindowStyle();
 }
 
 void HighlightDialog::reloadHighlighterSettings() {
-    mainWindow->getWindowManager()->reloadHighlighterSettings();
+    mainWindow->getWindowFacade()->reloadHighlighterSettings();
 }
 
 void HighlightDialog::okPressed() {

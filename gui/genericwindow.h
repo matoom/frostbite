@@ -11,7 +11,7 @@
 #include <snapshot.h>
 
 class MainWindow;
-class WindowManager;
+class WindowFacade;
 class GeneralSettings;
 class Snapshot;
 
@@ -38,7 +38,7 @@ private:
 
     MainWindow* mainWindow;
     GeneralSettings* settings;
-    WindowManager* wm;
+    WindowFacade* wm;
 
     Snapshot* snapshot;
 

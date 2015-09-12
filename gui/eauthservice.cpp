@@ -3,7 +3,7 @@
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     settings = ClientSettings::Instance();
     tcpSocket = new QTcpSocket(this);
-    connectionManager = (ConnectionManager*)parent;
+    tcpClient = (TcpClient*)parent;
 
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
@@ -16,25 +16,25 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     }
 
     connect(this, SIGNAL(selectGame()),
-            connectionManager, SLOT(selectGame()));
+            tcpClient, SLOT(selectGame()));
 
     connect(this, SIGNAL(addCharacter(QString, QString)),
-            connectionManager, SLOT(addCharacter(QString, QString)));
+            tcpClient, SLOT(addCharacter(QString, QString)));
 
-    connect(connectionManager, SIGNAL(retrieveSessionKey(QString)),
+    connect(tcpClient, SIGNAL(retrieveSessionKey(QString)),
             this, SLOT(retrieveSessionKey(QString)));
 
-    connect(connectionManager, SIGNAL(eAuthGameSelected(QString)),
+    connect(tcpClient, SIGNAL(eAuthGameSelected(QString)),
             this, SLOT(gameSelected(QString)));
 
     connect(this, SIGNAL(sessionRetrieved(QString, QString, QString)),
-            connectionManager, SLOT(eAuthSessionRetrieved(QString, QString, QString)));
+            tcpClient, SLOT(eAuthSessionRetrieved(QString, QString, QString)));
 
     connect(this, SIGNAL(connectionError(QString)),
-            connectionManager, SLOT(connectWizardError(QString)));
+            tcpClient, SLOT(connectWizardError(QString)));
 
     connect(this, SIGNAL(authError()),
-            connectionManager, SLOT(authError()));
+            tcpClient, SLOT(authError()));
 }
 
 void EAuthService::init(QString user, QString key) {

@@ -1,5 +1,5 @@
-#ifndef TOOLBARMANAGER_H
-#define TOOLBARMANAGER_H
+#ifndef TOOLBAR_H
+#define TOOLBAR_H
 
 #include <QObject>
 
@@ -20,12 +20,12 @@ class QuickButtonEditDialog;
 class GameDataContainer;
 class FullscreenButton;
 
-class ToolbarManager : public QObject {
+class Toolbar : public QObject {
     Q_OBJECT
 
 public:
-    ToolbarManager(QObject *parent = 0);
-    ~ToolbarManager();
+    Toolbar(QObject *parent = 0);
+    ~Toolbar();
 
     MainWindow* getMainWindow();
 
@@ -45,7 +45,7 @@ private:
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     GameDataContainer* gameDataContainer;
-    DataConverterService* dataConverterService;
+    TextUtils* textUtils;
     QuickButtonDisplay* quickButtonDisplay;
     QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;
@@ -68,4 +68,4 @@ public slots:
     void clearActiveSpells();
 };
 
-#endif // TOOLBARMANAGER_H
+#endif // TOOLBAR_H

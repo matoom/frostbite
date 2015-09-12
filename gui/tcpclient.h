@@ -1,32 +1,32 @@
-#ifndef CONNECTIONMANAGER_H
-#define CONNECTIONMANAGER_H
+#ifndef TCPCLIENT_H
+#define TCPCLIENT_H
 
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QNetworkProxy>
 #include <QDebug>
 
 #include <mainwindow.h>
-#include <windowmanager.h>
+#include <windowfacade.h>
 #include <clientsettings.h>
 #include <eauthservice.h>
-#include <dataprocessthread.h>
+#include <xmlparserthread.h>
 #include <debuglogger.h>
 
 #include <environment.h>
 
 class MainWindow;
-class WindowManager;
+class WindowFacade;
 class ClientSettings;
 class EAuthService;
-class DataProcessThread;
+class XmlParserThread;
 class DebugLogger;
 
-class ConnectionManager : public QObject {
+class TcpClient : public QObject {
     Q_OBJECT
 
 public:
-    ConnectionManager(QObject *parent = 0);
-    ~ConnectionManager();
+    TcpClient(QObject *parent = 0);
+    ~TcpClient();
 
     void writeCommand(QString);
     void showError(QString);
@@ -37,11 +37,11 @@ private:
     MainWindow *mainWindow;
     QTcpSocket *tcpSocket;
     QByteArray buffer;
-    WindowManager *windowManager;
+    WindowFacade *windowFacade;
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
-    DataProcessThread* dataProcessThread;
+    XmlParserThread* xmlParserThread;
     DebugLogger* debugLogger;
 
     bool waitForSettings;
@@ -77,4 +77,4 @@ public slots:
 };
 
 
-#endif // CONNECTIONMANAGER_H
+#endif // TCPCLIENT_H

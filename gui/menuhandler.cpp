@@ -40,7 +40,7 @@ void MenuHandler::menuTriggered(QAction* action) {
     if(action->objectName() == "actionConnect") {
         connectWizard->show();
     } else if (action->objectName() == "actionDisconnect") {
-        mainWindow->getConnectionManager()->disconnectFromServer();
+        mainWindow->getTcpClient()->disconnectFromServer();
     } else if(action->objectName() == "actionText_Highlight") {
         highlightDialog->show();
     } else if (action->objectName() == "actionMacros") {

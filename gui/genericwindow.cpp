@@ -3,7 +3,7 @@
 GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
     settings = new GeneralSettings();
-    wm = mainWindow->getWindowManager();
+    wm = mainWindow->getWindowFacade();
     snapshot = new Snapshot(this);
 
     this->buildContextMenu();

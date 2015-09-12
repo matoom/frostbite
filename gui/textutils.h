@@ -8,11 +8,11 @@
 
 #include <limits>
 
-class DataConverterService : public QObject {
+class TextUtils : public QObject {
     Q_OBJECT
 
 public:
-    static DataConverterService* Instance();
+    static TextUtils* Instance();
 
     int expStateToNumeric(QString);
     int expBriefToNumeric(QString);
@@ -22,10 +22,10 @@ public:
     QString findLowestActiveValue(QStringList list);
 
 private:
-    DataConverterService(QObject *parent = 0);
-    DataConverterService(DataConverterService const& copy);
-    DataConverterService& operator = (DataConverterService const& copy);
-    static DataConverterService* m_pInstance;
+    TextUtils(QObject *parent = 0);
+    TextUtils(TextUtils const& copy);
+    TextUtils& operator = (TextUtils const& copy);
+    static TextUtils* m_pInstance;
 
     void populateExpStates();
     QStringList mindStates;

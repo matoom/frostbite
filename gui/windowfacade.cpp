@@ -1,6 +1,6 @@
-#include "windowmanager.h"
+#include "windowfacade.h"
 
-WindowManager::WindowManager(QObject *parent) : QObject(parent) {
+WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     genericWindowFactory = new GenericWindowFactory(parent);
     navigationDisplay = new NavigationDisplay(parent);
@@ -14,7 +14,7 @@ WindowManager::WindowManager(QObject *parent) : QObject(parent) {
     writePrompt = true;        
 }
 
-void WindowManager::reloadSettings() {
+void WindowFacade::reloadSettings() {
     this->reloadHighlighterSettings();
 
     settings->init();
@@ -24,7 +24,7 @@ void WindowManager::reloadSettings() {
     this->updateWindowColors();    
 }
 
-void WindowManager::reloadHighlighterSettings() {
+void WindowFacade::reloadHighlighterSettings() {
     emit updateGameWindowSettings();
     emit updateRoomSettings();
     emit updateExpSettings();
@@ -35,11 +35,11 @@ void WindowManager::reloadHighlighterSettings() {
     emit updateFamiliarSettings();
 }
 
-QPlainTextEdit* WindowManager::getGameWindow() {
+QPlainTextEdit* WindowFacade::getGameWindow() {
     return this->gameWindow;
 }
 
-void WindowManager::updateWindowColors() {
+void WindowFacade::updateWindowColors() {
     this->setGameWindowFontColor(generalSettings->gameWindowFontColor());
     this->setGameWindowFont(generalSettings->gameWindowFont());
     mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
@@ -49,23 +49,23 @@ void WindowManager::updateWindowColors() {
     this->setDockFontColor(generalSettings->dockWindowFontColor());
 }
 
-QString WindowManager::textColor(QString name, QString defaultValue) {
+QString WindowFacade::textColor(QString name, QString defaultValue) {
     return settings->getSingleParameter(
         "GeneralHighlight/" + name + "/color", defaultValue).value<QColor>().name();
 }
 
-void WindowManager::setGameWindowFont(QFont font) {
+void WindowFacade::setGameWindowFont(QFont font) {
     gameWindow->setFont(font);
 }
 
-void WindowManager::setGameWindowFontColor(QColor color) {
+void WindowFacade::setGameWindowFontColor(QColor color) {
     QPalette p = gameWindow->viewport()->palette();
     p.setColor(QPalette::Text, color);
 
     gameWindow->viewport()->setPalette(p);    
 }
 
-void WindowManager::setDockFontColor(QColor fontColor) {
+void WindowFacade::setDockFontColor(QColor fontColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {        
         p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
@@ -74,7 +74,7 @@ void WindowManager::setDockFontColor(QColor fontColor) {
     }
 }
 
-void WindowManager::setDockBackground(QColor backgroundColor) {
+void WindowFacade::setDockBackground(QColor backgroundColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {
         p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
@@ -83,13 +83,13 @@ void WindowManager::setDockBackground(QColor backgroundColor) {
     }
 }
 
-void WindowManager::setDockFont(QFont font) {    
+void WindowFacade::setDockFont(QFont font) {
     foreach(QDockWidget* dock, dockWindows) {
         ((QPlainTextEdit*)dock->widget())->setFont(font);
     }
 }
 
-void WindowManager::updateWindowStyle() {
+void WindowFacade::updateWindowStyle() {
     style = ".speech {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}\n"
             ".whisper {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";}\n"
             ".bonus {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}\n"
@@ -109,11 +109,11 @@ void WindowManager::updateWindowStyle() {
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
 
-QString WindowManager::getStyle() {
+QString WindowFacade::getStyle() {
     return style;
 }
 
-void WindowManager::loadWindows() {                
+void WindowFacade::loadWindows() {
     gameWindow = (QPlainTextEdit*)new GameWindow(mainWindow);
     mainWindow->addWidgetMainLayout(gameWindow);
 
@@ -167,7 +167,7 @@ void WindowManager::loadWindows() {
     this->updateWindowStyle();    
 }
 
-void WindowManager::initWindowHighlighters() {
+void WindowFacade::initWindowHighlighters() {
     gameWindowHighlighter = new HighlighterThread(mainWindow, (GameWindow*)gameWindow);
     connect(this, SIGNAL(updateGameWindowSettings()), gameWindowHighlighter, SLOT(updateSettings()));
     highlighters << gameWindowHighlighter;
@@ -203,7 +203,7 @@ void WindowManager::initWindowHighlighters() {
     highlighters << familiarHighlighter;
 }
 
-void WindowManager::initLoggers() {
+void WindowFacade::initLoggers() {
     mainLogger = new MainLogger();
     thoughtsLogger = new ThoughtsLogger();
     conversationsLogger = new ConversationsLogger();
@@ -211,33 +211,33 @@ void WindowManager::initLoggers() {
     arrivalsLogger = new ArrivalsLogger();
 }
 
-void WindowManager::thoughtsVisibility(bool visibility) {
+void WindowFacade::thoughtsVisibility(bool visibility) {
     thoughtsWindow->setWindowTitle(DOCK_TITLE_THOUGHTS);
     thoughtsVisible = visibility;
     //https://bugreports.qt-project.org/browse/QTBUG-840
 }
 
-void WindowManager::deathsVisibility(bool visibility) {
+void WindowFacade::deathsVisibility(bool visibility) {
     deathsWindow->setWindowTitle(DOCK_TITLE_DEATHS);
     deathsVisible = visibility;
 }
 
-void WindowManager::arrivalsVisibility(bool visibility) {
+void WindowFacade::arrivalsVisibility(bool visibility) {
     arrivalsWindow->setWindowTitle(DOCK_TITLE_ARRIVALS);
     arrivalsVisible = visibility;
 }
 
-void WindowManager::conversationsVisibility(bool visibility) {
+void WindowFacade::conversationsVisibility(bool visibility) {
     conversationsWindow->setWindowTitle(DOCK_TITLE_CONVERSATIONS);
     conversationsVisible = visibility;
 }
 
-void WindowManager::familiarVisibility(bool visibility) {
+void WindowFacade::familiarVisibility(bool visibility) {
     familiarWindow->setWindowTitle(DOCK_TITLE_FAMILIAR);
     familiarVisible = visibility;
 }
 
-void WindowManager::setVisibilityIndicator(QDockWidget* widget, bool visible, QString title) {
+void WindowFacade::setVisibilityIndicator(QDockWidget* widget, bool visible, QString title) {
     if(visible) {
         widget->setWindowTitle(title);
     } else {
@@ -245,35 +245,35 @@ void WindowManager::setVisibilityIndicator(QDockWidget* widget, bool visible, QS
     }
 }
 
-QDockWidget* WindowManager::getRoomWindow() {
+QDockWidget* WindowFacade::getRoomWindow() {
     return this->roomWindow;
 }
 
-QDockWidget* WindowManager::getArrivalsWindow() {
+QDockWidget* WindowFacade::getArrivalsWindow() {
     return this->arrivalsWindow;
 }
 
-QDockWidget* WindowManager::getThoughtsWindow() {
+QDockWidget* WindowFacade::getThoughtsWindow() {
     return this->thoughtsWindow;
 }
 
-QDockWidget* WindowManager::getExpWindow() {
+QDockWidget* WindowFacade::getExpWindow() {
     return this->expWindow;
 }
 
-QDockWidget* WindowManager::getDeathsWindow() {
+QDockWidget* WindowFacade::getDeathsWindow() {
     return this->deathsWindow;
 }
 
-QDockWidget* WindowManager::getConversationsWindow() {
+QDockWidget* WindowFacade::getConversationsWindow() {
     return this->conversationsWindow;
 }
 
-QDockWidget* WindowManager::getFamiliarWindow() {
+QDockWidget* WindowFacade::getFamiliarWindow() {
     return this->familiarWindow;
 }
 
-void WindowManager::copyDock() {
+void WindowFacade::copyDock() {
     foreach(QDockWidget* dock, dockWindows) {
         QTextCursor cursor = ((QPlainTextEdit*)dock->widget())->textCursor();
         if(cursor.hasSelection()) {
@@ -283,18 +283,18 @@ void WindowManager::copyDock() {
     }
 }
 
-void WindowManager::updateNavigationDisplay(DirectionsList directions) {
+void WindowFacade::updateNavigationDisplay(DirectionsList directions) {
     navigationDisplay->updateState(directions);
     this->paintNavigationDisplay();
 }
 
-void WindowManager::scriptRunning(bool state) {
+void WindowFacade::scriptRunning(bool state) {
     navigationDisplay->setAutoPilot(state);
     this->paintNavigationDisplay();
 }
 
 /* paints a full screen image to background */
-void WindowManager::paintNavigationDisplay() {    
+void WindowFacade::paintNavigationDisplay() {
     QPixmap image = navigationDisplay->paint();
 
     QPixmap collage(gameWindow->width(), gameWindow->height());
@@ -316,7 +316,7 @@ void WindowManager::paintNavigationDisplay() {
     gameWindow->viewport()->setPalette(palette);
 }
 
-void WindowManager::updateExpWindow() {
+void WindowFacade::updateExpWindow() {
     QHash<QString, QString> exp = gameDataContainer->getExp();
 
     QString expString = "";
@@ -331,7 +331,7 @@ void WindowManager::updateExpWindow() {
     }
 }
 
-void WindowManager::updateConversationsWindow(QString conversationText) {
+void WindowFacade::updateConversationsWindow(QString conversationText) {
     setVisibilityIndicator(conversationsWindow, conversationsVisible, DOCK_TITLE_CONVERSATIONS);
 
     conversationsHighlighter->addText(conversationText.trimmed());
@@ -343,7 +343,7 @@ void WindowManager::updateConversationsWindow(QString conversationText) {
     mainWindow->getTray()->showMessage(DOCK_TITLE_CONVERSATIONS, conversationText.trimmed());
 }
 
-void WindowManager::logConversationsText(QString conversationText) {
+void WindowFacade::logConversationsText(QString conversationText) {
     if(clientSettings->getParameter("Logging/conversations", false).toBool()) {
         conversationsLogger->addText(conversationText.trimmed());
 
@@ -353,7 +353,7 @@ void WindowManager::logConversationsText(QString conversationText) {
     }
 }
 
-void WindowManager::updateDeathsWindow(QString deathText) {
+void WindowFacade::updateDeathsWindow(QString deathText) {
     setVisibilityIndicator(deathsWindow, deathsVisible, DOCK_TITLE_DEATHS);
 
     deathsHighlighter->addText(deathText.trimmed());
@@ -364,7 +364,7 @@ void WindowManager::updateDeathsWindow(QString deathText) {
     this->logDeathsText(deathText);
 }
 
-void WindowManager::logDeathsText(QString deathsText) {
+void WindowFacade::logDeathsText(QString deathsText) {
     if(clientSettings->getParameter("Logging/deaths", false).toBool()) {
         deathsLogger->addText(deathsText.trimmed());
 
@@ -374,7 +374,7 @@ void WindowManager::logDeathsText(QString deathsText) {
     }
 }
 
-void WindowManager::updateThoughtsWindow(QString thoughtText) {
+void WindowFacade::updateThoughtsWindow(QString thoughtText) {
     setVisibilityIndicator(thoughtsWindow, thoughtsVisible, DOCK_TITLE_THOUGHTS);
 
     thoughtsHighlighter->addText(thoughtText.trimmed());
@@ -385,7 +385,7 @@ void WindowManager::updateThoughtsWindow(QString thoughtText) {
     this->logThoughtsText(thoughtText);
 }
 
-void WindowManager::logThoughtsText(QString thoughtText) {
+void WindowFacade::logThoughtsText(QString thoughtText) {
     if(clientSettings->getParameter("Logging/thoughts", false).toBool()) {
         thoughtsLogger->addText(thoughtText.trimmed());
 
@@ -395,7 +395,7 @@ void WindowManager::logThoughtsText(QString thoughtText) {
     }
 }
 
-void WindowManager::updateArrivalsWindow(QString arrivalText) {
+void WindowFacade::updateArrivalsWindow(QString arrivalText) {
     setVisibilityIndicator(arrivalsWindow, arrivalsVisible, DOCK_TITLE_ARRIVALS);
 
     arrivalsHighlighter->addText(arrivalText.trimmed());
@@ -406,7 +406,7 @@ void WindowManager::updateArrivalsWindow(QString arrivalText) {
     this->logArrivalsText(arrivalText);
 }
 
-void WindowManager::logArrivalsText(QString arrivalText) {
+void WindowFacade::logArrivalsText(QString arrivalText) {
     if(clientSettings->getParameter("Logging/arrivals", false).toBool()) {
         arrivalsLogger->addText(arrivalText);
 
@@ -416,7 +416,7 @@ void WindowManager::logArrivalsText(QString arrivalText) {
     }
 }
 
-void WindowManager::updateRoomWindow() {
+void WindowFacade::updateRoomWindow() {
     QString roomText = "";
 
     QString desc = gameDataContainer->getRoomDesc();
@@ -438,7 +438,7 @@ void WindowManager::updateRoomWindow() {
     }
 }
 
-void WindowManager::updateFamiliarWindow(QString familiarText) {
+void WindowFacade::updateFamiliarWindow(QString familiarText) {
     setVisibilityIndicator(familiarWindow, familiarVisible, DOCK_TITLE_FAMILIAR);
 
     familiarHighlighter->addText(familiarText.trimmed());
@@ -448,11 +448,11 @@ void WindowManager::updateFamiliarWindow(QString familiarText) {
     }
 }
 
-void WindowManager::updateRoomWindowTitle(QString title) {
+void WindowFacade::updateRoomWindowTitle(QString title) {
     roomWindow->setWindowTitle("Room " + title);
 }
 
-void WindowManager::writeGameText(QByteArray text, bool prompt) {
+void WindowFacade::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         mainWindow->getScriptService()->writeScriptText(text);
         gameWindowHighlighter->addText(text);        
@@ -470,7 +470,7 @@ void WindowManager::writeGameText(QByteArray text, bool prompt) {
     }
 }
 
-void WindowManager::writeGameWindow(QByteArray text) {
+void WindowFacade::writeGameWindow(QByteArray text) {
     gameWindowHighlighter->addText(text);
 
     if(!gameWindowHighlighter->isRunning()) {
@@ -479,7 +479,7 @@ void WindowManager::writeGameWindow(QByteArray text) {
     this->logGameText(text);
 }
 
-void WindowManager::logGameText(QByteArray text, char type) {
+void WindowFacade::logGameText(QByteArray text, char type) {
     if(clientSettings->getParameter("Logging/main", false).toBool()) {
         mainLogger->addText(text, type);
 
@@ -489,7 +489,7 @@ void WindowManager::logGameText(QByteArray text, char type) {
     }
 }
 
-WindowManager::~WindowManager() {
+WindowFacade::~WindowFacade() {
     delete genericWindowFactory;
     delete gameWindow;
     delete navigationDisplay;    

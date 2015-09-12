@@ -1,5 +1,5 @@
-#ifndef DATASERVICE_H
-#define DATASERVICE_H
+#ifndef SHAREDDATASERVICE_H
+#define SHAREDDATASERVICE_H
 
 #include <QObject>
 #include <QLibrary>
@@ -7,12 +7,12 @@
 #include <QDir>
 #include <QApplication>
 
-class DataService : public QObject {
+class SharedDataService : public QObject {
     Q_OBJECT
 
 public:
-    static DataService* Instance();
-    //~DataService();
+    static SharedDataService* Instance();
+    //~SharedDataService();
 
     //typedef void (*AddExp)(const char*, const char*, const char*);
     typedef void (*AddExp)(const char*, int, int);
@@ -60,10 +60,10 @@ public:
 
 
 private:
-    DataService(QObject *parent = 0);
-    DataService(DataService const& copy);
-    DataService& operator = (DataService const& copy);
-    static DataService* m_pInstance;
+    SharedDataService(QObject *parent = 0);
+    SharedDataService(SharedDataService const& copy);
+    SharedDataService& operator = (SharedDataService const& copy);
+    static SharedDataService* m_pInstance;
 
     void loadDataLib();
 
@@ -76,4 +76,4 @@ public slots:
 
 };
 
-#endif // DATASERVICE_H
+#endif // SHAREDDATASERVICE_H

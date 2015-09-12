@@ -6,14 +6,14 @@
 #include <QResizeEvent>
 
 #include <mainwindow.h>
-#include <windowmanager.h>
+#include <windowfacade.h>
 #include <generalsettings.h>
 #include <defaultvalues.h>
 #include <windowinterface.h>
 #include <snapshot.h>
 
 class MainWindow;
-class WindowManager;
+class WindowFacade;
 class Snapshot;
 
 class GameWindow : public QPlainTextEdit, public WindowInterface {
@@ -42,7 +42,7 @@ private:
     void showEvent(QShowEvent*);
 
     MainWindow* mainWindow;
-    WindowManager* windowManager;
+    WindowFacade* windowFacade;
     GeneralSettings* settings;
 
     Snapshot* snapshot;

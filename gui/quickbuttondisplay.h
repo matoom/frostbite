@@ -7,11 +7,11 @@
 #include <QHBoxLayout>
 
 #include <toolbardefines.h>
-#include <toolbarmanager.h>
+#include <toolbar.h>
 #include <generalsettings.h>
 #include <quickbuttondisplay.h>
 
-class ToolbarManager;
+class Toolbar;
 class GeneralSettings;
 class QuickButtonEditDialog;
 
@@ -29,7 +29,7 @@ public:
 
 private:
     QToolButton* actionButton(const char*, const char*, QString);
-    ToolbarManager* toolbarManager;
+    Toolbar* toolBar;
     GeneralSettings* settings;
     QuickButtonEditDialog* editDialog;
     QWidget* buttonWidget;

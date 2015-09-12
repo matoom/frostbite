@@ -46,7 +46,7 @@ public:
 private:
     MainWindow* mainWindow;
     RoundTimeDisplay* roundtimeDisplay;
-    WindowManager* windowManager;
+    WindowFacade* windowFacade;
     MacroService* macroService;
     WordCompleter* wordCompleter;
     KeyboardFilter* keyboardFilter;

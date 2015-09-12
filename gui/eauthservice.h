@@ -6,10 +6,10 @@
 #include <QtNetwork/QTcpSocket>
 
 #include <clientsettings.h>
-#include <connectionmanager.h>
+#include <tcpclient.h>
 
 class ClientSettings;
-class ConnectionManager;
+class TcpClient;
 
 class EAuthService : public QObject {
     Q_OBJECT
@@ -26,7 +26,7 @@ private:
     ClientSettings* settings;
     QTcpSocket *tcpSocket;
     QByteArray buffer;
-    ConnectionManager *connectionManager;
+    TcpClient *tcpClient;
 
     QString key;
     QString user;

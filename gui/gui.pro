@@ -35,9 +35,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     clientsettings.cpp \
-    connectionmanager.cpp \
-    windowmanager.cpp \
-    toolbarmanager.cpp \
+    toolbar.cpp \
     navigationdisplay.cpp \
     roundtimedisplay.cpp \
     gamewindow.cpp \
@@ -61,7 +59,6 @@ SOURCES += main.cpp\
     script.cpp \
     scriptservice.cpp \
     gamedatacontainer.cpp \
-    dataconverterservice.cpp \
     highlighter.cpp \
     timerbar.cpp \
     macrodialog.cpp \
@@ -75,12 +72,10 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     connectwizard.cpp \
     wizardpage.cpp \
-    dataservice.cpp \
     scripteditdialog.cpp \
     genericwindowfactory.cpp \
     genericwindow.cpp \
     fullscreenbutton.cpp \
-    dataprocessthread.cpp \
     profileadddialog.cpp \
     generalsettings.cpp \
     highlighterthread.cpp \
@@ -94,13 +89,16 @@ SOURCES += main.cpp\
     snapshot.cpp \
     guiapplication.cpp \
     tray.cpp \
-    activespellindicator.cpp
+    activespellindicator.cpp \
+    tcpclient.cpp \
+    windowfacade.cpp \
+    textutils.cpp \
+    xmlparserthread.cpp \
+    shareddataservice.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
-    connectionmanager.h \
-    windowmanager.h \
-    toolbarmanager.h \
+    toolbar.h \
     toolbardefines.h \
     navigationdisplay.h \
     navigationdefines.h \
@@ -127,7 +125,6 @@ HEADERS  += mainwindow.h \
     script.h \
     scriptservice.h \
     gamedatacontainer.h \
-    dataconverterservice.h \
     highlighter.h \
     timerbar.h \
     macrodialog.h \
@@ -143,12 +140,10 @@ HEADERS  += mainwindow.h \
     aboutdialog.h \
     connectwizard.h \
     wizardpage.h \
-    dataservice.h \
     scripteditdialog.h \
     genericwindowfactory.h \
     genericwindow.h \
     fullscreenbutton.h \
-    dataprocessthread.h \
     profileadddialog.h \
     generalsettings.h \
     highlighterthread.h \
@@ -164,7 +159,12 @@ HEADERS  += mainwindow.h \
     windowinterface.h \
     guiapplication.h \
     tray.h \
-    activespellindicator.h
+    activespellindicator.h \
+    tcpclient.h \
+    windowfacade.h \
+    textutils.h \
+    xmlparserthread.h \
+    shareddataservice.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

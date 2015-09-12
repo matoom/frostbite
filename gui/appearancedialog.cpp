@@ -5,7 +5,7 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     ui->setupUi(this);
 
     mainWindow = (MainWindow*)parent;
-    windowManager = mainWindow->getWindowManager();
+    windowFacade = mainWindow->getWindowFacade();
     settings = new GeneralSettings();
 
     this->populateMainBox();
@@ -122,12 +122,12 @@ void AppearanceDialog::populateDockBox() {
 
 void AppearanceDialog::reset() {
     mainWindow->setBackgroundColor(mainBackgroundValue);
-    windowManager->setGameWindowFont(mainFontValue);
-    windowManager->setGameWindowFontColor(mainFontColorValue);
+    windowFacade->setGameWindowFont(mainFontValue);
+    windowFacade->setGameWindowFontColor(mainFontColorValue);
 
-    windowManager->setDockBackground(dockBackgroundValue);
-    windowManager->setDockFont(dockFontValue);
-    windowManager->setDockFontColor(dockFontColorValue);
+    windowFacade->setDockBackground(dockBackgroundValue);
+    windowFacade->setDockFont(dockFontValue);
+    windowFacade->setDockFontColor(dockFontColorValue);
 }
 
 void AppearanceDialog::selectMainBg() {
@@ -148,7 +148,7 @@ void AppearanceDialog::selectMainFont() {
 
     if(ok) {
         mainFontSelect->setText(mainFontValue.family() + "," + QString::number(mainFontValue.pointSize()));
-        windowManager->setGameWindowFont(mainFontValue);
+        windowFacade->setGameWindowFont(mainFontValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("GameWindow/font", mainFontValue);
@@ -160,7 +160,7 @@ void AppearanceDialog::selectMainFontColor() {
     if(mainFontColorValue.isValid()) {
         mainFontColorSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                              "border: 1px solid #C0C0C0; }").arg(mainFontColorValue.name()));
-        windowManager->setGameWindowFontColor(mainFontColorValue);
+        windowFacade->setGameWindowFontColor(mainFontColorValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("GameWindow/fontColor", mainFontColorValue);
@@ -172,7 +172,7 @@ void AppearanceDialog::selectDockBg() {
     if(dockBackgroundValue.isValid()) {
         dockBgSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                       "border: 1px solid #C0C0C0; }").arg(dockBackgroundValue.name()));
-        windowManager->setDockBackground(dockBackgroundValue);
+        windowFacade->setDockBackground(dockBackgroundValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/background", dockBackgroundValue);
@@ -185,7 +185,7 @@ void AppearanceDialog::selectDockFont() {
 
     if(ok) {
         dockFontSelect->setText(dockFontValue.family() + "," + QString::number(dockFontValue.pointSize()));
-        windowManager->setDockFont(dockFontValue);
+        windowFacade->setDockFont(dockFontValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/font", dockFontValue);
@@ -197,7 +197,7 @@ void AppearanceDialog::selectDockFontColor() {
     if(dockFontColorValue.isValid()) {
         dockFontColorSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                              "border: 1px solid #C0C0C0; }").arg(dockFontColorValue.name()));
-        windowManager->setDockFontColor(dockFontColorValue);
+        windowFacade->setDockFontColor(dockFontColorValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/fontColor", dockFontColorValue);

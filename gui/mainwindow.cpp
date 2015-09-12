@@ -50,13 +50,13 @@ void MainWindow::toggleMaximized() {
 
 void MainWindow::updateProfileSettings() {
     // highlights
-    cm->updateSettings();
+    tcpClient->updateSettings();
     // general highlights/window coloring
-    windowManager->reloadSettings();
+    windowFacade->reloadSettings();
     // macros
     cmdLine->updateMacroSettings();
     // quick buttons
-    tbm->updateQuickButtonSettings();
+    toolBar->updateQuickButtonSettings();
     // dialogs
     menuHandler->updateDialogSettings();
 }
@@ -93,14 +93,14 @@ QColor MainWindow::getBackgroundColor() {
 }
 
 void MainWindow::loadClient() {
-    tbm = new ToolbarManager(this);
-    tbm->loadToolbar();
+    toolBar = new Toolbar(this);
+    toolBar->loadToolbar();
 
     timerBar = new TimerBar(this);
     timerBar->load();
 
-    windowManager = new WindowManager(this);
-    windowManager->loadWindows();
+    windowFacade = new WindowFacade(this);
+    windowFacade->loadWindows();
 
     // add to layout after main window
     timerBar->add();
@@ -110,23 +110,23 @@ void MainWindow::loadClient() {
 
     scriptService = new ScriptService(this);
 
-    cm = new ConnectionManager(this);
+    tcpClient = new TcpClient(this);
 
     menuHandler = new MenuHandler(this);
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 }
 
-WindowManager* MainWindow::getWindowManager() {
-    return windowManager;
+WindowFacade* MainWindow::getWindowFacade() {
+    return windowFacade;
 }
 
-ToolbarManager* MainWindow::getToolbarManager() {
-    return tbm;
+Toolbar* MainWindow::getToolbar() {
+    return toolBar;
 }
 
-ConnectionManager* MainWindow::getConnectionManager() {
-    return cm;
+TcpClient* MainWindow::getTcpClient() {
+    return tcpClient;
 }
 
 CommandLine* MainWindow::getCommandLine() {
@@ -232,12 +232,12 @@ void MainWindow::closeEvent(QCloseEvent*){
 }
 
 MainWindow::~MainWindow() {
-    delete cm;
+    delete tcpClient;
     delete settings;
     delete generalSettings;
     delete ui;
-    delete tbm;
-    delete windowManager;
+    delete toolBar;
+    delete windowFacade;
     delete cmdLine;
     delete menuHandler;
     delete timerBar;

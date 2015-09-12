@@ -6,13 +6,13 @@
 #include <mainwindow.h>
 #include <commandline.h>
 #include <script.h>
-#include <dataconverterservice.h>
+#include <textutils.h>
 #include <scriptwriterthread.h>
 
 class MainWindow;
 class CommandLine;
 class Script;
-class DataConverterService;
+class TextUtils;
 class ScriptWriterThread;
 
 class ScriptService : public QObject {
@@ -32,11 +32,11 @@ public:
     bool isScriptActive();
 
 private:
-    DataConverterService* dataConverterService;
+    TextUtils* textUtils;
     ScriptWriterThread* scriptWriter;
     MainWindow* mainWindow;
     CommandLine* commandLine;
-    WindowManager* windowManager;
+    WindowFacade* windowFacade;
     Script* script;
     QElapsedTimer timer;
     bool terminateFlag;

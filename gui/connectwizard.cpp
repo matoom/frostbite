@@ -16,36 +16,36 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
 
     connect(this, SIGNAL(gameSelected(QString)),
-            mainWindow->getConnectionManager(), SLOT(gameSelected(QString)));
+            mainWindow->getTcpClient(), SLOT(gameSelected(QString)));
 
     connect(this, SIGNAL(initSession(QString, QString, QString, QString)),
-            mainWindow->getConnectionManager(), SLOT(initEauthSession(QString, QString, QString, QString)));
+            mainWindow->getTcpClient(), SLOT(initEauthSession(QString, QString, QString, QString)));
 
     connect(this, SIGNAL(setProxy(bool, QString, QString)),
-            mainWindow->getConnectionManager(), SLOT(setProxy(bool, QString, QString)));
+            mainWindow->getTcpClient(), SLOT(setProxy(bool, QString, QString)));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(characterFound(QString, QString)),
+    connect(mainWindow->getTcpClient(), SIGNAL(characterFound(QString, QString)),
             this, SLOT(addCharacterList(QString, QString)));
 
     connect(this, SIGNAL(retrieveSession(QString)),
-            mainWindow->getConnectionManager(), SLOT(retrieveEauthSession(QString)));
+            mainWindow->getTcpClient(), SLOT(retrieveEauthSession(QString)));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(sessionRetrieved(QString, QString, QString)),
+    connect(mainWindow->getTcpClient(), SIGNAL(sessionRetrieved(QString, QString, QString)),
             this, SLOT(setSession(QString, QString, QString)));
 
     connect(this, SIGNAL(connectToServer(QString, QString, QString)),
-            mainWindow->getConnectionManager(), SLOT(connectToHost(QString, QString, QString)));
+            mainWindow->getTcpClient(), SLOT(connectToHost(QString, QString, QString)));
 
     connect(this, SIGNAL(resetConnection()),
-            mainWindow->getConnectionManager(), SLOT(resetEauthSession()));
+            mainWindow->getTcpClient(), SLOT(resetEauthSession()));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(eAuthError(QString)),
+    connect(mainWindow->getTcpClient(), SIGNAL(eAuthError(QString)),
             this, SLOT(showError(QString)));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(resetPassword()),
+    connect(mainWindow->getTcpClient(), SIGNAL(resetPassword()),
             this, SLOT(resetPassword()));
 
-    connect(mainWindow->getConnectionManager(), SIGNAL(enableGameSelect()),
+    connect(mainWindow->getTcpClient(), SIGNAL(enableGameSelect()),
             this, SLOT(enableGameSelect()));
 }
 

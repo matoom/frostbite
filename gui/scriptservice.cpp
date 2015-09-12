@@ -3,8 +3,8 @@
 ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     commandLine = mainWindow->getCommandLine();
-    windowManager = mainWindow->getWindowManager();
-    dataConverterService = DataConverterService::Instance();
+    windowFacade = mainWindow->getWindowFacade();
+    textUtils = TextUtils::Instance();
     scriptWriter = new ScriptWriterThread(this);
 
     script = new Script(this);
@@ -32,28 +32,28 @@ void ScriptService::runScript(QString input) {
 
     if(fileList.contains(fileName + ".rb")) {
         if(!script->isRunning()) {
-            windowManager->scriptRunning(true);
-            windowManager->writeGameWindow("[Executing script: " +
+            windowFacade->scriptRunning(true);
+            windowFacade->writeGameWindow("[Executing script: " +
                                            fileName.toLocal8Bit() +
                                            ".rb, Press ESC to abort.]");
             timer.start();
             terminateFlag = false;
             script->execute(fileName, args);
         } else {
-            windowManager->writeGameWindow("[Script " +
+            windowFacade->writeGameWindow("[Script " +
                                            script->currentFileName().toLocal8Bit() +
                                            ".rb already executing.]");
         }
     } else {
-        windowManager->writeGameWindow("[Script not found.]");
+        windowFacade->writeGameWindow("[Script not found.]");
     }
 }
 
 void ScriptService::terminateScript() {
     if(script->isRunning()) {
         script->killScript();
-        windowManager->writeGameWindow("[Script terminated after " +
-            dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+        windowFacade->writeGameWindow("[Script terminated after " +
+            textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
         terminateFlag = false;
     }
 }
@@ -62,8 +62,8 @@ void ScriptService::abortScript() {
     if(script->isRunning()) {
         if(!terminateFlag) {
             script->sendMessage("exit#\n");
-            windowManager->writeGameWindow("[Script aborted after " +
-                dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+            windowFacade->writeGameWindow("[Script aborted after " +
+                textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
             terminateFlag = true;
         } else {
             this->terminateScript();
@@ -72,18 +72,18 @@ void ScriptService::abortScript() {
 }
 
 void ScriptService::scriptFinished() {
-    windowManager->writeGameWindow("[Script finished, Execution time - " +
-        dataConverterService->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+    windowFacade->writeGameWindow("[Script finished, Execution time - " +
+        textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
     timer.invalidate();
     terminateFlag = false;
 }
 
 void ScriptService::scriptEnded() {
-    windowManager->scriptRunning(false);
+    windowFacade->scriptRunning(false);
 }
 
 void ScriptService::writeGameWindow(QByteArray command) {
-    windowManager->writeGameWindow(command);
+    windowFacade->writeGameWindow(command);
 }
 
 void ScriptService::writeScriptText(QByteArray text) {
@@ -109,7 +109,7 @@ void ScriptService::processCommand(QByteArray msg) {
             if(line.startsWith("put#")) {
                 commandLine->writeCommand(line.mid(4).trimmed(), "script");
             } else if (line.startsWith("echo#")) {
-                windowManager->writeGameWindow("<span class=\"echo\">" +
+                windowFacade->writeGameWindow("<span class=\"echo\">" +
                     line.mid(5).trimmed() + "</span>");
             } else if (line.startsWith("end#")) {
                 script->sendMessage("end#\n");

@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QToolButton>
 
-#include <toolbarmanager.h>
+#include <toolbar.h>
 #include <mainwindow.h>
 
-class ToolbarManager;
+class Toolbar;
 class MainWindow;
 
 class FullscreenButton : QToolButton {

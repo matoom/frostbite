@@ -1,23 +1,23 @@
-#include "dataservice.h"
+#include "shareddataservice.h"
 
-DataService* DataService::m_pInstance = NULL;
+SharedDataService* SharedDataService::m_pInstance = NULL;
 
-DataService* DataService::Instance() {
+SharedDataService* SharedDataService::Instance() {
     if (!m_pInstance) {
-        m_pInstance = new DataService;
+        m_pInstance = new SharedDataService;
     }
     return m_pInstance;
 }
 
-DataService::DataService(QObject *parent) : QObject(parent) {
+SharedDataService::SharedDataService(QObject *parent) : QObject(parent) {
     this->loadDataLib();    
 }
 
-bool DataService::isLoaded() {
+bool SharedDataService::isLoaded() {
     return loaded;
 }
 
-void DataService::loadDataLib() {
+void SharedDataService::loadDataLib() {
     dataLib = new QLibrary();
     dataLib->setFileName(QApplication::applicationDirPath() + "/shared");
     loaded = dataLib->load();
@@ -62,7 +62,7 @@ void DataService::loadDataLib() {
     //destroy = (Destroy)dataLib->resolve("destroy");
 }
 
-/*DataService::~DataService() {
+/*SharedDataService::~SharedDataService() {
     destroy();
     dataLib->unload();
     delete dataLib;

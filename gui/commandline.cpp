@@ -4,7 +4,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     mainWindow = (MainWindow*)parent;
     roundtimeDisplay = new RoundTimeDisplay(parent);
     macroService = new MacroService(parent);
-    windowManager = mainWindow->getWindowManager();
+    windowFacade = mainWindow->getWindowFacade();
     wordCompleter = new WordCompleter(this);
     keyboardFilter = new KeyboardFilter(this);
 
@@ -104,19 +104,19 @@ void CommandLine::doCopy() {
     if(this->hasSelectedText()) {
         this->copy();
     } else {
-        QTextCursor mainCursor = windowManager->getGameWindow()->textCursor();
+        QTextCursor mainCursor = windowFacade->getGameWindow()->textCursor();
         if(mainCursor.hasSelection()) {
-            windowManager->getGameWindow()->copy();
+            windowFacade->getGameWindow()->copy();
         } else {
-            windowManager->copyDock();
+            windowFacade->copyDock();
         }
     }
 }
 
 void CommandLine::writeCommand(QString text, QString style) {
-    mainWindow->getConnectionManager()->writeCommand(text);
+    mainWindow->getTcpClient()->writeCommand(text);
 
-    QTextCursor cursor(windowManager->getGameWindow()->textCursor());
+    QTextCursor cursor(windowFacade->getGameWindow()->textCursor());
     cursor.movePosition(QTextCursor::End);
     cursor.movePosition(QTextCursor::PreviousCharacter);
     cursor.select(QTextCursor::WordUnderCursor);
@@ -128,10 +128,10 @@ void CommandLine::writeCommand(QString text, QString style) {
         cursor.movePosition(QTextCursor::EndOfLine);
         cursor.insertHtml(html);
     } else {
-        windowManager->getGameWindow()->appendHtml(html);
+        windowFacade->getGameWindow()->appendHtml(html);
     }
 
-    windowManager->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);
+    windowFacade->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);
 }
 
 void CommandLine::completeCommand() {

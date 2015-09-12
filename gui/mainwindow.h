@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QtGui>
 
-#include <windowmanager.h>
-#include <connectionmanager.h>
-#include <toolbarmanager.h>
+#include <windowfacade.h>
+#include <tcpclient.h>
+#include <toolbar.h>
 #include <clientsettings.h>
 #include <commandline.h>
 #include <menuhandler.h>
@@ -35,9 +35,9 @@ namespace Ui {
     class MainWindow;
 }
 
-class WindowManager;
-class ConnectionManager;
-class ToolbarManager;
+class WindowFacade;
+class TcpClient;
+class Toolbar;
 class GameWindow;
 class CommandLine;
 class MenuHandler;
@@ -78,9 +78,9 @@ public:
     void openConnectDialog();
     void openAppearanceDialog();
 
-    WindowManager* getWindowManager();
-    ToolbarManager* getToolbarManager();
-    ConnectionManager* getConnectionManager();
+    WindowFacade* getWindowFacade();
+    Toolbar* getToolbar();
+    TcpClient* getTcpClient();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
     TimerBar* getTimerBar();
@@ -88,9 +88,9 @@ public:
 
 private:
     Ui::MainWindow* ui;
-    WindowManager* windowManager;
-    ToolbarManager* tbm;
-    ConnectionManager* cm;
+    WindowFacade* windowFacade;
+    Toolbar* toolBar;
+    TcpClient* tcpClient;
     ClientSettings* settings;
     GeneralSettings* generalSettings;
     CommandLine* cmdLine;

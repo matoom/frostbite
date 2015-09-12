@@ -1,22 +1,22 @@
-#include "dataconverterservice.h"
+#include "textutils.h"
 
-DataConverterService* DataConverterService::m_pInstance = NULL;
+TextUtils* TextUtils::m_pInstance = NULL;
 
-DataConverterService* DataConverterService::Instance() {
+TextUtils* TextUtils::Instance() {
     if (!m_pInstance) {
-        m_pInstance = new DataConverterService;
+        m_pInstance = new TextUtils;
     }
 
     return m_pInstance;
 }
 
-DataConverterService::DataConverterService(QObject *parent) : QObject(parent) {
+TextUtils::TextUtils(QObject *parent) : QObject(parent) {
     this->populateExpStates();
 
     rxNumber.setPattern("(\\d+)");
 }
 
-void DataConverterService::populateExpStates() {
+void TextUtils::populateExpStates() {
     mindStates << "clear" << "dabbling" << "perusing" << "learning" << "thoughtful"
         << "thinking" << "considering" << "pondering" << "ruminating" << "concentrating"
         << "attentive" << "deliberative" << "interested" << "examining" << "understanding" << "absorbing"
@@ -25,7 +25,7 @@ void DataConverterService::populateExpStates() {
         << "very riveted" << "rapt" << "very rapt" << "enthralled" << "nearly locked" << "mind lock";
 }
 
-QString DataConverterService::addNumericStateToExp(QString exp) {
+QString TextUtils::addNumericStateToExp(QString exp) {
     int index = 0;
     for(int i = mindStates.length() - 1; i >= 0; i--) {
         index = exp.indexOf(mindStates.at(i));
@@ -37,20 +37,20 @@ QString DataConverterService::addNumericStateToExp(QString exp) {
     return exp;
 }
 
-int DataConverterService::expStateToNumeric(QString state) {
+int TextUtils::expStateToNumeric(QString state) {
     return mindStates.indexOf(state);
 }
 
-int DataConverterService::expBriefToNumeric(QString state) {
+int TextUtils::expBriefToNumeric(QString state) {
     rxNumber.indexIn(state, 0);
     return rxNumber.cap(1).toInt();
 }
 
-QString DataConverterService::expNumericToState(int index) {
+QString TextUtils::expNumericToState(int index) {
     return mindStates.at(index);
 }
 
-QString DataConverterService::msToMMSS(int ms) {
+QString TextUtils::msToMMSS(int ms) {
     int ss = ms / 1000;
     int mm = ss / 60;
         ss = ss % 60;
@@ -58,7 +58,7 @@ QString DataConverterService::msToMMSS(int ms) {
     return QString().sprintf("%02d:%02d", mm, ss);
 }
 
-QString DataConverterService::findLowestActiveValue(QStringList list) {
+QString TextUtils::findLowestActiveValue(QStringList list) {
     int minVal = std::numeric_limits<int>::max();
     foreach(QString item, list) {
         rxNumber.indexIn(item, 0);

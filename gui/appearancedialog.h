@@ -12,11 +12,11 @@
 #include <mainwindow.h>
 #include <defaultvalues.h>
 #include <generalsettings.h>
-#include <windowmanager.h>
+#include <windowfacade.h>
 
 class MainWindow;
 class GeneralSettings;
-class WindowManager;
+class WindowFacade;
 
 namespace Ui {
     class AppearanceDialog;
@@ -35,7 +35,7 @@ public:
 private:    
     Ui::AppearanceDialog *ui;
     MainWindow* mainWindow;
-    WindowManager* windowManager;
+    WindowFacade* windowFacade;
     GeneralSettings* settings;
 
     QToolButton* mainBgSelect;

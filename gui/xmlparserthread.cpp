@@ -1,9 +1,9 @@
-#include "dataprocessthread.h"
+#include "xmlparserthread.h"
 
-DataProcessThread::DataProcessThread(QObject *parent) {
+XmlParserThread::XmlParserThread(QObject *parent) {
     mainWindow = (MainWindow*)parent;
-    windowManager = mainWindow->getWindowManager();
-    toolbarManager = mainWindow->getToolbarManager();
+    windowFacade = mainWindow->getWindowFacade();
+    toolBar = mainWindow->getToolbar();
     commandLine = mainWindow->getCommandLine();
     gameDataContainer = GameDataContainer::Instance();
     highlighter = new Highlighter(parent);
@@ -11,30 +11,30 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
     rxDmg.setPattern("fail to\\b|attempt to\\b|counter little of\\b|You evade, barely\\b");
 
-    connect(this, SIGNAL(updateConversationsWindow(QString)), windowManager, SLOT(updateConversationsWindow(QString)));
-    connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowManager, SLOT(updateNavigationDisplay(DirectionsList)));
-    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowManager, SLOT(updateRoomWindowTitle(QString)));
+    connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade, SLOT(updateConversationsWindow(QString)));
+    connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
+    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowFacade, SLOT(updateRoomWindowTitle(QString)));
 
-    connect(this, SIGNAL(updateExpWindow()), windowManager, SLOT(updateExpWindow()));
-    connect(this, SIGNAL(updateRoomWindow()), windowManager, SLOT(updateRoomWindow()));
+    connect(this, SIGNAL(updateExpWindow()), windowFacade, SLOT(updateExpWindow()));
+    connect(this, SIGNAL(updateRoomWindow()), windowFacade, SLOT(updateRoomWindow()));
 
-    connect(this, SIGNAL(updateDeathsWindow(QString)), windowManager, SLOT(updateDeathsWindow(QString)));
-    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowManager, SLOT(updateThoughtsWindow(QString)));
-    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowManager, SLOT(updateArrivalsWindow(QString)));
-    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowManager, SLOT(updateFamiliarWindow(QString)));
+    connect(this, SIGNAL(updateDeathsWindow(QString)), windowFacade, SLOT(updateDeathsWindow(QString)));
+    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
+    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
+    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade, SLOT(updateFamiliarWindow(QString)));
 
-    connect(this, SIGNAL(updateVitals(QString, QString)), toolbarManager, SLOT(updateVitals(QString, QString)));
-    connect(this, SIGNAL(updateStatus(QString, QString)), toolbarManager, SLOT(updateStatus(QString, QString)));
-    connect(this, SIGNAL(updateWieldLeft(QString)), toolbarManager, SLOT(updateWieldLeft(QString)));
-    connect(this, SIGNAL(updateWieldRight(QString)), toolbarManager, SLOT(updateWieldRight(QString)));
-    connect(this, SIGNAL(updateSpell(QString)), toolbarManager, SLOT(updateSpell(QString)));
-    connect(this, SIGNAL(updateActiveSpells()), toolbarManager, SLOT(updateActiveSpells()));
-    connect(this, SIGNAL(clearActiveSpells()), toolbarManager, SLOT(clearActiveSpells()));
+    connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
+    connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
+    connect(this, SIGNAL(updateWieldLeft(QString)), toolBar, SLOT(updateWieldLeft(QString)));
+    connect(this, SIGNAL(updateWieldRight(QString)), toolBar, SLOT(updateWieldRight(QString)));
+    connect(this, SIGNAL(updateSpell(QString)), toolBar, SLOT(updateSpell(QString)));
+    connect(this, SIGNAL(updateActiveSpells()), toolBar, SLOT(updateActiveSpells()));
+    connect(this, SIGNAL(clearActiveSpells()), toolBar, SLOT(clearActiveSpells()));
 
     connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
     connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeScriptText(QByteArray)));
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
-    connect(this, SIGNAL(writeText(QByteArray, bool)), windowManager, SLOT(writeGameText(QByteArray, bool)));
+    connect(this, SIGNAL(writeText(QByteArray, bool)), windowFacade, SLOT(writeGameText(QByteArray, bool)));
 
     exit = false;
     pushStream = false;
@@ -47,17 +47,17 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     familiarElementCount = 0;
 }
 
-void DataProcessThread::updateHighlighterSettings() {
+void XmlParserThread::updateHighlighterSettings() {
     highlighter->reloadSettings();
 }
 
-void DataProcessThread::addData(QByteArray buffer) {
+void XmlParserThread::addData(QByteArray buffer) {
     mMutex.lock();
     dataQueue.enqueue(buffer);
     mMutex.unlock();
 }
 
-void DataProcessThread::run() {
+void XmlParserThread::run() {
     while(!exit) {
         while(!dataQueue.isEmpty()) {
             mMutex.lock();
@@ -69,7 +69,7 @@ void DataProcessThread::run() {
     }
 }
 
-void DataProcessThread::process(QByteArray data) {
+void XmlParserThread::process(QByteArray data) {
     QList<QByteArray> lines = data.split('\n');
 
     for(int i = 0; i < lines.size(); i++) {
@@ -77,7 +77,7 @@ void DataProcessThread::process(QByteArray data) {
     }
 }
 
-void DataProcessThread::processGameData(QByteArray data) {
+void XmlParserThread::processGameData(QByteArray data) {
     /*The ampersand character (&) and the left angle bracket (<) MUST NOT
     appear in their literal form, except when used as markup delimiters, or
     within a comment, a processing instruction, or a CDATA section. If they
@@ -122,7 +122,7 @@ void DataProcessThread::processGameData(QByteArray data) {
     writeGameText(rawData);
 }
 
-bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
+bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
     if(!mono && !pushStream) {
@@ -188,7 +188,7 @@ bool DataProcessThread::filterPlainText(QDomElement root, QDomNode n) {
     return true;
 }
 
-void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
+void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
     prompt = false;
@@ -366,7 +366,7 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
     }
 }
 
-void DataProcessThread::processPushStream(QByteArray rawData) {
+void XmlParserThread::processPushStream(QByteArray rawData) {
     QString tag = "";
     if(pushStream) {
         if(inv) {
@@ -381,7 +381,7 @@ void DataProcessThread::processPushStream(QByteArray rawData) {
     }
 }
 
-void DataProcessThread::writeGameText(QByteArray rawData) {
+void XmlParserThread::writeGameText(QByteArray rawData) {
     if (rawData.size() == 1) {
         emit writeText("", false);
     } else if (mono && !pushStream) {
@@ -405,7 +405,7 @@ void DataProcessThread::writeGameText(QByteArray rawData) {
 }
 
 // custom parsing for mono tags
-void DataProcessThread::fixMonoTags(QString& line) {
+void XmlParserThread::fixMonoTags(QString& line) {
     // strip tags from cmd=flag
     if(line.startsWith("  <d cmd=\"flag")) {
         line = stripTags("<temp>" + line + "</temp>");
@@ -425,7 +425,7 @@ void DataProcessThread::fixMonoTags(QString& line) {
     }
 }
 
-QString DataProcessThread::stripTags(QString line) {
+QString XmlParserThread::stripTags(QString line) {
     QXmlStreamReader xml(line);
     QString textString;
     while (!xml.atEnd()) {
@@ -436,7 +436,7 @@ QString DataProcessThread::stripTags(QString line) {
     return textString;
 }
 
-DataProcessThread::~DataProcessThread() {
+XmlParserThread::~XmlParserThread() {
     this->exit = true;
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");

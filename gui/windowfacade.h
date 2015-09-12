@@ -1,5 +1,5 @@
-#ifndef WINDOWMANAGER_H
-#define WINDOWMANAGER_H
+#ifndef WindowFacade_H
+#define WindowFacade_H
 
 #include <QDockWidget>
 
@@ -34,12 +34,12 @@ class ArrivalsLogger;
 
 typedef QList<QString> DirectionsList;
 
-class WindowManager : public QObject {
+class WindowFacade : public QObject {
     Q_OBJECT
 
 public:
-    WindowManager(QObject *parent = 0);
-    ~WindowManager();
+    WindowFacade(QObject *parent = 0);
+    ~WindowFacade();
 
     void loadWindows();
     QPlainTextEdit* getGameWindow();
@@ -155,4 +155,4 @@ signals:
     void updateFamiliarSettings();
 };
 
-#endif // WINDOWMANAGER_H
+#endif // WindowFacade_H
