@@ -19,14 +19,14 @@
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
       :armor => { :item => "chain hauberk", :amount => 1 }, #[Tembeg's Armory, Salesroom]
-      :weapon => { :item => "heavy crossbow", :amount => 4 }, #[Milgrym's Weapons, Showroom]
+      :weapon => { :item => :none, :amount => 1 }, #[Milgrym's Weapons, Showroom]
       :jewelry_appraisal_room => { :item => "platinum wristcuff", :amount => 1 }, #[Grisgonda's, Appraisal Room]
       :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
       :artificer => { :item => "parchment scroll", :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "bucket", :amount => 2 }, #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "toolbox", :amount => 1 }, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "silver lancet", :location => "on table", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
       :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]

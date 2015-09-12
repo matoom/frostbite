@@ -90,6 +90,8 @@ signals:
     void updateWieldLeft(QString);
     void updateWieldRight(QString);
     void updateSpell(QString);
+    void updateActiveSpells();
+    void clearActiveSpells();
 
     void setTimer(int);
     void writeScriptMessage(QByteArray);

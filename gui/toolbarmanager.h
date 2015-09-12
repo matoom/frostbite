@@ -12,6 +12,7 @@
 #include <quickbuttoneditdialog.h>
 #include <gamedatacontainer.h>
 #include <fullscreenbutton.h>
+#include <activespellindicator.h>
 
 class MainWindow;
 class QuickButtonDisplay;
@@ -44,11 +45,13 @@ private:
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     GameDataContainer* gameDataContainer;
+    DataConverterService* dataConverterService;
     QuickButtonDisplay* quickButtonDisplay;
     QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;
     WieldIndicator* wieldRight;
     SpellIndicator* spell;
+    ActiveSpellIndicator* activeSpell;
 
     void addFullScreenButton();
 
@@ -61,6 +64,8 @@ public slots:
     void updateWieldRight(QString value);
     void updateSpell(QString);
 
+    void updateActiveSpells();
+    void clearActiveSpells();
 };
 
 #endif // TOOLBARMANAGER_H

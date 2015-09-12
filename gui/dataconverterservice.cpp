@@ -57,3 +57,18 @@ QString DataConverterService::msToMMSS(int ms) {
 
     return QString().sprintf("%02d:%02d", mm, ss);
 }
+
+QString DataConverterService::findLowestActiveValue(QStringList list) {
+    int minVal = std::numeric_limits<int>::max();
+    foreach(QString item, list) {
+        rxNumber.indexIn(item, 0);
+        int value = rxNumber.cap(1).toInt();
+
+        if(value < minVal && value != 0) {
+            minVal = value;
+        }
+    }
+    if(minVal == std::numeric_limits<int>::max()) return "-";
+
+    return QString::number(minVal);
+}

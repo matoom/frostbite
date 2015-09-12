@@ -28,6 +28,8 @@ DataProcessThread::DataProcessThread(QObject *parent) {
     connect(this, SIGNAL(updateWieldLeft(QString)), toolbarManager, SLOT(updateWieldLeft(QString)));
     connect(this, SIGNAL(updateWieldRight(QString)), toolbarManager, SLOT(updateWieldRight(QString)));
     connect(this, SIGNAL(updateSpell(QString)), toolbarManager, SLOT(updateSpell(QString)));
+    connect(this, SIGNAL(updateActiveSpells()), toolbarManager, SLOT(updateActiveSpells()));
+    connect(this, SIGNAL(clearActiveSpells()), toolbarManager, SLOT(clearActiveSpells()));
 
     connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
     connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeScriptText(QByteArray)));
@@ -291,6 +293,11 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
                 }
                 emit updateRoomWindow();
             }
+        } else if(e.tagName() == "clearStream") {
+            if(e.attribute("id") == "percWindow") {
+                gameDataContainer->clearActiveSpells();
+                emit clearActiveSpells();
+            }
         } else if(e.tagName() == "pushStream") {
             pushStream = true;
             if(e.attribute("id") == "assess") {
@@ -333,7 +340,11 @@ void DataProcessThread::filterDataTags(QDomElement root, QDomNode n) {
                 }
             } else if(e.attribute("id") == "ooc") {
                 gameText += root.text().trimmed();
+            } else if(e.attribute("id") == "percWindow") {
+              gameDataContainer->addActiveSpells(root.text().trimmed());
+              emit updateActiveSpells();
             }
+
         } else if(e.tagName() == "popStream") {
             pushStream = false;
             if(inv) {

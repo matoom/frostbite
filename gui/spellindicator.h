@@ -15,6 +15,7 @@ public:
     explicit SpellIndicator(QObject *parent = 0);
 
     QWidget* create();
+    void setToolTip(QString text);
 
     QLabel* imageLabel;
 

@@ -855,3 +855,12 @@ Shops in this Plaza:
   There are 13 shops available for rent here.  4 shops are open.
 <output class=""/>
 <prompt time="1393188066">&gt;</prompt>
+
+<clearStream id="percWindow"/>
+<pushStream id="percWindow"/> Khri Sagacity  (6 roisaen)
+<popStream/><pushStream id="percWindow"/> Khri Shadowstep  (34 roisaen)
+<popStream/><pushStream id="percWindow"/> Khri Steady  (39 roisaen)
+<popStream/><pushStream id="percWindow"/> Khri Dampen  (38 roisaen)
+<popStream/><pushStream id="percWindow"/> Khri Darken  (39 roisaen)
+<popStream/><pushStream id="percWindow"/> <b>Khri Skulk</b>
+<popStream/><prompt time="1441900606">&gt;</prompt>

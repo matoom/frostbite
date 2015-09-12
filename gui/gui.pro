@@ -93,7 +93,8 @@ SOURCES += main.cpp\
     debuglogger.cpp \
     snapshot.cpp \
     guiapplication.cpp \
-    tray.cpp
+    tray.cpp \
+    activespellindicator.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -162,7 +163,8 @@ HEADERS  += mainwindow.h \
     snapshot.h \
     windowinterface.h \
     guiapplication.h \
-    tray.h
+    tray.h \
+    activespellindicator.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

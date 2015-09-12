@@ -73,6 +73,11 @@ public:
     QStringList getInventory();
     QStringList getContainer();
 
+    void setActiveSpells(QStringList activeSpells);
+    QStringList getActiveSpells();
+    void addActiveSpells(QString activeSpell);
+    void clearActiveSpells();
+
 private:
     GameDataContainer(QObject *parent = 0);
     GameDataContainer(GameDataContainer const& copy);
@@ -101,6 +106,8 @@ private:
     QString wieldRight;
     QString wieldLeftNoun;
     QString wieldLeft;
+
+    QStringList activeSpells;
 
 signals:
     

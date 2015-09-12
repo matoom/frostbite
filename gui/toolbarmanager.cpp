@@ -3,6 +3,7 @@
 ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
+    dataConverterService = DataConverterService::Instance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -10,6 +11,7 @@ ToolbarManager::ToolbarManager(QObject *parent) : QObject(parent) {
     wieldLeft = new WieldIndicator(this, LHAND_ICO);
     wieldRight = new WieldIndicator(this, RHAND_ICO);
     spell = new SpellIndicator(this);            
+    activeSpell = new ActiveSpellIndicator(this);
 }
 
 void ToolbarManager::updateQuickButtonSettings() {
@@ -45,6 +47,7 @@ void ToolbarManager::loadToolbar() {
     mainWindow->addToolbarWidget(wieldLeftWidget);
     mainWindow->addToolbarWidget(wieldRight->create());
     mainWindow->addToolbarWidget(spell->create());
+    mainWindow->addToolbarWidget(activeSpell->create());
 
     mainWindow->addToolbarWidget(statusIndicator->create());
 
@@ -64,7 +67,7 @@ void ToolbarManager::updateWieldRight(QString value) {
 }
 
 void ToolbarManager::updateSpell(QString toolTip) {
-    spell->imageLabel->setToolTip(toolTip);
+    spell->setToolTip("<table style='margin: 2px;'><tr><td>" + toolTip + "</td></tr></table>");
 }
 
 QHash<QString, bool> ToolbarManager::getStatus() {
@@ -123,10 +126,30 @@ void ToolbarManager::quickButtonAction() {
     emit mainWindow->getCommandLine()->sendCommand();
 }
 
+void ToolbarManager::updateActiveSpells() {
+    QStringList activeSpells = gameDataContainer->getActiveSpells();
+
+    activeSpell->setText(dataConverterService->findLowestActiveValue(activeSpells));
+
+    QString text = "<table style='margin: 4px;'>";
+    foreach(QString activeSpell, activeSpells) {
+        text +="<tr><td><div style='font-size: 14px; white-space: nowrap;'>" + activeSpell + "</div><td/></tr>";
+    }
+    text += "</table>";
+
+    activeSpell->setToolTip(text);
+}
+
+void ToolbarManager::clearActiveSpells() {
+    activeSpell->setText("-");
+    activeSpell->setToolTip("<table style='margin: 2px;'><tr><td>None</td></tr></table>");
+}
+
 ToolbarManager::~ToolbarManager() {
     delete vitalsIndicator;
     delete statusIndicator;
     delete quickButtonDisplay;
     delete wieldLeft;
     delete wieldRight;
+    delete activeSpell;
 }

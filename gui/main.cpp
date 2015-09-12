@@ -4,7 +4,7 @@
 #include "log4qt/logger.h"
 #include <log4qt/propertyconfigurator.h>
 
-bool MainWindow::DEBUG = false;
+bool MainWindow::DEBUG = true;
 
 int main(int argc, char *argv[]) {
     try {

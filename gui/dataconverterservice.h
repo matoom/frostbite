@@ -6,6 +6,8 @@
 #include <QHash>
 #include <QStringList>
 
+#include <limits>
+
 class DataConverterService : public QObject {
     Q_OBJECT
 
@@ -17,6 +19,7 @@ public:
     QString expNumericToState(int);
     QString msToMMSS(int);
     QString addNumericStateToExp(QString exp);
+    QString findLowestActiveValue(QStringList list);
 
 private:
     DataConverterService(QObject *parent = 0);

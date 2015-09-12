@@ -325,3 +325,25 @@ void GameDataContainer::setRt(int rt) {
         dataService->setRt(rt);
     }
 }
+
+void GameDataContainer::setActiveSpells(QStringList activeSpells) {
+    QWriteLocker locker(&lock);
+    this->activeSpells = activeSpells;
+}
+
+QStringList GameDataContainer::getActiveSpells() {
+    QReadLocker locker(&lock);
+    return this->activeSpells;
+}
+
+void GameDataContainer::addActiveSpells(QString activeSpell) {
+    QWriteLocker locker(&lock);
+    this->activeSpells << activeSpell;
+}
+
+void GameDataContainer::clearActiveSpells() {
+    QWriteLocker locker(&lock);
+    this->activeSpells.clear();
+}
+
+

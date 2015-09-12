@@ -13,11 +13,20 @@ QLabel* SpellIndicator::wieldImageLabel(const char* img) {
                              "background: #383533;"
                              "padding-right: 5px;"
                              "padding-left: 5px;"
-                             "border-radius: 5px}");
+                             "border-radius: 5px}"
+                             "QToolTip {color: #ffffff;"
+                             "background-color: #383533;"
+                             "border: 2px outset #2a82da;}");
 
     imageLabel->setPixmap(QPixmap::fromImage(QImage(img)));
 
+    imageLabel->setCursor(Qt::WhatsThisCursor);
+
     return imageLabel;
+}
+
+void SpellIndicator::setToolTip(QString text) {
+    imageLabel->setToolTip(text);
 }
 
 QWidget* SpellIndicator::create() {
