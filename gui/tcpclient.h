@@ -44,8 +44,6 @@ private:
     XmlParserThread* xmlParserThread;
     DebugLogger* debugLogger;
 
-    bool waitForSettings;
-
     void loadMockData();
 
 signals:
@@ -74,6 +72,7 @@ public slots:
     void eAuthSessionRetrieved(QString, QString, QString);
     void connectWizardError(QString);
     void authError();
+    void writeSettings();
 };
 
 

@@ -15,12 +15,16 @@ void Highlighter::reloadSettings() {
    highlightSettings->init();
 }
 
-QString Highlighter::highlight(QString text) {
+QString Highlighter::highlight(QString text) {  
     if(!text.isEmpty()) {
+        //qDebug() << text;
         highlightList = highlightSettings->getSettings("TextHighlight");
 
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry highlightEntry = highlightList->at(i);
+
+            //highlightEntry.value = Qt::escape(highlightEntry.value);
+            TextUtils::Instance()->plainToHtml(highlightEntry.value);
 
             // match whole or partial words
             if(highlightEntry.options.at(1)) {
@@ -47,7 +51,7 @@ QString Highlighter::highlight(QString text) {
     return text;
 }
 
-void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart) {
+void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart) {    
     QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
     QString endTag = "</span>";
 
@@ -61,7 +65,7 @@ void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int
         }
         text.insert(indexStart, startTag);
         text.insert(indexEnd, endTag);
-    } else {
+    } else {        
         text.replace(rx, startTag + entry.value + endTag);
     }
 }

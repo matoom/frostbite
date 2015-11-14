@@ -5,6 +5,7 @@
 
 #include <mainwindow.h>
 #include <genericwindowfactory.h>
+#include <gridwindowfactory.h>
 #include <gamewindow.h>
 #include <navigationdisplay.h>
 #include <gamedatacontainer.h>
@@ -12,20 +13,25 @@
 #include <defaultvalues.h>
 #include <highlightsettings.h>
 #include <highlighterthread.h>
+#include <gridhighlighterthread.h>
 #include <mainlogger.h>
 #include <thoughtslogger.h>
 #include <conversationslogger.h>
 #include <deathslogger.h>
 #include <arrivalslogger.h>
 
+#include <gridwindow.h>
+
 class MainWindow;
 class GameWindow;
+class GridWindowFactory;
 class GenericWindowFactory;
 class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
 class Highlighter;
 class HighlighterThread;
+class GridHighlighterThread;
 class MainLogger;
 class ThoughtsLogger;
 class ConversationsLogger;
@@ -33,6 +39,7 @@ class DeathsLogger;
 class ArrivalsLogger;
 
 typedef QList<QString> DirectionsList;
+typedef QHash<QString, QString> GridItems;
 
 class WindowFacade : public QObject {
     Q_OBJECT
@@ -52,9 +59,12 @@ public:
     void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
-    void setDockFontColor(QColor);
-    void setDockBackground(QColor);
-    void setDockFont(QFont font);
+    void setTextDockFontColor(QColor);
+    void setTextDockBackground(QColor);
+    void setTextDockFont(QFont font);
+    void setGridDockBackground(QColor);
+    void setGridDockFontColor(QColor);
+    void setGridDockFont(QFont font);
     void copyDock();
     void saveArrivals();
     void reloadSettings();
@@ -81,7 +91,7 @@ public slots:
     void writeGameWindow(QByteArray);    
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
-    void updateExpWindow();
+    void updateExpWindow(QString name, QString text);
     void updateRoomWindow();
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);    
@@ -100,8 +110,11 @@ private slots:
     void arrivalsVisibility(bool);
     void conversationsVisibility(bool);
     void familiarVisibility(bool);
+    void writeExpWindow(GridItems);
 
 private:
+    GridWindowFactory* gridWindowFactory;
+
     GenericWindowFactory* genericWindowFactory;
     MainWindow* mainWindow;
     QPlainTextEdit* gameWindow;
@@ -120,18 +133,20 @@ private:
     QDockWidget* conversationsWindow;
     QDockWidget* familiarWindow;
     QList<QDockWidget*> dockWindows;
+    QList<QDockWidget*> gridWindows;
 
     QRegExp rxRemoveTags;
 
     HighlighterThread* gameWindowHighlighter;
     HighlighterThread* roomHighlighter;
-    HighlighterThread* expHighlighter;
+    GridHighlighterThread* expHighlighter;
     HighlighterThread* arrivalsHighlighter;
     HighlighterThread* thoughtsHighlighter;
     HighlighterThread* deathsHighlighter;
     HighlighterThread* conversationsHighlighter;
     HighlighterThread* familiarHighlighter;
     QList<HighlighterThread*> highlighters;
+    QList<GridHighlighterThread*> gridHighlighters;
 
     MainLogger* mainLogger;
     ThoughtsLogger* thoughtsLogger;
@@ -147,7 +162,7 @@ private:
 signals:
     void updateGameWindowSettings();
     void updateRoomSettings();
-    void updateExpSettings();
+    void updateExpSettings();    
     void updateArrivalsSettings();
     void updateThoughtsSettings();
     void updateDeathsSettings();

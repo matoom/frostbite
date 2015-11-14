@@ -1,4 +1,4 @@
-@items = ["hauberk", "gloves", "balaclava", "shield"]
+@items = ["leathers", "gloves", "balaclava", "shield"]
 
 put "open my backpack"
 

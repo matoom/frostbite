@@ -30,8 +30,6 @@ private:
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
 
-    QRegExp rxRemoveTags;
-
 public slots:
     void showMessage(QString, QString);
 

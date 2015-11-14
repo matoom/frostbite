@@ -5,6 +5,7 @@
 
 require "defines"
 require "hunt"
+require "lx_perf"
 
 @ammo = "bolt"
 @circle_count = 1
@@ -46,7 +47,7 @@ def circle count
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :next => [/Roundtime/],
             :pause => [/You are still stunned/],
-            :adv => ["must be closer to use tactical abilities"],
+            :adv => ["must be closer to use tactical abilities", "aren't close enough"],
             :stand => [/should stand up/] }
   result = match_wait match
 

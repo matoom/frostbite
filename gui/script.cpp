@@ -43,6 +43,8 @@ void Script::killScript() {
 
 void Script::sendMessage(QByteArray message) {
     script_proc->write(message);
+    //https://bugreports.qt.io/browse/QTBUG-45548
+    // BUG in qt5 < fix 5.5.1
     // flush stdout
     script_proc->waitForBytesWritten(-1);
 }

@@ -1,22 +1,26 @@
-put "climb rope"
-match = { :wait_climb => [/You'll have to wait/],
-          :climb => [/\[On a Rope Bridge, Above a Ravine\]/],
-          :stow => [/You can't possibly manage to cross/] }
+def climb_start
+  put "climb rope"
+  match = { :wait_climb => [/You'll have to wait/],
+            :climb => [/\[On a Rope Bridge, Above a Ravine\]/],
+            :stow => [/You can't possibly manage to cross/] }
 
-result = match_wait match
+  result = match_wait match
 
-case result
-  when :wait_climb
-    put "hide"
-    wait_for(/finally arriving|finally reaching/)
-  when :stow
-    put "stow left"
-    wait
-    put "stow right"
-    wait
-    put "climb"
-    wait
+  case result
+    when :wait_climb
+      put "hide"
+      wait_for(/finally arriving|finally reaching/)
+      climb_start
+    when :stow
+      put "stow left"
+      wait
+      put "stow right"
+      wait
+      climb_start
+  end
 end
+
+climb_start
 
 move "shuffle south"
 move "shuffle south"

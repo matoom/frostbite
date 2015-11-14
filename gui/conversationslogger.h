@@ -8,6 +8,7 @@
 #include <QRegExp>
 
 #include <log4qt/logger.h>
+#include <textutils.h>
 
 class ConversationsLogger : public QThread {
     Q_OBJECT

@@ -20,6 +20,7 @@ void ConversationsLogger::run() {
 }
 
 void ConversationsLogger::log(QString logText) {
+    TextUtils::Instance()->htmlToPlain(logText);
     logger()->info(logText.remove(rxRemoveTags));
 }
 

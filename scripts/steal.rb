@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 940
+# 960
 
 @containers = ["backpack", "haversack"]
 @khri = "khri darken sensing serenity sagacity plunder"
@@ -18,18 +18,18 @@
       :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
       :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "chain hauberk", :amount => 1 }, #[Tembeg's Armory, Salesroom]
+      :armor => { :item => "rugged leathers", :amount => 1 }, #[Tembeg's Armory, Salesroom]
       :weapon => { :item => :none, :amount => 1 }, #[Milgrym's Weapons, Showroom]
       :jewelry_appraisal_room => { :item => "platinum wristcuff", :amount => 1 }, #[Grisgonda's, Appraisal Room]
-      :jewelry => { :item => "platinum engagement ring", :amount => 1 }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
+      :jewelry => { :item => "platinum engagement ring", :amount => 1, :bin => true }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
       :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
-      :artificer => { :item => "parchment scroll", :amount => 2 }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
+      :artificer => { :item => "parchment scroll", :amount => 2, :bin => true }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
-      :alchemy => { :item => "toolbox", :amount => 1 }, #[Chizili's Alchemical Goods, Salesroom]
+      :alchemy => { :item => "toolbox", :amount => 1, :bin => true}, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
       :emmiline_sales => { :item => "silver lancet", :location => "on table", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
-      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1 } #[Emmiline's Cottage, Parlor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1, :bin => true } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
@@ -38,12 +38,12 @@
       :odds => { :item  => "ribbon", :amount => 1 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2 } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2, :bin => true } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
-      :alberdeen => { :item  => "tunic", :amount => 1, :alt => {:item => "arm pouch", :amount => 2} }, #[Alberdeen's Meats and Provisions, Front Room]
+      :alberdeen => { :item  => "tunic", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room] # arm pouch trivial at 966
       :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
@@ -88,7 +88,13 @@
                      {:name => "sabre", :amount => 1},
                      {:name => "spidersilk sack", :amount => 1},
                      {:name => "silver bracelet", :amount => 1},
-                     {:name => "bronze cauldron", :amount => 1, :dump => true}]
+                     {:name => "bronze cauldron", :amount => 1, :dump => true},
+                     #{:name => "swordsman's cape", :amount => 1}, 960+
+                     {:name => "necklace", :desc => "with a baroque pearl mermaid pendant", :amount => 1}, # a deep amber necklace with a baroque pearl mermaid pendant
+                     {:name => "amethyst rose", :amount => 1}, # a brilliant amethyst rose
+                     {:name => "trader charm", :amount => 1} # a ruby Trader charm
+]
+
 
 @ilaya_items =
     {
@@ -98,7 +104,7 @@
         :fishmonger => {:item => :none, :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
         :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
-        :stuff => {:item => "pottery lamp", :amount => 2}, #[Krimand's House of Stuff]
+        :stuff => {:item => "pottery lamp", :amount => 2, :bin => true}, #[Krimand's House of Stuff]
         # piers
         :backfence_gossip => {:items => @ilaya_pier_items},
         :blood_bane => {:items => @ilaya_pier_items},
@@ -610,7 +616,7 @@ def bin_items
       pause 0.1
       put "get #{item.at(0)} from my #{item.at(1)}"
       wait
-      put "put #{item.at(0)} in bin"
+      put "put my #{item.at(0)} in bin"
       match = { :continue => ["#{@name}", "were you referring"],
                 :redo => ["only type ahead 1 command"] }
 

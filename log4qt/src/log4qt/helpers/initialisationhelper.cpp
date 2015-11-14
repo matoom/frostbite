@@ -69,7 +69,7 @@ namespace Log4Qt
 	
 	    
 	InitialisationHelper::InitialisationHelper() :
-	    mStartTime(DateTime::currentDateTime().toMilliSeconds()),
+        mStartTime(DateTime::currentDateTime().toMilliSeconds()),
 	    mEnvironmentSettings()
 	{
 		doRegisterTypes();

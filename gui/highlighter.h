@@ -5,6 +5,8 @@
 #include <highlightsettings.h>
 #include <audioplayer.h>
 #include <mainwindow.h>
+#include <textutils.h>
+
 #include <QSettings>
 
 class HighlightSettings;

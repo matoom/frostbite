@@ -76,14 +76,14 @@ move "ne"
 move "go hole"
 put "stand"
 wait
-put "turn basin"
+put "push basin"
 
 put "go wall"
 match = { :open => [/could not find/],
           :continue => [/^\{nav\}$/] }
 case match_wait match
   when :open
-    put "turn basin"
+    put "push basin"
     move "go wall"
 end
 

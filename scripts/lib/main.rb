@@ -78,7 +78,7 @@ end
 # @return [void]
 def wait_for(pattern)
   if pattern.is_a?(Array)
-    pattern = pattern.join('|')
+    pattern = Regexp.new(pattern.join('|'))
   end
 
   (0..1000000).each do

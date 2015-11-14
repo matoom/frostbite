@@ -51,6 +51,11 @@ class Observer
   #     echo "hello"
   #   end
   def register_event event
+    event.each { |k, v|
+      if v.is_a?(Array)
+        event[k] = Regexp.new(v.join('|'))
+      end
+    }
     @@events << event
   end
 

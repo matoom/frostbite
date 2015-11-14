@@ -19,6 +19,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     xmlParserThread = new XmlParserThread(parent);
     connect(this, SIGNAL(addToQueue(QByteArray)), xmlParserThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), xmlParserThread, SLOT(updateHighlighterSettings()));
+    connect(xmlParserThread, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
 
     if(MainWindow::DEBUG) {
         this->loadMockData();
@@ -88,18 +89,13 @@ void TcpClient::authError() {
 void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
     windowFacade->writeGameWindow("Connecting ...");
 
-    waitForSettings = true;
-
     mainWindow->connectEnabled(false);
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
+    tcpSocket->waitForConnected(1000);
 
-    //if(tcpSocket->state() == QAbstractSocket::HostLookupState ||
-    //   tcpSocket->state() == QAbstractSocket::ConnectedState) {
-
-        tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
-                         "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
-    //}
+    tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
+                     "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
 }
 
 void TcpClient::disconnectedFromHost() {
@@ -120,19 +116,20 @@ void TcpClient::setProxy(bool enabled, QString proxyHost, QString proxyPort) {
     }
 }
 
+void TcpClient::writeSettings() {
+    this->writeCommand("");
+    this->writeCommand("_STATE CHATMODE OFF");
+    this->writeCommand("");
+    this->writeCommand("_swclose sassess");
+    this->writeCommand("_swclose satmospherics");
+    this->writeCommand("_swclose sooc");
+    this->writeCommand("_swclose sgroup");
+}
+
 void TcpClient::socketReadyRead() {
     buffer.append(tcpSocket->readAll());
 
     if(buffer.endsWith("\n")){
-        if(waitForSettings) {
-                this->writeCommand("");
-                this->writeCommand("_STATE CHATMODE OFF");
-                this->writeCommand("");
-                this->writeCommand("_swclose sassess");
-                waitForSettings = false;
-        }
-        //qDebug() << buffer;
-
         // process raw data
         emit addToQueue(buffer);
         if(!xmlParserThread->isRunning()) {
@@ -186,6 +183,7 @@ void TcpClient::disconnectFromServer() {
         this->writeCommand("quit");
     }
     tcpSocket->disconnectFromHost();
+    mainWindow->connectEnabled(true);
 }
 
 TcpClient::~TcpClient() {

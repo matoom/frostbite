@@ -1,5 +1,10 @@
 Please wait for connection to game server.
-GSw000100000150095
+
+<playerID id='150095'/>
+
+<settingsInfo  client="1.0.1.26" major="1249" crc='2526791980' instance='DR'/>
+
+<mode id="GAME"/>
 
 Welcome to DragonRealms (R) v2.00
 Copyright 2011 Simutronics Corp.
@@ -864,3 +869,53 @@ Shops in this Plaza:
 <popStream/><pushStream id="percWindow"/> Khri Darken  (39 roisaen)
 <popStream/><pushStream id="percWindow"/> <b>Khri Skulk</b>
 <popStream/><prompt time="1441900606">&gt;</prompt>
+
+<pushStream id="talk"/><preset id='thought'>You hear Sauron's faded thoughts in your head saying,</preset> "Just stop being a dork"
+<popStream/><preset id='thought'>You hear Sauron's faded thoughts in your head saying,</preset> "Just stop being a dork"
+A low, almost subliminal buzz begins in the back of your mind.
+<prompt time="1445108253">&gt;</prompt>
+
+<pushStream id="thoughts"/><preset id='thought'>[Sauron] </preset>"&lt;to you&gt;"  "Go about your business and don't be a sissy"
+<popStream/><prompt time="1445108281">&gt;</prompt>
+
+<pushStream id="talk"/><preset id='thought'>You hear Sauron's loud thoughts in your head saying,</preset> "I will catch up eventually."
+<popStream/><preset id='thought'>You hear Sauron's loud thoughts in your head saying,</preset> "I will catch up eventually."
+A low, almost subliminal buzz begins in the back of your mind.
+<prompt time="1445111798">&gt;</prompt>
+
+<pushStream id="talk"/><preset id='speech'>Basilisk2 asks</preset>, "Would someone please teach crafting?"
+<popStream/><preset id='speech'>Basilisk1 asks</preset>, "Would someone please teach crafting?"
+<prompt time="1445277856">&gt;</prompt>
+
+<pushStream id="talk"/><preset id='speech'>You say</preset>, "&lt;x&gt;."
+<popStream/><preset id='speech'>You say</preset>, "&lt;x&gt;."
+<prompt time="1445452836">&gt;</prompt>
+
+Frodo joins your group.
+<clearStream id='group'/>
+<pushStream id="group"/> Members of your group:
+<popStream/><pushStream id="group"/>  Frodo: <popStream/><pushStream id="group"/>Invigorated<popStream/><pushStream id="group"/>.<popStream/><pushStream id="group"/>
+<popStream/><prompt time="1446053687">&gt;</prompt>
+
+<pushStream id="whispers"/><preset id="whisper">Frodo whispers,</preset> "OOC: I am so confused at what is going on."
+<popStream/><pushStream id="ooc"/><preset id="whisper">OocTest whispers,</preset> "OOC: I am so confused at what is going on."
+<popStream/><preset id="whisper">OocTest whispers,</preset> "OOC: I am so confused at what is going on."
+<prompt time="1446069627">&gt;</prompt>
+
+<pushStream id="thoughts"/><preset id='thought'>[Sauron] </preset>"{faintly}" "what are &amp; these things&amp;gt;"
+<popStream/><prompt time="1446984836">&gt;</prompt>
+
+[Assuming you mean Milgrym the Weaponsmith's.]
+<nav/>
+<streamWindow id='main' title='Story' subtitle=" - [Milgrym's Weapons, Showroom]" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [Milgrym's Weapons, Showroom]" location='center' target='drop' ifClosed='' resident='true'/>
+<component id='room desc'>This is a plain and businesslike shop carrying a wide variety of weapons.  A fair assortment of the wide range of methods to cut, bash, crush, eviscerate and otherwise discomfit your enemies can be had here.  Traders with exotic or unusual weapons are welcome to come in and dicker as Milgrym has an eye for bargains and an appreciation of good weapons.</component>
+<component id='room objs'>You also see a pine table labeled "Small &amp; Larged Edged &amp; Blunt Weapons" with several things on it, a pine counter labeled "Ranged Weapons and Ammunition" with several things on it, a pine bench labeled "Accessories and Brawling Gear" with a few things on it, a pine bin labeled "Miscellaneous" and a pine rack labeled "Two-Handed Weapons" with several things on it.</component>
+<component id='room players'></component>
+<component id='room exits'>Obvious exits: <d>out</d>.<compass></compass></component>
+<component id='room extra'></component>
+<resource picture="3011"/><style id="roomName" />[Milgrym's Weapons, Showroom]
+<style id=""/><preset id='roomDesc'>This is a plain and businesslike shop carrying a wide variety of weapons.  A fair assortment of the wide range of methods to cut, bash, crush, eviscerate and otherwise discomfit your enemies can be had here.  Traders with exotic or unusual weapons are welcome to come in and dicker as Milgrym has an eye for bargains and an appreciation of good weapons.</preset>  You also see a pine table labeled "Small &amp; Larged Edged &amp; Blunt Weapons" with several things on it, a pine counter labeled "Ranged Weapons and Ammunition" with several things on it, a pine bench labeled "Accessories and Brawling Gear" with a few things on it, a pine bin labeled "Miscellaneous" and a pine rack labeled "Two-Handed Weapons" with several things on it.
+Obvious exits: <d>out</d>.
+<compass><dir value="out"/></compass><component id='room players'></component>
+<prompt time="1446936439">&gt;</prompt>

@@ -28,6 +28,9 @@ private:
 private slots:
     void okClicked();
     void cancelClicked();
+
+signals:
+    void updateMenu();
 };
 
 #endif // PROFILEADDDIALOG_H

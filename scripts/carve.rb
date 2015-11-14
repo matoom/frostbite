@@ -10,11 +10,11 @@ def finally_do
 end
 
 def prep
-  put "get my knife in my toolbelt"
+  put "get my knife in my shroud"
 end
 
 def stow_knife
-  put "put my knife in my toolbelt"
+  put "put my knife in my shroud"
 end
 
 def start

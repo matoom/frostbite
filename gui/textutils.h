@@ -20,6 +20,8 @@ public:
     QString msToMMSS(int);
     QString addNumericStateToExp(QString exp);
     QString findLowestActiveValue(QStringList list);
+    void htmlToPlain(QString& data);
+    void plainToHtml(QString& data);
 
 private:
     TextUtils(QObject *parent = 0);
@@ -31,6 +33,7 @@ private:
     QStringList mindStates;
 
     QRegExp rxNumber;
+    QRegExp rxRemoveTags;
 
 signals:
     

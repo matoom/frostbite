@@ -10,6 +10,7 @@
 
 class GuiApplication : public QtSingleApplication {
     Q_OBJECT
+
 public:
     GuiApplication(int &argc, char **argv);
     virtual ~GuiApplication() { }

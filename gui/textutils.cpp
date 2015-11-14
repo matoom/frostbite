@@ -14,6 +14,7 @@ TextUtils::TextUtils(QObject *parent) : QObject(parent) {
     this->populateExpStates();
 
     rxNumber.setPattern("(\\d+)");
+    rxRemoveTags.setPattern("<[^>]*>");
 }
 
 void TextUtils::populateExpStates() {
@@ -71,4 +72,15 @@ QString TextUtils::findLowestActiveValue(QStringList list) {
     if(minVal == std::numeric_limits<int>::max()) return "-";
 
     return QString::number(minVal);
+}
+
+void TextUtils::htmlToPlain(QString& data) {
+    data.remove(rxRemoveTags);
+    data.replace("&amp;", "&").replace("&quot;", "\"")
+            .replace("&apos;", "\'").replace("&lt;", "<").replace("&gt;", ">");
+}
+
+void TextUtils::plainToHtml(QString& data) {
+    data.replace("\"", "&quot;").replace("\'", "&apos;")
+            .replace("<", "&lt;").replace(">", "&gt;");
 }

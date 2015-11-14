@@ -14,7 +14,6 @@ void ScriptWriterThread::addText(QString text) {
     mMutex.lock();
     dataQueue.enqueue(text);
     mMutex.unlock();
-    Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("AddText scriptwriter: " + text);
 }
 
 void ScriptWriterThread::run() {
@@ -30,9 +29,9 @@ void ScriptWriterThread::run() {
 }
 
 void ScriptWriterThread::process(QString line) {
-    Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("process start .. ");
-    emit writeText(line.remove(rxRemoveTags).toLocal8Bit());    
-    Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("process end");
+    line = line.remove(rxRemoveTags);
+    TextUtils::Instance()->htmlToPlain(line);
+    emit writeText(line.toLocal8Bit());
 }
 
 ScriptWriterThread::~ScriptWriterThread() {

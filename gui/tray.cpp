@@ -10,8 +10,6 @@ Tray::Tray(QObject *parent) : QObject(parent) {
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 
-    rxRemoveTags.setPattern("<[^>]*>");
-
     trayIcon->show();
 }
 
@@ -44,7 +42,9 @@ void Tray::createActions() {
  }
 
 void Tray::showMessage(QString title, QString trayEntry) {
-    trayIcon->showMessage(title, trayEntry.remove(rxRemoveTags), QSystemTrayIcon::NoIcon, 5 * 1000);
+    TextUtils::Instance()->htmlToPlain(trayEntry);
+    trayIcon->showMessage(title, trayEntry,
+                          QSystemTrayIcon::NoIcon, 5 * 1000);
 }
 
 void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {

@@ -38,9 +38,6 @@ private:
     void process(QString);
     void setText(QString);
 
-    int scrollValue;
-    int scrollMax;
-
     bool exit;
 
 public slots:
@@ -50,7 +47,6 @@ public slots:
 signals:
     void writeText(const QString&);
     void clearText();
-    void setScrollBarValue(int);
 
 };
 

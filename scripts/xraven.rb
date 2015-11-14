@@ -8,7 +8,7 @@ match = { :open => [/could not find/],
           :continue => [/^\{nav\}$/] }
 case match_wait match
   when :open
-    put "turn torch"
+    put "push torch"
     move "go wall"
 end
 

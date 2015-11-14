@@ -20,6 +20,7 @@ void ThoughtsLogger::run() {
 }
 
 void ThoughtsLogger::log(QString logText) {
+    TextUtils::Instance()->htmlToPlain(logText);
     logger()->info(logText.remove(rxRemoveTags));
 }
 

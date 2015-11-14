@@ -16,6 +16,7 @@ greaterThan(QT_VERSION, 5){
 
 include(../log4qt/src/log4qt/log4qt.pri)
 
+#https://github.com/qtproject/qt-solutions
 include(../singleapp/qtsingleapplication.pri)
 
 greaterThan(QT_VERSION, 5){
@@ -94,7 +95,10 @@ SOURCES += main.cpp\
     windowfacade.cpp \
     textutils.cpp \
     xmlparserthread.cpp \
-    shareddataservice.cpp
+    shareddataservice.cpp \
+    gridwindowfactory.cpp \
+    gridwindow.cpp \
+    gridhighlighterthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -164,7 +168,10 @@ HEADERS  += mainwindow.h \
     windowfacade.h \
     textutils.h \
     xmlparserthread.h \
-    shareddataservice.h
+    shareddataservice.h \
+    gridwindowfactory.h \
+    gridwindow.h \
+    gridhighlighterthread.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

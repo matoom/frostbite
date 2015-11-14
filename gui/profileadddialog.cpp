@@ -16,6 +16,7 @@ void ProfileAddDialog::createProfile() {
         QDir(folder).exists();
         QDir().mkdir(folder);
     }
+    emit updateMenu();
 }
 
 void ProfileAddDialog::okClicked() {

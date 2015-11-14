@@ -3,6 +3,7 @@
 WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     genericWindowFactory = new GenericWindowFactory(parent);
+    gridWindowFactory = new GridWindowFactory(parent);
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
     clientSettings = ClientSettings::Instance();
@@ -26,13 +27,13 @@ void WindowFacade::reloadSettings() {
 
 void WindowFacade::reloadHighlighterSettings() {
     emit updateGameWindowSettings();
-    emit updateRoomSettings();
-    emit updateExpSettings();
+    emit updateRoomSettings();    
     emit updateArrivalsSettings();
     emit updateThoughtsSettings();
     emit updateDeathsSettings();
     emit updateConversationsSettings();
     emit updateFamiliarSettings();
+    emit updateExpSettings();
 }
 
 QPlainTextEdit* WindowFacade::getGameWindow() {
@@ -44,9 +45,13 @@ void WindowFacade::updateWindowColors() {
     this->setGameWindowFont(generalSettings->gameWindowFont());
     mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
 
-    this->setDockBackground(generalSettings->dockWindowBackground());
-    this->setDockFont(generalSettings->dockWindowFont());
-    this->setDockFontColor(generalSettings->dockWindowFontColor());
+    this->setTextDockBackground(generalSettings->dockWindowBackground());
+    this->setTextDockFont(generalSettings->dockWindowFont());
+    this->setTextDockFontColor(generalSettings->dockWindowFontColor());
+
+    this->setGridDockBackground(generalSettings->dockWindowBackground());
+    this->setGridDockFont(generalSettings->dockWindowFont());
+    this->setGridDockFontColor(generalSettings->dockWindowFontColor());
 }
 
 QString WindowFacade::textColor(QString name, QString defaultValue) {
@@ -65,7 +70,7 @@ void WindowFacade::setGameWindowFontColor(QColor color) {
     gameWindow->viewport()->setPalette(p);    
 }
 
-void WindowFacade::setDockFontColor(QColor fontColor) {
+void WindowFacade::setTextDockFontColor(QColor fontColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {        
         p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
@@ -74,7 +79,7 @@ void WindowFacade::setDockFontColor(QColor fontColor) {
     }
 }
 
-void WindowFacade::setDockBackground(QColor backgroundColor) {
+void WindowFacade::setTextDockBackground(QColor backgroundColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {
         p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
@@ -83,9 +88,54 @@ void WindowFacade::setDockBackground(QColor backgroundColor) {
     }
 }
 
-void WindowFacade::setDockFont(QFont font) {
+void WindowFacade::setTextDockFont(QFont font) {
     foreach(QDockWidget* dock, dockWindows) {
         ((QPlainTextEdit*)dock->widget())->setFont(font);
+    }
+}
+
+void WindowFacade::setGridDockFontColor(QColor fontColor) {
+    foreach(QDockWidget* gridWindow, gridWindows) {
+        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
+        QPalette p;
+        for(int i = 0; i < tableWidget->rowCount(); i++) {
+            QWidget* widget = tableWidget->cellWidget(i, 0);
+            p = ((QLabel*)widget)->palette();
+            p.setColor(QPalette::Text, fontColor);
+            ((QLabel*)widget)->setPalette(p);
+        }
+    }
+}
+
+void WindowFacade::setGridDockBackground(QColor backgroundColor) {
+    foreach(QDockWidget* gridWindow, gridWindows) {
+        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
+
+        QPalette p;
+        p = tableWidget->viewport()->palette();
+        p.setColor(QPalette::Base, backgroundColor);
+        tableWidget->viewport()->setPalette(p);
+
+        for(int i = 0; i < tableWidget->rowCount(); i++) {
+            QWidget* widget = tableWidget->cellWidget(i, 0);
+            QLabel* label = ((QLabel*)widget);
+
+            p = label->palette();
+            p.setColor(QPalette::Base, backgroundColor);
+            ((QLabel*)widget)->setPalette(p);
+        }
+    }
+}
+
+void WindowFacade::setGridDockFont(QFont font) {
+    foreach(QDockWidget* gridWindow, gridWindows) {
+        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
+        for(int i = 0; i < tableWidget->rowCount(); i++) {
+            QWidget* widget = tableWidget->cellWidget(i, 0);
+            if(widget != NULL) {
+                ((QLabel*)widget)->setFont(font);
+            }
+        }
     }
 }
 
@@ -140,9 +190,9 @@ void WindowFacade::loadWindows() {
     dockWindows << thoughtsWindow;
     connect(thoughtsWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(thoughtsVisibility(bool)));
 
-    expWindow = genericWindowFactory->createWindow(DOCK_TITLE_EXP);
+    expWindow = gridWindowFactory->createWindow(DOCK_TITLE_EXP);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
-    dockWindows << expWindow;
+    gridWindows << expWindow;
 
     conversationsWindow = genericWindowFactory->createWindow(DOCK_TITLE_CONVERSATIONS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
@@ -189,10 +239,10 @@ void WindowFacade::initWindowHighlighters() {
     connect(this, SIGNAL(updateThoughtsSettings()), thoughtsHighlighter, SLOT(updateSettings()));
     highlighters << thoughtsHighlighter;
 
-    ((GenericWindow*)expWindow->widget())->setAppend(false);
-    expHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)expWindow->widget());
+    expHighlighter = new GridHighlighterThread(mainWindow);
+    connect(expHighlighter, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
     connect(this, SIGNAL(updateExpSettings()), expHighlighter, SLOT(updateSettings()));
-    highlighters << expHighlighter;
+    gridHighlighters << expHighlighter;
 
     conversationsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)conversationsWindow->widget());
     connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
@@ -316,15 +366,40 @@ void WindowFacade::paintNavigationDisplay() {
     gameWindow->viewport()->setPalette(palette);
 }
 
-void WindowFacade::updateExpWindow() {
-    QHash<QString, QString> exp = gameDataContainer->getExp();
+void WindowFacade::writeExpWindow(GridItems items) {
+    QTableWidget* table = ((QTableWidget*)expWindow->widget());
 
-    QString expString = "";
-    foreach (QString value, exp) {
-        expString += value + "\n";
+    table->setRowCount(items.size());
+
+    int i = 0;
+    foreach (QString value, items) {
+        QWidget* item = table->cellWidget(i, 0);
+        QString text = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body><span>" +
+                value +
+                "</span></body></html>";
+
+        if(item != NULL) {
+            ((QLabel*)item)->setText(text);
+        } else {
+            QLabel* label = new QLabel(text);
+            label->setStyleSheet(style);
+            label->setFont(generalSettings->dockWindowFont());
+
+            QPalette p = label->palette();
+            p.setColor(QPalette::Text, generalSettings->dockWindowFontColor());
+            p.setColor(QPalette::Base, generalSettings->dockWindowBackground());
+            label->setPalette(p);
+
+            label->setTextFormat(Qt::RichText);
+
+            table->setCellWidget(i++, 0, label);
+        }
+        i = i + 1;
     }
+}
 
-    expHighlighter->addText(expString);
+void WindowFacade::updateExpWindow(QString name, QString text) {
+    expHighlighter->addItem(name, text);
 
     if(!expHighlighter->isRunning()) {
         expHighlighter->start();
@@ -498,9 +573,18 @@ WindowFacade::~WindowFacade() {
         delete dock;
     }
 
+    foreach(QDockWidget* dock, gridWindows) {
+        delete dock;
+    }
+
     foreach(HighlighterThread* highlighter, highlighters) {
         // terminate threads
         // at application exit.
+        highlighter->terminate();
+        delete highlighter;
+    }
+
+    foreach(GridHighlighterThread* highlighter, gridHighlighters) {
         highlighter->terminate();
         delete highlighter;
     }

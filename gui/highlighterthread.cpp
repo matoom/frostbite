@@ -12,7 +12,6 @@ HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
 
     connect(this, SIGNAL(writeText(const QString&)), this->textEdit, SLOT(appendHtml(const QString&)));
     connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
-    //connect(this, SIGNAL(setScrollBarValue(int)), this->textEdit->verticalScrollBar(), SLOT(setValue(int)));
 }
 
 void HighlighterThread::updateSettings() {

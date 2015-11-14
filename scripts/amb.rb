@@ -5,7 +5,7 @@
 require "defines"
 require "hunt"
 
-@ambushes = ["clout", "stun"]
+@ambushes = ["clout"]
 @total = @ambushes.size
 @count = @total - 1
 

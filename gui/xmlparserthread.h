@@ -78,7 +78,7 @@ signals:
 
     void updateNavigationDisplay(DirectionsList);
     void updateRoomWindowTitle(QString);
-    void updateExpWindow();
+    void updateExpWindow(QString, QString);
     void updateRoomWindow();
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);
@@ -97,7 +97,7 @@ signals:
     void writeScriptMessage(QByteArray);
     void setMainTitle(QString);
     void writeText(QByteArray, bool);
-    //void writeScriptText(QByteArray);
+    void writeSettings();
 
 public slots:
     void addData(QByteArray);

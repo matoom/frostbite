@@ -19,12 +19,12 @@ def finally_do
 end
 
 def get_lockpick
-  put "get lockpick from my toolbelt"
+  put "get lockpick from my shroud"
   wait
 end
 
 def stow_lockpick
-  put "put lockpick in my toolbelt"
+  put "put lockpick in my shroud"
   wait
 end
 

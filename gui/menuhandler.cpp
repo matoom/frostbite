@@ -12,6 +12,8 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
     profileAddDialog = new ProfileAddDialog();
 
+    connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
+
     this->loadLoggingMenu();
 }
 
@@ -86,6 +88,8 @@ void MenuHandler::profileTriggered(QAction* action) {
         clientSettings->setParameter("Profile/name", "");
     }
     mainWindow->updateProfileSettings();
+
+    this->loadProfilesMenu();
 }
 
 void MenuHandler::loadProfilesMenu() {

@@ -5,7 +5,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     // register types
-    qRegisterMetaType<DirectionsList>("DirectionsList");
+    qRegisterMetaType<DirectionsList>("DirectionsList");    
+    qRegisterMetaType<GridItems>("GridItems");
 
     // application settings
     this->appSetup();
@@ -113,8 +114,10 @@ void MainWindow::loadClient() {
     tcpClient = new TcpClient(this);
 
     menuHandler = new MenuHandler(this);
+    menuHandler->loadProfilesMenu();
+
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
-    connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
+    connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
