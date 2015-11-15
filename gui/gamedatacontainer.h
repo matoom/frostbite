@@ -6,7 +6,7 @@
 #include <QReadLocker>
 
 #include <textutils.h>
-#include <shareddataService.h>
+#include <shareddataservice.h>
 
 class TextUtils;
 class SharedDataService;
