@@ -74,7 +74,7 @@
     <div class="about">
         <h3>Application software</h3>
         <p>
-            No installation is required. The binary package is compressed into an archive and has to be extracted once downloaded.
+            The binary package is a compressed archive and has to be extracted once it has been downloaded.
         </p>
 
         <br/>
@@ -93,31 +93,6 @@
             <li>2. Extract the contents of the archive into your desired location.</li>
             <li>3. Run FrostBite(.exe, .app).</li>
         </ol>
-
-        <br/>
-
-        <div class="alert-box">
-            For older versions of Mac OS X (Snow Leopard) shared memory parameters need to be readjusted to allow
-            data exchange between scripting module and frontend (http://support.apple.com/kb/HT4022).
-            <br/>
-            To determine system settings run following command in terminal:
-            <ul>
-                <li><b>sysctl kern.sysv.shmseg</b></li>
-            </ul>
-
-            The value of "kern.sysv.shmseg" needs to be at least 40.
-
-            <ul>
-                <li>Example values for Mountain Lion:</li>
-                <li>kern.sysv.shmmax=134217728</li>
-                <li>kern.sysv.shmmin=1</li>
-                <li>kern.sysv.shmmni=256</li>
-                <li>kern.sysv.shmseg=64</li>
-                <li>kern.sysv.shmall=3276</li>
-             </ul>
-
-            To change shared memory settings create a file called "/etc/sysctl.conf" and copy the values for Mountain Lion.
-        </div>
 
         <br/>
 
