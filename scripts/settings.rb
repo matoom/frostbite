@@ -4,8 +4,16 @@ class Settings
   class SettingsObject
     def initialize
       @last_hunt = Time.now
+      @hunt = true
     end
-    attr_accessor :last_hunt
+
+    def to_s
+      instance_variables.map{ |ivar|
+        "#{ivar} => #{instance_variable_get ivar}"
+      }.join('; ')
+    end
+
+    attr_accessor :last_hunt, :hunt
   end
 
   at_exit { self.marshal_dump }

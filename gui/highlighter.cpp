@@ -17,13 +17,10 @@ void Highlighter::reloadSettings() {
 
 QString Highlighter::highlight(QString text) {  
     if(!text.isEmpty()) {
-        //qDebug() << text;
         highlightList = highlightSettings->getSettings("TextHighlight");
 
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry highlightEntry = highlightList->at(i);
-
-            //highlightEntry.value = Qt::escape(highlightEntry.value);
             TextUtils::Instance()->plainToHtml(highlightEntry.value);
 
             // match whole or partial words
@@ -35,14 +32,12 @@ QString Highlighter::highlight(QString text) {
                 rx.setPattern("\\b" + highlightEntry.value + "\\b(?=[^>]*(<|$))");
             }
 
-            int indexStart = text.indexOf(rx);                        
+            int indexStart = rx.indexIn(text);
             if(indexStart != -1) {
                 // highlight text
-                this->highlightText(highlightEntry, text, indexStart);
-
+                this->highlightText(highlightEntry, text, indexStart, rx.capturedTexts());
                 // play alert
                 this->highlightAlert(highlightEntry);
-
                 // start timer
                 this->highlightTimer(highlightEntry);
             }
@@ -51,22 +46,26 @@ QString Highlighter::highlight(QString text) {
     return text;
 }
 
-void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart) {    
+void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text,
+                                int indexStart, QStringList capturedTexts) {
+
     QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
     QString endTag = "</span>";
 
-    int indexEnd = indexStart + startTag.length() + entry.value.length();
-    //entire row
-    if(entry.options.at(0)) {
-        indexEnd = text.length() + startTag.length();
-        // starting with
-        if(!entry.options.at(2)) {
-            indexStart = 0;
+    foreach(QString match, capturedTexts) {
+        int indexEnd = indexStart + startTag.length() + match.length();
+        //entire row
+        if(entry.options.at(0)) {
+            indexEnd = text.length() + startTag.length();
+            // starting with
+            if(!entry.options.at(2)) {
+                indexStart = 0;
+            }
+            text.insert(indexStart, startTag);
+            text.insert(indexEnd, endTag);
+        } else {
+            text.replace(rx, startTag + match + endTag);
         }
-        text.insert(indexStart, startTag);
-        text.insert(indexEnd, endTag);
-    } else {        
-        text.replace(rx, startTag + entry.value + endTag);
     }
 }
 

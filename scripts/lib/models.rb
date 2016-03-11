@@ -13,6 +13,19 @@ class Rt
   end
 end
 
+class Spell
+  # Active spells
+  #
+  # @param
+  # @return [Array] active spell list
+  # @example Using active spells in script.
+  #   echo Spell::active
+  #   => ["Khri Sagacity  (6 roisaen)", "Khri Shadowstep  (34 roisaen)", "Khri Skulk"]
+  def self.active
+    GameData.getActiveSpells.to_s.split("\n")
+  end
+end
+
 class Inventory
   # Inventory items
   #
@@ -33,7 +46,7 @@ class Container
   # @param
   # @return [Array] container item list
   # @example Using container list in script.
-  #   echo Container::list
+  #   echo Container::list.inspect
   #   => ["a rock", "a brown pouch", "a misshaped brass chest", "a mud-stained steel chest",
   #       "a blue gem pouch"]
   def self.list

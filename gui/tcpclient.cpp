@@ -123,7 +123,6 @@ void TcpClient::writeSettings() {
     this->writeCommand("_swclose sassess");
     this->writeCommand("_swclose satmospherics");
     this->writeCommand("_swclose sooc");
-    this->writeCommand("_swclose sgroup");
 }
 
 void TcpClient::socketReadyRead() {

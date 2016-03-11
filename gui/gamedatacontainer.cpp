@@ -335,11 +335,19 @@ QStringList GameDataContainer::getActiveSpells() {
 void GameDataContainer::addActiveSpells(QString activeSpell) {
     QWriteLocker locker(&lock);
     this->activeSpells << activeSpell;
+
+    if(sharedDataService->isLoaded()) {
+        sharedDataService->setActiveSpells(activeSpells.join("\n").toLocal8Bit().data());
+    }
 }
 
 void GameDataContainer::clearActiveSpells() {
     QWriteLocker locker(&lock);
     this->activeSpells.clear();
+
+    if(sharedDataService->isLoaded()) {
+        sharedDataService->setActiveSpells("");
+    }
 }
 
 

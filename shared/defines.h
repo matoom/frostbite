@@ -36,6 +36,8 @@
 #define WIELD_LEFT_SHARED_NAME ID "wieldLeft"
 #define WIELD_LEFT_NOUN_SHARED_NAME ID "wieldLeftNoun"
 
+#define ACTIVE_SPELLS_SHARED_NAME "activeSpells"
+
 #define RT_SHARED_NAME ID "rt"
 
 #endif // DEFINES_H

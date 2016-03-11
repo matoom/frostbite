@@ -2,7 +2,7 @@
 # requirements: thieves only, 250? first aid
 # run: in front of crossing bank
 # recommend on first run use @mark = true and @debug_mode = true
-# 960
+# 1000
 
 @containers = ["backpack", "haversack"]
 @khri = "khri darken sensing serenity sagacity plunder"
@@ -38,17 +38,18 @@
       :odds => { :item  => "ribbon", :amount => 1 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      :lobby => { :item  => "pipe", :location => "in chest", :amount => 2, :bin => true } #[Yulugri Wala, Lobby]
+      #:lobby => { :item  => "pipe", :location => "in chest", :amount => 1, :bin => true } #[Yulugri Wala, Lobby] silver flask
+      :lobby => { :item  => "silver flask", :amount => 1, :bin => false } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
     {
       :alberdeen => { :item  => "tunic", :amount => 1 }, #[Alberdeen's Meats and Provisions, Front Room] # arm pouch trivial at 966
-      :yerui => { :item  => "model tree", :amount => 1 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
+      :yerui => { :item  => "model tree", :amount => 2 }, #[Yerui's Woodcraft, Workshop]  -> ironwood staff
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
-      :origami => { :item  => "case", :amount => 1, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
-      :trueflight => { :item  => "heavy crossbow", :amount => 4, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :origami => { :item  => "case", :amount => 2, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
+      :trueflight => { :item  => "heavy crossbow", :amount => 6, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
       :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
     }
 
@@ -102,7 +103,7 @@
             {:item => "scimitar", :location => "on second rack", :amount => 1}}, #[Harbor Tower, First Floor]
         :fish => {:item => "tank", :amount => 1}, #[Fernwyk's Fish]
         :fishmonger => {:item => :none, :amount => 1}, #[Ilaya Taipa, Fishmonger's Stall]
-        :pearls => {:item => "thumb ring", :amount => 1}, #[Pischic's Pearls]
+        :pearls => {:item => "thumb ring", :amount => 2}, #[Pischic's Pearls]
         :clothing => {:item => "moonsilk fabric", :amount => 1}, #[Anyaila's Fine Clothing, Sales Floor]
         :stuff => {:item => "pottery lamp", :amount => 2, :bin => true}, #[Krimand's House of Stuff]
         # piers
@@ -215,7 +216,7 @@ def drop name
 end
 
 def stow_item name
-  if (@current_container < @containers.size)
+  if @current_container < @containers.size
     put "put my #{name} in my #{@containers[@current_container]}"
     match = { :wait => [/\.\.\.wait|You silently slip out|appears different about/],
               :full => [/any more room|no matter how you|to fit in the/],
@@ -251,7 +252,7 @@ def stow_items
 end
 
 def do_hide
-  if !Status::hidden
+  unless Status::hidden
     put "hide"
     match = { :wait => [/\.\.\.wait/],
               :continue => [/You melt|You slip|You blend|But you|ruining your|Behind what|You look around/] }
@@ -365,7 +366,7 @@ def steal_shop shop_attrs
       mark item
     end
 
-    if !@debug_mode
+    unless @debug_mode
       case steal item, shop_attrs[:amount]
         when :alt
           if shop_attrs.has_key?(:alt)
@@ -404,7 +405,7 @@ def docked_shop shops
 end
 
 def steal_pier
-  if !@leave
+  unless @leave
     shop = docked_shop @pier_shops
     if @ilaya_items[shop] and @ilaya_items[shop].has_key?(:items) and
         !@ilaya_items[shop][:items].empty?
@@ -416,7 +417,7 @@ def steal_pier
       else
         echo "*** #{@pier_shops[shop]} ***"
         item = find_pier_item shop
-        if !item.empty?
+        unless item.empty?
           steal item[:name], item[:amount]
         end
       end
@@ -442,7 +443,7 @@ def find_pier_item shop
   # find items in containers
   containers.each do |container|
     item = find_stealable_item shop, container
-    if !item.empty?
+    unless item.empty?
       return item
     end
   end

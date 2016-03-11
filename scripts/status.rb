@@ -22,6 +22,9 @@ echo "*** Exp ***"
 echo Exp::state("percept")
 echo Exp::rank("percept")
 echo "<br/>"
+echo "*** Spells ***"
+echo Spell::active
+echo "<br/>"
 echo "*** Inventory ***"
 echo Inventory::list
 echo "<br/>"

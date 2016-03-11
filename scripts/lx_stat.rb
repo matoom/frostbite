@@ -33,7 +33,7 @@ class Stats
       echo "Avg shots to kill: #{@total_shot_count / @kill_count}"
       echo "Avg missed shots: #{@total_miss_count / @kill_count}"
       if @total_miss_count > 0
-        echo "Miss rate: #{(@total_miss_count * 100) / @total_shot_count}%"
+        echo "Miss rate: #{((@total_miss_count * 100) / @total_shot_count).round(2)}%"
       else
         echo "Miss rate: 0%"
       end

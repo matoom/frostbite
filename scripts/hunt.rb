@@ -2,7 +2,7 @@ require "settings"
 require "defines"
 
 def hunt
-  if GLOBAL::HUNT and Exp::state("perc") < 34 and Time.now - Settings::get.last_hunt > 75
+  if Settings::get.hunt and Exp::state("perc") < 34 and Time.now - Settings::get.last_hunt > 75
     echo "Last hunt - #{Time.now - Settings.get.last_hunt} seconds ago."
     put "hunt"
     Settings::get.last_hunt = Time.now

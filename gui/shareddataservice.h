@@ -38,6 +38,8 @@ public:
     Set_b setJoined;
     Set_b setDead;
 
+    Set_s setActiveSpells;
+
     Set_s setInventory;
     Set_s setContainer;
     Set_s setWieldRight;

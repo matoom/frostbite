@@ -34,6 +34,8 @@ module GameData
   extern 'int getExpRank(const char[])'
   extern 'int getExpState(const char[])'
 
+  extern 'char* getActiveSpells()'
+
   extern 'char* getInventory()'
   extern 'char* getContainer()'
 

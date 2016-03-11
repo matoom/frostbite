@@ -1,9 +1,9 @@
 # Amalyze and execute moves
 
-require "defines"
+require "combat"
 require "hunt"
 
-Util::auto_target "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
+Combat::auto_target "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
 def advance
   put "advance"
@@ -13,7 +13,7 @@ end
 def face target
   put "face #{target}"
   match = { :wait => [/\.\.\.wait/],
-            :wait_for => [/Face what?/],
+            :wait_for => [/Face what?|nothing else to face/],
             :next => [/facing a dead/],
             :continue => [/already facing|You turn to face|too closely engaged/],
             :pause => [/You are still stunned/] }
@@ -22,11 +22,13 @@ def face target
     when :wait
       pause 0.5
       face target
-    when :pause, :wait_for
+    when :pause, :wait_for, :next
       pause 3
-      face target
-    when :next
-      face "next"
+      if Combat::auto
+        face Combat::find_target
+      else
+        face target
+      end
   end
 end
 

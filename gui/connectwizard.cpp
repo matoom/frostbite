@@ -252,7 +252,7 @@ void ConnectWizard::reject() {
     QDialog::reject();
 
     ui->errorLabel->setText("");
-    this->password = "";
+    //this->password = "";
     emit resetConnection();
 }
 

@@ -2,11 +2,11 @@
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
-require "defines"
+require "combat"
 
 @rt_adjust = 0
 
-Util::auto_target "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
+Combat::auto_target "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait

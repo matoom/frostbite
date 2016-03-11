@@ -15,6 +15,7 @@ QMap<QString, QSharedMemory*> initStringMemoryMap() {
     stringMemoryMap.insert(WIELD_RIGHT_NOUN_SHARED_NAME, new QSharedMemory(WIELD_RIGHT_NOUN_SHARED_NAME));
     stringMemoryMap.insert(WIELD_LEFT_SHARED_NAME, new QSharedMemory(WIELD_LEFT_SHARED_NAME));
     stringMemoryMap.insert(WIELD_LEFT_NOUN_SHARED_NAME, new QSharedMemory(WIELD_LEFT_NOUN_SHARED_NAME));
+    stringMemoryMap.insert(ACTIVE_SPELLS_SHARED_NAME, new QSharedMemory(ACTIVE_SPELLS_SHARED_NAME));
     return stringMemoryMap;
 }
 
@@ -384,6 +385,15 @@ extern "C" EXPORT_FUNCTION bool getDead() {
 
 extern "C" EXPORT_FUNCTION void setDead(bool dead) {
     setBool(dead, DEAD_SHARED_NAME);
+}
+
+// active spells
+extern "C" EXPORT_FUNCTION char* getActiveSpells() {
+    return getString(ACTIVE_SPELLS_SHARED_NAME);
+}
+
+extern "C" EXPORT_FUNCTION void setActiveSpells(const char spells[]) {
+    setString(spells, ACTIVE_SPELLS_SHARED_NAME);
 }
 
 // inventory

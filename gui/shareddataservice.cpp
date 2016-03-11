@@ -37,6 +37,8 @@ void SharedDataService::loadDataLib() {
     setJoined = (Set_b)dataLib->resolve("setJoined");
     setDead = (Set_b)dataLib->resolve("setDead");
 
+    setActiveSpells = (Set_s)dataLib->resolve("setActiveSpells");
+
     setInventory = (Set_s)dataLib->resolve("setInventory");
 
     setContainer = (Set_s)dataLib->resolve("setContainer");

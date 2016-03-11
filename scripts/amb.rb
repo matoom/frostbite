@@ -2,14 +2,14 @@
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
-require "defines"
+require "combat"
 require "hunt"
 
 @ambushes = ["clout"]
 @total = @ambushes.size
 @count = @total - 1
 
-Util::auto_target "*** ambush what? usage: .amb &lt;critter_name&gt; ***"
+Combat::auto_target "*** ambush what? usage: .amb &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait

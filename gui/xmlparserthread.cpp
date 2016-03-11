@@ -470,11 +470,8 @@ void XmlParserThread::fixMonoTags(QString& line) {
         line.replace("preset id=\"thought\"", "preset class=\"penalty\"");
         line.replace("preset id=\"speech\"", "preset class=\"bonus\"");
         // fix bold
-        if(line.contains("pushBold")) {
-            line.replace("pushBold/", "span class=\"bold\"");
-            line.append("</span>");
-        }
-        line.remove("<popBold/>");
+        line.replace("pushBold/", "span class=\"bold\"");
+        line.replace("popBold/", "/span");
     }
 }
 

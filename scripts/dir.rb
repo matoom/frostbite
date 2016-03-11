@@ -4,7 +4,8 @@ end
 
 def directions
   put "dir #{$args.join(" ")} 100"
-  m = match_get({ :go => [/Directions towards|don't know the way|Here are all the places/] })
+  m = match_get({ :go => [/Directions towards|don't know the way|Here are all the places/], :arrived => ["You're there already"] })
+  return [] if m[:key].equal? :arrived
   m[:match].gsub(/.*:/, '').split(/,|\band\b/).collect(&:strip)
 end
 

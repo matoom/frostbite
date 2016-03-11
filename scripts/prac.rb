@@ -2,7 +2,12 @@
 # requirements: ?
 # run: climbing available
 
+@ordinal_numbers = ["first", "second", "third", "fourth", "fifth",
+                    "sixth", "seventh", "eighth", "ninth", "tenth",
+                    "eleventh", "twelfth", "thirteenth", "fourteenth",
+                    "fifteenth", "sixteenth"]
 @song_type = "fantasia"
+@obj = $args.join(" ")
 
 def finally_do
   put "stop climb"
@@ -16,11 +21,12 @@ end
 put "get bones"
 
 100.times do
-  pause 0.2
-  put "play #{@song_type} on my bones"
   wait
-  put "climb practice #{$args.join(" ")}"
+  put "play #{@song_type} on my bones"
 
+  wait
+  count = Room::count_objects(@obj)
+  put "climb practice #{@ordinal_numbers[count]} #{@obj}"
 
   6.times do
     pause 20
@@ -34,6 +40,4 @@ put "get bones"
   put "stop climb"
   wait
   put "stop play"
-  wait
-
 end

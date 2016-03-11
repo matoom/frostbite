@@ -28,7 +28,7 @@ class Observer
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
-                  observer_event k
+                  observer_event k, text
                 end
               end
             end
@@ -78,11 +78,10 @@ class Observer
   end
 
   # @private
-  private
-  def observer_event method_name
+  def observer_event(method_name, text)
     Signal.trap("INT") do
       start_time = Time.now
-      send(method_name)
+      call_method method_name, text
       $_api_interrupt_time = (Time.now - start_time).floor
     end
 
@@ -95,5 +94,16 @@ class Observer
     Process.detach(pid)
     Process.kill("INT", pid)
   end
+
+  # @private
+  def call_method(method_name, text)
+    if method(method_name).parameters.empty?
+      send(method_name)
+    else
+      send(method_name, text)
+    end
+  end
+
+  private :init, :sync_read, :observer_event, :call_method
 
 end

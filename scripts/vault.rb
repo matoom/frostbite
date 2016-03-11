@@ -1,6 +1,8 @@
 # desc: enter crossing vault
-# requirements: need to rent or transfer a vault in crossing
-# run: at the square, nw from bank
+# requirements: need to rent a vault in crossing
+# run: at the vault doors
+
+$args << "carousel"
 
 doors = ["rosewood arch", "ironwood arch", "blackwood arch"]
 
@@ -15,15 +17,20 @@ def enter doors
   doors.each do | door |
     return if go(door).equal?(:continue)
   end
-  pause 10
+  wait_for /came through .* arch/
   enter doors
 end
 
-move "go square"
-move "go door"
+if Room::title.eql? "[The Crossing, Alamhif Trace]"
+  move "go square"
+  move "go door"
+else
+  load "dir"
+end
 
 enter doors
 
 put "pull lev"
 move "go door"
 put "open vault"
+wait

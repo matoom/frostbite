@@ -7,6 +7,7 @@
 #It's hard to stalk if you aren't in a position to move around.
 
 require "hunt"
+require "combat"
 
 @rt_adjust = -1
 
@@ -16,7 +17,7 @@ class String
   end
 end
 
-Util::auto_target "*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***"
+Combat::auto_target "*** hide on what? usage: .h &lt;critter_name&gt;  &lt;difficulty 1 - (9)&gt; ***"
 
 @targets = ["right leg", "back", "right arm", "right hand", "abdomen", "chest", "neck", "head", "right eye"]
 
