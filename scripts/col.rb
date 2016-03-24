@@ -1,3 +1,6 @@
+require "defines"
+require "helper"
+
 # desc: collects piles of specified foraging items and cleans up after
 # requirements: ??
 # run: valid foraging spot
@@ -5,7 +8,7 @@
 Observer.instance.register_event({ :perc => "Roundtime" })
 
 def perc
-  echo Exp::state "perc"
+  echo "exp perc: #{Exp::state "perc"}"
 end
 
 if $args.empty?
@@ -13,19 +16,16 @@ if $args.empty?
   exit!
 end
 
-def kick_pile
-  put "kick pile"
-end
-
 def finally_do
-  pause_for_roundtime
-  kick_pile
+  if Room::count_objects("pile") > 0
+    pause Rt::value
+    put_wait "kick pile", /You take|could not find/
+  end
 end
 
 100.times do
+  break if SYSTEM::finished
   put "collect " + $args.join(" ")
   wait_for_roundtime
-  kick_pile
+  put "kick pile"
 end
-
-Kernel::exit

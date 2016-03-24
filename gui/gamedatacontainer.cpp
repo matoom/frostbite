@@ -81,6 +81,10 @@ void GameDataContainer::setInventory(QStringList inventory) {
 void GameDataContainer::removeExpField(QString name) {
     QWriteLocker locker(&lock);
     exp.remove(name);
+
+    if(sharedDataService->isLoaded()) {
+        sharedDataService->removeExpField(name.toLower().toLocal8Bit().data());
+    }
 }
 
 QHash<QString, QString> GameDataContainer::getExp() {

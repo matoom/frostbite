@@ -51,6 +51,7 @@ def loot items
 end
 
 def dismantle
+  LOCKSMITH::current_box = ""
   put "dismantle my #{@wield_right} thump"
 end
 

@@ -1,15 +1,15 @@
 # desc: trains hiding, stalking and backstabbing for thieves
-# requirements: only works for thieves cirlce 70+, pref min. hiding rt
+# requirements: only works for thieves circle 70+, pref min. hiding rt
 # run: hunting area
 
-require "combat"
+require "target"
 require "hunt"
 
 @ambushes = ["clout"]
 @total = @ambushes.size
 @count = @total - 1
 
-Combat::auto_target "*** ambush what? usage: .amb &lt;critter_name&gt; ***"
+Target::auto "*** ambush what? usage: .amb &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait

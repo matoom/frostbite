@@ -3,14 +3,14 @@
 # run: hunting area
 # use: .lx <target>
 
-require "combat"
+require "target"
 require "hunt"
 require "lx_perf"
 
 @ammo = "bolt"
 @circle_count = 1
 
-Combat::auto_target "*** attack what? usage: .lx &lt;critter_name&gt; ***"
+Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 def shoot
   put "aim"

@@ -2,11 +2,11 @@
 # requirements: only works for thieves cirlce 70+, pref min. hiding rt
 # run: hunting area
 
-require "combat"
+require "target"
 
 @rt_adjust = 0
 
-Combat::auto_target "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
+Target::auto "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
 
 def go_wait(label, back_label)
   if label == :wait
@@ -54,7 +54,7 @@ label(:feint) {
   match = { :dead => COMBAT::MATCH_DEAD,
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime", "hidden to backstab"],
-            :face => ["You can't backstab that."],
+            :start => ["You can't backstab that."],
             :wait => [/\.\.\.wait/]}
   go_wait(match_wait(match), :feint)
 }
@@ -74,6 +74,14 @@ label(:dead) {
 }
 
 label(:wait_for) {
+  if Target::is_auto
+    new_target = Target::find
+    unless new.empty?
+      $args.clear << new_target
+      goto :start
+    end
+  end
+
   echo "*** WAITING ***<br/>"
   wait_for(/begins to advance you|closes to melee range/)
   goto :start

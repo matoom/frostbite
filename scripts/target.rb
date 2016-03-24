@@ -1,11 +1,11 @@
 require "defines"
 
-class Combat
+class Target
   @auto = false
 
-  def self.auto_target usage_msg
+  def self.auto usage_msg
     unless $args.first
-      $args << find_target
+      $args << find
       @auto = true
       unless $args.first
         echo usage_msg
@@ -14,11 +14,11 @@ class Combat
     end
   end
 
-  def self.find_target
+  def self.find
     COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
   end
 
-  def self.auto
+  def self.is_auto
     @auto
   end
 

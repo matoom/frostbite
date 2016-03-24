@@ -1,3 +1,10 @@
+module SYSTEM
+  class << self
+    attr_accessor :finished
+  end
+  self.finished = false
+end
+
 module GLOBAL
   ARRANGE_COUNT = 0
   SKIN = true
@@ -10,4 +17,19 @@ module COMBAT
                 "collapses over", "and lies still", "falling silent with", "before expiring with",
                 "before falling still", "reducing its corpse to nothing", "before growing still"]
   CRITTERS = ["wyvern", "assassin", "magus", "thrall"]
+end
+
+module ITEMS
+  ARMOR = ["leathers", "gloves", "balaclava", "shield"]
+end
+
+module LOCKSMITH
+  class << self
+    attr_accessor :current_box
+  end
+
+  self.current_box = ""
+
+  BOX_TYPES = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
+  DISARMED_BOX_CONTAINER = "haversack"
 end

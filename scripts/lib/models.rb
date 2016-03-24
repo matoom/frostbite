@@ -1,4 +1,8 @@
-require "#{File.dirname(__FILE__)}/data.rb"
+if RUBY_VERSION < "2.0"
+  require "#{File.dirname(__FILE__)}/data.rb"
+else
+  require "#{File.dirname(__FILE__)}/data2.rb"
+end
 
 class Rt
   # Roundtime

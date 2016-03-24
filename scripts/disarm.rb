@@ -156,7 +156,7 @@ def harvest(box, last)
   end
 end
 
-def print_disarmed
+def print_disarmedtrain
   echo "*** box disarmed! ***<br/>"
 end
 

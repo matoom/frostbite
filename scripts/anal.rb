@@ -1,9 +1,9 @@
 # Amalyze and execute moves
 
-require "combat"
+require "target"
 require "hunt"
 
-Combat::auto_target "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
+Target::auto "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
 def advance
   put "advance"
@@ -24,8 +24,8 @@ def face target
       face target
     when :pause, :wait_for, :next
       pause 3
-      if Combat::auto
-        face Combat::find_target
+      if Target::is_auto
+        face Target::find
       else
         face target
       end

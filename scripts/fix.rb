@@ -1,15 +1,16 @@
-@items = ["leathers", "gloves", "balaclava", "shield"]
+require "defines"
 
 put "open my backpack"
 
 def move_right item
+  pause 0.5
   if Wield::left_noun.include?(item)
     put "swap"
     wait
   end
 end
 
-@items.each do |item|
+INVENTORY::ARMOR.each do |item|
   pause 0.2
   put "remove my #{item}"
   wait

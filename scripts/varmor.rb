@@ -1,20 +1,11 @@
+require "defines"
+require "helper"
+
 load "vault"
 
-put "remove balaclava"
-wait
-put "put my balaclava in vault"
-wait
-put "remove gloves"
-wait
-put "put my gloves in vault"
-wait
-put "remove shield"
-wait
-put "put my shield in vault"
-wait
-put "remove leathers"
-wait
-put "put my leathers in vault"
-wait
+ITEMS::ARMOR.each do |item|
+  put_wait "remove my #{item}", /You (take|pull|loosen|work)|Remove what|referring to/
+  put_wait "put my #{item} in vault", /You put|referring to/
+end
 
 load "xvault"

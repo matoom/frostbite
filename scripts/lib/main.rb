@@ -32,6 +32,7 @@ $_api_current_rt = 0
 API_PUT_PREFIX = "put#"
 API_END_PREFIX = "end#"
 API_ECHO_PREFIX = "echo#"
+API_CMD_SUFFIX = "\n"
 
 MATCH_START_KEY = :match_start
 MATCH_END_KEY = :match_end
@@ -185,7 +186,7 @@ end
 # @return [void]
 def put(value)
   $_api_queue.clear
-  puts API_PUT_PREFIX + value.to_s
+  puts API_PUT_PREFIX + value.to_s + API_CMD_SUFFIX
 end
 
 # Sends a move command to client and
@@ -198,7 +199,7 @@ end
 #   move "e"
 #   move "go gate"
 def move(dir)
-  puts API_PUT_PREFIX + dir.to_s
+  puts API_PUT_PREFIX + dir.to_s + API_CMD_SUFFIX
 
   p = { :room => [/^\{nav\}$/],
         :stand => [/You can't do that while (sitting|kneeling|lying)|must be standing|cannot manage to stand/],
@@ -243,7 +244,7 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  puts API_ECHO_PREFIX + value.to_s
+  puts API_ECHO_PREFIX + value.to_s + API_CMD_SUFFIX
 end
 
 # Pauses for given time.
@@ -359,7 +360,7 @@ end
 
 # @private
 def api_terminate_script
-  puts API_END_PREFIX
+  puts API_END_PREFIX + API_CMD_SUFFIX
 end
 
 # @private

@@ -1,27 +1,12 @@
+require "defines"
+
 class Armor
   @wearing_armor = false
 
-  def self.check_armor
-    put "inv armor"
-    match = { :wait => [/\.\.\.wait/],
-              :armor => [/INVENTORY HELP/],
-              :continue => [/aren't wearing anything like/] }
-    result = match_wait match
-
-    case result
-      when :wait
-        pause 0.5
-        check_armor
-      when :armor
-        @wearing_armor = true
-      else
-        false
-    end
-  end
-
   def self.wearing_armor?
-    check_armor
+    @wearing_armor = ITEMS::ARMOR.all? {|e| Inventory::list.any? {|w| w.include? e}}
     announce
+    @wearing_armor
   end
 
   def self.announce

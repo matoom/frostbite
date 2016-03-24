@@ -154,14 +154,15 @@ void TcpClient::writeCommand(QString cmd) {
 }
 
 void TcpClient::socketError(QAbstractSocket::SocketError error) {
-    if(error == QAbstractSocket::RemoteHostClosedError) {
-        this->showError("Disconnected from server.");
+    if(error == QAbstractSocket::RemoteHostClosedError) {        
+        this->showError("Disconnected from server. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
-        this->showError("Unable to connect to server. Please check your internet connection and try again later.");
+        this->showError("Unable to connect to server. Please check your internet connection "
+                        "and try again later. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::NetworkError) {
-        this->showError("Connection timed out.");
+        this->showError("Connection timed out. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::HostNotFoundError) {
-        this->showError("Unable to resolve game host.");
+        this->showError("Unable to resolve game host. [" + QTime::currentTime().toString("h:mm ap") + "]");
     }    
     mainWindow->connectEnabled(true);
 
