@@ -28,15 +28,6 @@ $_api_exec_state = :idle
 $_api_observer_started = false
 $_api_current_rt = 0
 
-#constants
-API_PUT_PREFIX = "put#"
-API_END_PREFIX = "end#"
-API_ECHO_PREFIX = "echo#"
-API_CMD_SUFFIX = "\n"
-
-MATCH_START_KEY = :match_start
-MATCH_END_KEY = :match_end
-
 @_api_cmd_thread = Thread.new { CommandThread.new.run }
 
 $rt_adjust = 0
@@ -186,7 +177,7 @@ end
 # @return [void]
 def put(value)
   $_api_queue.clear
-  puts API_PUT_PREFIX + value.to_s + API_CMD_SUFFIX
+  puts ApiSettings::API_PUT_PREFIX + value.to_s + ApiSettings::API_CMD_SUFFIX
 end
 
 # Sends a move command to client and
@@ -199,7 +190,7 @@ end
 #   move "e"
 #   move "go gate"
 def move(dir)
-  puts API_PUT_PREFIX + dir.to_s + API_CMD_SUFFIX
+  puts ApiSettings::API_PUT_PREFIX + dir.to_s + ApiSettings::API_CMD_SUFFIX
 
   p = { :room => [/^\{nav\}$/],
         :stand => [/You can't do that while (sitting|kneeling|lying)|must be standing|cannot manage to stand/],
@@ -244,7 +235,7 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  puts API_ECHO_PREFIX + value.to_s + API_CMD_SUFFIX
+  puts ApiSettings::API_ECHO_PREFIX + value.to_s + ApiSettings::API_CMD_SUFFIX
 end
 
 # Pauses for given time.
@@ -260,7 +251,7 @@ end
 # @param [String] name name of the file
 # @return [Void]
 def load(name)
-  Kernel.load "#{Dir.pwd}/scripts/#{name}.rb"
+  Kernel.load "#{File.dirname(__FILE__)}/../#{name}.rb"
 end
 
 # Require a script by name. Only loads file
@@ -269,7 +260,7 @@ end
 # @param [String] name name of the file
 # @return [Void]
 def require(name)
-  Kernel.require "#{Dir.pwd}/scripts/#{name}.rb"
+  Kernel.require "#{File.dirname(__FILE__)}/../#{name}.rb"
 end
 
 # Current match round time -- can be used in
@@ -291,17 +282,17 @@ end
 
 # @private
 def validate_get_m pattern
-  unless pattern.has_key?(MATCH_END_KEY)
+  unless pattern.has_key?(ApiSettings::MATCH_END_KEY)
     raise "MatchError: match pattern does not" +
-          "contain '#{MATCH_END_KEY}' end condition."
+          "contain '#{ApiSettings::MATCH_END_KEY}' end condition."
   end
   pattern
 end
 
 # @private
 def api_match_start pattern
-  if pattern.has_key?(MATCH_START_KEY)
-    wait_for(pattern[MATCH_START_KEY]);
+  if pattern.has_key?(ApiSettings::MATCH_START_KEY)
+    wait_for(pattern[ApiSettings::MATCH_START_KEY]);
   end
 end
 
@@ -346,7 +337,8 @@ def api_match match, line, pattern
     value.each do |m|
       if line.match(m)
         match[key] << line
-        return pattern.has_key?(MATCH_END_KEY) ? key == MATCH_END_KEY : true
+        return pattern.has_key?(ApiSettings::MATCH_END_KEY) ?
+            key == ApiSettings::MATCH_END_KEY : true
       end
     end
   end
@@ -360,7 +352,7 @@ end
 
 # @private
 def api_terminate_script
-  puts API_END_PREFIX + API_CMD_SUFFIX
+  puts ApiSettings::API_END_PREFIX + ApiSettings::API_CMD_SUFFIX
 end
 
 # @private
@@ -398,6 +390,9 @@ at_exit do
     api_terminate_script
   end
 end
+
+# init IPC
+ApiSocket::init
 
 # wait for round time
 # before executing script

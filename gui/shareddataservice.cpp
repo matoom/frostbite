@@ -61,6 +61,8 @@ void SharedDataService::loadDataLib() {
 
     setRt = (Set_i)dataLib->resolve("setRt");
 
+    setBleeding(true);
+
     //destroy = (Destroy)dataLib->resolve("destroy");
 }
 

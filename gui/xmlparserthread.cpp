@@ -127,8 +127,10 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
 
     if(!mono && !pushStream) {
         /* Process game text with start tag only */
-        if(e.tagName() == "settingsInfo") {
+        if(e.tagName() == "settingsInfo") {            
             emit writeSettings();
+        } else if(e.tagName() == "settings") {
+            emit writeModeSettings();
         } else if(e.tagName() == "style" && e.attribute("id") == "roomName") {
             QString roomName = root.text().trimmed();
             TextUtils::Instance()->plainToHtml(roomName);

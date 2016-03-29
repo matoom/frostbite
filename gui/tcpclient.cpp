@@ -20,6 +20,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(addToQueue(QByteArray)), xmlParserThread, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), xmlParserThread, SLOT(updateHighlighterSettings()));
     connect(xmlParserThread, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
+    connect(xmlParserThread, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
 
     if(MainWindow::DEBUG) {
         this->loadMockData();
@@ -92,7 +93,7 @@ void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     mainWindow->connectEnabled(false);
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
-    tcpSocket->waitForConnected(1000);
+    tcpSocket->waitForConnected();
 
     tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
                      "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
@@ -116,9 +117,12 @@ void TcpClient::setProxy(bool enabled, QString proxyHost, QString proxyPort) {
     }
 }
 
-void TcpClient::writeSettings() {
+void TcpClient::writeModeSettings() {
     this->writeCommand("");
     this->writeCommand("_STATE CHATMODE OFF");
+}
+
+void TcpClient::writeSettings() {
     this->writeCommand("");
     this->writeCommand("_swclose sassess");
     this->writeCommand("_swclose satmospherics");

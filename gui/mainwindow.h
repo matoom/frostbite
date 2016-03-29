@@ -14,6 +14,7 @@
 #include <timerbar.h>
 #include <generalsettings.h>
 #include <tray.h>
+#include <scriptapiserver.h>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
 #include "cleanlooks/qcleanlooksstyle.h"
@@ -96,6 +97,8 @@ private:
     CommandLine* cmdLine;
     MenuHandler* menuHandler;
     ScriptService* scriptService;
+    ScriptApiServer* scriptApiServer;
+
     Tray* tray;
     TimerBar* timerBar;
     QReadWriteLock lock;    

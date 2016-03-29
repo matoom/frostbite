@@ -18,7 +18,7 @@ end
 
 def finally_do
   if Room::count_objects("pile") > 0
-    pause Rt::value
+    sleep Rt::value
     put_wait "kick pile", /You take|could not find/
   end
 end

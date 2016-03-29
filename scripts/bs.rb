@@ -76,7 +76,7 @@ label(:dead) {
 label(:wait_for) {
   if Target::is_auto
     new_target = Target::find
-    unless new.empty?
+    if new_target
       $args.clear << new_target
       goto :start
     end

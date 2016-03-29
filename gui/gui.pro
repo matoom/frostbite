@@ -98,7 +98,9 @@ SOURCES += main.cpp\
     shareddataservice.cpp \
     gridwindowfactory.cpp \
     gridwindow.cpp \
-    gridhighlighterthread.cpp
+    gridhighlighterthread.cpp \
+    scriptapiserver.cpp \
+    apisettings.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -171,7 +173,9 @@ HEADERS  += mainwindow.h \
     shareddataservice.h \
     gridwindowfactory.h \
     gridwindow.h \
-    gridhighlighterthread.h
+    gridhighlighterthread.h \
+    scriptapiserver.h \
+    apisettings.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

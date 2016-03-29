@@ -94,6 +94,8 @@ QColor MainWindow::getBackgroundColor() {
 }
 
 void MainWindow::loadClient() {
+    scriptApiServer = new ScriptApiServer(this);
+
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 

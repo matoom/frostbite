@@ -37,7 +37,7 @@ private:
 
     char* sge_encrypt_password(char *passwd, char *hash);
     void negotiateSession(QByteArray);
-    QByteArray extractValue(QByteArray);
+    QByteArray extractValue(QByteArray, QList<QByteArray>);
 
 signals:
      void sessionRetrieved(QString, QString, QString);

@@ -919,3 +919,6 @@ Frodo joins your group.
 Obvious exits: <d>out</d>.
 <compass><dir value="out"/></compass><component id='room players'></component>
 <prompt time="1446936439">&gt;</prompt>
+
+
+<compass><dir value="n"/><dir value="e"/><dir value="se"/><dir value="s"/><dir value="sw"/><dir value="w"/><dir value="nw"/><dir value="out"/><dir value="up"/><dir value="down"/><dir value="ne"/></compass><pushStream id="logons"/> * Florist Legolas joins the adventure.

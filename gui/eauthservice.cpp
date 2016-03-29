@@ -83,7 +83,7 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
     return final;
 }
 
-void EAuthService::negotiateSession(QByteArray buffer) {
+void EAuthService::negotiateSession(QByteArray buffer) {    
     if(buffer.startsWith("A\t")) {
         QList<QByteArray> aResponse = buffer.split('\t');
         if(aResponse.takeLast().trimmed() == "REJECT") {
@@ -108,14 +108,17 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         tcpSocket->write("C\n");
     } else if(buffer.startsWith("C\t")) {
         QList<QByteArray> cResponse = buffer.split('\t');
-        emit addCharacter(QString::fromLocal8Bit(cResponse.takeLast()).trimmed(),
-                QString::fromLocal8Bit(cResponse.takeLast().trimmed()));
+
+        QString name = QString::fromLocal8Bit(cResponse.takeLast()).trimmed();
+        QString id = QString::fromLocal8Bit(cResponse.takeLast().trimmed());
+
+        emit addCharacter(id, name);
     } else if(buffer.startsWith("L\t")) {
         QList<QByteArray> lResponse = buffer.split('\t');
 
-        emit sessionRetrieved(this->extractValue(lResponse.takeLast()),
-                              this->extractValue(lResponse.takeLast()),
-                              this->extractValue(lResponse.takeLast().trimmed()));
+        emit sessionRetrieved(this->extractValue("GAMEHOST", lResponse),
+                              this->extractValue("GAMEPORT", lResponse),
+                              this->extractValue("KEY", lResponse));
 
         tcpSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
@@ -134,9 +137,14 @@ void EAuthService::negotiateSession(QByteArray buffer) {
     }
 }
 
-QByteArray EAuthService::extractValue(QByteArray valuePair) {
-    int index = valuePair.indexOf('=');
-    return valuePair.mid(index + 1);
+QByteArray EAuthService::extractValue(QByteArray key, QList<QByteArray> valueList) {
+    foreach(QByteArray item, valueList) {
+        if(item.startsWith(key)) {
+            int index = item.trimmed().indexOf('=');
+            return item.mid(index + 1).trimmed();
+        }
+    }
+    return "";
 }
 
 void EAuthService::socketReadyRead() {

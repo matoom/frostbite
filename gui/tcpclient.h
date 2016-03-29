@@ -73,6 +73,7 @@ public slots:
     void connectWizardError(QString);
     void authError();
     void writeSettings();
+    void writeModeSettings();
 };
 
 

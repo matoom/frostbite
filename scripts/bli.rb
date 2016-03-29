@@ -14,7 +14,7 @@ def stow_pick
 end
 
 def stow_box
-  if LOCKSMITH::current_box && !LOCKSMITH::current_box.empty?
+  unless LOCKSMITH::current_box.empty?
     put_wait "put my #{LOCKSMITH::current_box} in my #{LOCKSMITH::DISARMED_BOX_CONTAINER}", /You put|referring to/
   end
 end
@@ -71,7 +71,7 @@ get_pick
 
 catch (:done) do
   1000.times do
-    throw :done if SYSTEM::finished
+    break if SYSTEM::finished
     put "pick my #{$args.join(" ")} blind"
     match = { :continue => [/\.\.\.wait|You are unable to|You discover another|soft click/],
               :get_pick => [/more appropriate tool/],

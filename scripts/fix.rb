@@ -10,7 +10,7 @@ def move_right item
   end
 end
 
-INVENTORY::ARMOR.each do |item|
+ITEMS::ARMOR.each do |item|
   pause 0.2
   put "remove my #{item}"
   wait

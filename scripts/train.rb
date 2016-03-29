@@ -53,8 +53,8 @@ module Locksmith
   end
 
   def self.after
-    #stow_pick
-    #stow_box
+    stow_pick
+    stow_box
   end
 
   def self.abort
@@ -146,9 +146,21 @@ module Crossbow
   end
 end
 
+def abort_module thread, obj
+if obj.respond_to? "abort"
+    obj.send "abort"
+    thread.join
+  else
+    thread.terminate
+  end
+end
+
 def rewrite_finally thread, obj
   define_singleton_method "finally_do" do
-    thread.terminate if thread
+    if thread
+      abort_module thread, obj
+    end
+    sleep Rt::value
     obj.send("after")
   end
 end
@@ -167,11 +179,7 @@ end
   while true
     exp = Exp::state(item.to_s)
     if exp > 32
-      if obj.respond_to? "abort"
-        obj.send "abort"
-      else
-        thread.terminate
-      end
+      abort_module thread, obj
       sleep Rt::value
       obj.send "after" if obj.respond_to? "after"
       break

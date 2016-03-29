@@ -4,6 +4,8 @@
 #include "log4qt/logger.h"
 #include <log4qt/propertyconfigurator.h>
 
+#include "scriptapiserver.h"
+
 bool MainWindow::DEBUG = false;
 
 int main(int argc, char *argv[]) {

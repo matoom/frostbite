@@ -53,6 +53,7 @@ end
 def dismantle
   LOCKSMITH::current_box = ""
   put "dismantle my #{@wield_right} thump"
+  wait
 end
 
 def exit_script message

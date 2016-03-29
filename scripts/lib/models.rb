@@ -1,7 +1,32 @@
-if RUBY_VERSION < "2.0"
-  require "#{File.dirname(__FILE__)}/data.rb"
-else
-  require "#{File.dirname(__FILE__)}/data2.rb"
+require 'socket'
+
+# @private
+module ApiSettings
+  #constants
+  API_PUT_PREFIX = "put#"
+  API_END_PREFIX = "end#"
+  API_ECHO_PREFIX = "echo#"
+  API_CMD_SUFFIX = "\n"
+
+  MATCH_START_KEY = :match_start
+  MATCH_END_KEY = :match_end
+
+  API_ADR = '127.0.0.1'
+
+  def self.api_port
+    File.open("#{File.dirname(__FILE__)}/../../api.ini", 'r') do |inFile|
+      inFile.each_line do |line|
+        return line.partition('=').last.to_i if line.start_with? "port"
+      end
+    end
+  end
+end
+
+module ApiSocket
+  def self.init
+    $_api_socket = TCPSocket.open(ApiSettings::API_ADR, ApiSettings::api_port)
+    $_api_socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+  end
 end
 
 class Rt
@@ -13,7 +38,8 @@ class Rt
   #   echo Rt::value
   #   => 5
   def self.value
-    GameData.getRt.to_i
+    $_api_socket.puts "GET RT\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 end
 
@@ -26,7 +52,8 @@ class Spell
   #   echo Spell::active
   #   => ["Khri Sagacity  (6 roisaen)", "Khri Shadowstep  (34 roisaen)", "Khri Skulk"]
   def self.active
-    GameData.getActiveSpells.to_s.split("\n")
+    $_api_socket.puts "GET ACTIVE_SPELLS\n"
+    $_api_socket.gets('\0').chomp('\0').split("\n")
   end
 end
 
@@ -40,7 +67,8 @@ class Inventory
   #   => ["a lumpy bundle", "an origami-paper envelope", "a heavy burlap haversack",
   #       "a simple belt knife", "a sturdy troll-skin herb pouch"]
   def self.list
-    GameData.getInventory.to_s.split(", ")
+    $_api_socket.puts "GET INVENTORY\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
   end
 end
 
@@ -54,7 +82,8 @@ class Container
   #   => ["a rock", "a brown pouch", "a misshaped brass chest", "a mud-stained steel chest",
   #       "a blue gem pouch"]
   def self.list
-    GameData.getContainer.to_s.split(", ")
+    $_api_socket.puts "GET CONTAINER\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
   end
 end
 
@@ -67,7 +96,8 @@ class Wield
   #   echo Wield::right
   #   => fuzzy sharks
   def self.right()
-    GameData.getWieldRight.to_s
+    $_api_socket.puts "GET WIELD_RIGHT\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Wield right noun
@@ -77,7 +107,8 @@ class Wield
   # @example Using wield right noun in script.
   #   put "put my #{Wield::right_noun} in my backpack"
   def self.right_noun()
-    GameData.getWieldRightNoun.to_s
+    $_api_socket.puts "GET WIELD_RIGHT_NOUN\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Wield left
@@ -88,7 +119,8 @@ class Wield
   #   echo Wield::left
   #   => ""
   def self.left()
-    GameData.getWieldLeft.to_s
+    $_api_socket.puts "GET WIELD_LEFT\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Wield left noun
@@ -99,7 +131,8 @@ class Wield
   #   echo Wield::left_noun
   #   => ""
   def self.left_noun()
-    GameData.getWieldLeftNoun.to_s
+    $_api_socket.puts "GET WIELD_LEFT_NOUN\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 end
 
@@ -112,7 +145,8 @@ class Exp
   #   echo Exp::rank
   #   => 222
   def self.rank(exp_string)
-    GameData.getExpRank(exp_string.to_s.downcase).to_i
+    $_api_socket.puts "GET EXP_RANK?#{exp_string.to_s.downcase}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Exp state
@@ -124,7 +158,8 @@ class Exp
   #     exit
   #   end
   def self.state(exp_string)
-    GameData.getExpState(exp_string.to_s.downcase).to_i
+    $_api_socket.puts "GET EXP_STATE?#{exp_string.to_s.downcase}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 end
 
@@ -137,7 +172,8 @@ class Room
   #   echo Room::title
   #   => [Mycthengelde, Flatlands]
   def self.title
-    GameData.getRoomTitle.to_s
+    $_api_socket.puts "GET ROOM_TITLE\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Room description.
@@ -149,7 +185,8 @@ class Room
   #   => Well-worn paths lead through a grove of trees to a gate in The Crossing's
   #      western wall.  Now and again you hear birds ...
   def self.description
-    GameData.getRoomDescription.to_s
+    $_api_socket.puts "GET ROOM_DESC\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Room objects.
@@ -160,7 +197,8 @@ class Room
   #   echo Room::objects
   #   => You also see a musk hog.
   def self.objects
-    GameData.getRoomObjects.to_s
+    $_api_socket.puts "GET ROOM_OBJECTS\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Room players.
@@ -171,7 +209,8 @@ class Room
   #   echo Room::players
   #   => ""
   def self.players
-    GameData.getRoomPlayers.to_s
+    $_api_socket.puts "GET ROOM_PLAYERS\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Room exits.
@@ -182,7 +221,8 @@ class Room
   #   echo Room::exits
   #   => Obvious paths: northwest.
   def self.exits
-    GameData.getRoomExits.to_s
+    $_api_socket.puts "GET ROOM_EXITS\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Counts objects.
@@ -208,7 +248,8 @@ class Vitals
   #     put retreat
   #   end
   def self.health
-    GameData.getHealth.to_i
+    $_api_socket.puts "GET HEALTH\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Concentration
@@ -219,7 +260,8 @@ class Vitals
   #   echo Vitals::concentration
   #   => 100
   def self.concentration
-    GameData.getConcentration.to_i
+    $_api_socket.puts "GET CONCENTRATION\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Fatigue
@@ -230,7 +272,8 @@ class Vitals
   #   echo Vitals::fatigue
   #   => 100
   def self.fatigue
-    GameData.getFatigue.to_i
+    $_api_socket.puts "GET FATIGUE\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Health
@@ -240,7 +283,8 @@ class Vitals
   # @example Using spirit value in script.
   #   echo Vitals::spirit
   def self.spirit
-    GameData.getSpirit.to_i
+    $_api_socket.puts "GET SPIRIT\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
   end
 end
 
@@ -253,7 +297,8 @@ class Status
   #   echo Status::standing
   #   => 1
   def self.standing
-    !GameData.getStanding.to_i.zero?
+    $_api_socket.puts "GET STANDING\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Kneeling
@@ -264,7 +309,8 @@ class Status
   #   echo Status::kneeling
   #   => 0
   def self.kneeling
-    !GameData.getKneeling.to_i.zero?
+    $_api_socket.puts "GET KNEELING\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Sitting
@@ -275,7 +321,8 @@ class Status
   #   echo Status::sitting
   #   => 0
   def self.sitting
-    !GameData.getSitting.to_i.zero?
+    $_api_socket.puts "GET SITTING\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Prone
@@ -286,7 +333,8 @@ class Status
   #   echo Status::prone
   #   => 0
   def self.prone
-    !GameData.getProne.to_i.zero?
+    $_api_socket.puts "GET PRONE\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Stunned
@@ -297,7 +345,8 @@ class Status
   #   echo Status::stunned
   #   => 0
   def self.stunned
-    !GameData.getStunned.to_i.zero?
+    $_api_socket.puts "GET STUNNED\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Dead
@@ -308,7 +357,8 @@ class Status
   #   echo Status::dead
   #   => 0
   def self.dead
-    !GameData.getDead.to_i.zero?
+    $_api_socket.puts "GET DEAD\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Bleeding
@@ -319,7 +369,8 @@ class Status
   #   echo Status::bleeding
   #   => 1
   def self.bleeding
-    !GameData.getBleeding.to_i.zero?
+    $_api_socket.puts "GET BLEEDING\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Hidden
@@ -332,7 +383,8 @@ class Status
   #   end
   #   => 1
   def self.hidden
-    !GameData.getHidden.to_i.zero?
+    $_api_socket.puts "GET HIDDEN\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Invisible
@@ -343,7 +395,8 @@ class Status
   #   echo Status::invisible
   #   => 0
   def self.invisible
-    !GameData.getInvisible.to_i.zero?
+    $_api_socket.puts "GET INVISIBLE\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Webbed
@@ -354,7 +407,8 @@ class Status
   #   echo Status::webbed
   #   => 0
   def self.webbed
-    !GameData.getWebbed.to_i.zero?
+    $_api_socket.puts "GET WEBBED\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 
   # Joined
@@ -365,7 +419,8 @@ class Status
   #   echo Status::joined
   #   => 1
   def self.joined
-    !GameData.getJoined.to_i.zero?
+    $_api_socket.puts "GET JOINED\n"
+    $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
   end
 end
 

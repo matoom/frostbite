@@ -98,6 +98,7 @@ signals:
     void setMainTitle(QString);
     void writeText(QByteArray, bool);
     void writeSettings();
+    void writeModeSettings();
 
 public slots:
     void addData(QByteArray);
