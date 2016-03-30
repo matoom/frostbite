@@ -111,15 +111,14 @@
 
         <h3>Reserved parameter descriptions</h3>
 
-        <pre><code>$args # array, global variable</code></pre>
+        <br/>
+        <h4>$args # array, global variable</h4>
         <p>Contains the arguments passed on to the script in the command line.</p>
 
-        <pre><code>@rt_adjust = 0 # number, class scope variable</code></pre>
-        <p>This is an adjustment parameter which is added to the round time values used by match functions. It enables to regulate
-        the wait times and make the script run faster by tightening the value. This is of course in case the script is
-        prepared to deal with the possible outcome of running the commands too early.</p>
+        <h4>$rt_adjust = 0 # number, global scope variable</h4>
+        <p>Enables to regulate the wait times and make the script run faster by tightening the value. </p>
 
-        <pre><code>:match_start and :match_end</code></pre>
+        <h4>:match_start and :match_end</h4>
         <p>
             These are the two reserved match pattern names which can be used to determine additional match start and
             end conditions.
@@ -239,10 +238,8 @@
     # callback method for first event
     def on_roundtime
         echo "Found roundtime!"
-        wait_for_roundtime # wait until the round time ends
-        put "look"         # this action cannot produce a
-                           # roundtime or it will get stuck in
-                           # an infinite loop, for this example
+        pause_for_roundtime # pauses for the duration of roundtime
+        put "look"          # if any
     end
 
     # callback method for second event

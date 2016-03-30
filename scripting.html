@@ -84,15 +84,16 @@
         </p><br/>
         <h3>High level description</h3>
         <p>
-            Most of the scripting functionality is created in Ruby and it can be easily re-adjusted to every specific need. The
-            game client provides real time game data over standard output (pipes), while rest of the utility functions are available as part
-            of a dynamic library file <i>"shared.dll/so"</i>, which can be accessed by any external process -- including the
-            Ruby scripting module.
+            The scripting API is entirely written in Ruby and is located in the <i>"scripts/lib"</i> folder. A script is executed
+            as a sub process of the frontend by calling the <i>"main.rb"</i> file in Ruby. All real time data for the Ruby process
+            is provided over standard output (pipes) and on-demand data exchange is conducted over a custom TCP client->server solution.
+        </p><p>
+            The Server opens a localhost socket on a random available port and stores it in the <i>"api.ini"</i> settings file.
+            Using these stored settings the client is able to open up a socket connection to start a data sharing session which is
+            based on a simple custom protocol. i.e "GET RT -> 0"
         </p>
         <p>
-            The Ruby based scripting API is placed in the <i>"scripts/lib"</i> folder and should only be modified at your own risk. The game client
-            always tries to execute the <i>"main.rb"</i> script and it specifies the script file as part of the passed arguments
-            that will remain invisible to the user. The specified file will be in turn executed by the <i>"main.rb"</i> script.
+            The script flow from the frontend is as following:
         </p>
         <p>For example: <i>game client -> main.rb "braid.rb vines" -> runs -> braid.rb vines</i></p>
         <p>
@@ -100,10 +101,9 @@
         </p>
         <ul>
             <li>main.rb - general functions used by scripts;</li>
-            <li>models.rb - wraps and provides the game data that can be used in scripts;</li>
-            <li>data.rb - interface for game data library;</li>
-            <li>ruby_goto.rb - enables to use Wizard style labels in script logic;</li>
+            <li>models.rb - wraps and provides the data models;</li>
             <li>observer.rb - observer API, allows to react to text events in continuous game flow.</li>
+            <li>roby_goto.rb - enables label based scripting.</li>
         </ul>
         <br/>
         <p>

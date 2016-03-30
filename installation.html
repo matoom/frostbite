@@ -80,10 +80,14 @@
         <br/>
         Download:
         <ul>
-            <li>- Windows 8 zip archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.1.0-beta/Frostbite-win.zip">here</a> to download.</li>
-            <li>- LInux Ubuntu tar.gz archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.1.0-beta/Frostbite-linux.tar.gz">here</a> to download.</li>
-            <li>- Mac OS X Snow leopard dmg archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.0.4-beta/FrostBite-osx.dmg">here</a> to download.</li>
+            <li>- Windows 8 zip archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.2.0-beta/Frostbite-win.zip">here</a> to download.</li>
+            <li>- Linux Ubuntu tar.gz archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.1.0-beta/Frostbite-linux.tar.gz">here</a> to download.</li>
+            <li>- Mac OS X Mavericks dmg archive - click <a href="https://github.com/matoom/frostbite/releases/download/v1.2.0-beta/FrostBite-osx.dmg">here</a> to download.</li>
         </ul>
+        <br/>
+        <p>
+            All releases: <a href="https://github.com/matoom/frostbite/releases">https://github.com/matoom/frostbite/releases</a>
+        </p>
 
         <br/>
 
@@ -98,19 +102,17 @@
 
         <h3>Ruby runtime</h3>
         <p>
-            Ruby runtime installation is necessary for running scripts in the Frostbite frontend.
+            Ruby runtime installation is required for running scripts in the Frostbite frontend.
         </p>
         <p>
-            Frostbite scripting module has been verified to run with Ruby runtime version 1.9.3 and it uses Ruby DL
-            library which was first introduced into Ruby since version 1.9. Accordingly, versions lower than 1.9 will not
-            be suited for running the Frostbite scripting core API.
+            Frostbite scripting module has been verified to run with Ruby runtime versions 1.9.3 and 2.2.3.
         </p>
         <br/>
         <h3>Windows</h3>
         <p>
-            The recommended version of Ruby runtime 1.9.3 installation package for Windows can be downloaded from
-            <a href="http://cdn.rubyinstaller.org/archives/1.9.3-p327/rubyinstaller-1.9.3-p327.exe">
-                http://cdn.rubyinstaller.org/archives/1.9.3-p327/rubyinstaller-1.9.3-p327.exe</a>
+            The recommended version of Ruby runtime 2.2.3 installation package for Windows can be downloaded from
+            <a href="http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3.exe">
+                http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3.exe</a>
         </p>
 
         <br/>
@@ -131,7 +133,7 @@
         </p>
         <pre>
         C:\>ruby --version
-        ruby 1.9.3p194 (2012-04-20) [i386-mingw32]
+        ruby 2.2.4p230 (2015-12-16 revision 53155) [i386-mingw32]
         </pre>
 
         <br/>
@@ -140,31 +142,22 @@
         <ol>
            <li>1. sudo apt-add-repository ppa:brightbox/ruby-ng</li>
            <li>2. sudo apt-get update</li>
-           <li>3. sudo apt-get install ruby1.9.3</li>
+           <li>3. sudo apt-get install ruby2.2.3</li>
            <li>4. ruby -v</li>
         </ol>
 
         <br/>
 
         <h3>Mac OS X</h3>
-        Mac OS X already comes with a Ruby installation prepackaged. For OS X it is important to upgrade Ruby
-        if the Ruby version is older than 1.9.3. To find out which version of ruby is installed run the following
+        Mac OS X already comes with a Ruby installation prepackaged. For OS X it is important to upgrade Ruby installation
+        if the version is older than 1.9.3. To find out which version of ruby is installed run the following
         command in terminal:
-        <br/><br/>
+        <br/> <br/>
 
         <pre>
         ruby -version
         </pre>
 
-        Updating Ruby using RVM (http://rvm.io/rvm/upgrading):
-         <ol>
-           <li>1. \curl -sSL https://get.rvm.io | bash</li>
-           <li>2. rvm get stable</li>
-           <li>3. rvm reload</li>
-           <li>4. rvm list</li>
-           <li>5. rvm install 1.9.3</li>
-        </ol>
-        <br/>
         If it was necessary to upgrade Ruby then execute the following steps:
         <br/><br/>
         Register new ruby installation in the Frostbite frontend.
@@ -182,8 +175,8 @@
         </ol>
         <br/>
         <pre>
-            [Ruby]
-            path=/Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby
+        [Ruby]
+        path=/Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby
         </pre>
     </div>
 
