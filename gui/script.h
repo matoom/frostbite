@@ -37,6 +37,9 @@ private:
 
     bool running;
 
+    QMutex procMutex;
+    QReadWriteLock lock;
+
 signals:
 
 public slots:

@@ -39,6 +39,8 @@ private:
     QString errorMessage;
 
     char* sge_encrypt_password(char *passwd, char *hash);
+    QByteArray qt_sge_encrypt_password(QString passwd, QString hash);
+
     void negotiateSession(QByteArray);    
     void write(QByteArray);
     void log(QByteArray );

@@ -85,6 +85,15 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
     return final;
 }
 
+QByteArray EAuthService::qt_sge_encrypt_password(QString passwd, QString hash) {
+    QByteArray encrypted = "";
+    for (int i = 0; i < passwd.length() && i < hash.length(); i++) {
+        encrypted += (char)((hash[i].toLatin1() ^ (passwd[i].toLatin1() - 32)) + 32);
+    }
+    encrypted += '\0';
+    return encrypted;
+}
+
 void EAuthService::log(QByteArray buffer) {
     if(settings->getParameter("Logging/auth", false).toBool()) {
         authLogger->addText(buffer);
@@ -95,11 +104,15 @@ void EAuthService::log(QByteArray buffer) {
 }
 
 void EAuthService::write(QByteArray buffer) {
+    qDebug() << buffer;
+
     this->log("> " + buffer);
     tcpSocket->write(buffer);
 }
 
 void EAuthService::negotiateSession(QByteArray buffer) {
+    qDebug() << buffer;
+
     this->log(buffer);
 
     if(buffer.startsWith("A\t")) {
@@ -170,10 +183,9 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         tcpSocket->disconnectFromHost();
     } else {
         if (buffer.size() == 33) {
-            char* hash = sge_encrypt_password(key.toLocal8Bit().data(), buffer.data());
-
-            QString response = "A\t" + user.toUpper() + "\t" + QString::fromLocal8Bit(hash) + "\n";
-            this->write(response.toLocal8Bit());
+            QByteArray enc = qt_sge_encrypt_password(key, buffer);
+            QString response = "A\t" + user.toUpper() + "\t" + enc + "\n";
+            this->write(response.toLatin1());
         } else {
             emit connectionError("Unable to obtain session key.");
         }
