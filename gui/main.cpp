@@ -26,9 +26,22 @@ int main(int argc, char *argv[]) {
     MainWindow w;
     w.show();
 
+    QStringList args = QCoreApplication::arguments();
+    if(!args.isEmpty() && args.count() > 1) {
+        if (QFile(args.at(1)).exists()) {
+            QSettings settings(args.at(1), QSettings::IniFormat);
+            if(settings.contains("GAMEHOST") && settings.contains("GAMEPORT") && settings.contains("KEY")){
+              w.openConnection(settings.value("GAMEHOST").toString(),
+                               settings.value("GAMEPORT").toString(),
+                               settings.value("KEY").toString());
+
+            }
+            return a.exec();
+        }
+    }
+
     if(!MainWindow::DEBUG) {
         w.openConnectDialog();
     }
-
     return a.exec();
 }

@@ -100,7 +100,8 @@ SOURCES += main.cpp\
     gridwindow.cpp \
     gridhighlighterthread.cpp \
     scriptapiserver.cpp \
-    apisettings.cpp
+    apisettings.cpp \
+    authlogger.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -175,7 +176,8 @@ HEADERS  += mainwindow.h \
     gridwindow.h \
     gridhighlighterthread.h \
     scriptapiserver.h \
-    apisettings.h
+    apisettings.h \
+    authlogger.h
 
 FORMS    += mainwindow.ui \
     highlightdialog.ui \

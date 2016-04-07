@@ -7,7 +7,7 @@
 @disarm_methods = ["blind", "quick", "normal", "careful"]
 @harvest_methods = ["blind", "quick"]
 
-@@shift_count = 0
+$shift_count = 0
 
 @careful = false
 
@@ -16,10 +16,10 @@ MAX_SHIFT_COUNT = 3
 Observer.instance.register_event({ :shift => "This is not likely to be a good thing." })
 
 def shift
-  @@shift_count += 1
-  echo "Shifted trap mechanism! - total: #{@@shift_count}"
+  $shift_count += 1
+  echo "Shifted trap mechanism! - total: #{$shift_count}"
 
-  if MAX_SHIFT_COUNT < @@shift_count
+  if MAX_SHIFT_COUNT < $shift_count
     exit_script("*** Unable to disarm! ***")
   end
 end
@@ -63,7 +63,7 @@ end
 
 def get_method method
   return "careful" if @careful
-  index = @disarm_methods.index(method.to_s) + @@shift_count
+  index = @disarm_methods.index(method.to_s) + $shift_count
   @disarm_methods.fetch(index, "careful")
 end
 
@@ -81,14 +81,14 @@ def disarm(box, method)
       pause 0.5
       disarm(box, method)
     when :analyze
-      @@shift_count = 0
+      $shift_count = 0
       if @harvest and @harvest_methods.include? method
         analyze box, false
       else
         ident box
       end
     when :analyze_last
-      @@shift_count = 0
+      $shift_count = 0
       if @harvest and @harvest_methods.include? method
         analyze box, true
       else
@@ -156,7 +156,7 @@ def harvest(box, last)
   end
 end
 
-def print_disarmedtrain
+def print_disarmed
   echo "*** box disarmed! ***<br/>"
 end
 

@@ -15,6 +15,7 @@
 class MainWindow;
 class WindowFacade;
 class Snapshot;
+class NavigationDisplay;
 
 class GameWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT

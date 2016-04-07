@@ -26,7 +26,7 @@ label(:start) {
   put "face #{$args.first}"
   match = { :wait_for => ["Face what?"],
             :hide => ["You are already facing", "You turn to face", "You are too closely engaged", "facing a dead"],
-            :pause => ["You are still stunned"],
+            :pause => ["You are still stunned", "the point in facing"],
             :wait => [/\.\.\.wait/] }
   go_wait(match_wait(match), :start)
 }

@@ -15,6 +15,7 @@ public:
     ~NavigationDisplay();
 
     QPixmap paint();
+    void paint(QWidget* widget, QRect);
     void updateState(QList<QString>);
     void setAutoPilot(bool);
 

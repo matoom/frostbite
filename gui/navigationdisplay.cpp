@@ -65,6 +65,28 @@ QPixmap NavigationDisplay::paint() {
     return collage;
 }
 
+void NavigationDisplay::paint(QWidget* widget, QRect rect) {
+    QPainter painter(widget);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+    int x = 0, y = 0, z = state.size() - 1;
+
+    for(int i = 3; i > 0; i--) {
+        for(int j = 4; j > 0; j--) {
+            QPixmap image = images->value(state.at(z)).at(z);
+            painter.drawPixmap(rect.width() + x - image.width(),
+                               rect.height() + y - image.height(),
+                               image);
+
+            x -= image.width();
+            z--;
+        }
+        x = 0, y -= 20;
+    }
+    //painter.end();
+}
+
+
 NavigationDisplay::~NavigationDisplay(){
     delete images;
 }

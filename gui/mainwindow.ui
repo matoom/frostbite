@@ -195,6 +195,8 @@ QDialogButtonBox {
     <property name="title">
      <string>Window</string>
     </property>
+    <addaction name="actionWindowSave"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -230,6 +232,7 @@ QDialogButtonBox {
     <addaction name="actionLogDeaths"/>
     <addaction name="separator"/>
     <addaction name="actionLogDebug"/>
+    <addaction name="actionLogAuth"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
@@ -399,6 +402,19 @@ QDialogButtonBox {
    </property>
    <property name="text">
     <string>Debug</string>
+   </property>
+  </action>
+  <action name="actionWindowSave">
+   <property name="text">
+    <string>Save layout</string>
+   </property>
+  </action>
+  <action name="actionLogAuth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auth</string>
    </property>
   </action>
  </widget>

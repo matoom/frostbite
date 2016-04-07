@@ -344,7 +344,7 @@ void WindowFacade::scriptRunning(bool state) {
 }
 
 /* paints a full screen image to background */
-void WindowFacade::paintNavigationDisplay() {
+void WindowFacade::paintNavigationDisplay() {    
     QPixmap image = navigationDisplay->paint();
 
     QPixmap collage(gameWindow->width(), gameWindow->height());

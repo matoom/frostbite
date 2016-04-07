@@ -293,7 +293,7 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter main window title */
             QString title = e.attribute("subtitle");
             gameDataContainer->setRoomName(title.mid(3));            
-            emit setMainTitle(title);
+            //emit setMainTitle(title);
             emit updateRoomWindowTitle(title);
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");

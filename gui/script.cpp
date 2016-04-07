@@ -8,7 +8,12 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
     connect(script_proc, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorMsg()));
     connect(script_proc, SIGNAL(started()), this, SLOT(start()));
     connect(script_proc, SIGNAL(finished(int)), this, SLOT(finish(int)));
-    connect(script_proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
+
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+        connect(script_proc, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
+    #else
+        connect(script_proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
+    #endif
 
     path = QApplication::applicationDirPath() + "/scripts/lib/main.rb";
 
@@ -19,7 +24,6 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
 
 bool Script::isRunning() {
     return script_proc->state() == QProcess::Running;
-    //return running;
 }
 
 QString Script::currentFileName() {
@@ -33,7 +37,7 @@ void Script::execute(QString fileName, QList<QString> userArgs) {
     QStringList arguments;
     arguments << path << file << userArgs;
 
-    script_proc->start(rubyPath, arguments);
+    script_proc->start(rubyPath, arguments, QProcess::Unbuffered | QProcess::ReadWrite);
 }
 
 void Script::killScript() {
@@ -42,11 +46,12 @@ void Script::killScript() {
 }
 
 void Script::sendMessage(QByteArray message) {
-    script_proc->write(message);
-    //https://bugreports.qt.io/browse/QTBUG-45548
-    // BUG in qt5 < fix 5.5.1
-    // flush stdout
-    script_proc->waitForBytesWritten(-1);
+    //if(script_proc->isOpen() && script_proc->isWritable()) {
+        script_proc->write(message);
+        #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        script_proc->waitForBytesWritten(-1);
+        #endif
+    //}
 }
 
 void Script::displayOutputMsg() {
@@ -65,18 +70,18 @@ void Script::displayErrorMsg() {
 }
 
 void Script::start() {
-    running = true;
+    //running = true;
 }
 
 void Script::finish(int exit) {
+    //running = false;
+
     script_proc->closeWriteChannel();
 
     if(exit == 0) {
         scriptService->scriptFinished();
     }
-    scriptService->scriptEnded();
-
-    running = false;
+    scriptService->scriptEnded();    
 }
 
 void Script::handleError(QProcess::ProcessError error) {

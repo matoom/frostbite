@@ -4,6 +4,7 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     settings = ClientSettings::Instance();
     tcpSocket = new QTcpSocket(this);
     tcpClient = (TcpClient*)parent;
+    authLogger = new AuthLogger();
 
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
@@ -15,8 +16,8 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
                 this, SLOT(startSession()));
     }
 
-    connect(this, SIGNAL(selectGame()),
-            tcpClient, SLOT(selectGame()));
+    connect(this, SIGNAL(selectGame(QMap<QString, QString>)),
+            tcpClient, SLOT(selectGame(QMap<QString, QString>)));
 
     connect(this, SIGNAL(addCharacter(QString, QString)),
             tcpClient, SLOT(addCharacter(QString, QString)));
@@ -53,12 +54,13 @@ void EAuthService::initSession(QString host, QString port) {
 }
 
 void EAuthService::startSession() {
-    tcpSocket->write("K\n");
+    this->log("Negotiate session: ");
+    this->write("K\n");
 }
 
 void EAuthService::retrieveSessionKey(QString id) {
     if(tcpSocket) {
-        tcpSocket->write("L\t" + id.toLocal8Bit() + "\tSTORM\n");
+        this->write("L\t" + id.toLocal8Bit() + "\tSTORM\n");
     }
 }
 
@@ -66,7 +68,7 @@ void EAuthService::gameSelected(QString id) {
     this->gameId = id;
 
     if(tcpSocket) {
-        tcpSocket->write("F\t" + id.toLocal8Bit() + "\n");
+        this->write("F\t" + id.toLocal8Bit() + "\n");
     }
 }
 
@@ -83,29 +85,70 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
     return final;
 }
 
-void EAuthService::negotiateSession(QByteArray buffer) {    
+void EAuthService::log(QByteArray buffer) {
+    if(settings->getParameter("Logging/auth", false).toBool()) {
+        authLogger->addText(buffer);
+        if(!authLogger->isRunning()) {
+            authLogger->start();
+        }
+    }
+}
+
+void EAuthService::write(QByteArray buffer) {
+    this->log("> " + buffer);
+    tcpSocket->write(buffer);
+}
+
+void EAuthService::negotiateSession(QByteArray buffer) {
+    this->log(buffer);
+
     if(buffer.startsWith("A\t")) {
         QList<QByteArray> aResponse = buffer.split('\t');
-        if(aResponse.takeLast().trimmed() == "REJECT") {
+        QByteArray aAction = aResponse.takeLast().trimmed();
+        if(aAction == "REJECT") {
             emit connectionError("Subscription error.");
             tcpSocket->disconnectFromHost();
             return;
+        } else if(aAction == "PASSWORD") {
+            emit connectionError("Invalid user or password.");
+            emit authError();
+            tcpSocket->disconnectFromHost();
+            return;
         }
-        tcpSocket->write("M\n");
+        this->write("M\n");
     } else if(buffer.startsWith("M\t")) {
-        emit selectGame();
+        QList<QByteArray> mResponse = buffer.trimmed().split('\t');
+        mResponse.removeFirst();
+
+        QMap<QString, QString> gameList;
+        if(mResponse.length() % 2 == 0) {
+            for(int i = 0; i < mResponse.length(); i = i + 2) {
+                QString code = mResponse.at(i);
+                QString name = mResponse.at(i + 1);
+                if(name.toLower().contains("dragonrealms")) {
+                    gameList.insert(name, code);
+                }
+            }
+        } else {
+            gameList.insert("Dragonrealms", "DR");
+            gameList.insert("Dragonrealms The Fallen", "DRF");
+            gameList.insert("Dragonrealms Prime Test", "DRT");
+            gameList.insert("Dragonrealms Platinum", "DRX");
+        }
+
+        emit selectGame(gameList);
     } else if(buffer.startsWith("F\t")) {
         QList<QByteArray> fResponse = buffer.split('\t');
         if(fResponse.takeLast().trimmed() == "NEW_TO_GAME") {
-            emit connectionError("Subscription error.");
+            emit connectionError("Account error; character not found;");
             tcpSocket->disconnectFromHost();
             return;
         }
-        tcpSocket->write("G\t" + this->gameId.toLocal8Bit() + "\n");
+        this->write("G\t" + this->gameId.toLocal8Bit() + "\n");
     } else if(buffer.startsWith("G\t")) {
-        tcpSocket->write("P\t" + this->gameId.toLocal8Bit() + "\n");
+        this->write("P\t" + this->gameId.toLocal8Bit() + "\n");
     } else if(buffer.startsWith("P\t")) {
-        tcpSocket->write("C\n");
+        this->write("C\n");
     } else if(buffer.startsWith("C\t")) {
         QList<QByteArray> cResponse = buffer.split('\t');
 
@@ -122,7 +165,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
 
         tcpSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
-        emit connectionError("Invalid user or password.");
+        emit connectionError("Unknown error; please refer to auth log.");
         emit authError();
         tcpSocket->disconnectFromHost();
     } else {
@@ -130,7 +173,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
             char* hash = sge_encrypt_password(key.toLocal8Bit().data(), buffer.data());
 
             QString response = "A\t" + user.toUpper() + "\t" + QString::fromLocal8Bit(hash) + "\n";
-            tcpSocket->write(response.toLocal8Bit());
+            this->write(response.toLocal8Bit());
         } else {
             emit connectionError("Unable to obtain session key.");
         }

@@ -31,10 +31,11 @@ if @start_plan
   end
 end
 
-echo "Train plan - #{@plan.inspect}"
+echo "Training plan - #{@plan.inspect}"
 
 def reset
   sleep Rt::value
+  #you cannot manage to stand
   put_wait "stand", /You stand|already standing/ unless Status::standing
   put_wait "khri stop", /unable to maintain|lose concentration|can no longer|attempt to relax/ unless Spell::active.empty?
   pause

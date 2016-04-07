@@ -6,10 +6,12 @@
 #include <QtNetwork/QTcpSocket>
 
 #include <clientsettings.h>
+#include <authlogger.h>
 #include <tcpclient.h>
 
 class ClientSettings;
 class TcpClient;
+class AuthLogger;
 
 class EAuthService : public QObject {
     Q_OBJECT
@@ -27,6 +29,7 @@ private:
     QTcpSocket *tcpSocket;
     QByteArray buffer;
     TcpClient *tcpClient;
+    AuthLogger* authLogger;
 
     QString key;
     QString user;
@@ -36,13 +39,16 @@ private:
     QString errorMessage;
 
     char* sge_encrypt_password(char *passwd, char *hash);
-    void negotiateSession(QByteArray);
+    void negotiateSession(QByteArray);    
+    void write(QByteArray);
+    void log(QByteArray );
+
     QByteArray extractValue(QByteArray, QList<QByteArray>);
 
 signals:
      void sessionRetrieved(QString, QString, QString);
      void addCharacter(QString, QString);
-     void selectGame();
+     void selectGame(QMap<QString, QString>);
      void connectionError(QString);
      void authError();
 

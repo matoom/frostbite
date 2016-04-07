@@ -62,6 +62,10 @@ void MainWindow::updateProfileSettings() {
     menuHandler->updateDialogSettings();
 }
 
+void MainWindow::openConnection(QString host, QString port, QString key) {
+    tcpClient->connectToHost(host, port, key);
+}
+
 void MainWindow::openConnectDialog() {
     menuHandler->openConnectDialog();
 }
@@ -215,6 +219,10 @@ void MainWindow::setLogDebug(bool enabled) {
     ui->actionLogDebug->setChecked(enabled);
 }
 
+void MainWindow::setLogAuth(bool enabled) {
+    ui->actionLogAuth->setChecked(enabled);
+}
+
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {
     ui->mainToolBar->setAllowedAreas(areas);
 }
@@ -227,10 +235,14 @@ void MainWindow::connectEnabled(bool enabled) {
     ui->actionConnect->setEnabled(enabled);
 }
 
-void MainWindow::closeEvent(QCloseEvent*){
-    /* save client window state */
+void MainWindow::saveWindow() {
     settings->setParameter("MainWindow/state", saveState());
     settings->setParameter("MainWindow/geometry", saveGeometry());
+}
+
+void MainWindow::closeEvent(QCloseEvent*) {
+    /* save client window state */
+    this->saveWindow();
 
     /* terminate if script running at exit */
     scriptService->terminateScript();

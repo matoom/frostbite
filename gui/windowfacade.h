@@ -39,7 +39,7 @@ class DeathsLogger;
 class ArrivalsLogger;
 
 typedef QList<QString> DirectionsList;
-typedef QHash<QString, QString> GridItems;
+typedef QMap<QString, QString> GridItems;
 
 class WindowFacade : public QObject {
     Q_OBJECT
@@ -118,7 +118,7 @@ private:
     GenericWindowFactory* genericWindowFactory;
     MainWindow* mainWindow;
     QPlainTextEdit* gameWindow;
-    NavigationDisplay *navigationDisplay;
+    NavigationDisplay* navigationDisplay;
     GameDataContainer* gameDataContainer;
     ClientSettings* clientSettings;
     Highlighter* highlighter;

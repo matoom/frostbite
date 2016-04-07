@@ -30,7 +30,7 @@ private:
     ClientSettings* settings;
     MainWindow* mainWindow;
     QHash<QString, QString> characterList;
-    QHash<QString, QString> gameList;
+    QMap<QString, QString> gameList;
     QMovie* movie;
 
     QString sessionKey;
@@ -57,6 +57,8 @@ private:
     void accept();
     void reject();
 
+    QMutex mutex;
+
 private slots:
     void pageSelected(int);
     void addCharacterList(QString, QString);
@@ -64,6 +66,7 @@ private slots:
     void showError(QString);
     void resetPassword();
     void enableGameSelect();
+    void setGameList(QMap<QString, QString>);
 
 signals:
     void initSession(QString, QString, QString, QString);

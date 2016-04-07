@@ -56,6 +56,7 @@ signals:
     void updateHighlighterSettings();
     void resetPassword();
     void enableGameSelect();
+    void setGameList(QMap<QString, QString>);
 
 public slots:
     void setProxy(bool, QString, QString);
@@ -64,7 +65,7 @@ public slots:
     void connectToHost(QString, QString, QString);
     void disconnectedFromHost();
     void initEauthSession(QString, QString, QString, QString);
-    void selectGame();
+    void selectGame(QMap<QString, QString>);
     void gameSelected(QString);
     void resetEauthSession();
     void addCharacter(QString, QString);

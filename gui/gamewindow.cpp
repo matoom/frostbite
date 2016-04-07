@@ -111,7 +111,7 @@ void GameWindow::contextMenuEvent(QContextMenuEvent *event) {
     menu->exec(event->globalPos());
 }
 
-void GameWindow::resizeEvent(QResizeEvent *event) {
+void GameWindow::resizeEvent(QResizeEvent *event) {    
     windowFacade->paintNavigationDisplay();
     QPlainTextEdit::resizeEvent(event);
 }

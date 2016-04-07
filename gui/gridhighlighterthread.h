@@ -13,7 +13,7 @@ struct GridEntry {
     QString text;
 };
 
-typedef QHash<QString, QString> GridItems;
+typedef QMap<QString, QString> GridItems;
 
 class GridHighlighterThread : public QThread {
     Q_OBJECT
@@ -32,7 +32,7 @@ private:
     bool append;
     QRegExp rxRemoveTags;
     GridEntry localData;
-    QHash<QString, QString> highlightedItems;
+    QMap<QString, QString> highlightedItems;
 
     void process(GridEntry);
 

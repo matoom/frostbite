@@ -72,6 +72,10 @@ void MenuHandler::menuTriggered(QAction* action) {
         clientSettings->setParameter("Logging/deaths", action->isChecked());
     } else if(action->objectName() == "actionLogDebug") {
         clientSettings->setParameter("Logging/debug", action->isChecked());
+    } else if(action->objectName() == "actionLogAuth") {
+        clientSettings->setParameter("Logging/auth", action->isChecked());
+    } else if(action->objectName() == "actionWindowSave") {
+        mainWindow->saveWindow();
     }
 }
 
@@ -123,6 +127,7 @@ void MenuHandler::loadLoggingMenu() {
     mainWindow->setLogArrivals(clientSettings->getParameter("Logging/arrivals", false).toBool());
     mainWindow->setLogDeaths(clientSettings->getParameter("Logging/deaths", false).toBool());
     mainWindow->setLogDebug(clientSettings->getParameter("Logging/debug", false).toBool());
+    mainWindow->setLogAuth(clientSettings->getParameter("Logging/auth", false).toBool());
 }
 
 MenuHandler::~MenuHandler() {

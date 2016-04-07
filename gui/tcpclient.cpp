@@ -53,8 +53,9 @@ void TcpClient::initEauthSession(QString host, QString port, QString user, QStri
     eAuth->initSession(host, port);
 }
 
-void TcpClient::selectGame() {
+void TcpClient::selectGame(QMap<QString, QString> gameList) {
     // eAuth -> connectWizard
+    emit setGameList(gameList);
     emit enableGameSelect();
 }
 

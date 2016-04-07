@@ -69,6 +69,7 @@ public:
     void setLogArrivals(bool);
     void setLogDeaths(bool);
     void setLogDebug(bool);
+    void setLogAuth(bool);
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
@@ -77,7 +78,9 @@ public:
     void toggleMaximized();
     void updateProfileSettings();
     void openConnectDialog();
+    void openConnection(QString host, QString port, QString key);
     void openAppearanceDialog();
+    void saveWindow();
 
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();

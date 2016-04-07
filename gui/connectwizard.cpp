@@ -10,7 +10,8 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     movie = new QMovie(":/window/images/loading.gif");
 
     this->registerFields();
-    this->populateGameList();
+
+    //this->populateGameList();
 
     connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(pageSelected(int)));
 
@@ -47,6 +48,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     connect(mainWindow->getTcpClient(), SIGNAL(enableGameSelect()),
             this, SLOT(enableGameSelect()));
+
+    connect(mainWindow->getTcpClient(), SIGNAL(setGameList(QMap<QString, QString>)),
+            this, SLOT(setGameList(QMap<QString, QString>)));
 }
 
 void ConnectWizard::showEvent(QShowEvent* event) {
@@ -57,15 +61,11 @@ void ConnectWizard::showEvent(QShowEvent* event) {
 }
 
 void ConnectWizard::populateGameList() {
-    gameList.insert("Dragonrealms", "DR");
-    gameList.insert("Dragonrealms The Fallen", "DRF");
-    gameList.insert("Dragonrealms Prime Test", "DRT");
-    gameList.insert("Dragonrealms Platinum", "DRX");
+    ui->gameList->clear();
 
-    new QListWidgetItem(tr("Dragonrealms"), ui->gameList);
-    new QListWidgetItem(tr("Dragonrealms The Fallen"), ui->gameList);
-    new QListWidgetItem(tr("Dragonrealms Prime Test"), ui->gameList);
-    new QListWidgetItem(tr("Dragonrealms Platinum"), ui->gameList);
+    foreach(QString key, gameList.keys() ) {
+        new QListWidgetItem(key, ui->gameList);
+    }
 
     QList<QListWidgetItem*> selectedItems =
             ui->gameList->findItems(settings->getParameter("Login/game", "").toString(), Qt::MatchExactly);
@@ -75,6 +75,13 @@ void ConnectWizard::populateGameList() {
     } else {
         ui->gameList->setCurrentRow(0);
     }
+}
+
+void ConnectWizard::setGameList(QMap<QString, QString> gameList) {
+    mutex.lock();
+    this->gameList = gameList;
+    mutex.unlock();
+    this->populateGameList();
 }
 
 void ConnectWizard::registerFields() {

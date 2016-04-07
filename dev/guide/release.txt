@@ -12,14 +12,17 @@ copy dependencies from ldd into app folder
 
 deploy on mac:
 
-copy shared lib:
-cp libshared.1.0.0.dylib FrostBite.app/Contents/MacOS/libshared.dylib
-
 run: 
 macdeployqt FrostBite.app/ -dmg -no-plugins
 
-remove unnecessary frameworks/plugins
+create -> Contents/Resources/qt.conf
+
+[Paths]
+Plugins = PlugIns
+
+create folder -> Contents/PlugIns
+
+if needed remove unnecessary frameworks/plugins
 
 repackage dmg:
 hdiutil create -format UDBZ -quiet -srcfolder myapplication.app myapplication.dmg
-
