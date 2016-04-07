@@ -415,13 +415,11 @@ void HighlightTextTab::initTimerActionSelect() {
 }
 
 void HighlightTextTab::removeHighlightItem() {
-    int id = listWidget->currentItem()->data(Qt::UserRole).toInt();
-    highlightList->removeAt(id);
+    this->saveChanges();
 
-    int index = changeList.indexOf(id);
-    if(index != -1) {
-        changeList.removeAt(index);
-    }
+    int id = listWidget->currentItem()->data(Qt::UserRole).toInt();
+
+    highlightList->removeAt(id);
 
     highlightSettings->setSettings("TextHighlight", highlightList);
 
