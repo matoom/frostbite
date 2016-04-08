@@ -4,7 +4,6 @@ require 'socket'
 module ApiSettings
   #constants
   API_PUT_PREFIX = "put#"
-  API_END_PREFIX = "end#"
   API_ECHO_PREFIX = "echo#"
   API_CMD_SUFFIX = "\n"
 

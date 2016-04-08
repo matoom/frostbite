@@ -351,19 +351,12 @@ def api_read_rt line
 end
 
 # @private
-def api_terminate_script
-  puts ApiSettings::API_END_PREFIX + ApiSettings::API_CMD_SUFFIX
-end
-
-# @private
 def exit
-  api_terminate_script
   Kernel::exit
 end
 
 # @private
 def abort
-  api_terminate_script
   Kernel::abort
 end
 
@@ -387,7 +380,6 @@ at_exit do
       @_api_cmd_thread = Thread.new { CommandThread.new.run }
     end
     finally_do
-    api_terminate_script
   end
 end
 
@@ -402,8 +394,5 @@ sleep Rt::value
 begin
   Kernel.require @_file
 rescue Exception => e
-  api_terminate_script
   raise e
-ensure
-  api_terminate_script
 end
