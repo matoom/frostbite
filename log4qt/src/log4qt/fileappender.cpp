@@ -39,7 +39,7 @@
 #include <QtCore/QTextCodec>
 #include "log4qt/layout.h"
 #include "log4qt/loggingevent.h"
-
+#include <guiapplication.h>
 
 
 namespace Log4Qt
@@ -80,7 +80,7 @@ namespace Log4Qt
 	    WriterAppender(pLayout, pParent),
 	    mAppendFile(false),
 	    mBufferedIo(true),
-	    mFileName(rFileName),
+        mFileName(QApplication::applicationDirPath() + "/" + rFileName),
 	    mpFile(0),
 	    mpTextStream(0)
 	{
@@ -94,7 +94,7 @@ namespace Log4Qt
 	    WriterAppender(pLayout, pParent),
 	    mAppendFile(append),
 	    mBufferedIo(true),
-	    mFileName(rFileName),
+        mFileName(QApplication::applicationDirPath() + "/" + rFileName),
 	    mpFile(0),
 	    mpTextStream(0)
 	{
@@ -109,7 +109,7 @@ namespace Log4Qt
 	    WriterAppender(pLayout, pParent),
 	    mAppendFile(append),
 	    mBufferedIo(buffered),
-	    mFileName(rFileName),
+        mFileName(QApplication::applicationDirPath() + "/" + rFileName),
 	    mpFile(0),
 	    mpTextStream(0)
 	{
@@ -234,7 +234,7 @@ namespace Log4Qt
 	{
 	    Q_ASSERT_X(mpFile == 0 && mpTextStream == 0, "FileAppender::openFile()", "Opening file without closing previous file");
 	    
-	    QFileInfo file_info(mFileName);
+        QFileInfo file_info(QApplication::applicationDirPath() + "/" + mFileName);
 	    QDir parent_dir = file_info.dir();
 	    if (!parent_dir.exists())
 	    {
@@ -245,7 +245,7 @@ namespace Log4Qt
 	    }
 
 	    
-	    mpFile = new QFile(mFileName);
+        mpFile = new QFile(QApplication::applicationDirPath() + "/" + mFileName);
 	    QFile::OpenMode mode = QIODevice::WriteOnly | QIODevice::Text;
 	    if (mAppendFile)
 	        mode |= QIODevice::Append;
