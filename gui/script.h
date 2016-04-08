@@ -20,9 +20,7 @@ public:
 
     void execute(QString, QList<QString>);
 
-    void killScript();
-    bool isRunning();
-    void sendMessage(QByteArray);    
+    bool isRunning();  
     QString currentFileName();
 
 private:
@@ -43,6 +41,8 @@ private:
 signals:
 
 public slots:
+    void killScript();
+    void sendMessage(QByteArray);
 
 private slots:
     void displayOutputMsg();

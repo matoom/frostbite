@@ -104,15 +104,11 @@ void EAuthService::log(QByteArray buffer) {
 }
 
 void EAuthService::write(QByteArray buffer) {
-    qDebug() << buffer;
-
     this->log("> " + buffer);
     tcpSocket->write(buffer);
 }
 
 void EAuthService::negotiateSession(QByteArray buffer) {
-    qDebug() << buffer;
-
     this->log(buffer);
 
     if(buffer.startsWith("A\t")) {

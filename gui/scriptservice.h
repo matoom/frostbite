@@ -44,6 +44,11 @@ private:
 public slots:
     void writeScriptText(QByteArray);
     void writeOutgoingMessage(QByteArray);
+
+signals:
+    void sendMessage(QByteArray message);
+    void killScript();
+
 };
 
 #endif // SCRIPTSERVICE_H

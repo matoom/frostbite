@@ -42,37 +42,29 @@ void Script::execute(QString fileName, QList<QString> userArgs) {
 }
 
 void Script::killScript() {
-    procMutex.lock();
     script_proc->kill();
     script_proc->waitForFinished(1000);
-    procMutex.unlock();
 }
 
 void Script::sendMessage(QByteArray message) {
-    procMutex.lock();
     if(script_proc->isOpen() && script_proc->isWritable()) {
         script_proc->write(message);
         #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         script_proc->waitForBytesWritten(-1);
         #endif
     }
-    procMutex.unlock();
 }
 
 void Script::displayOutputMsg() {
-    procMutex.lock();
     script_proc->setReadChannel(QProcess::StandardOutput);
     QByteArray msg = script_proc->readAll();        
-    procMutex.unlock();
     scriptService->processCommand(msg);
     //qDebug() << msg.data();
 }
 
 void Script::displayErrorMsg() {
-    procMutex.lock();
     script_proc->setReadChannel(QProcess::StandardError);
     QByteArray msg = script_proc->readAll();
-    procMutex.unlock();
     //msg.prepend("@SCRIPT ERROR\n");
     scriptService->writeGameWindow(msg);
     //qDebug() << "Error: " << (msg.data());
@@ -82,9 +74,7 @@ void Script::start() {
 }
 
 void Script::finish(int exit) {
-    procMutex.lock();
     script_proc->closeWriteChannel();
-    procMutex.unlock();
 
     if(exit == 0) {
         scriptService->scriptFinished();

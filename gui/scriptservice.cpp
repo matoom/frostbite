@@ -13,6 +13,9 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     if(!scriptWriter->isRunning()) {
         scriptWriter->start();
     }
+
+    connect(this, SIGNAL(killScript()), script, SLOT(killScript()));
+    connect(this, SIGNAL(sendMessage(QByteArray)), script, SLOT(sendMessage(QByteArray)));
 }
 
 bool ScriptService::isScriptActive() {
@@ -50,7 +53,7 @@ void ScriptService::runScript(QString input) {
 
 void ScriptService::terminateScript() {
     if(script->isRunning()) {
-        script->killScript();
+        emit killScript();
         windowFacade->writeGameWindow("[Script terminated after " +
             textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
         terminateFlag = false;
@@ -60,7 +63,7 @@ void ScriptService::terminateScript() {
 void ScriptService::abortScript() {
     if(script->isRunning()) {
         if(!terminateFlag) {
-            script->sendMessage("exit#\n");
+            emit sendMessage("exit#\n");
             windowFacade->writeGameWindow("[Script aborted after " +
                 textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
             terminateFlag = true;
@@ -93,7 +96,7 @@ void ScriptService::writeScriptText(QByteArray text) {
 
 void ScriptService::writeOutgoingMessage(QByteArray message) {
     if(script != NULL && script->isRunning()) {
-        script->sendMessage("game_text#" + message + "\n");
+        emit sendMessage("game_text#" + message + "\n");
     }
 }
 
@@ -107,7 +110,7 @@ void ScriptService::processCommand(QByteArray msg) {
                 windowFacade->writeGameWindow("<span class=\"echo\">" +
                     line.mid(5).trimmed() + "</span>");
             } else if (line.startsWith("end#")) {
-                script->sendMessage("end#\n");
+                emit sendMessage("end#\n");
             }
         }
     }
