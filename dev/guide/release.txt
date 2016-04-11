@@ -12,9 +12,6 @@ copy dependencies from ldd into app folder
 
 deploy on mac:
 
-run: 
-macdeployqt FrostBite.app/ -dmg -no-plugins
-
 create -> Contents/Resources/qt.conf
 
 [Paths]
@@ -22,7 +19,12 @@ Plugins = PlugIns
 
 create folder -> Contents/PlugIns
 
+run: 
+macdeployqt FrostBite.app/ -dmg -no-plugins
+
 if needed remove unnecessary frameworks/plugins
 
 repackage dmg:
 hdiutil create -format UDBZ -quiet -srcfolder myapplication.app myapplication.dmg
+
+rename FrostBite.dmg -> Frostbite-osx.dmg

@@ -301,7 +301,7 @@ QDialogButtonBox {
     <string>Highlight</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::PreferencesRole</enum>
+    <enum>QAction::ApplicationSpecificRole</enum>
    </property>
   </action>
   <action name="actionMacros">
@@ -313,7 +313,7 @@ QDialogButtonBox {
     <string>Macros</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::PreferencesRole</enum>
+    <enum>QAction::ApplicationSpecificRole</enum>
    </property>
   </action>
   <action name="actionAppearance">

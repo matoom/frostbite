@@ -39,6 +39,7 @@ void HighlightGeneralTab::updateSettings() {
     settings->init();
     generalSettings->init();
 
+    this->loadSettings();
     this->setBackground();
     listWidget->clear();
 }

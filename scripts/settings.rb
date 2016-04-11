@@ -1,5 +1,5 @@
 class Settings
-  FILE_NAME = "settings.dat"
+  FILE_NAME = "#{File.dirname(__FILE__)}/settings.dat"
 
   class SettingsObject
     def initialize

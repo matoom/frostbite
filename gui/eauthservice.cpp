@@ -88,7 +88,7 @@ char* EAuthService::sge_encrypt_password(char *passwd, char *hash) {
 QByteArray EAuthService::qt_sge_encrypt_password(QString passwd, QString hash) {
     QByteArray encrypted = "";
     for (int i = 0; i < passwd.length() && i < hash.length(); i++) {
-        encrypted += (char)((hash[i].toLatin1() ^ (passwd[i].toLatin1() - 32)) + 32);
+        encrypted += QChar(((hash[i].toLatin1() ^ (passwd[i].toLatin1() - 32)) + 32));
     }
     encrypted += '\0';
     return encrypted;
