@@ -1,7 +1,7 @@
 require "defines"
 require "hunt"
 
-def claw
+def attack
   put "attack left"
   match = { :wait => [/\.\.\.wait/],
             :pause => [/still stunned|entangled in a web/],
@@ -28,5 +28,5 @@ end
 
 10000.times do
   hunt
-  claw
+  attack
 end

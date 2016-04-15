@@ -6,7 +6,7 @@
 
 #include "scriptapiserver.h"
 
-bool MainWindow::DEBUG = false;
+bool MainWindow::DEBUG = true;
 
 int main(int argc, char *argv[]) {
 

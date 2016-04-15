@@ -39,6 +39,8 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     exit = false;
     pushStream = false;
     inv = false;
+    familiar = false;
+    perc = false;
     mono = false;
     bold = false;
     initRoundtime = false;
@@ -240,7 +242,6 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
 
                 initRoundtime = false;
             }
-
             prompt = true;
             gameText += root.text().trimmed().toUtf8();
         } else if(e.tagName() == "compass") {
@@ -367,37 +368,19 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 emit updateThoughtsWindow(thought + time);
             } else if(e.attribute("id") == "death") {
                 QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
                 emit updateDeathsWindow(root.text().trimmed() + time);
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();
             } else if(e.attribute("id") == "inv") {
                 inv = true;
             } else if(e.attribute("id") == "familiar") {
-                familiarElementCount++;
-                if(familiarElementCount == 1) {
-                    QString text = root.text().trimmed();
-                    TextUtils::Instance()->plainToHtml(text);
-                    if(root.firstChildElement("preset").attribute("id") == "speech" ||
-                       root.firstChildElement("b").tagName() == "b") {
-                        text.insert(text.indexOf("&quot;"), "</span>");
-                        text.prepend("<span class=\"speech\">");
-                    } else if(root.firstChildElement("preset").attribute("id") == "whisper") {
-                        text.insert(text.indexOf("&quot;"), "</span>");
-                        text.prepend("<span class=\"whisper\">");
-                    } else {
-                        gameText += text;
-                    }
-
-                    emit updateFamiliarWindow(text);
-                }
+                familiar = true;
             } else if(e.attribute("id") == "ooc") {
                 QString ooc = root.text();
                 TextUtils::Instance()->plainToHtml(ooc);
                 gameText += ooc;
             } else if(e.attribute("id") == "percWindow") {
-              gameDataContainer->addActiveSpells(root.text().trimmed());
-              emit updateActiveSpells();
+                perc = true;
             }
 
         } else if(e.tagName() == "popStream") {
@@ -406,6 +389,11 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameDataContainer->setInventory(inventory);
                 inventory.clear();
                 inv = false;
+            } else if(familiar) {
+                familiar = false;
+            } else if(perc) {
+                emit updateActiveSpells();
+                perc = false;
             }
         } else if(e.tagName() == "output") {
             if(e.attribute("class") == "mono") {
@@ -422,16 +410,16 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
 }
 
 void XmlParserThread::processPushStream(QByteArray rawData) {
-    QString tag = "";
     if(pushStream) {
         if(inv) {
-            tag = "<pushStream id='inv'/>";
-            int index = rawData.indexOf(tag);
-            if(index != -1) {
-                inventory << rawData.mid(index + tag.length()).trimmed();
-            } else {
-                inventory << rawData.trimmed();
-            }
+            inventory << stripTags("<temp>" + rawData + "</temp>").trimmed();
+        } else if (familiar) {
+            QString line = rawData;
+            line.replace("<preset id=", "<span class=").replace("</preset>", "</span>");
+            line.replace("<b>", "<span class=\"speech\">").replace("</b>", "</span>");
+            emit updateFamiliarWindow(stripPushTags(line));
+        } else if (perc) {
+            gameDataContainer->addActiveSpells(stripPushTags(rawData).trimmed());
         }
     }
 }
@@ -486,6 +474,15 @@ QString XmlParserThread::stripTags(QString line) {
         }
     }
     return textString;
+}
+
+QString XmlParserThread::stripPushTags(QString line) {
+    QRegExp push("<pushStream(.*)\\/>");
+    push.setMinimal(true);
+
+    line = line.remove(push);
+    line = line.remove(QRegExp("<popStream\\/>"));
+    return line;
 }
 
 XmlParserThread::~XmlParserThread() {

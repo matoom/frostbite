@@ -20,7 +20,7 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
             commandLine->doCopy();
             return true;
         } else if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
-            #ifdef Q_WS_MAC
+            #ifdef Q_OS_MAC
             switch(keyEvent->key()) {
                 case Qt::Key_Up:
                     commandLine->historyBack();
@@ -36,7 +36,7 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
         } else {
             if(keyEvent->modifiers() == Qt::NoModifier) {
                 switch(keyEvent->key()) {
-                    #ifndef Q_WS_MAC
+                    #ifndef Q_OS_MAC
                     case Qt::Key_Up:
                         commandLine->historyBack();
                     break;

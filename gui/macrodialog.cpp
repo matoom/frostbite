@@ -80,7 +80,7 @@ void MacroDialog::loadKeys(QString tabName, QTableWidget* table) {
 }
 
 void MacroDialog::buildKeypadKeys(Qt::KeyboardModifiers modifers) {
-    #ifdef Q_WS_MAC
+    #ifdef Q_OS_MAC
     this->buildKeypadKeys(modifers, 0x2a, 0x2b);
     this->buildKeypadKeys(modifers, 0x2d, 0x2d);
     this->buildKeypadKeys(modifers, 0x2f, 0x2f);

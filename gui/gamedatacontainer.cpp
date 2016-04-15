@@ -97,7 +97,7 @@ void GameDataContainer::setContainer(QStringList container) {
 
 void GameDataContainer::setInventory(QStringList inventory) {
     QWriteLocker locker(&lock);
-    inventory.removeFirst();
+    if(!inventory.isEmpty()) inventory.removeFirst();
     this->inventory = inventory;
 }
 

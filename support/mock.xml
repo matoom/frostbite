@@ -920,5 +920,52 @@ Obvious exits: <d>out</d>.
 <compass><dir value="out"/></compass><component id='room players'></component>
 <prompt time="1446936439">&gt;</prompt>
 
-
 <compass><dir value="n"/><dir value="e"/><dir value="se"/><dir value="s"/><dir value="sw"/><dir value="w"/><dir value="nw"/><dir value="out"/><dir value="up"/><dir value="down"/><dir value="ne"/></compass><pushStream id="logons"/> * Florist Legolas joins the adventure.
+
+You rest your hand on Troll's arm with a soft smile.
+
+You sense a successful empathic link has been forged between you and Troll.
+You feel the burning fire of pain and suffering building slowly as you instinctively draw out the truth behind Troll's injuries.
+<pushStream id="familiar" /><pushStream id="familiar" ifClosedStyle="watching"/>
+Troll's injuries include...
+Wounds to the HEAD:
+  Fresh External:  some deep slashes and cuts about the head -- very damaging
+  Fresh Internal:  slightly tender -- insignificant
+Wounds to the NECK:
+  Fresh External:  deep slashes across the neck -- damaging
+Wounds to the RIGHT ARM:
+  Fresh External:  deep cuts across the right arm -- very harmful
+Wounds to the LEFT ARM:
+  Fresh External:  deep slashes across the left arm -- very damaging
+Wounds to the RIGHT LEG:
+  Fresh External:  deep slashes across the right leg -- very damaging
+Wounds to the LEFT LEG:
+  Fresh External:  deep slashes across the left leg -- very damaging
+Wounds to the RIGHT HAND:
+  Fresh External:  cuts and bruises about the right hand -- more than minor
+Wounds to the LEFT HAND:
+  Fresh External:  deep slashes across the left hand -- damaging
+Wounds to the CHEST:
+  Fresh External:  deep cuts across the chest area -- harmful
+Wounds to the ABDOMEN:
+  Fresh External:  deep slashes across the abdomen -- damaging
+Wounds to the RIGHT EYE:
+  Fresh External:  a bruised and swollen right eye -- harmful
+Wounds to the LEFT EYE:
+  Fresh External:  a bruised, swollen and bleeding left eye -- very damaging
+Wounds to the SKIN:
+  Scars Internal:  numbness in the arms and legs -- severe
+
+Troll has normal vitality.
+<popStream/><popStream/><prompt time="1460671328">&gt;</prompt>
+
+<clearStream id="percWindow"/>
+<pushStream id="percWindow"/>Gift of Life<popStream/><pushStream id="percWindow"/>  (11 roisaen)
+<popStream/><pushStream id="percWindow"/>Mental Focus<popStream/><pushStream id="percWindow"/>  (10 roisaen)
+<popStream/><pushStream id="percWindow"/>Regenerate<popStream/><pushStream id="percWindow"/>  (Indefinite)
+<popStream/><pushStream id="percWindow"/>Iron Constitution<popStream/><pushStream id="percWindow"/>  (8 roisaen)
+<popStream/><prompt time="1460671338">&gt;</prompt>
+
+<spell>None</spell>You gesture.
+
+<spell exist='spell'>Iron Constitution</spell>Since you're not feeding enough power into the spell pattern to make it coherent, you quickly work your way to the minimum required.

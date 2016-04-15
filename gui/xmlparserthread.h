@@ -54,6 +54,8 @@ private:
     bool exit;
     bool pushStream;
     bool inv;
+    bool familiar;
+    bool perc;
     bool mono;
     bool bold;
     bool initRoundtime;
@@ -67,6 +69,7 @@ private:
     //void writeScript(QByteArray);
     void fixMonoTags(QString&);
     QString stripTags(QString);
+    QString stripPushTags(QString);
 
     QRegExp rxAmp;
     QRegExp rxDmg;

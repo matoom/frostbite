@@ -21,7 +21,6 @@ QLabel* SpellIndicator::wieldImageLabel(const char* img) {
     imageLabel->setPixmap(QPixmap::fromImage(QImage(img)));
 
     imageLabel->setCursor(Qt::WhatsThisCursor);
-
     return imageLabel;
 }
 
@@ -36,6 +35,5 @@ QWidget* SpellIndicator::create() {
 
     hLayout->addWidget(this->wieldImageLabel(BOOK_ICO));
     widget->setLayout(hLayout);
-
     return widget;
 }
