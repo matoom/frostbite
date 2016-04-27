@@ -83,6 +83,7 @@ signals:
     void updateRoomWindowTitle(QString);
     void updateExpWindow(QString, QString);
     void updateRoomWindow();
+    void updateMapWindow(QString);
     void updateDeathsWindow(QString);
     void updateThoughtsWindow(QString);
     void updateArrivalsWindow(QString);

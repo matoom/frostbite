@@ -108,6 +108,9 @@ public:
     void addActiveSpells(QString activeSpell);
     void clearActiveSpells();
 
+    QList<QString> getDirections();
+    void setDirections(QList<QString> directions);
+
 private:
     GameDataContainer(QObject *parent = 0);
     GameDataContainer(GameDataContainer const& copy);
@@ -158,6 +161,8 @@ private:
     int rt;
 
     QStringList activeSpells;
+
+    QList<QString> directions;
 
 signals:
     

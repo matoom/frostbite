@@ -43,9 +43,9 @@
 #include "log4qt/helpers/classlogger.h"
 #if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
 #	include <QtCore/QAtomicInt>
-#	ifndef Q_ATOMIC_INT_REFERENCE_COUNTING_IS_ALWAYS_NATIVE
+/*#	ifndef Q_ATOMIC_INT_REFERENCE_COUNTING_IS_ALWAYS_NATIVE
 #		warning "QAtomicInt reference counting is not native. The class Log4Qt::LogObject is not thread-safe."
-#	endif
+#	endif*/
 #endif
 
 

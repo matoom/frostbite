@@ -6,7 +6,9 @@
 
 #include "scriptapiserver.h"
 
-bool MainWindow::DEBUG = true;
+#include "maps/mapreader.h"
+
+bool MainWindow::DEBUG = false;
 
 int main(int argc, char *argv[]) {
 

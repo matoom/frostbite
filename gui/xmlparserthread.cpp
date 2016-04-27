@@ -15,9 +15,9 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
     connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowFacade, SLOT(updateRoomWindowTitle(QString)));
 
-    connect(this, SIGNAL(updateExpWindow(QString, QString)), windowFacade, SLOT(updateExpWindow(QString, QString)));
     connect(this, SIGNAL(updateRoomWindow()), windowFacade, SLOT(updateRoomWindow()));
-
+    connect(this, SIGNAL(updateMapWindow(QString)), windowFacade, SLOT(updateMapWindow(QString)));
+    connect(this, SIGNAL(updateExpWindow(QString, QString)), windowFacade, SLOT(updateExpWindow(QString, QString)));
     connect(this, SIGNAL(updateDeathsWindow(QString)), windowFacade, SLOT(updateDeathsWindow(QString)));
     connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
     connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
@@ -117,7 +117,7 @@ void XmlParserThread::processGameData(QByteArray data) {
         n = n.nextSibling();
     }
 
-    // process pushstream data over multiple lines
+    // process pushstream
     processPushStream(rawData);
 
     // Write game text and raw data
@@ -252,7 +252,19 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 directions << compassNode.toElement().attribute("value");
                 compassNode = compassNode.nextSibling();
             }
+            qSort(directions);
+
+            QString text = GameDataContainer::Instance()->getRoomName() +
+                    GameDataContainer::Instance()->getRoomDesc() + directions.join("");
+
+            /*qDebug() << "====";
+            qDebug() << text;
+            qDebug() << "====";*/
+
+            QString hash = TextUtils::Instance()->toHash(text);
+
             emit updateNavigationDisplay(directions);
+            emit updateMapWindow(hash);
         } else if (e.tagName() == "clearContainer") {
             QStringList container;
             QDomElement invElem = root.firstChildElement("inv");
@@ -264,7 +276,6 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "roundTime") {
             roundTime.setTime_t(e.attribute("value").toInt());
             initRoundtime = true;
-
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "minivitals") {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
@@ -293,9 +304,9 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
             QString title = e.attribute("subtitle");
-            gameDataContainer->setRoomName(title.mid(3));            
-            //emit setMainTitle(title);
-            emit updateRoomWindowTitle(title);
+            gameDataContainer->setRoomName(title.mid(3));
+            emit setMainTitle(title);
+            //emit updateRoomWindowTitle(title);
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");
         } else if(e.tagName() == "component") {
@@ -382,7 +393,6 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             } else if(e.attribute("id") == "percWindow") {
                 perc = true;
             }
-
         } else if(e.tagName() == "popStream") {
             pushStream = false;
             if(inv) {
@@ -479,7 +489,6 @@ QString XmlParserThread::stripTags(QString line) {
 QString XmlParserThread::stripPushTags(QString line) {
     QRegExp push("<pushStream(.*)\\/>");
     push.setMinimal(true);
-
     line = line.remove(push);
     line = line.remove(QRegExp("<popStream\\/>"));
     return line;

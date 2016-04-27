@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QHash>
 #include <QStringList>
+#include <QCryptographicHash>
 
 #include <limits>
 
@@ -22,6 +23,9 @@ public:
     QString findLowestActiveValue(QStringList list);
     void htmlToPlain(QString& data);
     void plainToHtml(QString& data);
+
+    QString toHash(QString text);
+    QString toBrief(QString direction);
 
 private:
     TextUtils(QObject *parent = 0);

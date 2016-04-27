@@ -45,11 +45,13 @@
 #include "log4qt/helpers/logobjectptr.h"
 #include "log4qt/level.h"
 
+/*
 #if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
 #	ifndef Q_ATOMIC_POINTER_TEST_AND_SET_IS_ALWAYS_NATIVE
 #		warning "QAtomicPointer test and set is not native. The macro Log4Qt::LOG4QT_DECLARE_STATIC_LOGGER is not thread-safe."
 #	endif
 #endif
+*/
 
 
 /******************************************************************************

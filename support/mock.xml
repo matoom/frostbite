@@ -734,7 +734,10 @@ Obvious exits: <d>out</d>.
 <popStream/><prompt time="1361728426">&gt;</prompt>
 <pushStream id="familiar" ifClosedStyle="watching"/>Hobbit nods.
 <popStream/><prompt time="1361728426">&gt;</prompt>
-<dialogData id='minivitals'><progressBar id='concentration' value='95' text='concentration 95%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<pushStream id="familiar" ifClosedStyle="watching"/><preset id='speech'>You say</preset>, "&lt;x&gt;."
+<popStream/><prompt time="1361728426">&gt;</prompt>
+<pushStream id="familiar"/><preset id="whisper">Frodo whispers,</preset> "OOC: I am so confused at what is going on."
+<popStream/><dialogData id='minivitals'><progressBar id='concentration' value='95' text='concentration 95%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 <prompt time="1361728428">&gt;</prompt>
 <component id='exp Mechanical Lore'></component>
 <component id='exp Appraisal'>       Appraisal:  559 26% intrigued    </component>

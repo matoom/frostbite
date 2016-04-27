@@ -3,4 +3,6 @@
 
 #define GAME_WINDOW_LIMIT 3500
 
+#define MAP_TOP_MARGIN 20
+
 #endif // GLOBALDEFINES_H

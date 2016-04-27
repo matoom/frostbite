@@ -11,7 +11,7 @@ GameDataContainer* GameDataContainer::Instance() {
 
 GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
     textUtils = TextUtils::Instance();
-    //sharedDataService = SharedDataService::Instance();
+
     rxNumber.setPattern("(\\d+)");
 
     health = 0;
@@ -53,11 +53,6 @@ void GameDataContainer::setExpField(QString name, QString exp) {
     QStringList expList = this->extractExp(exp, false);
 
     /* extracting exp values for scripting */
-    /*if(sharedDataService->isLoaded()) {
-        sharedDataService->addExpField(name.toLower().toLocal8Bit().data(),
-                                 expList.at(0).toInt(), expList.at(1).toInt());
-    }*/
-
     QMap<QString, int> expValueMap;
     expValueMap["rank"] = expList.at(0).toInt();
     expValueMap["state"] = expList.at(1).toInt();
@@ -73,11 +68,6 @@ void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
     QStringList expList = this->extractExp(exp, true);
 
     /* extracting exp brief values for scripting */
-    /*if(sharedDataService->isLoaded()) {
-        sharedDataService->addExpField(name.toLower().toLocal8Bit().data(),
-                                 expList.at(0).toInt(), expList.at(1).toInt());
-    }*/
-
     QMap<QString, int> expValueMap;
     expValueMap["rank"] = expList.at(0).toInt();
     expValueMap["state"] = expList.at(1).toInt();
@@ -433,4 +423,10 @@ void GameDataContainer::clearActiveSpells() {
     this->activeSpells.clear();
 }
 
+QList<QString> GameDataContainer::getDirections() {
+    return this->directions;
+}
 
+void GameDataContainer::setDirections(QList<QString> directions) {
+    this->directions = directions;
+}

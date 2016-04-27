@@ -58,5 +58,6 @@
 #define DOCK_TITLE_CONVERSATIONS "Conversations"
 #define DOCK_TITLE_FAMILIAR "Familiar"
 #define DOCK_TITLE_EXP "Experience"
+#define DOCK_TITLE_MAP "Map"
 
 #endif // DEFAULTVALUES_H

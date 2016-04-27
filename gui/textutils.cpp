@@ -84,3 +84,35 @@ void TextUtils::plainToHtml(QString& data) {
     data.replace("\"", "&quot;").replace("\'", "&apos;")
             .replace("<", "&lt;").replace(">", "&gt;");
 }
+
+QString TextUtils::toHash(QString text) {
+    return QString(QCryptographicHash::hash(text.toLocal8Bit(), QCryptographicHash::Md5).toHex());
+}
+
+QString TextUtils::toBrief(QString direction) {
+    if(direction == "north") {
+        return "n";
+    } else if (direction == "south"){
+        return "s";
+    } else if (direction == "east") {
+        return "e";
+    } else if (direction == "west") {
+        return "w";
+    } else if (direction == "northwest") {
+        return "nw";
+    } else if (direction == "southwest") {
+        return "sw";
+    } else if (direction == "northeast") {
+        return "ne";
+    } else if (direction == "southeast") {
+        return "se";
+    } else if (direction == "out") {
+        return "out";
+    } else if (direction == "down") {
+        return "down";
+    } else if (direction == "up") {
+        return "up";
+    }
+    return "";
+}
+

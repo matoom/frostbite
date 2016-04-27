@@ -24,7 +24,7 @@ def face target
       face target
     when :pause, :wait_for, :next
       pause 3
-      if Target::is_auto
+      if Target::is_auto and Target::find
         face Target::find
       else
         face target

@@ -9,7 +9,7 @@
 }
 
 greaterThan(QT_VERSION, 5){
-    QT       += widgets core gui network xml multimedia
+    QT       += widgets core gui network xml multimedia concurrent
 } else {
     QT       += core gui network xml
 }
@@ -22,6 +22,8 @@ include(../singleapp/qtsingleapplication.pri)
 greaterThan(QT_VERSION, 5){
    include(../cleanlooks/cleanlooks.pri)
 }
+
+include(../maps/maps.pri)
 
 win32 {
     TARGET = ../../FrostBite
