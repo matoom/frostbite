@@ -15,11 +15,14 @@ public:
     void setExit(QString exit);
     QString getMove();
     void setMove(QString move);
+    void setHidden(bool hidden);
+    bool getHidden();
 
 private:
     int destId;
     QString exit;
     QString move;
+    bool hidden;
 };
 
 #endif // MAPDESTINATION_H

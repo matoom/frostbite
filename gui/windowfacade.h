@@ -22,8 +22,7 @@
 
 #include <gridwindow.h>
 
-#include <maps/mapreader.h>
-#include <maps/mapwindowfactory.h>
+#include <maps/mapfacade.h>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsProxyWidget>
@@ -32,7 +31,6 @@ class MainWindow;
 class GameWindow;
 class GridWindowFactory;
 class GenericWindowFactory;
-class MapWindowFactory;
 class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
@@ -44,7 +42,7 @@ class ThoughtsLogger;
 class ConversationsLogger;
 class DeathsLogger;
 class ArrivalsLogger;
-class MapReader;
+class MapFacade;
 
 typedef QList<QString> DirectionsList;
 typedef QMap<QString, QString> GridItems;
@@ -113,11 +111,13 @@ public slots:
     void logDeathsText(QString);
     void logArrivalsText(QString);
 
+    /*
     void mapsReady();
     void mapSelected(int index);
     void mapLevelSelected(int index);
     void showMap(QString id, int level = 0);
     void selectNode(QString zoneId, int nodeId);
+    */
 
 private slots:
     void thoughtsVisibility(bool);    
@@ -130,13 +130,11 @@ private slots:
 private:
     GridWindowFactory* gridWindowFactory;
     GenericWindowFactory* genericWindowFactory;
-    MapWindowFactory* mapWindowFactory;
 
     MainWindow* mainWindow;
     QPlainTextEdit* gameWindow;
     NavigationDisplay* navigationDisplay;
     GameDataContainer* gameDataContainer;
-    MapReader* mapReader;
     ClientSettings* clientSettings;
     Highlighter* highlighter;
     HighlightSettings* settings;
@@ -146,12 +144,13 @@ private:
     QDockWidget* arrivalsWindow;
     QDockWidget* thoughtsWindow;
     QDockWidget* expWindow;
-    QDockWidget* mapWindow;
     QDockWidget* deathsWindow;
     QDockWidget* conversationsWindow;
     QDockWidget* familiarWindow;
     QList<QDockWidget*> dockWindows;
     QList<QDockWidget*> gridWindows;
+
+    MapFacade* mapFacade;
 
     QRegExp rxRemoveTags;
 
@@ -187,8 +186,8 @@ signals:
     void updateConversationsSettings();
     void updateFamiliarSettings();
 
-    void setMapLabel(QString text);
-    void nodeSelected(MapZone* zone, int nodeId);
+    //void setMapLabel(QString text);
+    //void nodeSelected(MapZone* zone, int nodeId);
 };
 
 #endif // WindowFacade_H

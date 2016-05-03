@@ -112,6 +112,9 @@ QDialogButtonBox {
 }
 </string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
   </property>

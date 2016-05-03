@@ -8,10 +8,12 @@ MapRect::MapRect(qreal x, qreal y, qreal w, qreal h, QPen p, QBrush b, QGraphics
     this->setBrush(b);
 }
 
-void MapRect::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+void MapRect::mousePressEvent(QGraphicsSceneMouseEvent* event) {   
     QGraphicsItem::mousePressEvent(event);
-    if(endNode != NULL) emit go(endNode, 0);
-    emit nodeSelected(zoneId, nodeId);
+    if(event->buttons() & Qt::LeftButton) {
+        if(endZoneId != NULL) emit go(event->widget(), endZoneId, level);
+        emit nodeSelected(event->widget(), zoneId, level, nodeId);
+    }
 }
 
 void MapRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
@@ -23,12 +25,12 @@ void MapRect::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-void MapRect::setEndNode(QString endNode) {
-    this->endNode = endNode;
+void MapRect::setEndZone(QString endZoneId) {
+    this->endZoneId = endZoneId;
 }
 
-QString MapRect::getEndNode() {
-    return this->endNode;
+QString MapRect::getEndZone() {
+    return this->endZoneId;
 }
 
 void MapRect::setNodeId(int nodeId) {
@@ -45,4 +47,12 @@ void MapRect::setZoneId(QString zoneId) {
 
 QString MapRect::getZoneId() {
     return this->zoneId;
+}
+
+void MapRect::setLevel(int level) {
+    this->level = level;
+}
+
+int MapRect::getLevel() {
+    return this->level;
 }

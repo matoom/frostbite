@@ -1,7 +1,9 @@
 #include "mapreader.h"
 
 MapReader::MapReader(QObject* parent) : QObject(parent) {
-    mainWindow = (MainWindow*)parent;
+    mapFacade = (MapFacade*)parent;
+    initialized = false;
+
     QtConcurrent::run(this, &MapReader::init);
 
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
@@ -19,7 +21,16 @@ void MapReader::init() {
         MapZone* zone = readZone(dir.path(), file);
         zones.insert(zone->getId(), zone);
     }
+
     emit readyRead();
+}
+
+void MapReader::setInitialized() {
+    this->initialized = true;
+}
+
+boolean MapReader::isInitialized() {
+    return this->initialized;
 }
 
 void MapReader::initScenes() {
@@ -27,29 +38,40 @@ void MapReader::initScenes() {
     emit ready();
 }
 
-QHash<QString, QHash<int, QGraphicsScene*> > MapReader::getScenes() {
+QHash<QString, QHash<int, MapGraphics> > MapReader::getScenes() {
+    QReadLocker locker(&lock);
     return this->scenes;
+}
+
+QMap<QString, MapZone*> MapReader::getZones() {
+    QReadLocker locker(&lock);
+    return this->zones;
 }
 
 void MapReader::paintScenes() {
     QMap<QString, MapZone*>::iterator i;
-    for (i = zones.begin(); i != zones.end(); ++i) {
+    for (i = zones.begin(); i != zones.end(); ++i) {   
         this->scenes.insert(i.key(), paintScene(i.value()));
     }
+    if (!zones.isEmpty()) this->setInitialized();
 }
 
-QHash<int, QGraphicsScene*> MapReader::paintScene(MapZone* zone) {
+QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
     int w  = zone->getXMax() + abs(zone->getXMin()) + 100;
     int h  = zone->getYMax() + abs(zone->getYMin()) + 25 + MAP_TOP_MARGIN;
 
-    QHash<int, QGraphicsScene*> scenes;
+    QHash<int, MapGraphics> scenes;
 
     QList<int>& levels = zone->getLevels();
     foreach(int level, levels) {
-            QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mainWindow);
+            QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
             scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
                            QString::number(levels.size() - 1) + ")");
-            scenes.insert(level, scene);
+
+            QGraphicsEllipseItem* selected = scene->addEllipse(0, 0, 12, 12,  QColor("red"));
+            selected->hide();
+
+            scenes.insert(level, {scene, selected});
     }
 
     this->paintArcs(zone, scenes);
@@ -59,25 +81,27 @@ QHash<int, QGraphicsScene*> MapReader::paintScene(MapZone* zone) {
     return scenes;
 }
 
-void MapReader::paintArcs(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) {
+void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapNode* node, zone->getNodes()) {
-        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ());
+        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ()).scene;
         foreach(MapDestination* dest, node->getDestinations()) {
-            MapNode* destNode = zone->getNodes().value(dest->getDestId());
-            if(destNode != NULL) {
-                scene->addLine(node->getPosition()->getX() + abs(zone->getXMin()) + 2,
-                               node->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
-                               destNode->getPosition()->getX() + abs(zone->getXMin()) + 2,
-                               destNode->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
-                               QColor(Qt::darkGray));
+            if(!dest->getHidden()) {
+                MapNode* destNode = zone->getNodes().value(dest->getDestId());
+                if(destNode != NULL) {
+                    scene->addLine(node->getPosition()->getX() + abs(zone->getXMin()) + 2,
+                                   node->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
+                                   destNode->getPosition()->getX() + abs(zone->getXMin()) + 2,
+                                   destNode->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
+                                   QColor(Qt::darkGray));
+                }
             }
         }
     }
 }
 
-void MapReader::paintLabels(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) {
+void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapLabel* label, zone->getLabels()) {
-        QGraphicsScene* scene = scenes.value(label->getPosition()->getZ());
+        QGraphicsScene* scene = scenes.value(label->getPosition()->getZ()).scene;
         QGraphicsTextItem* textItem = scene->addText(label->getText());
         textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
                          label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
@@ -85,9 +109,9 @@ void MapReader::paintLabels(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) 
     }
 }
 
-void MapReader::paintNodes(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) {
+void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapNode* node, zone->getNodes()) {
-        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ());
+        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ()).scene;
 
         QColor color;
         if(node->getColor() != NULL) {
@@ -102,15 +126,17 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) {
 
         item->setZoneId(zone->getId());
         item->setNodeId(node->getId());
-        connect(item, SIGNAL(nodeSelected(QString, int)), mainWindow->getWindowFacade(), SLOT(selectNode(QString, int)));
+        item->setLevel(node->getPosition()->getZ());
+
+        connect(item, SIGNAL(nodeSelected(QWidget*, QString, int, int)), mapFacade, SLOT(selectNode(QWidget*, QString, int, int)));
 
         foreach(QString note, node->getNotes()) {
             if(note.endsWith(".xml")) {
-                QString endNode = connections.value(note);
-                if(endNode != NULL) {
-                    item->setEndNode(endNode);
-                    this->paintEndpoint(zone, node, scene);
-                    connect(item, SIGNAL(go(QString, int)), mainWindow->getWindowFacade(), SLOT(showMap(QString, int)));
+                QString endZoneId = connections.value(note);
+                if(endZoneId != NULL) {
+                    item->setEndZone(endZoneId);
+                    this->paintEndNode(zone, node, scene);
+                    connect(item, SIGNAL(go(QWidget*, QString, int)), mapFacade, SLOT(showMap(QWidget*, QString, int)));
                 }
                 break;
             }
@@ -119,7 +145,7 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, QGraphicsScene*>& scenes) {
     }
 }
 
-void MapReader::paintEndpoint(MapZone* zone, MapNode* node, QGraphicsScene* scene) {
+void MapReader::paintEndNode(MapZone* zone, MapNode* node, QGraphicsScene* scene) {
     scene->addEllipse(node->getPosition()->getX() + abs(zone->getXMin()) -4,
                       node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4,
                       12, 12,  QColor(0, 170, 255, 255));
@@ -149,9 +175,14 @@ MapZone* MapReader::readZone(QString path, QString file) {
             mapZone->setFile(file);            
         } else if (xml.name() == "node") {
             if(xml.isStartElement()) {
+                QString note = xml.attributes().value("note").toString();
+
+                QStringList notes;
+                if(!note.isEmpty()) notes = note.split("|");
+
                 mapNode = new MapNode(xml.attributes().value("id").toInt(),
                                       xml.attributes().value("name").toString(),
-                                      xml.attributes().value("note").toString().split("|"),
+                                      notes,
                                       xml.attributes().value("color").toString());
             } else {                                                
                 mapNode->setMapPosition(position);                
@@ -185,7 +216,12 @@ MapZone* MapReader::readZone(QString path, QString file) {
             dest->setDestId(attr.value("destination").toInt());
             dest->setMove(attr.value("move").toString());
             dest->setExit(attr.value("exit").toString());
-
+            QString hidden = attr.value("hidden").toString();
+            if(hidden.toLower() == "true") {
+                dest->setHidden(true);
+            } else {
+                dest->setHidden(false);
+            }
             mapNode->getDestinations().insert(attr.value("destination").toInt(), dest);
         } else if(xml.name() == "label") {
             if(xml.isStartElement()) {
@@ -221,7 +257,7 @@ void MapReader::roomToHash() {
         QString text = "[" + mapNode->getName() + "]" + desc + list.join("");
         QString hash = TextUtils::Instance()->toHash(text);
 
-        /*if(mapNode->getId() == 20) {
+        /*if(mapNode->getId() == 100) {
             qDebug() << text;
             qDebug() << hash;
         }*/
@@ -238,6 +274,3 @@ RoomNode MapReader::findRoomNode(QString hash) {
    return roomNodes.value(hash);
 }
 
-QMap<QString, MapZone*> MapReader::getZones() {
-    return this->zones;
-}

@@ -1,53 +1,57 @@
 #include "mapwindowfactory.h"
 
-MapWindowFactory::MapWindowFactory(QObject *parent) : QObject(parent) {
-    mainWindow = (MainWindow*)parent;
-    mapWindow = new MapWindow(mainWindow);
+MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
+    mapFacade = parent;
+    mapWindow = new MapWindow(mapFacade);
 }
 
-QPushButton* MapWindowFactory::getZoomInButton(QString name) {
-    QPushButton* button = new QPushButton(mainWindow);
+QPushButton* MapWindowFactory::getZoomInButton(QWidget* parent, QString name) {
+    QPushButton* button = new QPushButton(parent);
     button->setObjectName(name + "ZoomIn");
-    button->setMaximumWidth(20);
+    button->setMaximumWidth(15);
+    button->setMaximumHeight(20);
     button->setText("+");
     button->setContentsMargins(0, 0, 0, 0);
+    button->setFlat(false);
 
     connect(button, SIGNAL(pressed()), mapWindow, SLOT(zoomIn()));
     return button;
 }
 
-QPushButton* MapWindowFactory::getZoomOutButton(QString name) {
-    QPushButton* button = new QPushButton(mainWindow);
+QPushButton* MapWindowFactory::getZoomOutButton(QWidget* parent, QString name) {
+    QPushButton* button = new QPushButton(parent);
     button->setObjectName(name + "ZoomOut");
-    button->setMaximumWidth(20);
+    button->setMaximumWidth(15);
+    button->setMaximumHeight(20);
     button->setText("-");
     button->setContentsMargins(0, 0, 0, 0);
+    button->setFlat(false);
+
     connect(button, SIGNAL(pressed()), mapWindow, SLOT(zoomOut()));
     return button;
 }
 
-QComboBox* MapWindowFactory::getLevelSelect(QString name) {
-   QComboBox* combo = new QComboBox(mainWindow);
+QComboBox* MapWindowFactory::getLevelSelect(QWidget* parent, QString name) {
+   QComboBox* combo = new QComboBox(parent);
    combo->setObjectName(name + "LevelSelect");
    combo->setDisabled(true);
-   combo->setMinimumContentsLength(1);
+   combo->setMinimumContentsLength(2);
    combo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
-   connect(combo, SIGNAL(activated(int)),
-           mainWindow->getWindowFacade(), SLOT(mapLevelSelected(int)));
+   connect(combo, SIGNAL(activated(int)), mapFacade, SLOT(mapLevelSelected(int)));
    return combo;
 }
 
-QComboBox* MapWindowFactory::getMapSelect(QString name) {
-   QComboBox* combo = new QComboBox(mainWindow);
+QComboBox* MapWindowFactory::getMapSelect(QWidget* parent, QString name) {
+   QComboBox* combo = new QComboBox(parent);
    combo->setObjectName(name + "Select");
    combo->setDisabled(true);
-   connect(combo, SIGNAL(activated(int)),
-           mainWindow->getWindowFacade(), SLOT(mapSelected(int)));
+   combo->setMinimumWidth(150);
+   connect(combo, SIGNAL(activated(int)), mapFacade, SLOT(mapSelected(int)));
    return combo;
 }
 
-QLabel* MapWindowFactory::getMapIdLabel(QString name) {
-   QLabel* label = new QLabel(mainWindow);
+QLabel* MapWindowFactory::getMapIdLabel(QWidget* parent, QString name) {
+   QLabel* label = new QLabel(parent);
    label->setObjectName(name + "IdLabel");
    label->setText("Id: -");
    return label;
@@ -55,27 +59,27 @@ QLabel* MapWindowFactory::getMapIdLabel(QString name) {
 
 QGraphicsView* MapWindowFactory::getView(QString name) {
     mapWindow->setObjectName(name + "View");    
-    connect(mainWindow->getWindowFacade(), SIGNAL(nodeSelected(MapZone*, int)),
-            mapWindow, SLOT(selectNode(MapZone*, int)));
+    connect(mapFacade, SIGNAL(nodeSelected(MapZone*, int)), mapWindow, SLOT(selectNode(MapZone*, int)));
     return (QGraphicsView*)mapWindow;
 }
 
 QDockWidget* MapWindowFactory::createWindow(const char* name) {
-    QDockWidget *dock = new QDockWidget(QObject::tr(name), mainWindow);
+    QDockWidget *dock = new QDockWidget(QObject::tr(name), mapFacade->getMainWindow());
     dock->setObjectName(QObject::tr(name) + "Window");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
 
-    QWidget* controls = new QWidget();
+    QWidget* controls = new QWidget(dock);
     QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
-    hLayout->addWidget(getMapSelect(name));
-    hLayout->addWidget(getLevelSelect(name));
-    hLayout->addWidget(getMapIdLabel(name));
-    hLayout->addWidget(getZoomInButton(name));
-    hLayout->addWidget(getZoomOutButton(name));
+    hLayout->addWidget(getMapSelect(controls, name));
+    hLayout->addWidget(getLevelSelect(controls, name));
+    hLayout->addWidget(getMapIdLabel(controls, name));
+    hLayout->addStretch();
+    hLayout->addWidget(getZoomOutButton(controls, name));
+    hLayout->addWidget(getZoomInButton(controls, name));
     controls->setLayout(hLayout);
 
-    QWidget* mapWindow = new QWidget();
+    QWidget* mapWindow = new QWidget(dock);
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(0);
     vLayout->addWidget(controls);

@@ -80,6 +80,7 @@ label(:wait_for) {
       $args.clear << new_target
       goto :start
     end
+    pause 3
   end
 
   echo "*** WAITING ***<br/>"

@@ -7,14 +7,16 @@
 #include <QPainter>
 #include <QCursor>
 
+#include <QGraphicsSceneMouseEvent>
+
 class MapRect : public QObject, public QGraphicsRectItem {
     Q_OBJECT
 
 public:
     MapRect(qreal x, qreal y, qreal w, qreal h, QPen p, QBrush b, QGraphicsItem *parent = 0);
 
-    void setEndNode(QString endNode);
-    QString getEndNode();
+    void setEndZone(QString endZoneId);
+    QString getEndZone();
 
     void setNodeId(int nodeId);
     int getNodeId();
@@ -22,9 +24,12 @@ public:
     void setZoneId(QString zoneId);
     QString getZoneId();
 
+    void setLevel(int level);
+    int getLevel();
+
 signals:
-    void go(QString endNode, int level);
-    void nodeSelected(QString zoneid, int nodeId);
+    void go(QWidget*, QString endNode, int level);
+    void nodeSelected(QWidget*, QString zoneid, int level, int nodeId);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
@@ -36,10 +41,11 @@ private:
     QBrush brush;
     QRectF rect;
 
-    QString endNode;
+    QString endZoneId;
 
     QString zoneId;
     int nodeId;
+    int level;
 
 };
 

@@ -1,7 +1,7 @@
 #include "mapwindow.h"
 
-MapWindow::MapWindow(QWidget *parent) : QGraphicsView(parent) {
-    mainWindow = (MainWindow*)parent;
+MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
+    mapFacade = parent;
     selected = NULL;
 
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -9,20 +9,8 @@ MapWindow::MapWindow(QWidget *parent) : QGraphicsView(parent) {
     this->setDragMode(QGraphicsView::ScrollHandDrag);
 
     this->scale(1.0, 1.0);
-}
 
-void MapWindow::setScene(QString zoneId, int level, QGraphicsScene* s) {
-    if(this->zoneId != zoneId || this->level != level) {
-        if(scene() != NULL && selected != NULL) {
-           scene()->removeItem(selected);
-           delete selected;
-           selected = NULL;
-        }
-        QGraphicsView::setScene(s);
-
-        this->zoneId = zoneId;
-        this->level = level;
-    }
+    this->buildContextMenu();
 }
 
 void MapWindow::scaleView(qreal scaleFactor) {
@@ -45,16 +33,18 @@ void MapWindow::zoomOut() {
 
 void MapWindow::selectNode(MapZone* zone, int nodeId) {
     MapNode* node = zone->getNodes().value(nodeId);
-    if(scene() != NULL) {
-        if(selected == NULL) {
-            selected = scene()->addEllipse(0, 0, 12, 12,  QColor("red"));
-            selected->setPos(node->getPosition()->getX() + abs(zone->getXMin()) -4,
-                             node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4);
-        } else {
-            selected->setPos(node->getPosition()->getX() + abs(zone->getXMin()) -4,
-                             node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4);
-        }
-        viewport()->update();
-    }
     centerOn(node->getPosition()->getX() + abs(zone->getXMin()), node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
+}
+
+void MapWindow::buildContextMenu() {
+    menu = new QMenu(this);
+
+    QAction* mapsAction = new QAction(tr("&View maps\t"), this);
+    menu->addAction(mapsAction);
+
+    connect(mapsAction, SIGNAL(triggered()), mapFacade, SLOT(showMapDialog()));
+}
+
+void MapWindow::contextMenuEvent(QContextMenuEvent* event) {
+    menu->exec(event->globalPos());
 }

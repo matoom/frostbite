@@ -10,26 +10,25 @@
 #include <mainwindow.h>
 #include <maps/mapwindow.h>
 
-class MainWindow;
 class MapWindow;
 
 class MapWindowFactory : public QObject {
     Q_OBJECT
 
 public:
-    explicit MapWindowFactory(QObject *parent = 0);
+    explicit MapWindowFactory(MapFacade* parent);
 
     QDockWidget* createWindow(const char* name);
 
 private:    
     QGraphicsView* getView(QString name);
-    QComboBox* getLevelSelect(QString name);
-    QComboBox* getMapSelect(QString name);
-    QLabel* getMapIdLabel(QString name);        
-    QPushButton* getZoomInButton(QString name);
-    QPushButton* getZoomOutButton(QString name);
+    QComboBox* getLevelSelect(QWidget* parent, QString name);
+    QComboBox* getMapSelect(QWidget* parent, QString name);
+    QLabel* getMapIdLabel(QWidget* parent, QString name);
+    QPushButton* getZoomInButton(QWidget* parent, QString name);
+    QPushButton* getZoomOutButton(QWidget* parent, QString name);
 
-    MainWindow* mainWindow;
+    MapFacade* mapFacade;
     MapWindow* mapWindow;
 };
 

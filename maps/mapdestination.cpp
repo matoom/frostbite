@@ -33,3 +33,11 @@ QString MapDestination::getMove() {
 void MapDestination::setMove(QString move) {
     this->move = move;
 }
+
+void MapDestination::setHidden(bool hidden) {
+    this->hidden = hidden;
+}
+
+bool MapDestination::getHidden() {
+    return this->hidden;
+}

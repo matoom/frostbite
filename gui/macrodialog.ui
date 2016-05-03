@@ -17,6 +17,9 @@
    <iconset resource="window.qrc">
     <normaloff>:/window/images/keyboard.png</normaloff>:/window/images/keyboard.png</iconset>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>

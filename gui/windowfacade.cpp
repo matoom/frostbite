@@ -4,7 +4,6 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     genericWindowFactory = new GenericWindowFactory(parent);
     gridWindowFactory = new GridWindowFactory(parent);    
-    mapWindowFactory = new MapWindowFactory(parent);
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
     clientSettings = ClientSettings::Instance();
@@ -13,7 +12,7 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
 
     rxRemoveTags.setPattern("<[^>]*>");
 
-    writePrompt = true;            
+    writePrompt = true;
 }
 
 void WindowFacade::reloadSettings() {
@@ -195,13 +194,6 @@ void WindowFacade::loadWindows() {
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
     gridWindows << expWindow;
 
-    mapWindow = mapWindowFactory->createWindow(DOCK_TITLE_MAP);
-    mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, mapWindow);
-    gridWindows << mapWindow;
-
-    mapReader = new MapReader(mainWindow);
-    connect(mapReader, SIGNAL(ready()), this, SLOT(mapsReady()));
-
     conversationsWindow = genericWindowFactory->createWindow(DOCK_TITLE_CONVERSATIONS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
     dockWindows << conversationsWindow;
@@ -212,6 +204,9 @@ void WindowFacade::loadWindows() {
     dockWindows << familiarWindow;
     connect(familiarWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(familiarVisibility(bool)));
 
+    mapFacade = new MapFacade(mainWindow);
+    mapFacade->init();
+
     this->initWindowHighlighters();
     this->initLoggers();
 
@@ -220,7 +215,7 @@ void WindowFacade::loadWindows() {
         mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
         mainWindow->tabifyDockWidget(deathsWindow, familiarWindow);
         mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);
-        mainWindow->tabifyDockWidget(conversationsWindow, mapWindow);
+        mainWindow->tabifyDockWidget(conversationsWindow, mapFacade->getMapWindow());
     }
 
     this->updateWindowStyle();    
@@ -408,85 +403,8 @@ void WindowFacade::writeExpWindow(GridItems items) {
 }
 
 void WindowFacade::updateMapWindow(QString hash) {
-    RoomNode node = mapReader->findRoomNode(hash);
-
-    if(!node.zoneId.isEmpty()) {
-        QComboBox* mapSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
-        QComboBox* levelSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "LevelSelect");
-
-        int index = mapSelect->findData(node.zoneId);
-        if (index != -1) mapSelect->setCurrentIndex(index);
-
-        QList<int>& levels = mapReader->getZones().value(node.zoneId)->getLevels();
-        foreach(int level, levels) {
-            levelSelect->addItem(QString::number(level), level);
-        }
-
-        index = levelSelect->findData(node.level);
-        if (index != -1) levelSelect->setCurrentIndex(index);
-
-        QLabel* label = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "IdLabel");
-        label->setText("Id: " + QString::number(node.nodeId));
-
-        this->showMap(node.zoneId, node.level);
-        emit nodeSelected(mapReader->getZones().value(node.zoneId), node.nodeId);
-    }
-}
-
-void WindowFacade::mapsReady() {
-    QMap<QString, MapZone*> zones = mapReader->getZones();
-
-    QComboBox* select = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
-    select->addItem("");
-
-    QMap<QString, MapZone*>::iterator i;
-    for (i = zones.begin(); i != zones.end(); ++i) {
-        select->addItem(i.key() + ": " + i.value()->getName(), i.key());
-    }
-    select->setDisabled(false);
-}
-
-void WindowFacade::mapSelected(int index) {
-    QComboBox* select = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
-    QString id = select->itemData(index).toString();
-
-    QComboBox* levelSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "LevelSelect");
-    levelSelect->clear();
-
-    if(id != NULL) {
-        QList<int>& levels = mapReader->getZones().value(id)->getLevels();
-
-        foreach(int level, levels) {
-            levelSelect->addItem(QString::number(level), level);
-        }
-        levelSelect->setDisabled(false);
-
-        this->showMap(id);
-    } else {
-        levelSelect->setDisabled(true);
-    }
-}
-
-void WindowFacade::mapLevelSelected(int index) {
-    QComboBox* mapSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
-    QComboBox* levelSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "LevelSelect");
-    this->showMap(mapSelect->currentData().toString(), levelSelect->itemData(index).toInt());
-}
-
-void WindowFacade::showMap(QString zoneId, int level) {
-    QComboBox* mapSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
-
-    int index = mapSelect->findData(zoneId);
-    if (index != -1) mapSelect->setCurrentIndex(index);
-
-    QGraphicsScene* scene = mapReader->getScenes().value(zoneId).value(level);
-    mapWindow->findChild<MapWindow*>(QString(DOCK_TITLE_MAP)+ "View")->setScene(zoneId, level, scene);
-}
-
-void WindowFacade::selectNode(QString zoneId, int nodeId) {
-    QLabel* label = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "IdLabel");
-    label->setText("Id: " + QString::number(nodeId));
-    emit nodeSelected(mapReader->getZones().value(zoneId), nodeId);
+    qDebug() << "update";
+    mapFacade->updateMapWindow(hash);
 }
 
 void WindowFacade::updateExpWindow(QString name, QString text) {
@@ -688,4 +606,6 @@ WindowFacade::~WindowFacade() {
 
     delete settings;
     delete generalSettings;
+
+    delete mapFacade->getMapWindow();
 }

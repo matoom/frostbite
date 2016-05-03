@@ -31,6 +31,9 @@
   <property name="windowTitle">
    <string>Edit</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>

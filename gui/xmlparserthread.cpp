@@ -257,11 +257,12 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             QString text = GameDataContainer::Instance()->getRoomName() +
                     GameDataContainer::Instance()->getRoomDesc() + directions.join("");
 
+            QString hash = TextUtils::Instance()->toHash(text);
+
             /*qDebug() << "====";
             qDebug() << text;
+            qDebug() << hash;
             qDebug() << "====";*/
-
-            QString hash = TextUtils::Instance()->toHash(text);
 
             emit updateNavigationDisplay(directions);
             emit updateMapWindow(hash);

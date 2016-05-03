@@ -29,6 +29,9 @@
    <iconset resource="window.qrc">
     <normaloff>:/window/images/connect.png</normaloff>:/window/images/connect.png</iconset>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <property name="wizardStyle">
    <enum>QWizard::AeroStyle</enum>
   </property>

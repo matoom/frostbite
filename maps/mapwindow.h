@@ -7,27 +7,30 @@
 #include <QWheelEvent>
 
 #include <maps/mapzone.h>
-#include <mainwindow.h>
+#include <maps/mapfacade.h>
 
-class MainWindow;
+class MapFacade;
 
 class MapWindow : public QGraphicsView {
     Q_OBJECT
 
 public:
-    explicit MapWindow(QWidget *parent = 0);
-
-    void setScene(QString zoneId, int level, QGraphicsScene *scene);
+    explicit MapWindow(MapFacade* parent);
 
 private:
     void wheelEvent(QWheelEvent* zoomEvent);
-    void scaleView(qreal scaleFactor);
+    void contextMenuEvent(QContextMenuEvent* event);
 
-    MainWindow* mainWindow;
+    void scaleView(qreal scaleFactor);        
+    void buildContextMenu();
+
+    MapFacade* mapFacade;
     QGraphicsEllipseItem* selected;
 
     QString zoneId;
     int level;
+
+    QMenu* menu;
 
 signals:
 

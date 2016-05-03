@@ -19,7 +19,7 @@
 #include <maps/maplabel.h>
 #include <maps/maprect.h>
 
-#include <mainwindow.h>
+#include <maps/mapfacade.h>
 
 #include <globaldefines.h>
 
@@ -29,7 +29,12 @@ struct RoomNode {
     int level;
 };
 
-class MainWindow;
+struct MapGraphics {
+    QGraphicsScene* scene;
+    QGraphicsEllipseItem* selected;
+};
+
+class MapFacade;
 
 class MapReader : public QObject {
     Q_OBJECT
@@ -38,27 +43,33 @@ public:
     explicit MapReader(QObject *parent = 0);
 
     QMap<QString, MapZone*> getZones();
+    QHash<QString, QHash<int, MapGraphics> > getScenes();
 
-    QHash<QString, QHash<int, QGraphicsScene*> > getScenes();
     RoomNode findRoomNode(QString hash);
 
     void init();
 
+    boolean isInitialized();
+
 private:
     MapZone* readZone(QString path, QString file);
 
-    void paintArcs(MapZone* zone, QHash<int, QGraphicsScene*>& scenes);
-    void paintLabels(MapZone* zone, QHash<int, QGraphicsScene*>& scenes);
-    void paintNodes(MapZone* zone, QHash<int, QGraphicsScene*>& scenes);
-    void paintEndpoint(MapZone* zone, MapNode* node, QGraphicsScene* scene);
+    void paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes);
+    void paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes);
+    void paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes);
+    void paintEndNode(MapZone* zone, MapNode* node, QGraphicsScene* scene);
 
     boolean isInRange(int n);
     void roomToHash();
 
-    MainWindow* mainWindow;
+    void setInitialized();
+
+    boolean initialized;
+
+    MapFacade* mapFacade;
 
     void paintScenes();
-    QHash<int, QGraphicsScene*> paintScene(MapZone* zone);
+    QHash<int, MapGraphics> paintScene(MapZone* zone);
 
     MapZone* mapZone;
     MapNode* mapNode;
@@ -66,12 +77,14 @@ private:
     MapPosition* position;
 
     QMap<QString, MapZone*> zones;
-    QHash<QString, QHash<int, QGraphicsScene*> > scenes;
+    QHash<QString, QHash<int, MapGraphics> > scenes;
     QHash<QString, QString> connections;
 
     QStringList ids;
 
     QMultiHash<QString, RoomNode> roomNodes;
+
+    QReadWriteLock lock;
 
 signals:
     void ready();

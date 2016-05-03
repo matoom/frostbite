@@ -35,6 +35,9 @@
    <iconset resource="window.qrc">
     <normaloff>:/window/images/window.png</normaloff>:/window/images/window.png</iconset>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
