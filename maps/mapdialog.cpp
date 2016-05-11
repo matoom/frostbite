@@ -41,16 +41,33 @@ void MapDialog::populate() {
     }
 }
 
-void MapDialog::mapSelected(int index) {
+void MapDialog::mapSelected(int index) {    
     QString zoneId = ui->mapSelect->itemData(index).toString();
-
-    QList<int>& levels = mapFacade->getMapReader()->getZones().value(zoneId)->getLevels();
-
-    ui->levelSelect->clear();
-    foreach(int level, levels) {
-        ui->levelSelect->addItem(QString::number(level), level);
-    }
+    this->populateLevels(zoneId);
     this->showMap(zoneId);
+}
+
+void MapDialog::setSelected(QString zoneId, int level) {
+    int index = ui->mapSelect->findData(zoneId);
+    if (index != -1) {
+        this->populateLevels(zoneId, level);
+        ui->mapSelect->setCurrentIndex(index);
+    }
+}
+
+void MapDialog::populateLevels(QString zoneId, int level) {
+    MapZone* zone = mapFacade->getMapReader()->getZones().value(zoneId);
+    QList<int>& levels = zone->getLevels();
+    if(zone != NULL) {
+        ui->levelSelect->clear();
+        foreach(int level, levels) {
+            ui->levelSelect->addItem(QString::number(level), level);
+        }
+        if(level != 0){
+            int index = ui->levelSelect->findData(level);
+            if (index != -1) ui->levelSelect->setCurrentIndex(index);
+        }
+    }
 }
 
 void MapDialog::mapLevelSelected(int index) {
@@ -58,13 +75,8 @@ void MapDialog::mapLevelSelected(int index) {
 }
 
 void MapDialog::showMap(QString zoneId, int level) {
-    int index = ui->mapSelect->findData(zoneId);
-    if (index != -1) ui->mapSelect->setCurrentIndex(index);
-
     ui->nodeInfo->clear();
-
-    QGraphicsScene* scene = mapFacade->getMapReader()->getScenes().value(zoneId).value(level).scene;
-    ui->mapView->setScene(scene);
+    ui->mapView->setScene(mapFacade->getMapReader()->getScenes().value(zoneId).value(level).scene);
 }
 
 void MapDialog::setInfo(MapNode* node) {

@@ -6,6 +6,8 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
 
     QtConcurrent::run(this, &MapReader::init);
 
+    mapData = new MapData(this);
+
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
 }
 
@@ -20,16 +22,17 @@ void MapReader::init() {
     foreach(QString file, fileList) {        
         MapZone* zone = readZone(dir.path(), file);
         zones.insert(zone->getId(), zone);
-    }
-
+    }    
     emit readyRead();
 }
 
 void MapReader::setInitialized() {
+    QWriteLocker locker(&lock);
     this->initialized = true;
 }
 
 boolean MapReader::isInitialized() {
+    QReadLocker locker(&lock);
     return this->initialized;
 }
 
@@ -46,6 +49,21 @@ QHash<QString, QHash<int, MapGraphics> > MapReader::getScenes() {
 QMap<QString, MapZone*> MapReader::getZones() {
     QReadLocker locker(&lock);
     return this->zones;
+}
+
+QMultiHash<QString, RoomNode> MapReader::getRoomNodes() {
+    QReadLocker locker(&lock);
+    return this->roomNodes;
+}
+
+QHash<QString, RoomNode> MapReader::getLocations() {
+    QReadLocker locker(&lock);
+    return this->locations;
+}
+
+MapData* MapReader::getMapData() {
+    QReadLocker locker(&lock);
+    return mapData;
 }
 
 void MapReader::paintScenes() {
@@ -65,6 +83,7 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
     QList<int>& levels = zone->getLevels();
     foreach(int level, levels) {
             QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
+            scene->setObjectName(zone->getId());
             scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
                            QString::number(levels.size() - 1) + ")");
 
@@ -105,7 +124,6 @@ void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
         QGraphicsTextItem* textItem = scene->addText(label->getText());
         textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
                          label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
-
     }
 }
 
@@ -121,12 +139,14 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
         }
 
         MapRect* item = new MapRect(node->getPosition()->getX() + abs(zone->getXMin()),
-                                    node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN, 4, 4,
+                                    node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN,
+                                    4, 4,
                                     QColor(Qt::darkGray), color);
 
         item->setZoneId(zone->getId());
         item->setNodeId(node->getId());
         item->setLevel(node->getPosition()->getZ());
+        item->setScene(scene);
 
         connect(item, SIGNAL(nodeSelected(QWidget*, QString, int, int)), mapFacade, SLOT(selectNode(QWidget*, QString, int, int)));
 
@@ -180,13 +200,15 @@ MapZone* MapReader::readZone(QString path, QString file) {
                 QStringList notes;
                 if(!note.isEmpty()) notes = note.split("|");
 
-                mapNode = new MapNode(xml.attributes().value("id").toInt(),
-                                      xml.attributes().value("name").toString(),
-                                      notes,
-                                      xml.attributes().value("color").toString());
+                mapNode = new MapNode(xml.attributes().value("id").toInt(), xml.attributes().value("name").toString(),
+                                      notes, xml.attributes().value("color").toString());
             } else {                                                
                 mapNode->setMapPosition(position);                
                 mapZone->getNodes().insert(mapNode->getId(), mapNode);
+
+                foreach(QString note, mapNode->getNotes()) {
+                    locations.insert(note, RoomNode(mapZone->getId(), mapNode->getPosition()->getZ(), mapNode->getId()));
+                }
 
                 this->roomToHash();
             }
@@ -213,7 +235,11 @@ MapZone* MapReader::readZone(QString path, QString file) {
             QXmlStreamAttributes attr = xml.attributes();
 
             MapDestination* dest = new MapDestination();
-            dest->setDestId(attr.value("destination").toInt());
+            if(attr.hasAttribute("destination")) {
+                dest->setDestId(attr.value("destination").toInt());
+            } else {
+                dest->setDestId(-1);
+            }
             dest->setMove(attr.value("move").toString());
             dest->setExit(attr.value("exit").toString());
             QString hidden = attr.value("hidden").toString();
@@ -260,17 +286,16 @@ void MapReader::roomToHash() {
         /*if(mapNode->getId() == 100) {
             qDebug() << text;
             qDebug() << hash;
-        }*/
+        }*/        
 
-        roomNodes.insert(hash, {mapZone->getId(), mapNode->getId(), mapNode->getPosition()->getZ()});
+        int level = mapNode->getPosition()->getZ();
+        int nodeId = mapNode->getId();
+
+        roomNodes.insert(hash, RoomNode(mapZone->getId(), level, nodeId));
     }
 }
 
 boolean MapReader::isInRange(int n) {
     return n < 4000 && n > -4000;
-}
-
-RoomNode MapReader::findRoomNode(QString hash) {
-   return roomNodes.value(hash);
 }
 

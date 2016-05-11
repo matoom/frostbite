@@ -21,6 +21,7 @@ module ApiSettings
   end
 end
 
+# @private
 module ApiSocket
   def self.init
     $_api_socket = TCPSocket.open(ApiSettings::API_ADR, ApiSettings::api_port)
@@ -31,7 +32,6 @@ end
 class Rt
   # Roundtime
   #
-  # @param
   # @return [int] roundtime value
   # @example Using round time in script.
   #   echo Rt::value
@@ -45,7 +45,6 @@ end
 class Spell
   # Active spells
   #
-  # @param
   # @return [Array] active spell list
   # @example Using active spells in script.
   #   echo Spell::active
@@ -59,7 +58,6 @@ end
 class Inventory
   # Inventory items
   #
-  # @param
   # @return [Array] inventory item list
   # @example Using inventory list in script.
   #   echo Inventory::list
@@ -74,7 +72,6 @@ end
 class Container
   # Container items
   #
-  # @param
   # @return [Array] container item list
   # @example Using container list in script.
   #   echo Container::list.inspect
@@ -89,7 +86,6 @@ end
 class Wield
   # Wield right
   #
-  # @param
   # @return [String]
   # @example Using wield right in script.
   #   echo Wield::right
@@ -101,7 +97,6 @@ class Wield
 
   # Wield right noun
   #
-  # @param
   # @return [String]
   # @example Using wield right noun in script.
   #   put "put my #{Wield::right_noun} in my backpack"
@@ -112,7 +107,6 @@ class Wield
 
   # Wield left
   #
-  # @param
   # @return [String]
   # @example Using wield left in script.
   #   echo Wield::left
@@ -124,7 +118,6 @@ class Wield
 
   # Wield left noun
   #
-  # @param
   # @return [String]
   # @example Using wield left noun in script.
   #   echo Wield::left_noun
@@ -138,7 +131,7 @@ end
 class Exp
   # Exp rank
   #
-  # @param
+  # @param [String] exp_string exp field name
   # @return [int] rank of skill
   # @example Using exp rank in script.
   #   echo Exp::rank
@@ -150,7 +143,7 @@ class Exp
 
   # Exp state
   #
-  # @param
+  # @param [String] exp_string exp field name
   # @return [int] learning state */34
   # @example Using exp state in script.
   #   if Exp::state("climbing") == 34
@@ -165,7 +158,6 @@ end
 class Room
   # Room title.
   #
-  # @param
   # @return [string] room title
   # @example Using room title in script.
   #   echo Room::title
@@ -177,7 +169,6 @@ class Room
 
   # Room description.
   #
-  # @param
   # @return [string] room description
   # @example Using room description in script.
   #   echo Room::description
@@ -190,7 +181,6 @@ class Room
 
   # Room objects.
   #
-  # @param
   # @return [string] room objects
   # @example Using room objects in script.
   #   echo Room::objects
@@ -202,7 +192,6 @@ class Room
 
   # Room players.
   #
-  # @param
   # @return [string] room players
   # @example Using room players in script.
   #   echo Room::players
@@ -214,7 +203,6 @@ class Room
 
   # Room exits.
   #
-  # @param
   # @return [string] room exits
   # @example Using room exits in script.
   #   echo Room::exits
@@ -240,7 +228,6 @@ end
 class Vitals
   # Health
   #
-  # @param
   # @return [int] health value 0 - 100
   # @example Using health value in script.
   #   if Vitals::health < 100
@@ -253,7 +240,6 @@ class Vitals
 
   # Concentration
   #
-  # @param
   # @return [int] concentration value 0 - 100
   # @example Using concentration value in script.
   #   echo Vitals::concentration
@@ -265,7 +251,6 @@ class Vitals
 
   # Fatigue
   #
-  # @param
   # @return [int] fatigue value 0 - 100
   # @example Using fatigue value in script.
   #   echo Vitals::fatigue
@@ -277,7 +262,6 @@ class Vitals
 
   # Health
   #
-  # @param
   # @return [int] spirit value 0 - 100
   # @example Using spirit value in script.
   #   echo Vitals::spirit
@@ -290,7 +274,6 @@ end
 class Status
   # Standing
   #
-  # @param
   # @return [bool] is standing
   # @example Echoing standing status to main window
   #   echo Status::standing
@@ -302,7 +285,6 @@ class Status
 
   # Kneeling
   #
-  # @param
   # @return [bool] is kneeling
   # @example Echoing kneeling status to main window
   #   echo Status::kneeling
@@ -314,7 +296,6 @@ class Status
 
   # Sitting
   #
-  # @param
   # @return [bool] is sitting
   # @example Echoing sitting status to main window
   #   echo Status::sitting
@@ -326,7 +307,6 @@ class Status
 
   # Prone
   #
-  # @param
   # @return [bool] is prone
   # @example Echoing prone status to main window
   #   echo Status::prone
@@ -338,7 +318,6 @@ class Status
 
   # Stunned
   #
-  # @param
   # @return [bool] is stunned
   # @example Echoing stunned status to main window
   #   echo Status::stunned
@@ -350,7 +329,6 @@ class Status
 
   # Dead
   #
-  # @param
   # @return [bool] is dead
   # @example Echoing dead status to main window
   #   echo Status::dead
@@ -362,7 +340,6 @@ class Status
 
   # Bleeding
   #
-  # @param
   # @return [bool] is bleeding
   # @example Echoing bleeding status to main window
   #   echo Status::bleeding
@@ -374,7 +351,6 @@ class Status
 
   # Hidden
   #
-  # @param
   # @return [bool] is hidden
   # @example Using is hidden in script.
   #   if Status::hidden
@@ -388,7 +364,6 @@ class Status
 
   # Invisible
   #
-  # @param
   # @return [bool] is ivisible
   # @example Echoing invisible status to main window
   #   echo Status::invisible
@@ -400,7 +375,6 @@ class Status
 
   # Webbed
   #
-  # @param
   # @return [bool] is webbed
   # @example Echoing webbed status to main window
   #   echo Status::webbed
@@ -412,7 +386,6 @@ class Status
 
   # Joined
   #
-  # @param
   # @return [bool] is joined
   # @example Echoing joined status to main window
   #   echo Status::joined
@@ -420,6 +393,58 @@ class Status
   def self.joined
     $_api_socket.puts "GET JOINED\n"
     $_api_socket.gets('\0').chomp('\0').to_i.eql?(1)
+  end
+end
+
+class Map
+
+  # Path
+  #
+  # @param [String] zone zone id
+  # @param [Integer] from start room id
+  # @param [Integer] to destination room id
+  # @return [Array] list of moves to destination (empty if path not found)
+  # @example Find path between rooms
+  #   echo Map::path 1, 1, 5
+  #   => ["south", "south", "east"]
+  def self.path(zone, from, to)
+    $_api_socket.puts "MAP_GET PATH?#{zone}&#{from}&#{to}\n"
+    $_api_socket.gets('\0').chomp('\0').split(",")
+  end
+
+  # Zones
+  #
+  # @return [Array] list of available zones
+  # @example get zones
+  #   echo Map::zones
+  #   => ["1", "14c", "1k", "2a", "31", "7"]
+  def self.zones
+    $_api_socket.puts "MAP_GET ZONES\n"
+    $_api_socket.gets('\0').chomp('\0').split(",")
+  end
+
+  # Current room
+  #
+  # @return [Hash] room object {:zone=>"", :level=>-1, :id=>-1}
+  # @example get current room
+  #   echo Map::current_room.inspect
+  #   => {:zone=>"", :level=>-1, :id=>-1}
+  def self.current_room
+    $_api_socket.puts "MAP_GET CURRENT_ROOM\n"
+    eval($_api_socket.gets('\0').chomp('\0').to_s)
+  end
+
+  # Find room by note
+  #
+  # @param [String] note room note
+  # @return [Hash] room object {:zone=>"", :level=>-1, :id=>-1}
+  # @example find room
+  #   room = Map::find_room "NE Gate"
+  #   echo room[:id]
+  #   => 171
+  def self.find_room(note)
+    $_api_socket.puts "MAP_GET FIND_ROOM?#{note}\n"
+    eval($_api_socket.gets('\0').chomp('\0').to_s)
   end
 end
 

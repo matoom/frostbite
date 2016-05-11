@@ -53,7 +53,7 @@ QComboBox* MapWindowFactory::getMapSelect(QWidget* parent, QString name) {
 QLabel* MapWindowFactory::getMapIdLabel(QWidget* parent, QString name) {
    QLabel* label = new QLabel(parent);
    label->setObjectName(name + "IdLabel");
-   label->setText("Id: -");
+   label->setText("-");
    return label;
 }
 
@@ -64,7 +64,7 @@ QGraphicsView* MapWindowFactory::getView(QString name) {
 }
 
 QDockWidget* MapWindowFactory::createWindow(const char* name) {
-    QDockWidget *dock = new QDockWidget(QObject::tr(name), mapFacade->getMainWindow());
+    QDockWidget* dock = new QDockWidget(QObject::tr(name), mapFacade->getMainWindow());
     dock->setObjectName(QObject::tr(name) + "Window");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
 

@@ -9,7 +9,9 @@ HEADERS += \
     $$PWD/mapwindowfactory.h \
     $$PWD/maprect.h \
     $$PWD/mapfacade.h \
-    $$PWD/mapdialog.h
+    $$PWD/mapdialog.h \
+    $$PWD/mapdata.h \
+    $$PWD/roomnode.h
 
 SOURCES += \
     $$PWD/mapnode.cpp \
@@ -22,7 +24,9 @@ SOURCES += \
     $$PWD/mapwindowfactory.cpp \
     $$PWD/maprect.cpp \
     $$PWD/mapfacade.cpp \
-    $$PWD/mapdialog.cpp
+    $$PWD/mapdialog.cpp \
+    $$PWD/mapdata.cpp \
+    $$PWD/roomnode.cpp
 
 FORMS += \
     $$PWD/mapdialog.ui

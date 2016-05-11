@@ -2,18 +2,23 @@
 #define SCRIPTAPISERVER_H
 
 #include <QObject>
+#include <QStringList>
 
 #include <QtNetwork>
 
 #include <gamedatacontainer.h>
 #include <apisettings.h>
+#include <mainwindow.h>
+#include <maps/mapdata.h>
 
 #include "log4qt/logger.h"
 
 struct ApiRequest {
     QString name;
-    QString arg;
+    QStringList args;
 };
+
+class MapData;
 
 class ScriptApiServer : public QObject {
     Q_OBJECT
@@ -31,6 +36,9 @@ private:
 
     GameDataContainer* data;
     ApiSettings* settings;
+
+    MainWindow* mainWindow;
+    MapData* mapData;
 
 signals:
 

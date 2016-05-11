@@ -1,7 +1,10 @@
 #include "scriptapiserver.h"
 
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
-    data = GameDataContainer::Instance();
+    mainWindow = (MainWindow*)parent;
+    mapData = mainWindow->getWindowFacade()->getMapFacade()->getData();
+
+    data = GameDataContainer::Instance();    
 
     settings = new ApiSettings();
 
@@ -40,11 +43,11 @@ void ScriptApiServer::readyRead() {
     while (socket->canReadLine()) {
         QString line = QString::fromUtf8(socket->readLine()).trimmed();
         if(line.startsWith("GET")) {
-            ApiRequest request = parseRequest(line);
+            ApiRequest request = parseRequest(line.mid(3).trimmed());
             if(request.name == "EXP_RANK") {
-                this->write(socket, tr("%1\\0").arg(data->getExp(request.arg).value("rank")));
+                this->write(socket, tr("%1\\0").arg(data->getExp(request.args.at(0)).value("rank")));
             } else if(request.name == "EXP_STATE") {
-                this->write(socket, tr("%1\\0").arg(data->getExp(request.arg).value("state")));
+                this->write(socket, tr("%1\\0").arg(data->getExp(request.args.at(0)).value("state")));
             } else if(request.name == "ACTIVE_SPELLS") {
                 this->write(socket, tr("%1\\0").arg(data->getActiveSpells().join("\n")));
             } else if(request.name == "INVENTORY") {
@@ -101,7 +104,39 @@ void ScriptApiServer::readyRead() {
                 this->write(socket, tr("%1\\0").arg(data->getRoomExits()));
             } else if(request.name == "RT") {
                 this->write(socket, tr("%1\\0").arg(data->getRt()));
+            } else {
+                this->write(socket, tr("\\0"));
             }
+        } else if(line.startsWith("MAP_GET")) {
+            ApiRequest request = parseRequest(line.mid(7).trimmed());
+            if(request.name == "PATH") {
+                QStringList args = request.args;
+                if(args.size() < 3) {
+                    this->write(socket, tr("\\0"));
+                } else {
+                    QString path = mapData->findPath(args.at(0), args.at(1).toInt(), args.at(2).toInt());
+                    this->write(socket, tr("%1\\0").arg(path));
+                }
+            } else if(request.name == "CURRENT_ROOM") {
+                RoomNode room = mapData->getRoom();
+                this->write(socket, QString("{:zone => '%1', :level => %2, :id => %3}\\0")
+                            .arg(room.getZoneId(), QString::number(room.getLevel()), QString::number(room.getNodeId())));
+            } else if(request.name == "ZONES") {
+                this->write(socket, tr("%1\\0").arg(mapData->getZones()));                
+            } else if(request.name == "FIND_ROOM") {
+                QStringList args = request.args;
+                if(args.size() < 1) {
+                    this->write(socket, tr("\\0"));
+                } else {
+                    RoomNode room = mapData->findLocation(args.at(0));
+                    this->write(socket, QString("{:zone => '%1', :level => %2, :id => %3}\\0")
+                                .arg(room.getZoneId(), QString::number(room.getLevel()), QString::number(room.getNodeId())));
+                }
+            } else {
+                this->write(socket, tr("\\0"));
+            }
+        } else {
+            this->write(socket, tr("\\0"));
         }
     }
 }
@@ -114,15 +149,13 @@ void ScriptApiServer::write(QTcpSocket *socket, QString value) {
 ApiRequest ScriptApiServer::parseRequest(QString reqString) {
     ApiRequest apiRequest;
 
-    reqString = reqString.mid(3).trimmed();
-
     int index = reqString.indexOf("?");
     if(index > -1) {
         apiRequest.name = reqString.mid(0, index);
-        apiRequest.arg = reqString.mid(index + 1);
+        apiRequest.args = reqString.mid(index + 1).split("&");
     } else {
         apiRequest.name = reqString;
-        apiRequest.arg = "";
+        apiRequest.args = QStringList();
     }
     return apiRequest;
 }

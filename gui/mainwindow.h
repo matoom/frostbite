@@ -20,7 +20,6 @@
 #include "cleanlooks/qcleanlooksstyle.h"
 #endif
 
-/* test*/
 #include <QtXml>
 
 QT_BEGIN_NAMESPACE
@@ -46,6 +45,7 @@ class ScriptService;
 class TimerBar;
 class GeneralSettings;
 class Tray;
+class ScriptApiServer;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

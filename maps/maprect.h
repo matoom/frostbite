@@ -2,10 +2,14 @@
 #define MAPRECT_H
 
 #include <QObject>
+#include <QWidget>
+
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QCursor>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 #include <QGraphicsSceneMouseEvent>
 
@@ -27,6 +31,9 @@ public:
     void setLevel(int level);
     int getLevel();
 
+    QGraphicsScene* getScene();
+    void setScene(QGraphicsScene* scene);
+
 signals:
     void go(QWidget*, QString endNode, int level);
     void nodeSelected(QWidget*, QString zoneid, int level, int nodeId);
@@ -47,6 +54,13 @@ private:
     int nodeId;
     int level;
 
+    int x;
+    int y;
+    int w;
+    int h;
+
+    QGraphicsScene* scene;
+    QGraphicsTextItem* idTip;
 };
 
 #endif // MAPRECT_H

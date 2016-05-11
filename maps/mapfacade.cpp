@@ -3,6 +3,8 @@
 MapFacade::MapFacade(MainWindow *parent) : QObject(parent) {
     mainWindow = parent;
     mapWindowFactory = new MapWindowFactory(this);
+
+    this->init();
 }
 
 void MapFacade::init() {
@@ -18,6 +20,8 @@ void MapFacade::init() {
 
     mapReader = new MapReader(this);
     connect(mapReader, SIGNAL(ready()), this, SLOT(mapsReady()));
+
+    mapData = mapReader->getMapData();
 }
 
 void MapFacade::mapsReady() {
@@ -38,38 +42,50 @@ void MapFacade::mapsReady() {
     mapDialog->populate();
 }
 
+MapData* MapFacade::getData() {
+    return mapReader->getMapData();
+}
+
 void MapFacade::updateMapWindow(QString hash) {
     if(!mapReader->isInitialized()) return;
 
-    RoomNode node = mapReader->findRoomNode(hash);
+    RoomNode node = mapData->findRoomNode(hash);
 
-    if(!node.zoneId.isEmpty()) {
-        int index = mapSelect->findData(node.zoneId);
-        if (index != -1) mapSelect->setCurrentIndex(index);
-
-        QList<int>& levels = mapReader->getZones().value(node.zoneId)->getLevels();
-        foreach(int level, levels) {
-            levelSelect->addItem(QString::number(level), level);
-        }
-
-        index = levelSelect->findData(node.level);
-        if (index != -1) levelSelect->setCurrentIndex(index);
-
-        this->showMap(node.zoneId, node.level);
-        this->selectNode(node.zoneId, node.level, node.nodeId);
+    mapData->setRoom(node);
+    if(!node.getZoneId().isEmpty()) {
+        this->setSelected(node.getZoneId(), node.getLevel());
+        this->showMap(node.getZoneId(), node.getLevel());
+        this->selectNode(node.getZoneId(), node.getLevel(), node.getNodeId());
     }
 }
 
 void MapFacade::mapSelected(int index) {
-    QString id = mapSelect->itemData(index).toString();
+    QString zoneId = mapSelect->itemData(index).toString();
+    this->populateLevels(zoneId);
+    this->showMap(zoneId);
+}
 
-    QList<int>& levels = mapReader->getZones().value(id)->getLevels();
-
-    levelSelect->clear();
-    foreach(int level, levels) {
-        levelSelect->addItem(QString::number(level), level);
+void MapFacade::setSelected(QString zoneId, int level) {
+    int index = mapSelect->findData(zoneId);
+    if (index != -1) {
+        this->populateLevels(zoneId, level);
+        mapSelect->setCurrentIndex(index);
     }
-    this->showMap(id);
+}
+
+void MapFacade::populateLevels(QString zoneId, int level) {
+    MapZone* zone = mapReader->getZones().value(zoneId);
+    QList<int>& levels = zone->getLevels();
+    if(zone != NULL) {
+        levelSelect->clear();
+        foreach(int level, levels) {
+            levelSelect->addItem(QString::number(level), level);
+        }
+        if(level != 0){
+            int index = levelSelect->findData(level);
+            if (index != -1) levelSelect->setCurrentIndex(index);
+        }
+    }
 }
 
 void MapFacade::mapLevelSelected(int index) {
@@ -77,39 +93,40 @@ void MapFacade::mapLevelSelected(int index) {
 }
 
 void MapFacade::showMap(QWidget* widget, QString zoneId, int level) {
-    int index = mapSelect->findData(zoneId);
-    if (index != -1) mapSelect->setCurrentIndex(index);
-
     QGraphicsView* view = (QGraphicsView*)widget->parent();
-    QGraphicsScene* scene = mapReader->getScenes().value(zoneId).value(level).scene;
+    QString obj = view->objectName();
 
-    view->setScene(scene);
+    if(obj == "MapView") {
+        this->setSelected(zoneId);
+        this->showMap(zoneId, level);
+    } else if(obj == "DialogMapView") {
+        mapDialog->setSelected(zoneId, level);
+        mapDialog->showMap(zoneId, level);
+    }
 }
 
 void MapFacade::showMap(QString zoneId, int level) {
-    int index = mapSelect->findData(zoneId);
-    if (index != -1) mapSelect->setCurrentIndex(index);
-
-    QGraphicsScene* scene = mapReader->getScenes().value(zoneId).value(level).scene;
-    mapView->setScene(scene);
+    mapView->setScene(mapReader->getScenes().value(zoneId).value(level).scene);
 }
 
 void MapFacade::selectNode(QWidget* widget, QString zoneId, int level, int nodeId) {
     QString obj = widget->parent()->objectName();
 
     if(obj == "MapView") {
+        mapData->setRoom(RoomNode(zoneId, level, nodeId));
         this->selectNode(zoneId, level, nodeId);
     } else if (obj == "DialogMapView") {
         this->moveSelected(zoneId, nodeId, level);
 
         MapZone* zone = mapReader->getZones().value(zoneId);
         MapNode* node = zone->getNodes().value(nodeId);
+
         mapDialog->setInfo(node);
     }
 }
 
 void MapFacade::selectNode(QString zoneId, int level, int nodeId) {
-    mapIdLabel->setText("Id: " + QString::number(nodeId));
+    mapIdLabel->setText(QString::number(nodeId));
     this->moveSelected(zoneId, nodeId, level);
     emit nodeSelected(mapReader->getZones().value(zoneId), nodeId);
 }
@@ -127,9 +144,10 @@ void MapFacade::moveSelected(QString zoneId, int nodeId, int level) {
 void MapFacade::showMapDialog() {
     if(!mapReader->isInitialized()) return;
 
-    QString currentMap = mapSelect->currentData().toString();
-    if(!currentMap.isEmpty()) {
-        mapDialog->showMap(currentMap, levelSelect->currentData().toInt());
+    QString currentZoneId = mapSelect->currentData().toString();
+    if(!currentZoneId.isEmpty()) {
+        mapDialog->setSelected(currentZoneId, levelSelect->currentData().toInt());
+        mapDialog->showMap(currentZoneId, levelSelect->currentData().toInt());
     }
     mapDialog->show();
 }

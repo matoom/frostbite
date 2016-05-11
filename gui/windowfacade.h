@@ -84,6 +84,8 @@ public:
     QDockWidget* getConversationsWindow();
     QDockWidget* getFamiliarWindow();
 
+    MapFacade* getMapFacade();
+
     bool thoughtsVisible;
     bool deathsVisible;
     bool arrivalsVisible;

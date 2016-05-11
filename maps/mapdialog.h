@@ -23,6 +23,8 @@ public:
     void populate();
     void setInfo(MapNode* node);
     void showMap(QString zoneId, int level = 0);
+    void populateLevels(QString zoneId, int level = 0);
+    void setSelected(QString zoneId, int level = 0);
 
 private:
     Ui::MapDialog *ui;
@@ -33,7 +35,7 @@ private:
 
 public slots:
     void mapSelected(int index);
-    void mapLevelSelected(int index);
+    void mapLevelSelected(int index);    
 
     void zoomIn();
     void zoomOut();

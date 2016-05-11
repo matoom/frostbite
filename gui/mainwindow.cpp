@@ -98,8 +98,6 @@ QColor MainWindow::getBackgroundColor() {
 }
 
 void MainWindow::loadClient() {
-    scriptApiServer = new ScriptApiServer(this);
-
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 
@@ -121,6 +119,8 @@ void MainWindow::loadClient() {
 
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
+
+    scriptApiServer = new ScriptApiServer(this);
 
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));

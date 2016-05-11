@@ -8,11 +8,13 @@
 #include <maps/mapwindow.h>
 #include <maps/mapreader.h>
 #include <maps/mapdialog.h>
+#include <maps/mapdata.h>
 
 class MainWindow;
 class MapReader;
 class MapWindowFactory;
 class MapDialog;
+class MapData;
 
 class MapFacade : public QObject {
     Q_OBJECT
@@ -26,6 +28,8 @@ public:
     QDockWidget* getMapWindow();
     MapReader* getMapReader();
 
+    MapData* getData();
+
 private:
     MainWindow* mainWindow;
     MapWindowFactory* mapWindowFactory;
@@ -38,9 +42,13 @@ private:
     QLabel* mapIdLabel;
     MapWindow* mapView;
 
+    MapData* mapData;
+
     MapDialog* mapDialog;
 
     void moveSelected(QString zoneId, int nodeId, int level);
+    void populateLevels(QString zoneId, int level = 0);
+    void setSelected(QString zoneId, int level = 0);
 
 signals:    
     void nodeSelected(MapZone* zone, int nodeId);

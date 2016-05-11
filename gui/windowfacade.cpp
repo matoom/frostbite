@@ -205,7 +205,6 @@ void WindowFacade::loadWindows() {
     connect(familiarWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(familiarVisibility(bool)));
 
     mapFacade = new MapFacade(mainWindow);
-    mapFacade->init();
 
     this->initWindowHighlighters();
     this->initLoggers();
@@ -327,6 +326,10 @@ QDockWidget* WindowFacade::getFamiliarWindow() {
     return this->familiarWindow;
 }
 
+MapFacade* WindowFacade::getMapFacade() {
+    return this->mapFacade;
+}
+
 void WindowFacade::copyDock() {
     foreach(QDockWidget* dock, dockWindows) {
         QTextCursor cursor = ((QPlainTextEdit*)dock->widget())->textCursor();
@@ -403,7 +406,6 @@ void WindowFacade::writeExpWindow(GridItems items) {
 }
 
 void WindowFacade::updateMapWindow(QString hash) {
-    qDebug() << "update";
     mapFacade->updateMapWindow(hash);
 }
 

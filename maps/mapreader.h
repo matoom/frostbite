@@ -20,14 +20,10 @@
 #include <maps/maprect.h>
 
 #include <maps/mapfacade.h>
+#include <maps/mapdata.h>
+#include <maps/roomnode.h>
 
 #include <globaldefines.h>
-
-struct RoomNode {
-    QString zoneId;
-    int nodeId;
-    int level;
-};
 
 struct MapGraphics {
     QGraphicsScene* scene;
@@ -35,6 +31,7 @@ struct MapGraphics {
 };
 
 class MapFacade;
+class MapData;
 
 class MapReader : public QObject {
     Q_OBJECT
@@ -44,8 +41,10 @@ public:
 
     QMap<QString, MapZone*> getZones();
     QHash<QString, QHash<int, MapGraphics> > getScenes();
+    QMultiHash<QString, RoomNode> getRoomNodes();
 
-    RoomNode findRoomNode(QString hash);
+    MapData* getMapData();
+    QHash<QString, RoomNode> getLocations();
 
     void init();
 
@@ -67,6 +66,7 @@ private:
     boolean initialized;
 
     MapFacade* mapFacade;
+    MapData* mapData;
 
     void paintScenes();
     QHash<int, MapGraphics> paintScene(MapZone* zone);
@@ -79,6 +79,7 @@ private:
     QMap<QString, MapZone*> zones;
     QHash<QString, QHash<int, MapGraphics> > scenes;
     QHash<QString, QString> connections;
+    QHash<QString, RoomNode> locations;
 
     QStringList ids;
 

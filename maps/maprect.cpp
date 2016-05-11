@@ -3,25 +3,39 @@
 MapRect::MapRect(qreal x, qreal y, qreal w, qreal h, QPen p, QBrush b, QGraphicsItem *parent) :
         QGraphicsRectItem(x, y, w, h, parent) {
 
+    this->x = x;
+    this->y = y;
+    this->w = w;
+    this->h = h;
+
     this->setAcceptHoverEvents(true);
     this->setPen(p);
-    this->setBrush(b);
+    this->setBrush(b);    
 }
 
-void MapRect::mousePressEvent(QGraphicsSceneMouseEvent* event) {   
-    QGraphicsItem::mousePressEvent(event);
+void MapRect::mousePressEvent(QGraphicsSceneMouseEvent* event) {       
     if(event->buttons() & Qt::LeftButton) {
-        if(endZoneId != NULL) emit go(event->widget(), endZoneId, level);
-        emit nodeSelected(event->widget(), zoneId, level, nodeId);
+        if(endZoneId != NULL) emit go(event->widget(), endZoneId, level);        
+        emit nodeSelected(event->widget(), zoneId, level, nodeId);        
     }
+    QGraphicsItem::mousePressEvent(event);
 }
 
-void MapRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+void MapRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {    
     setCursor(QCursor(Qt::PointingHandCursor));
+    if (scene != NULL) {
+        idTip = scene->addText("");
+        idTip->setHtml("<div style=\"background:black;color:white;font-weight:bold;\">" +
+                       QString::number(this->nodeId) +
+                       "</div>");
+        idTip->setPos(x + w + 2, y - 10);
+    }
     QGraphicsItem::hoverEnterEvent(event);
 }
+
 void MapRect::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
-    setCursor(QCursor(Qt::PointingHandCursor));
+    setCursor(QCursor(Qt::PointingHandCursor));    
+    if (scene != NULL) scene->removeItem(idTip);
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
@@ -55,4 +69,12 @@ void MapRect::setLevel(int level) {
 
 int MapRect::getLevel() {
     return this->level;
+}
+
+QGraphicsScene* MapRect::getScene() {
+    return this->scene;
+}
+
+void MapRect::setScene(QGraphicsScene* scene) {
+    this->scene = scene;
 }
