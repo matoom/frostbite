@@ -3,6 +3,7 @@
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
     mainWindow = (MainWindow*)parent;
     mapData = mainWindow->getWindowFacade()->getMapFacade()->getData();
+    tcpClient = mainWindow->getTcpClient();
 
     data = GameDataContainer::Instance();    
 
@@ -134,6 +135,17 @@ void ScriptApiServer::readyRead() {
                 }
             } else {
                 this->write(socket, tr("\\0"));
+            }
+        } else if(line.startsWith("CLIENT")) {
+            ApiRequest request = parseRequest(line.mid(6).trimmed());
+            if(request.name == "CONNECT") {
+                QStringList args = request.args;
+                if(args.size() < 6) {
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    tcpClient->connectApi(args.at(0), args.at(1), args.at(2), args.at(3), args.at(4), args.at(5));
+                    this->write(socket, tr("0\\0"));
+                }
             }
         } else {
             this->write(socket, tr("\\0"));

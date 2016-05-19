@@ -10,6 +10,7 @@
 #include <apisettings.h>
 #include <mainwindow.h>
 #include <maps/mapdata.h>
+#include <tcpclient.h>
 
 #include "log4qt/logger.h"
 
@@ -19,6 +20,7 @@ struct ApiRequest {
 };
 
 class MapData;
+class TcpClient;
 
 class ScriptApiServer : public QObject {
     Q_OBJECT
@@ -39,6 +41,8 @@ private:
 
     MainWindow* mainWindow;
     MapData* mapData;
+
+    TcpClient* tcpClient;
 
 signals:
 

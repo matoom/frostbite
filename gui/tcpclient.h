@@ -31,7 +31,9 @@ public:
     void writeCommand(QString);
     void showError(QString);
     void updateSettings();
-    void disconnectFromServer();    
+    void disconnectFromServer();
+
+    void connectApi(QString host, QString port, QString user, QString password, QString game, QString character);
 
 private:
     MainWindow *mainWindow;
@@ -45,6 +47,10 @@ private:
     DebugLogger* debugLogger;
 
     void loadMockData();
+
+    QString game;
+    QString character;
+    bool api;
 
 signals:
     void characterFound(QString, QString);

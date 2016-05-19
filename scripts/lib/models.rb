@@ -3,6 +3,10 @@ require 'socket'
 # @private
 module ApiSettings
   #constants
+  AUTH_HOST = "eaccess.play.net"
+  AUTH_PORT = "7900"
+  AUTH_GAMES = {:prime => 'DR', :test => 'DRT', :plat => 'DRX', :fallen => 'DRF'}
+
   API_PUT_PREFIX = "put#"
   API_ECHO_PREFIX = "echo#"
   API_CMD_SUFFIX = "\n"
@@ -445,6 +449,33 @@ class Map
   def self.find_room(note)
     $_api_socket.puts "MAP_GET FIND_ROOM?#{note}\n"
     eval($_api_socket.gets('\0').chomp('\0').to_s)
+  end
+end
+
+class Client
+  def self.connect_prime(name, user, pass)
+    Client.connect(ApiSettings::AUTH_GAMES[:prime], name, user, pass)
+  end
+
+  def self.connect_test(name, user, pass)
+    Client.connect(ApiSettings::AUTH_GAMES[:test], name, user, pass)
+  end
+
+  def self.connect_fallen(name, user, pass)
+    Client.connect(ApiSettings::AUTH_GAMES[:fallen], name, user, pass)
+  end
+
+  def self.connect_plat(name, user, pass)
+    Client.connect(ApiSettings::AUTH_GAMES[:plat], name, user, pass)
+  end
+
+  def self.connect(game, name, user, pass)
+    Client.connect_host(ApiSettings::AUTH_HOST, ApiSettings::AUTH_PORT, game, name, user, pass)
+  end
+
+  def self.connect_host(host, port, game, name, user, pass)
+    $_api_socket.puts "CLIENT CONNECT?#{host}&#{port}&#{user}&#{pass}&#{game}&#{name}\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 end
 

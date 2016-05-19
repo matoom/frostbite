@@ -54,7 +54,7 @@ QStringList MapData::getDirections(QHash<int, MapNode*>& nodes, int startId, int
 
     QHash<MapNode*, MapNode*> prev;
 
-    MapNode* currentNode;
+    MapNode* currentNode = NULL;
     while(!queue.isEmpty()) {
         currentNode = queue.front();
 

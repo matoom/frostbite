@@ -54,9 +54,13 @@ void TcpClient::initEauthSession(QString host, QString port, QString user, QStri
 }
 
 void TcpClient::selectGame(QMap<QString, QString> gameList) {
-    // eAuth -> connectWizard
-    emit setGameList(gameList);
-    emit enableGameSelect();
+    if(api) {
+        this->gameSelected(this->game);
+    } else {
+        // eAuth -> connectWizard
+        emit setGameList(gameList);
+        emit enableGameSelect();
+    }
 }
 
 void TcpClient::gameSelected(QString id) {
@@ -69,7 +73,16 @@ void TcpClient::resetEauthSession() {
 }
 
 void TcpClient::addCharacter(QString id, QString name) {
-    emit characterFound(id, name);
+    if(api) {
+        if(this->character == name) {
+            this->retrieveEauthSession(id);
+        } else {
+            this->connectWizardError("Character not found.");
+            this->resetEauthSession();
+        }
+    } else {
+        emit characterFound(id, name);
+    }
 }
 
 void TcpClient::retrieveEauthSession(QString id) {
@@ -77,18 +90,34 @@ void TcpClient::retrieveEauthSession(QString id) {
 }
 
 void TcpClient::eAuthSessionRetrieved(QString host, QString port, QString sessionKey) {
-    emit sessionRetrieved(host, port, sessionKey);
+    if(api) {
+        this->connectToHost(host, port, sessionKey);
+    } else {
+        emit sessionRetrieved(host, port, sessionKey);
+    }
 }
 
 void TcpClient::connectWizardError(QString errorMsg) {
+    this->api = false;
     emit eAuthError(errorMsg);
+    this->showError(errorMsg);
 }
 
 void TcpClient::authError() {
-    emit resetPassword();
+    this->api = false;
+    emit resetPassword();    
+}
+
+void TcpClient::connectApi(QString host, QString port, QString user, QString password, QString game, QString character) {
+    this->api = true;
+    this->game = game;
+    this->character = character;
+    this->initEauthSession(host, port, user, password);
 }
 
 void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
+    this->api = false;
+
     windowFacade->writeGameWindow("Connecting ...");
 
     mainWindow->connectEnabled(false);

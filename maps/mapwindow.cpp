@@ -31,7 +31,7 @@ void MapWindow::zoomOut() {
     scaleView(pow((double)2, -1 / 2.4));
 }
 
-void MapWindow::selectNode(MapZone* zone, int nodeId) {
+void MapWindow::selectNode(MapZone* zone, int nodeId) {    
     MapNode* node = zone->getNodes().value(nodeId);
     centerOn(node->getPosition()->getX() + abs(zone->getXMin()), node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
 }

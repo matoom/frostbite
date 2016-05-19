@@ -107,6 +107,7 @@ void MapFacade::showMap(QWidget* widget, QString zoneId, int level) {
 
 void MapFacade::showMap(QString zoneId, int level) {
     mapView->setScene(mapReader->getScenes().value(zoneId).value(level).scene);
+    mapView->viewport()->update();
 }
 
 void MapFacade::selectNode(QWidget* widget, QString zoneId, int level, int nodeId) {
