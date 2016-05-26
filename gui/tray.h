@@ -26,15 +26,21 @@ private:
     QAction *maximizeAction;
     QAction *restoreAction;
     QAction *exitAction;
+    QAction *conversationsAction;
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+
+    ClientSettings* settings;
+
+    bool conversations;
 
 public slots:
     void showMessage(QString, QString);
 
 private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason);
+    void conversationsChanged();
 
 };
 

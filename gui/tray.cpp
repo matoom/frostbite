@@ -3,7 +3,9 @@
 Tray::Tray(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 
-    createActions();
+    settings = ClientSettings::Instance();
+    conversations = settings->getParameter("Tray/conversations", true).toBool();
+
     createTrayIcon();
 
     connect(trayIcon, SIGNAL(messageClicked()), mainWindow, SLOT(showMaximized()));
@@ -14,10 +16,14 @@ Tray::Tray(QObject *parent) : QObject(parent) {
 }
 
 void Tray::createTrayIcon() {
+    this->createActions();
+
     trayIconMenu = new QMenu(mainWindow);
     trayIconMenu->addAction(minimizeAction);
     trayIconMenu->addAction(maximizeAction);
     trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(conversationsAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(exitAction);
 
@@ -39,12 +45,27 @@ void Tray::createActions() {
 
      exitAction = new QAction(tr("&Exit"), mainWindow);
      connect(exitAction, SIGNAL(triggered()), mainWindow, SLOT(close()));
- }
+
+     conversationsAction = new QAction(tr("&Conversations"), mainWindow);
+     conversationsAction->setCheckable(true);
+     conversationsAction->setChecked(conversations);
+     connect(conversationsAction, SIGNAL(changed()), this, SLOT(conversationsChanged()));
+}
+
+void Tray::conversationsChanged() {
+    conversations = conversationsAction->isChecked();
+    settings->setParameter("Tray/conversations", conversations);
+}
 
 void Tray::showMessage(QString title, QString trayEntry) {
     TextUtils::Instance()->htmlToPlain(trayEntry);
-    trayIcon->showMessage(title, trayEntry,
-                          QSystemTrayIcon::NoIcon, 5 * 1000);
+    if(title == DOCK_TITLE_CONVERSATIONS) {
+        if(conversations) {
+            trayIcon->showMessage(title, trayEntry, QSystemTrayIcon::NoIcon, 3 * 1000);
+        }
+    } else {
+        trayIcon->showMessage(title, trayEntry, QSystemTrayIcon::NoIcon, 5 * 1000);
+    }
 }
 
 void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {
