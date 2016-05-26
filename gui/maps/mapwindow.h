@@ -1,0 +1,43 @@
+#ifndef MAPWINDOW_H
+#define MAPWINDOW_H
+
+#include <QWidget>
+#include <QGraphicsView>
+#include <QDebug>
+#include <QWheelEvent>
+
+#include <maps/mapzone.h>
+#include <maps/mapfacade.h>
+
+class MapFacade;
+
+class MapWindow : public QGraphicsView {
+    Q_OBJECT
+
+public:
+    explicit MapWindow(MapFacade* parent);
+
+private:
+    void wheelEvent(QWheelEvent* zoomEvent);
+    void contextMenuEvent(QContextMenuEvent* event);
+
+    void scaleView(qreal scaleFactor);        
+    void buildContextMenu();
+
+    MapFacade* mapFacade;
+    QGraphicsEllipseItem* selected;
+
+    QString zoneId;
+    int level;
+
+    QMenu* menu;
+
+signals:
+
+public slots:
+    void zoomIn();
+    void zoomOut();
+    void selectNode(MapZone* zone, int nodeId);
+};
+
+#endif // MAPWINDOW_H
