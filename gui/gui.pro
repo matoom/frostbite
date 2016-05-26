@@ -23,7 +23,7 @@ greaterThan(QT_VERSION, 5){
    include(../cleanlooks/cleanlooks.pri)
 }
 
-include(../maps/maps.pri)
+include(maps/maps.pri)
 
 win32 {
     TARGET = ../../FrostBite
