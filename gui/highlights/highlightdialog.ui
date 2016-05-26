@@ -14,7 +14,7 @@
    <string>Highlight</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="window.qrc">
+   <iconset resource="../window.qrc">
     <normaloff>:/window/images/color.png</normaloff>:/window/images/color.png</iconset>
   </property>
   <property name="sizeGripEnabled">
@@ -30,7 +30,7 @@
       <locale language="English" country="UnitedStates"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -100,7 +100,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Highlight Partial Matches</string>
+              <string>Highlight Partial Matches/Regular Expression</string>
              </property>
             </widget>
            </item>
@@ -261,7 +261,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Highlight Partial Matches</string>
+              <string>Highlight Partial Matches/Regular Expression</string>
              </property>
             </widget>
            </item>
@@ -682,7 +682,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="window.qrc"/>
+  <include location="../window.qrc"/>
  </resources>
  <connections/>
 </ui>

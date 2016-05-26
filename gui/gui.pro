@@ -25,6 +25,8 @@ greaterThan(QT_VERSION, 5){
 
 include(maps/maps.pri)
 
+include(highlights/highlights.pri)
+
 win32 {
     TARGET = ../../FrostBite
 }
@@ -49,20 +51,11 @@ SOURCES += main.cpp\
     commandline.cpp \
     keyboardfilter.cpp \
     menuhandler.cpp \
-    highlightdialog.cpp \
-    highlighttexttab.cpp \
-    highlightgeneraltab.cpp \
-    highlightadddialog.cpp \
-    highlightsettingsentry.cpp \
-    highlightsettings.cpp \
-    highlighteditdialog.cpp \
-    highlightalerttab.cpp \
     audioplayer.cpp \
     eauthservice.cpp \
     script.cpp \
     scriptservice.cpp \
     gamedatacontainer.cpp \
-    highlighter.cpp \
     timerbar.cpp \
     macrodialog.cpp \
     macrosettings.cpp \
@@ -81,7 +74,6 @@ SOURCES += main.cpp\
     fullscreenbutton.cpp \
     profileadddialog.cpp \
     generalsettings.cpp \
-    highlighterthread.cpp \
     scriptwriterthread.cpp \
     mainlogger.cpp \
     thoughtslogger.cpp \
@@ -121,20 +113,11 @@ HEADERS  += mainwindow.h \
     version.h \
     keyboardfilter.h \
     menuhandler.h \
-    highlightdialog.h \
-    highlighttexttab.h \
-    highlightgeneraltab.h \
-    highlightadddialog.h \
-    highlightsettingsentry.h \
-    highlightsettings.h \
-    highlighteditdialog.h \
-    highlightalerttab.h \
     audioplayer.h \
     eauthservice.h \
     script.h \
     scriptservice.h \
     gamedatacontainer.h \
-    highlighter.h \
     timerbar.h \
     macrodialog.h \
     macrosettings.h \
@@ -155,7 +138,6 @@ HEADERS  += mainwindow.h \
     fullscreenbutton.h \
     profileadddialog.h \
     generalsettings.h \
-    highlighterthread.h \
     scriptwriterthread.h \
     globaldefines.h \
     mainlogger.h \
@@ -182,9 +164,6 @@ HEADERS  += mainwindow.h \
     authlogger.h
 
 FORMS    += mainwindow.ui \
-    highlightdialog.ui \
-    highlightadddialog.ui \
-    highlighteditdialog.ui \
     macrodialog.ui \
     quickbuttoneditdialog.ui \
     appearancedialog.ui \

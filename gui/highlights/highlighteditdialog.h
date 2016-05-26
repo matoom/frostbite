@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QtGui>
 
-#include <highlighttexttab.h>
-#include <highlightsettings.h>
-#include <highlightsettingsentry.h>
+#include <highlights/highlighttexttab.h>
+#include <highlights/highlightsettings.h>
+#include <highlights/highlightsettingsentry.h>
 
 
 namespace Ui {

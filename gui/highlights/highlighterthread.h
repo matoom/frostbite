@@ -6,7 +6,7 @@
 #include <QQueue>
 #include <QMutex>
 
-#include <highlighter.h>
+#include <highlights/highlighter.h>
 #include <globaldefines.h>
 
 #include <log4qt/logger.h>

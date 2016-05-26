@@ -7,7 +7,7 @@
 
 #include <mainwindow.h>
 #include <connectwizard.h>
-#include <highlightdialog.h>
+#include <highlights/highlightdialog.h>
 #include <macrodialog.h>
 #include <appearancedialog.h>
 #include <aboutdialog.h>

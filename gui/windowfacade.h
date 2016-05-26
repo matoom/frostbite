@@ -9,10 +9,10 @@
 #include <gamewindow.h>
 #include <navigationdisplay.h>
 #include <gamedatacontainer.h>
-#include <highlighter.h>
+#include <highlights/highlighter.h>
 #include <defaultvalues.h>
-#include <highlightsettings.h>
-#include <highlighterthread.h>
+#include <highlights/highlightsettings.h>
+#include <highlights/highlighterthread.h>
 #include <gridhighlighterthread.h>
 #include <mainlogger.h>
 #include <thoughtslogger.h>

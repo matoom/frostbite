@@ -5,7 +5,7 @@
 #include <QApplication>
 #include <QDebug>
 
-#include <highlightsettingsentry.h>
+#include <highlights/highlightsettingsentry.h>
 #include <clientsettings.h>
 
 class HighlightSettings {

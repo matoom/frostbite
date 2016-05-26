@@ -8,9 +8,9 @@
 #include <mainwindow.h>
 #include <clientsettings.h>
 
-#include <highlightgeneraltab.h>
-#include <highlighttexttab.h>
-#include <highlightalerttab.h>
+#include <highlights/highlightgeneraltab.h>
+#include <highlights/highlighttexttab.h>
+#include <highlights/highlightalerttab.h>
 
 class MainWindow;
 class ClientSettings;
