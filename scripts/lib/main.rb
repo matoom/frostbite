@@ -34,7 +34,6 @@ $rt_adjust = 0
 
 # Waits for roundtime and pauses for the duration.
 #
-# @param
 # @return [void]
 # @example Wait for the duration of round time before executing next command.
 #   put "hide"
@@ -55,7 +54,6 @@ end
 
 # Pauses for current roundtime
 #
-# @param
 # @return [void]
 def pause_for_roundtime
   if $_api_current_rt > 0
@@ -92,7 +90,7 @@ end
 # @example Match for game text.
 #   match = { :retry => [/\.\.\.wait/], :open => [/you open/] }
 #   result = match_wait match
-#   result #=> :retry or :next
+#   result #=> :retry or :open
 #   case result
 #     when :open
 #       echo "open!"
@@ -214,7 +212,6 @@ end
 
 # Waits for a prompt character.
 #
-# @param
 # @return [void]
 # @example Using wait in script to run consecutive commands.
 #   put "remove my shield"
@@ -266,7 +263,6 @@ end
 # Current match round time -- can be used in
 # secondary threads while main thread is stuck in round time
 #
-# @param
 # @return [Integer] current round time value
 def get_match_rt
   $_api_current_rt

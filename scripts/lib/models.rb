@@ -429,7 +429,7 @@ class Map
 
   # Current room
   #
-  # @return [Hash] room object {:zone=>"", :level=>-1, :id=>-1}
+  # @return [Hash] room object (:zone=>"", :level=>-1, :id=>-1)
   # @example get current room
   #   echo Map::current_room.inspect
   #   => {:zone=>"", :level=>-1, :id=>-1}
@@ -441,7 +441,7 @@ class Map
   # Find room by note
   #
   # @param [String] note room note
-  # @return [Hash] room object {:zone=>"", :level=>-1, :id=>-1}
+  # @return [Hash] room object (:zone=>"", :level=>-1, :id=>-1)
   # @example find room
   #   room = Map::find_room "NE Gate"
   #   echo room[:id]
