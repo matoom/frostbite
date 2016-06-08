@@ -15,8 +15,10 @@ module COMBAT
                 "ceases all movement", "collapses into a massive heap","massive heap before",
                 "sharp halt", "life force fades away", "slumps dead", "falls dead", "into a heap",
                 "collapses over", "and lies still", "falling silent with", "before expiring with",
-                "before falling still", "reducing its corpse to nothing", "before growing still"]
-  CRITTERS = ["wyvern", "assassin", "magus", "thrall"]
+                "before falling still", "reducing its corpse to nothing", "before growing still", 
+		"and collapses to its knees", " leaving behind a bloody mass of scorched robes", 
+		"falls limp with a final sputtering sigh"]
+  CRITTERS = ["wyvern", "assassin", "magus", "thrall", "archimage", "vindicator", "slayer"]
 end
 
 module ITEMS

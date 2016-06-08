@@ -2,6 +2,8 @@
 # requirements: stow container set up
 # run: anywhere
 
+require "defines"
+
 @box_types = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
 @container = "backpack"
 @junk = ["runestone", "flower", "leaf", "grass", "mortar", "pestle"]
@@ -41,7 +43,7 @@ def loot items
   items.each do |item|
     put "get #{item} from my #{@wield_right}"
     wait
-    if !item.include?("coin")
+    unless item.include?("coin")
       put "put #{item} in my #{@container}"
       wait
     end
@@ -62,7 +64,7 @@ def exit_script message
 end
 
 @wield_right = Wield::right_noun
-if !@box_types.any?{ |box_type| @wield_right.include? box_type }
+unless @box_types.any?{ |box_type| @wield_right.include? box_type }
   exit_script("*** Need to be holding a box in the right hand! ***")
 end
 

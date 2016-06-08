@@ -5,41 +5,43 @@
 # 1000
 
 @containers = ["backpack", "haversack"]
-@khri = "khri darken sensing serenity sagacity plunder"
+@khri = "khri darken sensing serenity sagacity plunder silence"
 @mark = false
 @debug_mode = false
 @name = "Defol"
 @pawn_threshold = 1
+@go_arthe = false
+@go_leth = false
+@go_ilaya = false
 
 @crossing_items =
     {
-      :scriptorium => { :item  => "case", :location => "on shelf", :desc => "lacquered teak parchment", :amount => 1 }, #[Temple Grounds, Scriptorium]
+      :scriptorium => { :item  => "satchel", :location => "on rack", :desc => "brilliant multicolored", :amount => 4}, #[Temple Grounds, Scriptorium]
       :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
-      :locksmith => { :item => :none, :amount => 2 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
-      :bard => { :item => "wyndewood fiddle", :amount => 1 }, #[The True Bard D'Or, Fine Instruments]
-      :bard_private => { :item => "horn", :amount => 1 }, #[Luthier's, Private Showroom]
-      :armor => { :item => "rugged leathers", :amount => 1 }, #[Tembeg's Armory, Salesroom]
-      :weapon => { :item => :none, :amount => 1 }, #[Milgrym's Weapons, Showroom]
-      :jewelry_appraisal_room => { :item => "platinum wristcuff", :amount => 1 }, #[Grisgonda's, Appraisal Room]
+      :locksmith => { :item => :none, :amount => 4 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
+      :bard => { :item => "silverwillow fiddle", :amount => 5 }, #[The True Bard D'Or, Fine Instruments] wyndewood fiddle
+      :bard_private => { :item => "tapani", :amount => 4 }, #[Luthier's, Private Showroom] horn
+      :armor => { :item => "kite shield", :amount => 5 }, #[Tembeg's Armory, Salesroom]
+      :weapon => { :item => :none, :amount => 2 }, #[Milgrym's Weapons, Showroom]
+      :jewelry_appraisal_room => { :item => "gold anklet", :amount => 1 }, #[Grisgonda's, Appraisal Room] #platinum wristcuff",
       :jewelry => { :item => "platinum engagement ring", :amount => 1, :bin => true }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
-      :macipur => { :item => :none, :amount => 4 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
-      :brisson => { :item => :none, :amount => 3 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
-      :artificer => { :item => "parchment scroll", :amount => 2, :bin => true }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
+      :macipur => { :item => :none, :amount => 2 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
+      :brisson => { :item => :none, :amount => 2 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
+      :artificer => { :item => "parchment scroll", :amount => 4, :bin => true }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "toolbox", :amount => 1, :bin => true}, #[Chizili's Alchemical Goods, Salesroom]
-      :emmiline_pantry => { :item => "necklace", :amount => 1 }, #[Emmiline's Cottage, Pantry]
-      :emmiline_sales => { :item => "silver lancet", :location => "on table", :amount => 1 }, #[Emmiline's Cottage, Sales Floor]
-      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Rock Troll anatomy", :amount => 1, :bin => true } #[Emmiline's Cottage, Parlor]
+      :emmiline_pantry => { :item => "band", :location => "on case", :desc => "etched gold eternity", :amount => 3 }, #[Emmiline's Cottage, Pantry]
+      :emmiline_sales => { :item => "silk shirt", :location => "on oak rack", :amount => 3 }, #[Emmiline's Cottage, Sales Floor]
+      :emmiline_parlor => { :item => "chart", :location => "on hook", :desc => "Dwarven anatomy", :amount => 3, :bin => true } #[Emmiline's Cottage, Parlor]
     }
 
 @arthe_items =
     {
       :thread => { :item  => :none, :amount => 2 }, #[Quellia's Thread Shop, Sales Room]
-      :odds => { :item  => "ribbon", :amount => 1 }, #[Odds 'n Ends, Sales Room]
+      :odds => { :item  => "hat", :amount => 4 }, #[Odds 'n Ends, Sales Room]
       :bardic => { :item  => :none, :amount => 2 }, #[Barley Bulrush, Bardic Ballads]
       :bobba => { :item  => "ring mail", :amount => 3 }, #[Bobba's Arms and Armor]
-      #:lobby => { :item  => "pipe", :location => "in chest", :amount => 1, :bin => true } #[Yulugri Wala, Lobby] silver flask
-      :lobby => { :item  => "silver flask", :amount => 1, :bin => false } #[Yulugri Wala, Lobby]
+      :lobby => { :item  => "pipe", :location => "in chest", :amount => 3, :bin => false } #[Yulugri Wala, Lobby]
     }
 
 @leth_items =
@@ -49,8 +51,8 @@
       :ongadine => { :item  => :none, :amount => 3 }, #[Ongadine's Garb and Gear] -- ebony silk mantle (trivial 721)
       :bardic_leth => { :item  => "Golden-hued hat", :amount => 2 }, #[Sinjian's Bardic Requisites, Workshop]
       :origami => { :item  => "case", :amount => 2, :location => "on glass shelves", :desc => "fine china origami case" }, #[Origami Boutique]
-      :trueflight => { :item  => "heavy crossbow", :amount => 6, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
-      :shack => { :item  => "koummya", :amount => 1 } #[Leth Deriel, Wooden Shack]
+      :trueflight => { :item  => "heavy crossbow", :amount => 2, :bin => false }, #[Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
+      :shack => { :item  => "brass shield", :amount => 2 } #[Leth Deriel, Wooden Shack]
     }
 
 @ilaya_pier_items = [#{:name => "flask", :amount => 2}, # trivial 895
@@ -252,6 +254,7 @@ def stow_items
 end
 
 def do_hide
+  return if Status::invisible
   unless Status::hidden
     put "hide"
     match = { :wait => [/\.\.\.wait/],
@@ -272,6 +275,7 @@ def take item
             :fail => [/Guards!|begins to shout/],
             :alt => [/can't steal that|You haven't picked/],
             :stow => [/You need at least one/],
+            :leave => [/decide not to risk|watching you very closely/],
             :continue => [/Roundtime/] }
   result = match_wait match
 
@@ -285,6 +289,9 @@ def take item
       take item
     when :fail
       echo "Failed attempt recorded! - total fails: #{@fails += 1}"
+      raise result.to_s
+    when :leave
+      stow_items
       raise result.to_s
     when :alt
       raise result.to_s
@@ -316,7 +323,7 @@ end
 
 def mark item
   put "mark #{item}"
-  match_wait({ :wait => [/\.\.\.wait|Mark what|Roundtime/] })
+  match_wait({ :wait => [/\.\.\.wait|Mark what|can not make marks|Roundtime/] })
 end
 
 def register_exp
@@ -803,6 +810,10 @@ move "e"
 move "e"
 move "go path"
 move "go step"
+
+put "khri stop silence"
+wait
+
 move "go door"
 move "go arch"
 
@@ -827,403 +838,442 @@ move "s"
 move "go gate"
 move "s"
 move "e"
-move "e"
-move "e"
-move "n"
-move "n"
-move "e"
-move "e"
-move "go gate"
 
-#Arthe
-xing_to_arthe = ["n", "n", "n", "ne", "ne", "n", "nw", "nw", "n", "n", "ne",
-                 "nw", "n", "n", "e", "down", "down", "go gate", "n", "n", "n", "n", "e"]
+move "s"
+move "w"
+move "w"
 
-xing_to_arthe.each do |dir|
-  move dir
+move "s"
+move "s"
+move "s"
+move "s"
+move "s"
+move "s"
+move "se"
+
+if @go_arthe
+  move "e"
+  move "e"
+  move "e"
+  move "n"
+  move "n"
+  move "n"
+  move "ne"
+  move "n"
+  move "n"
+  move "n"
+  move "n"
+  move "e"
+  move "go gate"
+
+  #Arthe
+  xing_to_arthe = ["n", "n", "n", "ne", "ne", "n", "nw", "nw", "n", "n", "ne",
+                   "nw", "n", "n", "e", "down", "down", "go gate", "n", "n", "n", "n", "e"]
+
+  xing_to_arthe.each do |dir|
+    move dir
+  end
+
+  move "go door"
+
+  steal_shop @arthe_items[:thread]
+
+  move "out"
+  move "e"
+  move "go door"
+
+  steal_shop @arthe_items[:odds]
+
+  move "out"
+  move "e"
+  move "go shop"
+
+  steal_shop @arthe_items[:bardic]
+
+  move "out"
+  move "ne"
+  move "go entryway"
+
+  steal_shop @arthe_items[:bobba]
+
+  move "out"
+  move "ne"
+  move "e"
+  move "go door"
+
+  steal_shop @arthe_items[:lobby]
+
+  move "out"
+
+  arthe_to_xing = ["w", "sw", "sw", "w", "w", "w", "s", "s", "s", "s", "go gate", "up", "up", "w",
+                   "s", "s", "se", "sw", "s", "s", "se", "se", "s", "sw", "sw", "s", "s", "s", "go gate",
+                   "w", "w", "s", "s", "w", "w", "s", "w", "w", "s", "s", "s", "s", "s","s", "se"]
+
+  arthe_to_xing.each do |dir|
+    move dir
+  end
 end
 
-move "go door"
+if @go_ilaya or @go_leth
+  #Leth
+  path = ["sw", "go bridge", "n", "n", "go ware", "s"]
 
-steal_shop @arthe_items[:thread]
+  path.each { |dir|
+    move dir
+  }
 
-move "out"
-move "e"
-move "go door"
+  put "open trap"
 
-steal_shop @arthe_items[:odds]
+  path = ["go trap", "go river", "w", "n", "go panel", "climb step", "s", "s", "sw", "sw", "down", "s", "sw", "sw",
+          "s", "up", "sw", "w", "sw", "climb ladder", "go gap"]
 
-move "out"
-move "e"
-move "go shop"
+  path.each { |dir|
+    move dir
+  }
 
-steal_shop @arthe_items[:bardic]
+  path = ["s", "sw", "sw", "sw", "sw", "s", "se", "se", "s", "s", "sw", "sw",
+          "sw", "s", "se", "sw", "s", "sw", "s", "s", "se", "se", "sw"]
 
-move "out"
-move "ne"
-move "go entryway"
+  path.each { |dir|
+    move dir
+  }
 
-steal_shop @arthe_items[:bobba]
+  labels_start
 
-move "out"
-move "ne"
-move "e"
-move "go door"
+  label(:go) {
+    put "sw"
+    match = { :noweb => ["Thick trees line the route here"],
+              :web => ["Roundtime", "You can't do that while", /\.\.\.wait/] }
+    match_wait_goto match
+  }
 
-steal_shop @arthe_items[:lobby]
+  label(:web) {
+    match = { :go => ["Using your escape", "The webs break apart and fall away"] }
+    match_wait_goto match
+  }
 
-move "out"
+  label(:noweb) {
+  }
 
-arthe_to_xing = ["w", "sw", "sw", "w", "w", "w", "s", "s", "s", "s", "go gate", "up", "up", "w",
-                 "s", "s", "se", "sw", "s", "s", "se", "se", "s", "sw", "sw", "s", "s", "s", "go gate",
-                 "w", "w", "s", "s", "w", "w", "s", "w", "w", "s", "s", "s", "s", "s","s", "se"]
+  labels_end
 
-arthe_to_xing.each do |dir|
-  move dir
+  path = ["sw", "sw", "s", "sw", "se", "se", "s", "s", "se", "se", "s",
+          "s", "se", "go bower gate", "se", "se", "se", "se", "se", "se", "se"]
+
+  path.each { |dir|
+    move dir
+  }
+
 end
 
-#Leth
-
-path = ["sw", "go bridge", "n", "n", "go ware", "s"]
-
-path.each { |dir|
-  move dir
-}
-
-put "open trap"
-
-path = ["go trap", "go river", "w", "n", "go panel", "climb step", "s", "s", "sw", "sw", "down", "s", "sw", "sw",
-        "s", "up", "sw", "w", "sw", "climb ladder", "go gap"]
-
-path.each { |dir|
-  move dir
-}
-
-path = ["s", "sw", "sw", "sw", "sw", "s", "se", "se", "s", "s", "sw", "sw",
-        "sw", "s", "se", "sw", "s", "sw", "s", "s", "se", "se", "sw"]
-
-path.each { |dir|
-  move dir
-}
-
-labels_start
-
-label(:go) {
-  put "sw"
-  match = { :noweb => ["Thick trees line the route here"],
-            :web => ["Roundtime", "You can't do that while", /\.\.\.wait/] }
-  match_wait_goto match
-}
-
-label(:web) {
-  match = { :go => ["Using your escape", "The webs break apart and fall away"] }
-  match_wait_goto match
-}
-
-label(:noweb) {
-}
-
-labels_end
-
-path = ["sw", "sw", "s", "sw", "se", "se", "s", "s", "se", "se", "s",
-        "s", "se", "go bower gate", "se", "se", "se", "se", "se", "se", "se"]
-
-path.each { |dir|
-  move dir
-}
-
-move "e"
-move "e"
-move "e"
-move "e"
-move "go stump"
-
-steal_shop @leth_items[:alberdeen]
-
-move "out"
-move "w"
-move "sw"
-move "sw"
-move "sw"
-move "go door"
-
-steal_shop @leth_items[:yerui]
-
-move "go door"
-move "sw"
-move "n"
-move "go hole"
-
-steal_shop @leth_items[:ongadine]
-
-move "out"
-move "s"
-move "s"
-move "s"
-move "go knothole"
-move "up"
-move "go arch"
-
-steal_shop @leth_items[:bardic_leth]
-
-move "go arch"
-move "down"
-move "out"
-move "n"
-move "n"
-move "nw"
-move "nw"
-move "nw"
-move "go tent"
-
-steal_shop @leth_items[:origami]
-
-move "out"
-move "nw"
-move "w"
-move "w"
-move "go path"
-move "go door"
-
-steal_shop @leth_items[:trueflight]
-
-move "out"
-move "go path"
-move "w"
-move "s"
-move "se"
-move "se"
-move "se"
-move "ne"
-move "cli stair"
-move "go shack"
-
-steal_shop @leth_items[:shack]
-
-move "out"
-move "cli stair"
-
-# go to Ilaya Taipa
-
-move "sw"
-move "sw"
-move "go gate"
-move "sw"
-move "nw"
-move "nw"
-move "n"
-move "nw"
-move "n"
-move "sw"
-move "sw"
-move "sw"
-move "sw"
-move "s"
-move "s"
-move "s"
-move "s"
-move "se"
-move "sw"
-move "s"
-move "s"
-move "s"
-move "sw"
-move "w"
-move "w"
-move "s"
-move "sw"
-move "sw"
-move "w"
-move "w"
-move "nw"
-move "go break"
-move "go gate"
-
-move "nw"
-move "nw"
-move "n"
-move "n"
-move "ne"
-move "go tower"
-
-steal_shop @ilaya_items[:tower]
-
-move "out"
-move "sw"
-move "s"
-move "go pier"
-
-steal_pier
-
-move "w"
-move "s"
-move "se"
-move "se"
-move "e"
-move "go pier"
-
-steal_pier
-
-move "s"
-move "se"
-move "e"
-move "go pier"
-
-steal_pier
-
-move "s"
-move "e"
-move "e"
-move "ne"
-move "ne"
-move "ne"
-move "n"
-move "n"
-move "go cottage"
-
-steal_shop @ilaya_items[:fish]
-
-move "out"
-move "n"
-move "n"
-move "nw"
-move "nw"
-move "go stall"
-move "go door"
-
-steal_shop @ilaya_items[:fishmonger]
-
-move "out"
-move "out"
-move "se"
-move "se"
-move "sw"
-move "go shop"
-
-steal_shop @ilaya_items[:pearls]
-
-move "out"
-move "w"
-move "go shop"
-
-steal_shop @ilaya_items[:clothing]
-
-move "out"
-move "nw"
-move "go shack"
-
-steal_shop @ilaya_items[:stuff]
-
-move "out"
-move "se"
-move "e"
-move "ne"
-move "s"
-move "s"
-move "s"
-move "s"
-move "sw"
-move "sw"
-move "sw"
-move "w"
-move "w"
-move "w"
-move "nw"
-move "w"
-
-#returning to leth
-
-move "go gate"
-move "go break"
-move "se"
-move "e"
-move "e"
-move "ne"
-move "ne"
-move "n"
-move "e"
-move "e"
-move "ne"
-move "n"
-move "n"
-move "n"
-move "ne"
-move "nw"
-move "n"
-move "n"
-move "n"
-move "n"
-move "ne"
-move "ne"
-move "ne"
-move "ne"
-move "s"
-move "se"
-move "s"
-move "se"
-move "se"
-move "ne"
-
-check_for_mites
-
-move "go gate"
-move "ne"
-move "ne"
-
-move "ne"
-move "ne"
-move "ne"
-move "ne"
-move "ne"
-
-put "khri stop"
-
-path = ["nw", "nw", "nw", "nw",  "nw", "nw", "nw", "go bower gate", "nw", "n", "n",
-        "nw", "nw", "n", "n", "nw", "nw", "ne", "n", "ne", "ne", "ne"]
-
-path.each { |p|
-  move p
-}
-
-labels_start
-
-label(:go) {
-  put "ne"
-  match = { :noweb => ["Along the north, the trees and shrubs"],
-            :web => ["Roundtime", "You can't do that while", /\.\.\.wait/] }
-  match_wait_goto match
-}
-
-label(:web) {
-  match = { :go => ["Using your escape", "The webs break apart and fall away"] }
-  match_wait_goto match
-}
-
-label(:noweb) {
-}
-
-labels_end
-
-path = ["nw", "nw", "n", "n", "ne", "n", "ne", "nw", "n", "ne", "ne",
-        "ne", "n", "n", "nw", "nw", "n", "ne", "ne", "ne", "ne", "n",
-        "go boulder", "go root", "ne", "e", "ne", "down"]
-
-path.each { |p|
-  move p
-}
-
-path = ["n", "ne", "ne", "n", "up", "ne", "ne", "north", "north"]
-
-path.each { |p|
-  move p
-}
-
-path = ["climb step", "out", "s", "e", "go ware", "up", "n", "out", "s",
-        "s", "go bridge", "ne"]
-
-path.each { |p|
-  move p
-}
+if @go_leth
+  move "e"
+  move "e"
+  move "e"
+  move "e"
+  move "go stump"
+
+  steal_shop @leth_items[:alberdeen]
+
+  move "out"
+  move "w"
+  move "sw"
+  move "sw"
+  move "sw"
+  move "go door"
+
+  steal_shop @leth_items[:yerui]
+
+  move "go door"
+  move "sw"
+  move "n"
+  move "go hole"
+
+  steal_shop @leth_items[:ongadine]
+
+  move "out"
+  move "s"
+  move "s"
+  move "s"
+  move "go knothole"
+  move "up"
+  move "go arch"
+
+  steal_shop @leth_items[:bardic_leth]
+
+  move "go arch"
+  move "down"
+  move "out"
+  move "n"
+  move "n"
+  move "nw"
+  move "nw"
+  move "nw"
+  move "go tent"
+
+  steal_shop @leth_items[:origami]
+
+  move "out"
+  move "nw"
+  move "w"
+  move "w"
+  move "go path"
+  move "go door"
+
+  steal_shop @leth_items[:trueflight]
+
+  move "out"
+  move "go path"
+  move "w"
+  move "s"
+  move "se"
+  move "se"
+  move "se"
+  move "ne"
+  move "cli stair"
+  move "go shack"
+
+  steal_shop @leth_items[:shack]
+
+  move "out"
+  move "cli stair"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "ne"
+end
+
+if @go_ilaya
+  move "sw"
+  move "sw"
+
+  move "sw"
+  move "sw"
+  move "sw"
+  move "sw"
+  move "sw"
+
+  # go to Ilaya Taipa
+  move "go gate"
+  move "sw"
+  move "nw"
+  move "nw"
+  move "n"
+  move "nw"
+  move "n"
+  move "sw"
+  move "sw"
+  move "sw"
+  move "sw"
+  move "s"
+  move "s"
+  move "s"
+  move "s"
+  move "se"
+  move "sw"
+  move "s"
+  move "s"
+  move "s"
+  move "sw"
+  move "w"
+  move "w"
+  move "s"
+  move "sw"
+  move "sw"
+  move "w"
+  move "w"
+  move "nw"
+  move "go break"
+  move "go gate"
+
+  move "nw"
+  move "nw"
+  move "n"
+  move "n"
+  move "ne"
+  move "go tower"
+
+  steal_shop @ilaya_items[:tower]
+
+  move "out"
+  move "sw"
+  move "s"
+  move "go pier"
+
+  steal_pier
+
+  move "w"
+  move "s"
+  move "se"
+  move "se"
+  move "e"
+  move "go pier"
+
+  steal_pier
+
+  move "s"
+  move "se"
+  move "e"
+  move "go pier"
+
+  steal_pier
+
+  move "s"
+  move "e"
+  move "e"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "n"
+  move "n"
+  move "go cottage"
+
+  steal_shop @ilaya_items[:fish]
+
+  move "out"
+  move "n"
+  move "n"
+  move "nw"
+  move "nw"
+  move "go stall"
+  move "go door"
+
+  steal_shop @ilaya_items[:fishmonger]
+
+  move "out"
+  move "out"
+  move "se"
+  move "se"
+  move "sw"
+  move "go shop"
+
+  steal_shop @ilaya_items[:pearls]
+
+  move "out"
+  move "w"
+  move "go shop"
+
+  steal_shop @ilaya_items[:clothing]
+
+  move "out"
+  move "nw"
+  move "go shack"
+
+  steal_shop @ilaya_items[:stuff]
+
+  move "out"
+  move "se"
+  move "e"
+  move "ne"
+  move "s"
+  move "s"
+  move "s"
+  move "s"
+  move "sw"
+  move "sw"
+  move "sw"
+  move "w"
+  move "w"
+  move "w"
+  move "nw"
+  move "w"
+
+  #returning to leth
+
+  move "go gate"
+  move "go break"
+  move "se"
+  move "e"
+  move "e"
+  move "ne"
+  move "ne"
+  move "n"
+  move "e"
+  move "e"
+  move "ne"
+  move "n"
+  move "n"
+  move "n"
+  move "ne"
+  move "nw"
+  move "n"
+  move "n"
+  move "n"
+  move "n"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "s"
+  move "se"
+  move "s"
+  move "se"
+  move "se"
+  move "ne"
+
+  check_for_mites
+
+  move "go gate"
+
+  move "ne"
+  move "ne"
+
+  move "ne"
+  move "ne"
+  move "ne"
+  move "ne"
+  move "ne"
+end
+
+if @go_leth or @go_ilaya
+  path = ["nw", "nw", "nw", "nw",  "nw", "nw", "nw", "go bower gate", "nw", "n", "n",
+          "nw", "nw", "n", "n", "nw", "nw", "ne", "n", "ne", "ne", "ne"]
+
+  path.each { |p|
+    move p
+  }
+
+  labels_start
+
+  label(:go) {
+    put "ne"
+    match = { :noweb => ["Along the north, the trees and shrubs"],
+              :web => ["Roundtime", "You can't do that while", /\.\.\.wait/] }
+    match_wait_goto match
+  }
+
+  label(:web) {
+    match = { :go => ["Using your escape", "The webs break apart and fall away"] }
+    match_wait_goto match
+  }
+
+  label(:noweb) {
+  }
+
+  labels_end
+
+  path = ["nw", "nw", "n", "n", "ne", "n", "ne", "nw", "n", "ne", "ne",
+          "ne", "n", "n", "nw", "nw", "n", "ne", "ne", "ne", "ne", "n",
+          "go boulder", "go root", "ne", "e", "ne", "down"]
+
+  path.each { |p|
+    move p
+  }
+
+  path = ["n", "ne", "ne", "n", "up", "ne", "ne", "north", "north"]
+
+  path.each { |p|
+    move p
+  }
+
+  path = ["climb step", "out", "s", "e", "go ware", "up", "n", "out", "s",
+          "s", "go bridge", "ne"]
+
+  path.each { |p|
+    move p
+  }
+end
 
 #pawn if not caught stealing
 to_pawn = ["nw", "n", "n", "n", "n", "n", "n", "w", "w", "w", "w", "go brid", "s"]
@@ -1240,6 +1290,10 @@ to_guild.each { |dir|
 }
 
 bin_items
+
+pause 1
+
+put "khri stop"
 
 pause 1
 
