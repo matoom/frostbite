@@ -29,7 +29,6 @@ private:
     Highlighter* highlighter;
     MainWindow* mainWindow;
     QMutex mMutex;
-    bool append;
     QList<QString> logWindows;
     QRegExp rxRemoveTags;
     QString localData;

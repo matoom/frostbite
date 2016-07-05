@@ -48,7 +48,7 @@ public:
 
     void init();
 
-    boolean isInitialized();
+    bool isInitialized();
 
 private:
     MapZone* readZone(QString path, QString file);
@@ -58,12 +58,12 @@ private:
     void paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes);
     void paintEndNode(MapZone* zone, MapNode* node, QGraphicsScene* scene);
 
-    boolean isInRange(int n);
+    bool isInRange(int n);
     void roomToHash();
 
     void setInitialized();
 
-    boolean initialized;
+    bool initialized;
 
     MapFacade* mapFacade;
     MapData* mapData;

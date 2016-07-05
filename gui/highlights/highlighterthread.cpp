@@ -4,7 +4,6 @@ HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
     mainWindow = (MainWindow*)parent;
     this->textEdit = dynamic_cast<QPlainTextEdit*>(window);
     this->window = window;
-    this->append = append;
 
     highlighter = new Highlighter(parent);
 

@@ -16,10 +16,7 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = (QKeyEvent*)event;
 
-        if (keyEvent->matches(QKeySequence::Copy)) {
-            commandLine->doCopy();
-            return true;
-        } else if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
+        if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
             #ifdef Q_OS_MAC
             switch(keyEvent->key()) {
                 case Qt::Key_Up:
@@ -64,8 +61,13 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
             } else {
                 if(keyEvent->modifiers() == Qt::ControlModifier) {
                     QString cmd = macroSettings->getParameter("ctrl/" +
-                        QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();
-                    return commandLine->runMacro(cmd);
+                        QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();                    
+                    if(cmd.isEmpty() && keyEvent->matches(QKeySequence::Copy)) {
+                        commandLine->doCopy();
+                        return true;
+                    } else {
+                        return commandLine->runMacro(cmd);
+                    }
                 } else if (keyEvent->modifiers() == Qt::AltModifier) {
                     QString cmd = macroSettings->getParameter("alt/" +
                         QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();

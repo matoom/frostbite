@@ -318,10 +318,10 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 if(id != "tdp") {
                     if(!text.isEmpty()) {
                         if(e.firstChildElement("d").isNull()) {
-                            gameDataContainer->setExpField(id, text);                            
+                            gameDataContainer->setExpField(false, id, text);
                             emit updateExpWindow(id, TextUtils::Instance()->addNumericStateToExp(text));
                         } else {
-                            gameDataContainer->setExpFieldBrief(id, text);
+                            gameDataContainer->setExpField(true, id, text);
                             emit updateExpWindow(id, text);
                         }
                     } else {

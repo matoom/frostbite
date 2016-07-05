@@ -31,7 +31,7 @@ void MapReader::setInitialized() {
     this->initialized = true;
 }
 
-boolean MapReader::isInitialized() {
+bool MapReader::isInitialized() {
     QReadLocker locker(&lock);
     return this->initialized;
 }
@@ -295,7 +295,7 @@ void MapReader::roomToHash() {
     }
 }
 
-boolean MapReader::isInRange(int n) {
+bool MapReader::isInRange(int n) {
     return n < 4000 && n > -4000;
 }
 

@@ -18,8 +18,7 @@ STDOUT.sync = true
 @_file = $args.shift
 
 # globals
-$_api_queue = []
-$_api_observer_queue = []
+$_api_queue = $_api_observer_queue = []
 
 $_api_gets_mutex = Mutex.new
 

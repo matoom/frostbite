@@ -74,10 +74,11 @@ QString TextUtils::findLowestActiveValue(QStringList list) {
     return QString::number(minVal);
 }
 
-void TextUtils::htmlToPlain(QString& data) {
+QString TextUtils::htmlToPlain(QString& data) {
     data.remove(rxRemoveTags);
     data.replace("&amp;", "&").replace("&quot;", "\"")
             .replace("&apos;", "\'").replace("&lt;", "<").replace("&gt;", ">");
+    return data;
 }
 
 void TextUtils::plainToHtml(QString& data) {

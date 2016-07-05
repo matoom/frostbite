@@ -22,15 +22,15 @@ void MainLogger::run() {
     }
 }
 
-void MainLogger::log(LogEntry logEntry) {
+void MainLogger::log(LogEntry logEntry) {    
     if(logEntry.type == COMMAND && prevType == PROMPT) {
-        logger()->info(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&").prepend(">"));
+        logger()->info(TextUtils::Instance()->htmlToPlain(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags)).prepend(">"));
     } else {
         if (logEntry.type != PROMPT) {
             if(prevType == PROMPT) {
                 logger()->info(">");
             }
-            logger()->info(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags).replace("&lt;", "<").replace("&amp;", "&"));
+            logger()->info(TextUtils::Instance()->htmlToPlain(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags)));
         }
     }
     prevType = logEntry.type;

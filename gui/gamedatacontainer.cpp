@@ -49,6 +49,29 @@ QStringList GameDataContainer::extractExp(QString exp, bool brief) {
     return result;
 }
 
+bool GameDataContainer::isExpGained(QString name) {
+    QReadLocker locker(&lock);
+    qint64 gain = this->expGain.value(name);
+    int state = this->expMap.value(name.toLower()).value("state");
+    return (gain != 0 && (QDateTime::currentMSecsSinceEpoch() - gain) < 120000) || state == 34;
+}
+
+void GameDataContainer::setExpField(bool brief, QString name, QString exp) {
+    int state = this->expMap.value(name.toLower()).value("state");
+
+    if(brief) {
+        this->setExpFieldBrief(name, exp);
+    } else {
+        this->setExpField(name, exp);
+    }
+    int stateNew = this->expMap.value(name.toLower()).value("state");
+
+    if(stateNew > state) {
+        QWriteLocker locker(&lock);
+        expGain.insert(name, QDateTime::currentMSecsSinceEpoch());
+    }
+}
+
 void GameDataContainer::setExpField(QString name, QString exp) {
     QStringList expList = this->extractExp(exp, false);
 

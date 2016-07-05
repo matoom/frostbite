@@ -41,14 +41,18 @@ QPlainTextEdit* WindowFacade::getGameWindow() {
 }
 
 void WindowFacade::updateWindowColors() {
+    // game window
     this->setGameWindowFontColor(generalSettings->gameWindowFontColor());
     this->setGameWindowFont(generalSettings->gameWindowFont());
     mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
 
+    // text window
     this->setTextDockBackground(generalSettings->dockWindowBackground());
     this->setTextDockFont(generalSettings->dockWindowFont());
     this->setTextDockFontColor(generalSettings->dockWindowFontColor());
 
+    // grid window
+    ((GridWindow*)expWindow->widget())->clearTracked();
     this->setGridDockBackground(generalSettings->dockWindowBackground());
     this->setGridDockFont(generalSettings->dockWindowFont());
     this->setGridDockFontColor(generalSettings->dockWindowFontColor());
@@ -100,9 +104,9 @@ void WindowFacade::setGridDockFontColor(QColor fontColor) {
         QPalette p;
         for(int i = 0; i < tableWidget->rowCount(); i++) {
             QWidget* widget = tableWidget->cellWidget(i, 0);
-            p = ((QLabel*)widget)->palette();
+            p = widget->palette();
             p.setColor(QPalette::Text, fontColor);
-            ((QLabel*)widget)->setPalette(p);
+            widget->setPalette(p);
         }
     }
 }
@@ -129,7 +133,7 @@ void WindowFacade::setGridDockBackground(QColor backgroundColor) {
 
 void WindowFacade::setGridDockFont(QFont font) {
     foreach(QDockWidget* gridWindow, gridWindows) {
-        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
+        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();        
         for(int i = 0; i < tableWidget->rowCount(); i++) {
             QWidget* widget = tableWidget->cellWidget(i, 0);
             if(widget != NULL) {
@@ -375,32 +379,34 @@ void WindowFacade::paintNavigationDisplay() {
 
 void WindowFacade::writeExpWindow(GridItems items) {
     QTableWidget* table = ((QTableWidget*)expWindow->widget());
+    GridWindow* window = ((GridWindow*)expWindow->widget());
 
     table->setRowCount(items.size());
 
     int i = 0;
-    foreach (QString value, items) {
+    foreach(QString key, items.keys()) {
         QWidget* item = table->cellWidget(i, 0);
-        QString text = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body><span>" +
-                value +
-                "</span></body></html>";
+
+        QString text = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body><span>";
+        text += "<span>";
+        if(gameDataContainer->isExpGained(key)) {
+            text += "(+)";
+        } else {
+            text += "&nbsp;&nbsp;&nbsp;";
+        }
+        text += "</span>";
+        text += items.value(key) + "</span></body></html>";
 
         if(item != NULL) {
             ((QLabel*)item)->setText(text);
+            item->setObjectName(key);
+            window->track(key, item);
         } else {
-            QLabel* label = new QLabel(text);
-            label->setStyleSheet(style);
-            label->setFont(generalSettings->dockWindowFont());
-
-            QPalette p = label->palette();
-            p.setColor(QPalette::Text, generalSettings->dockWindowFontColor());
-            p.setColor(QPalette::Base, generalSettings->dockWindowBackground());
-            label->setPalette(p);
-
-            label->setTextFormat(Qt::RichText);
-
-            table->setCellWidget(i++, 0, label);
-        }
+            QLabel* label = window->ceateGridItem(table, key, style);
+            label->setText(text);
+            table->setCellWidget(i++, 0, label);            
+            window->track(key, label);
+        }        
         i = i + 1;
     }
 }
@@ -589,8 +595,7 @@ WindowFacade::~WindowFacade() {
     }
 
     foreach(HighlighterThread* highlighter, highlighters) {
-        // terminate threads
-        // at application exit.
+        // terminate threads at application exit.
         highlighter->terminate();
         delete highlighter;
     }

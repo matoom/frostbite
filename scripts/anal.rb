@@ -65,7 +65,7 @@ def do_maneuver maneuver
   match = { :wait => [/\.\.\.wait/],
             :dead => COMBAT::MATCH_DEAD,
             :adv => [/aren't close enough/],
-            :redo => [/evades,|dodges,|A (\w|\s|'|-)+ of the (\w|\s|'|-)+ with/],
+            :redo => [/evades,|dodges,|blocks|A (\w|\s|'|-)+ of the (\w|\s|'|-)+ with/],
             :pause => [/still stunned|entangled in a web/],
             :continue => [/Roundtime/] }
   result = match_wait match

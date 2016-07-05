@@ -21,7 +21,7 @@ public:
     QString msToMMSS(int);
     QString addNumericStateToExp(QString exp);
     QString findLowestActiveValue(QStringList list);
-    void htmlToPlain(QString& data);
+    QString htmlToPlain(QString& data);
     void plainToHtml(QString& data);
 
     QString toHash(QString text);

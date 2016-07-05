@@ -82,11 +82,10 @@ end
 def pick method
   put "pick #{method}"
   match = { :wait => [/\.\.wait/],
-            :end => ["It's not even locked, why bother?"],
+            :end => ["It's not even locked, why bother?", "Roundtime"],
             :retry => ["unable to make any progress"],
             :ident => ["You discover another lock protecting"],
-            :get_pick => ["Find a more appropriate tool and try again!"],
-            :end => ["Roundtime"] }
+            :get_pick => ["Find a more appropriate tool and try again!"] }
   result = match_wait match
 
   case result

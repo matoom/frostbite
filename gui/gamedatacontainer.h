@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QHash>
 #include <QReadLocker>
+#include <QTime>
 
 #include <textutils.h>
 //#include <shareddataservice.h>
@@ -17,6 +18,9 @@ class GameDataContainer : public QObject {
 public:
     static GameDataContainer* Instance();
 
+    bool isExpGained(QString name);
+
+    void setExpField(bool brief, QString name, QString exp);
     void setExpField(QString, QString);
     void setExpFieldBrief(QString, QString);
 
@@ -121,6 +125,7 @@ private:
     //SharedDataService* sharedDataService;
     QHash<QString, QString> exp;
     QMap<QString, QMap<QString, int> > expMap;
+    QMap<QString, qint64> expGain;
     QStringList container;
     QStringList inventory;
 

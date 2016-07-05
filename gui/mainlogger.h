@@ -10,6 +10,8 @@
 
 #include <log4qt/logger.h>
 
+#include <textutils.h>
+
 class MainLogger : public QThread {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER

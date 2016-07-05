@@ -27,7 +27,7 @@
       :jewelry => { :item => "platinum engagement ring", :amount => 1, :bin => true }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
       :macipur => { :item => :none, :amount => 2 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)
       :brisson => { :item => :none, :amount => 2 }, #[Brisson's Haberdashery, Sales Salon] -- gold brocade tail coat (trivial 670)
-      :artificer => { :item => "parchment scroll", :amount => 4, :bin => true }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
+      :artificer => { :item => "parchment scroll", :amount => 3, :bin => true }, #[Herilo's Artifacts, Showroom] -- reticule (trivial 826)
       :tannery => { :item => :none, :amount => 2 }, #[Falken's Tannery, Supply Room]
       :alchemy => { :item => "toolbox", :amount => 1, :bin => true}, #[Chizili's Alchemical Goods, Salesroom]
       :emmiline_pantry => { :item => "band", :location => "on case", :desc => "etched gold eternity", :amount => 3 }, #[Emmiline's Cottage, Pantry]
