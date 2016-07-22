@@ -81,10 +81,8 @@ void MapFacade::populateLevels(QString zoneId, int level) {
         foreach(int level, levels) {
             levelSelect->addItem(QString::number(level), level);
         }
-        if(level != 0){
-            int index = levelSelect->findData(level);
-            if (index != -1) levelSelect->setCurrentIndex(index);
-        }
+        int index = levelSelect->findData(level);
+        if (index != -1) levelSelect->setCurrentIndex(index);
     }
 }
 

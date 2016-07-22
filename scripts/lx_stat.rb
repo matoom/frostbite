@@ -1,7 +1,7 @@
 class Stats
   @start_time = Time.now
-  @shot_count = @total_miss_count = @total_shot_count = 0.0
-  @kill_count = @miss_count = @current_time = @total_time = 0
+  @total_damage = @shot_count = @total_miss_count = @total_shot_count = 0.0
+  @damage = @kill_count = @miss_count = @current_time = @total_time = 0
 
   def self.register_shot
     @shot_count += 1
@@ -11,12 +11,17 @@ class Stats
     @miss_count += 1
   end
 
+  def self.register_damage dmg
+    @damage += dmg
+  end
+
   def self.register_kill
     self.count_totals
     self.report_stats
     @shot_count = 0
     @miss_count = 0
     @current_time = 0
+    @damage = 0
   end
 
   def self.reset_timer
@@ -32,6 +37,7 @@ class Stats
       echo "Avg time to kill: #{@total_time / @kill_count}"
       echo "Avg shots to kill: #{@total_shot_count / @kill_count}"
       echo "Avg missed shots: #{@total_miss_count / @kill_count}"
+      echo "Avg damage: #{@total_damage / @kill_count}"
       if @total_miss_count > 0
         echo "Miss rate: #{((@total_miss_count * 100) / @total_shot_count).round(2)}%"
       else
@@ -44,6 +50,7 @@ class Stats
     echo "Time to kill: #{@current_time}"
     echo "Shots to kill: #{@shot_count}"
     echo "Missed shots: #{@miss_count}"
+    echo "Damage: #{@damage}"
   end
 
   private
@@ -52,6 +59,7 @@ class Stats
     @total_shot_count += @shot_count
     @total_miss_count += @miss_count
     @total_time += @current_time
+    @total_damage += @damage
     @kill_count += 1
   end
 end

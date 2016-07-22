@@ -15,7 +15,6 @@ public:
     ~RoundTimeDisplay();
 
     void repaint();
-
     QTimer *timer;
 
 private:
@@ -26,14 +25,18 @@ private:
     void paint(int);
     QPixmap segmentDisplay(int seconds);
     QPixmap numericDisplay(int seconds);
-    QColor getColorRange(int seconds);
+
+    QColor getColor();
+
+    GeneralSettings* settings;
+    QColor color;
 
 public slots:
     void setTimer(int seconds);
 
 private slots:
     void intervalEvent();
-
+    void reloadSettings();
 };
 
 #endif // ROUNDTIMEDISPLAY_H

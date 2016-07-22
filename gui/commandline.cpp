@@ -7,10 +7,9 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     windowFacade = mainWindow->getWindowFacade();
     wordCompleter = new WordCompleter(this);
     keyboardFilter = new KeyboardFilter(this);
+    settings = new GeneralSettings();
 
     historyCounter = -1;
-
-    this->setFont(QFont(DEFAULT_FONT, 12));
 
     this->setStyleSheet("QLineEdit { min-width: 50em;"
                         "padding: 2px;"
@@ -19,8 +18,33 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
 
     connect(this, SIGNAL(returnPressed()), this, SLOT(sendCommand()));
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(resetCompleter(const QString&)));
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+
+    this->setAutoFillBackground(true);
+    this->loadSettings();
 
     this->installEventFilter(keyboardFilter);
+}
+
+void CommandLine::reloadSettings() {
+    settings->init();
+    this->loadSettings();
+}
+
+void CommandLine::loadSettings() {
+    QFont font = settings->gameWindowFont();
+    font.setStyleStrategy(QFont::PreferAntialias);
+    this->setFont(font);
+
+    QPalette p = this->palette();
+
+    QColor fontColor = settings->gameWindowFontColor();
+    p.setColor(QPalette::Text, fontColor);
+
+    QColor textBackground = settings->gameWindowBackground();
+    p.setColor(QPalette::Base, textBackground);
+
+    this->setPalette(p);
 }
 
 void CommandLine::updateMacroSettings() {
@@ -62,11 +86,17 @@ void CommandLine::focus() {
     this->setFocus();
 }
 
+void CommandLine::clearRt() {
+    QPalette pal = mainWindow->getCommandLine()->palette();
+    pal.setBrush(QPalette::Base, settings->gameWindowBackground());
+    this->setPalette(pal);
+}
+
 void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay) {
     QPalette pal = this->palette();
 
     QPixmap collage(this->width(), this->height());
-    collage.fill(Qt::white);
+    collage.fill(Qt::transparent);
 
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);

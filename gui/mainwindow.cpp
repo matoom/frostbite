@@ -49,17 +49,19 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
-void MainWindow::updateProfileSettings() {
+void MainWindow::updateProfileSettings() {       
     // highlights
     tcpClient->updateSettings();
     // general highlights/window coloring
     windowFacade->reloadSettings();
     // macros
-    cmdLine->updateMacroSettings();
+    cmdLine->updateMacroSettings();    
     // quick buttons
     toolBar->updateQuickButtonSettings();
     // dialogs
     menuHandler->updateDialogSettings();
+    // profile change event
+    emit profileChanged();
 }
 
 void MainWindow::openConnection(QString host, QString port, QString key) {

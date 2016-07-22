@@ -59,14 +59,13 @@ bool GameDataContainer::isExpGained(QString name) {
 void GameDataContainer::setExpField(bool brief, QString name, QString exp) {
     int state = this->expMap.value(name.toLower()).value("state");
 
-    if(brief) {
+    if(brief) {        
         this->setExpFieldBrief(name, exp);
     } else {
         this->setExpField(name, exp);
     }
-    int stateNew = this->expMap.value(name.toLower()).value("state");
 
-    if(stateNew > state) {
+    if(this->expMap.value(name.toLower()).value("state") > state) {
         QWriteLocker locker(&lock);
         expGain.insert(name, QDateTime::currentMSecsSinceEpoch());
     }

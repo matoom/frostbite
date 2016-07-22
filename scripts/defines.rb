@@ -17,8 +17,13 @@ module COMBAT
                 "collapses over", "and lies still", "falling silent with", "before expiring with",
                 "before falling still", "reducing its corpse to nothing", "before growing still", 
 		            "and collapses to its knees", " leaving behind a bloody mass of scorched robes",
-		            "falls limp with a final sputtering sigh", "life within him having been extinguished"]
+		            "falls limp with a final sputtering sigh", "life within him having been extinguished",
+                "then grows still, its body rapidly cooling"]
   CRITTERS = ["wyvern", "assassin", "magus", "thrall", "archimage", "vindicator", "slayer", "intercessor"]
+  DAMAGE = ["light hit", "good hit", "good strike", "solid hit", "hard hit", "strong hit", "heavy strike", "very heavy hit",
+            "extremely heavy hit", "powerful strike", "massive strike", "awesome strike", "vicious strike", "earth-shaking strike",
+            "demolishing hit", "spine-rattling strike", "devastating hit", "devastating hit (That'll leave a mark!)",
+            "overwhelming strike", "obliterating hit", "annihilating strike", "cataclysmic strike", "apocalyptic strike"]
 end
 
 module ITEMS

@@ -317,7 +317,7 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
 
                 if(id != "tdp") {
                     if(!text.isEmpty()) {
-                        if(e.firstChildElement("d").isNull()) {
+                        if(e.elementsByTagName("d").count() == 0) {
                             gameDataContainer->setExpField(false, id, text);
                             emit updateExpWindow(id, TextUtils::Instance()->addNumericStateToExp(text));
                         } else {

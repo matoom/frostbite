@@ -1,38 +1,5 @@
 require 'socket'
 
-# @private
-module ApiSettings
-  #constants
-  AUTH_HOST = "eaccess.play.net"
-  AUTH_PORT = "7900"
-  AUTH_GAMES = {:prime => 'DR', :test => 'DRT', :plat => 'DRX', :fallen => 'DRF'}
-
-  API_PUT_PREFIX = "put#"
-  API_ECHO_PREFIX = "echo#"
-  API_CMD_SUFFIX = "\n"
-
-  MATCH_START_KEY = :match_start
-  MATCH_END_KEY = :match_end
-
-  API_ADR = '127.0.0.1'
-
-  def self.api_port
-    File.open("#{File.dirname(__FILE__)}/../../api.ini", 'r') do |inFile|
-      inFile.each_line do |line|
-        return line.partition('=').last.to_i if line.start_with? "port"
-      end
-    end
-  end
-end
-
-# @private
-module ApiSocket
-  def self.init
-    $_api_socket = TCPSocket.open(ApiSettings::API_ADR, ApiSettings::api_port)
-    $_api_socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
-  end
-end
-
 class Rt
   # Roundtime
   #
@@ -453,60 +420,62 @@ class Map
 end
 
 class Client
+  # Connect prime
+  #
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect_prime(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:prime], name, user, pass)
   end
 
+  # Connect test
+  #
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect_test(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:test], name, user, pass)
   end
 
+  # Connect fallen
+  #
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect_fallen(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:fallen], name, user, pass)
   end
 
+  # Connect plat
+  #
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect_plat(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:plat], name, user, pass)
   end
 
+  # Connect game
+  #
+  # @param [String] game game instance code (DR, DRT, DRX, DRF)
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect(game, name, user, pass)
     Client.connect_host(ApiSettings::AUTH_HOST, ApiSettings::AUTH_PORT, game, name, user, pass)
   end
 
+  # Connect host
+  #
+  # @param [String] host game host
+  # @param [String] port game port
+  # @param [String] game game instance code (DR, DRT, DRX, DRF)
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] user account password
   def self.connect_host(host, port, game, name, user, pass)
     $_api_socket.puts "CLIENT CONNECT?#{host}&#{port}&#{user}&#{pass}&#{game}&#{name}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
-  end
-end
-
-# @private
-class CommandThread
-  TEXT_PREFIX = "game_text#"
-  EXIT_PREFIX = "exit#"
-
-  def run
-    while line = gets
-      if line.start_with? TEXT_PREFIX
-        sync_write line[TEXT_PREFIX.size, line.size]
-        sync_write_observer line[TEXT_PREFIX.size, line.size]
-      elsif line.start_with? EXIT_PREFIX
-        Kernel::abort
-      end
-      sleep 0.01
-    end
-  end
-
-  def sync_write line
-    $_api_gets_mutex.synchronize do
-      $_api_queue << line
-    end
-  end
-
-  def sync_write_observer line
-    if $_api_observer_started
-      $_api_gets_mutex.synchronize do
-        $_api_observer_queue << line
-      end
-    end
   end
 end

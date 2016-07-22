@@ -113,6 +113,9 @@ private:
 protected:
     void closeEvent(QCloseEvent*);
 
+signals:
+    void profileChanged();
+
 public slots:
     void setMainTitle(QString);
 

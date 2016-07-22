@@ -94,7 +94,12 @@ QStringList MapData::getMoves(QList<MapNode*> path) {
     MapNode* prev = path.first();
     for(int i = 1; i < path.size(); ++i) {
         MapNode* current = path.value(i);
-        moves << prev->getDestinations().value(current->getId())->getMove();
+        QString move = prev->getDestinations().value(current->getId())->getMove();
+        if(move.isEmpty()) {
+            moves << prev->getDestinations().value(current->getId())->getExit();
+        } else {
+            moves << move;
+        }
         prev = current;
     }
     return moves;

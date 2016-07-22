@@ -62,11 +62,9 @@ void MapDialog::populateLevels(QString zoneId, int level) {
         ui->levelSelect->clear();
         foreach(int level, levels) {
             ui->levelSelect->addItem(QString::number(level), level);
-        }
-        if(level != 0){
-            int index = ui->levelSelect->findData(level);
-            if (index != -1) ui->levelSelect->setCurrentIndex(index);
-        }
+        }        
+        int index = ui->levelSelect->findData(level);
+        if (index != -1) ui->levelSelect->setCurrentIndex(index);
     }
 }
 

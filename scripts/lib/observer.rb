@@ -9,6 +9,8 @@ class Observer
   @@events = []
   # @private
   @@terminated = false
+  # @private
+  @@interrupted = false
 
   # @private
   def initialize
@@ -28,6 +30,7 @@ class Observer
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
+                  pause 0.1 while @@interrupted
                   observer_event k, text
                 end
               end
@@ -79,17 +82,16 @@ class Observer
 
   # @private
   def observer_event(method_name, text)
+    @@interrupted = true
     Signal.trap("INT") do
       start_time = Time.now
       call_method method_name, text
       $_api_interrupt_time = (Time.now - start_time).floor
+      @@interrupted = false
     end
 
     pid = Process.pid
-
-    while $_api_exec_state != :idle
-      sleep 0.1
-    end
+    sleep 0.1 while $_api_exec_state != :idle
 
     Process.detach(pid)
     Process.kill("INT", pid)

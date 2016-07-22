@@ -63,11 +63,11 @@ end
 def do_maneuver maneuver
   put maneuver
   match = { :wait => [/\.\.\.wait/],
-            :dead => COMBAT::MATCH_DEAD,
-            :adv => [/aren't close enough/],
-            :redo => [/evades,|dodges,|blocks|A (\w|\s|'|-)+ of the (\w|\s|'|-)+ with/],
-            :pause => [/still stunned|entangled in a web/],
-            :continue => [/Roundtime/] }
+                                       :dead => COMBAT::MATCH_DEAD,
+                                       :adv => [/aren't close enough/],
+                                       :redo => [/evades,|dodges,|barely blocks with|A (\w|\s|'|-)+ of the (\w|\s|'|-)+ with/],
+                                       :pause => [/still stunned|entangled in a web/],
+                                       :continue => [/Roundtime/] }
   result = match_wait match
 
   case result

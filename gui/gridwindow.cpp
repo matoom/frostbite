@@ -7,7 +7,13 @@ GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
 
     this->loadSettings();
 
-    connect(this, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(addTrackedItem(int, int)));
+    connect(this, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(addRemoveTracked(int, int)));
+
+    this->setFocusPolicy(Qt::NoFocus);
+}
+
+void GridWindow::updateSettings() {
+    settings->init();
 }
 
 void GridWindow::loadSettings() {
@@ -24,10 +30,9 @@ QColor GridWindow::getTextColor() {
     return viewport()->palette().color(QPalette::Text);
 }
 
-QLabel* GridWindow::ceateGridItem(QWidget* parent, QString key, QString style) {
+QLabel* GridWindow::gridValueLabel(QWidget* parent, GeneralSettings* settings, QString key) {
     QLabel* label = new QLabel(parent);
     label->setObjectName(key);
-    label->setStyleSheet(style);
     label->setFont(settings->dockWindowFont());
 
     QPalette p = label->palette();
@@ -36,28 +41,38 @@ QLabel* GridWindow::ceateGridItem(QWidget* parent, QString key, QString style) {
     label->setPalette(p);
 
     label->setTextFormat(Qt::RichText);
-
-    this->setFocusPolicy(Qt::NoFocus);
-
+    label->setAutoFillBackground(true);
+    label->setProperty("tracked", 0);
     return label;
+}
+
+void GridWindow::invertColors(QWidget* widget) {
+    QPalette p = widget->palette();
+    QRgb rgbText = p.color(QPalette::Text).rgba()^0xffffff;
+    QRgb rgbBase = p.color(QPalette::Base).rgba()^0xffffff;
+
+    p.setColor(QPalette::Text, QColor(rgbText));
+    p.setColor(QPalette::Base, QColor(rgbBase));
+
+    widget->setPalette(p);
 }
 
 void GridWindow::track(QString skillName, QWidget* widget) {
     if(tracked.contains(skillName)) {
-        if(widget->styleSheet().isEmpty()) {
-            QPalette p = widget->palette();
-            QRgb rgbText = p.color(QPalette::Text).rgba()^0xffffff;
-            QRgb rgbBase = p.color(QPalette::Base).rgba()^0xffffff;
-
-            widget->setStyleSheet(QString("QLabel {background-color: %1; color: %2;}")
-                             .arg(QColor(rgbBase).name(), QColor(rgbText).name()));
+        if(widget->property("tracked") == QVariant::Invalid ||
+                widget->property("tracked") == 0) {
+            this->invertColors(widget);
+            widget->setProperty("tracked", 1);
         }
     } else {
-        widget->setStyleSheet("");
+        if(widget->property("tracked") == 1) {
+            this->invertColors(widget);
+            widget->setProperty("tracked", 0);
+        }
     }
 }
 
-void GridWindow::addTrackedItem(int row, int col) {
+void GridWindow::addRemoveTracked(int row, int col) {
     QWidget* w = this->cellWidget(row, col);
     if(!tracked.contains(w->objectName())) {
         tracked << w->objectName();
@@ -71,6 +86,6 @@ void GridWindow::clearTracked() {
     tracked.clear();
     for (int i = 0; i < this->rowCount(); ++i) {
         QWidget* w = this->cellWidget(i, 0);
-        w->setStyleSheet("");
+        track(w->objectName(), w);
     }
 }

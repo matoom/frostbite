@@ -28,6 +28,8 @@ public:
     void insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay);
     RoundTimeDisplay* getRoundtimeDisplay();
 
+    void clearRt();
+
     void abortScript();
     void abortSequence();
 
@@ -41,6 +43,8 @@ public:
     void doCopy();
     void updateMacroSettings();
 
+    void loadSettings();
+
     int historyCounter;
 
 private:
@@ -49,7 +53,8 @@ private:
     WindowFacade* windowFacade;
     MacroService* macroService;
     WordCompleter* wordCompleter;
-    KeyboardFilter* keyboardFilter;
+    KeyboardFilter* keyboardFilter;    
+    GeneralSettings* settings;
 
     void resizeEvent(QResizeEvent  *event);
     //void keyPressEvent(QKeyEvent *event);
@@ -65,7 +70,7 @@ public slots:
 
 private slots:
     void resetCompleter(const QString&);
-
+    void reloadSettings();
 };
 
 #endif // COMMANDLINE_H

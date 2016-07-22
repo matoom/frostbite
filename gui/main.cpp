@@ -14,8 +14,7 @@ int main(int argc, char *argv[]) {
 
     GuiApplication a(argc, argv);
 
-    /* Prohibit running more than one copy of appliction to
-       prevent any conflicts with shared library shared memory. */
+    /* Prohibit running more than one copy of appliction. */
     if(a.isRunning()) {
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("Application already running.");
         exit(0);
@@ -36,7 +35,6 @@ int main(int argc, char *argv[]) {
               w.openConnection(settings.value("GAMEHOST").toString(),
                                settings.value("GAMEPORT").toString(),
                                settings.value("KEY").toString());
-
             }
             return a.exec();
         }

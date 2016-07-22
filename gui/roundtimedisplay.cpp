@@ -9,7 +9,16 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
 
     time = 0;
 
+    settings = new GeneralSettings();
+    color = this->getColor();
+
     connect(timer, SIGNAL(timeout()), this, SLOT(intervalEvent()));
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+}
+
+void RoundTimeDisplay::reloadSettings() {
+    settings->init();
+    color = this->getColor();
 }
 
 void RoundTimeDisplay::setTimer(int seconds) {
@@ -27,17 +36,9 @@ void RoundTimeDisplay::setTimer(int seconds) {
 }
 
 void RoundTimeDisplay::intervalEvent() {
-    time--;
-
-    gameDataContainer->setRt(time);
-
-    if(time < 1) {
-        timer->stop();
-    }
-
+    gameDataContainer->setRt(--time);
+    if(time < 1) timer->stop();
     paint(time);
-
-    //qDebug() << time;
 }
 
 void RoundTimeDisplay::repaint() {
@@ -46,13 +47,9 @@ void RoundTimeDisplay::repaint() {
 
 void RoundTimeDisplay::paint(int seconds) {
     if(seconds < 1) {
-        QPalette pal = mainWindow->getCommandLine()->palette();
-        pal.setBrush(QPalette::Base, Qt::white);
-        mainWindow->getCommandLine()->setPalette(pal);
-
+        mainWindow->getCommandLine()->clearRt();
         return;
     }
-
     mainWindow->getCommandLine()->insertRtIndicator(segmentDisplay(seconds), numericDisplay(seconds));
 }
 
@@ -63,7 +60,6 @@ QPixmap RoundTimeDisplay::segmentDisplay(int seconds) {
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    QColor color(159, 50, 50);
     painter.setBrush(color);
     painter.setPen(color);
 
@@ -82,7 +78,6 @@ QPixmap RoundTimeDisplay::numericDisplay(int seconds) {
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    QColor color(159, 50, 50);
     painter.setBrush(color);
     painter.setPen(color);
 
@@ -92,18 +87,14 @@ QPixmap RoundTimeDisplay::numericDisplay(int seconds) {
     return collage;
 }
 
-QColor RoundTimeDisplay::getColorRange(int seconds) {
-    if(seconds >= 8) {
-        return QColor(80, 118, 66);
-    } else if(seconds < 8 && seconds >= 6) {
-        return QColor(134, 148, 42);
-    } else if (seconds < 6 && seconds > 3) {
-        return QColor(180, 186, 34);
-    } else {
+QColor RoundTimeDisplay::getColor() {
+    QColor color = settings->gameWindowBackground();
+    if(color == Qt::white) {
         return QColor(159, 50, 50);
+    } else {
+        return QColor(color.rgba()^0xffffff);
     }
 }
-
 
 RoundTimeDisplay::~RoundTimeDisplay() {
     delete timer;

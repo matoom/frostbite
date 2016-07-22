@@ -100,11 +100,10 @@ void WindowFacade::setTextDockFont(QFont font) {
 
 void WindowFacade::setGridDockFontColor(QColor fontColor) {
     foreach(QDockWidget* gridWindow, gridWindows) {
-        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
-        QPalette p;
+        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();        
         for(int i = 0; i < tableWidget->rowCount(); i++) {
-            QWidget* widget = tableWidget->cellWidget(i, 0);
-            p = widget->palette();
+            QLabel* widget = (QLabel*)tableWidget->cellWidget(i, 0);
+            QPalette p = widget->palette();
             p.setColor(QPalette::Text, fontColor);
             widget->setPalette(p);
         }
@@ -159,7 +158,6 @@ void WindowFacade::updateWindowStyle() {
     foreach(QDockWidget* dock, dockWindows) {
         ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
     }
-
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
 
@@ -384,9 +382,7 @@ void WindowFacade::writeExpWindow(GridItems items) {
     table->setRowCount(items.size());
 
     int i = 0;
-    foreach(QString key, items.keys()) {
-        QWidget* item = table->cellWidget(i, 0);
-
+    foreach(QString key, items.keys()) {        
         QString text = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body><span>";
         text += "<span>";
         if(gameDataContainer->isExpGained(key)) {
@@ -397,17 +393,18 @@ void WindowFacade::writeExpWindow(GridItems items) {
         text += "</span>";
         text += items.value(key) + "</span></body></html>";
 
+        QLabel* item = (QLabel*)table->cellWidget(i, 0);
         if(item != NULL) {
-            ((QLabel*)item)->setText(text);
+            item->setText(text);
             item->setObjectName(key);
             window->track(key, item);
         } else {
-            QLabel* label = window->ceateGridItem(table, key, style);
+            QLabel* label = window->gridValueLabel(table, generalSettings, key);
             label->setText(text);
             table->setCellWidget(i++, 0, label);            
             window->track(key, label);
         }        
-        i = i + 1;
+        i++;
     }
 }
 

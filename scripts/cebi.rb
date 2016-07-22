@@ -40,6 +40,10 @@ put "steal cebi root"
 wait_for_roundtime
 put "put my root in my her pouch"
 
+put "steal cebi root"
+wait_for_roundtime
+put "put my root in my her pouch"
+
 move "out"
 move "go path"
 move "se"

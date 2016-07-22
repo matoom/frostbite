@@ -16,7 +16,7 @@ public:
     QColor getBgColor();
     QColor getTextColor();
 
-    QLabel* ceateGridItem(QWidget* parent, QString key, QString style);
+    QLabel* gridValueLabel(QWidget* parent, GeneralSettings* settings, QString key);
 
     void track(QString skillName, QWidget* widget);
     void clearTracked();
@@ -29,14 +29,13 @@ private:
     QStringList tracked;
 
     void loadSettings();    
-
-    //void mouseReleaseEvent(QMouseEvent* event);
-    //bool eventFilter(QObject *obj, QEvent *event);
+    void invertColors(QWidget* widget);
 
 signals:
 
 public slots:
-    void addTrackedItem(int, int);
+    void addRemoveTracked(int, int);
+    void updateSettings();
 };
 
 #endif // EXPWINDOW_H

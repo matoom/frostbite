@@ -14,11 +14,11 @@ Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 def shoot
   put "aim"
-  put "appr #{$args.join(" ")} quick"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :pause => [/You are still stunned/],
             :wait_arrive => [/you trying to attack/],
-            :next => [/Roundtime/] }
+            :next => [/You begin to target/],
+            :reload => [/isn't loaded/] }
   result = match_wait match
 
   case result
@@ -29,9 +29,16 @@ def shoot
       pause 3
       shoot
     when :next
+      app_locked = Exp::state("appraisal") > 32
+      app unless app_locked
+
       if @circle_count > 0
         pause Rt::value
-        circle 0
+        if app_locked
+          circle -1
+        else
+          circle 0
+        end
       else
         fire
       end
@@ -39,6 +46,25 @@ def shoot
       echo "*** WAITING ***"
       wait_for(/advance on you|melee range/)
       shoot
+    when :reload
+      reload
+  end
+end
+
+def app
+  put "appr #{$args.join(" ")} quick"
+  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
+            :pause => [/You are still stunned/],
+            :next => [/Roundtime/] }
+  result = match_wait match
+
+  case result
+    when :wait
+      pause 0.5
+      app
+    when :pause
+      pause 3
+      app
   end
 end
 
