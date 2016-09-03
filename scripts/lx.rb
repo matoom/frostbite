@@ -6,11 +6,19 @@
 require "target"
 require "hunt"
 require "lx_perf"
+require "spell"
 
 @ammo = "bolt"
 @circle_count = 1
 
 Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
+
+Thread.new do
+  while true
+    spell_activate
+    sleep 15
+  end
+end
 
 def shoot
   put "aim"

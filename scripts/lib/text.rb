@@ -6,10 +6,12 @@
 #   wait_for_roundtime
 #   put "unhide"
 def wait_for_roundtime
+  $_api_exec_state = :wait_for_roundtime
   (0..1000000).each do
     line = api_sync_read
     if line
       if line.match(/Roundtime/)
+        $_api_exec_state = :idle
         api_sleep line[/\d+/].to_i + $rt_adjust
         return
       end
@@ -23,6 +25,7 @@ end
 # @param [String] pattern regex pattern.
 # @return [void]
 def wait_for(pattern)
+  $_api_exec_state = :wait_for
   if pattern.is_a?(Array)
     pattern = Regexp.new(pattern.join('|'))
   end
@@ -31,6 +34,7 @@ def wait_for(pattern)
     line = api_sync_read
     if line
       if line.match(pattern)
+        $_api_exec_state = :idle
         return
       end
     end

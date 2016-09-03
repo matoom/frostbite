@@ -2,12 +2,20 @@
 
 require "target"
 require "hunt"
+require "spell"
 
 Target::auto "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
+Thread.new do
+  while true
+    spell_activate
+    sleep 15
+  end
+end
+
 def advance
   put "advance"
-  pause 3
+  pause 6
 end
 
 def face target

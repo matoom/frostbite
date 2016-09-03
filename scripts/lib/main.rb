@@ -29,7 +29,7 @@ $_api_exec_state = :idle
 $_api_observer_started = false
 $_api_current_rt = 0
 
-@_api_cmd_thread = Thread.new { ApiCommandThread.new.run }
+@_api_comm_thread = Thread.new { ApiCommThread.new.run }
 
 $rt_adjust = 0
 
@@ -145,7 +145,7 @@ module ApiSettings
 end
 
 # @private
-class ApiCommandThread
+class ApiCommThread
   def run
     while line = gets
       case
@@ -217,8 +217,8 @@ end
 # @private
 at_exit do
   if defined? finally_do
-    unless @_api_cmd_thread.alive?
-      @_api_cmd_thread = Thread.new { ApiCommandThread.new.run }
+    unless @_api_comm_thread.alive?
+      @_api_comm_thread = Thread.new { ApiCommThread.new.run }
     end
     finally_do
   end

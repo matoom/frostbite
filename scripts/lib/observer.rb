@@ -43,6 +43,18 @@ class Observer
     }
   end
 
+  # Call event from code
+  # @param [hash] event observer event
+  # @param [string] text var string passed on to event method
+  # @return [void]
+  def call_event(event, text)
+    t = Thread.new do
+      pause 0.1 while @@interrupted
+      observer_event event, text
+    end
+    t.join
+  end
+
   # Register an observer event
   #
   # @param [hash] event observer event.
@@ -84,10 +96,13 @@ class Observer
   def observer_event(method_name, text)
     @@interrupted = true
     Signal.trap("INT") do
-      start_time = Time.now
-      call_method method_name, text
-      $_api_interrupt_time = (Time.now - start_time).floor
-      @@interrupted = false
+      t = Thread.new {
+        start_time = Time.now
+        call_method method_name, text
+        $_api_interrupt_time = (Time.now - start_time).floor
+        @@interrupted = false
+      }
+      t.join
     end
 
     pid = Process.pid

@@ -20,7 +20,7 @@
       :bathhouse => { :item  => :none, :amount => 2 }, #[Orem's Bathhouse, Lobby]
       :locksmith => { :item => :none, :amount => 4 }, #[Ragge's Locksmithing, Salesroom] -- ring (trivial 741)
       :bard => { :item => "silverwillow fiddle", :amount => 5 }, #[The True Bard D'Or, Fine Instruments] wyndewood fiddle
-      :bard_private => { :item => "tapani", :amount => 4 }, #[Luthier's, Private Showroom] horn
+      :bard_private => { :item => "bodhran", :amount => 4 }, #[Luthier's, Private Showroom] horn
       :armor => { :item => "kite shield", :amount => 5 }, #[Tembeg's Armory, Salesroom]
       :weapon => { :item => :none, :amount => 2 }, #[Milgrym's Weapons, Showroom]
       :jewelry_appraisal_room => { :item => "gold anklet", :amount => 1 }, #[Grisgonda's, Appraisal Room] #platinum wristcuff",
@@ -159,6 +159,7 @@
 
 @current_container = 0
 @fails = 0
+@fails_list = []
 @exp_before = 0
 @stolen_items = []
 @leave = false
@@ -269,7 +270,7 @@ def do_hide
   end
 end
 
-def take item
+def take item, n
   put "steal #{item}"
   match = { :wait => [/\.\.\.wait|appears different about/],
             :fail => [/Guards!|begins to shout/],
@@ -282,13 +283,14 @@ def take item
   case result
     when :wait
       pause 0.5
-      take item
+      take item, n
     when :stow
       stow_items
       do_hide
-      take item
+      take item, n
     when :fail
       echo "Failed attempt recorded! - total fails: #{@fails += 1}"
+      @fails_list << {:item => item, :attempt => n}
       raise result.to_s
     when :leave
       stow_items
@@ -343,7 +345,7 @@ def steal item, amount
     register_exp
 
     amount.times do |x|
-      take item
+      take item, x
       if x % 2 == 1 and amount != x + 1
         stow_items
         do_hide
@@ -1300,3 +1302,5 @@ pause 1
 check_for_mites
 
 put "hide"
+
+echo @fails_list.inspect

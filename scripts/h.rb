@@ -82,6 +82,7 @@ label(:advance) {
   match = { :hide => ["begin to advance", "You are already"],
             :wait => [/\.\.\.wait/]}
   res = match_wait match
+  pause 6
   go_wait(res, :advance)
 }
 
