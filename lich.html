@@ -1,0 +1,139 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. -->
+
+<head id="frostbite" data-template-set="html5-reset">
+
+    <meta charset="utf-8">
+
+    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Scripting - Lich</title>
+
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <!-- Google will often use this as its description of your page/site. Make it good. -->
+
+    <meta name="google-site-verification" content="">
+    <!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
+
+    <!-- Dublin Core Metadata : http://dublincore.org/ -->
+    <meta name="DC.title" content="Frostbite">
+    <meta name="DC.subject" content="Dragonrealms MUD Frontend">
+    <meta name="DC.creator" content="">
+
+    <!--  Mobile Viewport Fix
+    j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+    device-width : Occupy full width of the screen in its current orientation
+    initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+    maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+    -->
+    <!-- Uncomment to use; use thoughtfully!
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    -->
+
+    <link rel="shortcut icon" href="img/favicon.png">
+    <!-- This is the traditional favicon.
+         - size: 16x16 or 32x32
+         - transparency is OK
+         - see wikipedia for info on browser support: http://mky.be/favicon/ -->
+
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    <!-- The is the icon for iOS's Web Clip.
+         - size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+         - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
+         - Transparency is not recommended (iOS will put a black BG behind the icon) -->
+
+    <!-- CSS: screen, mobile & print are all in the same file -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+
+    <!-- all our JS is at the bottom of the page, except for Modernizr. -->
+    <script src="js/modernizr-1.7.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header>
+        <hgroup>
+            <img src="img/logo.png" /><br/>
+            <h1>Frostbite</h1>
+            <h2 class="">A frontend for Dragonrealms MUD</h2>
+        </hgroup>
+    </header>
+
+    <h2 class="contents_head" id="contents">3.3 Lich</h2>
+    <div class="about">
+        <p>More detailed instruction from <a href="https://github.com/rcuhljr/dr-lich">https://github.com/rcuhljr/dr-lich</a></p><br/>
+
+        <h3>Getting and Installing Lich</h3>
+        <p>
+            Basic steps are as follows, you need a working lich install <a href="https://lichproject.org/download.html#win_storm_wiz_lich">https://lichproject.org/download.html#win_storm_wiz_lich</a><br/><br/>
+
+            Get updated Lich at <a href="https://github.com/rcuhljr/dr-lich/blob/master/lich.rbw">https://github.com/rcuhljr/dr-lich/blob/master/lich.rbw</a><br/><br/>
+
+            Set up dependency in SF <a href="https://github.com/rpherbig/dr-scripts/wiki/First-Time-Setup steps 1-3">https://github.com/rpherbig/dr-scripts/wiki/First-Time-Setup steps 1-3</a>
+        </p>
+
+        <br/>
+        <h3>Windows</h3>
+        <p>
+            Open up an administrator command prompt (win+x then A in windows 8+) navigate to your lich directory and in the command prompt run<br/><br/>
+
+            <i>'ruby lich.rbw --dragonrealms --frostbite'</i><br/><br/>
+
+            Then connect to a character via Frostbite like normally.
+        </p>
+
+        <br/>
+        <h3>Mac OS X / *nix</h3>
+        <p>
+            Open up command prompt Navigate to your lich directory:<br/><br/>
+
+            <i>ex. 'cd ~/Downloads/lich'</i><br/><br/>
+
+            Run Lich.rbw with the following options<br/><br/>
+
+            <i>'sudo ./lich.rbw --dragonrealms --frostbite'</i><br/><br/>
+
+            Then connect to a character via Frostbite like normally.<br/>
+        </p>
+
+        <br />
+    </div>
+    <footer>
+        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+    </footer>
+
+</div>
+
+<!-- here comes the javascript -->
+<script src='js/jquery-1.5.1.min.js'></script>
+
+<!-- this is where we put our custom functions -->
+<script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+
+</body>
+</html>

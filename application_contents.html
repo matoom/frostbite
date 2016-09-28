@@ -73,29 +73,32 @@
     <h2 class="contents_head" id="contents">1.1 Application software</h2>
     <div class="about">
         <p>
-            The Frostbite application software package contains all the library files required to run the application,
-            already includes all the necessary pre configured settings and the application executable.
-            In addition to the application software package, the Frostbite frontend requires Ruby runtime to be
-            installed in the system (not included in the software package).
+            All necessary libraries used by the application are dynamically linked and are included in the software package.
+            This includes runtime libraries needed by the QT framework and other compiler specific libraries. The client
+            already comes with the necessary pre configured settings ready for first time run but can be changed based on
+            personal preference.
         </p>
         <p>
+            In addition to the application software package, the Frostbite frontend requires Ruby runtime to be
+            installed in the system (not included in the software package).
+
+        <p>
             Ruby runtime installation is required to run scripts in the frontend however the client is still
-            available to use without Ruby.
+            available to use without Ruby or the native scripting support.
             The installation of ruby runtime is described in more detail in the <a href="installation.html">installation</a> page.
         </p>
         <p>The application software can be downloaded from the <a href="installation.html">installation</a> page.
         </p>
         <br/>
         <p class="alert-box">
-            The mechanics in scripting module implementation restrict from running more than one frontend per
-            application copy.
+            The mechanics in scripting module implementation restrict from running more than one application per copy.
         </p>
 
         <br/>
         <h3>Application structure</h3>
         <p>
-            The Frostbite client software comes in a pre-defined structure in order to facilitate the necessary utility files
-            required by different functions of the application.
+            The application needs to have a pre-defined structure in order to facilitate its normal functions. It is important
+            that all pre-packaged files and folders remain unchanged.
         </p>
         <br/>
         <div class="folders">
@@ -133,13 +136,13 @@
                 </li>
                 <br/>
                 <ul>
-                    <li><img src="img/dll.png" /> shared.(dll, so, dylib) - <span class="gray">contains shared memory of game data which is used by the scripts.</span></li>
-                    <li><img src="img/exe.png" /> FrostBite(.exe) - <span class="gray">application executable.</span></li>
-                    <li><img src="img/ini.png" /> client.ini - <span class="gray">settings file for general client settings.</span></li>
-                    <li><img src="img/ini.png" /> highlights.ini - <span class="gray">settings file for color highlights.</span></li>
-                    <li><img src="img/ini.png" /> log.ini - <span class="gray">client logger settings - log4qt.</span></li>
-                    <li><img src="img/ini.png" /> macros.ini - <span class="gray">settings file for macros.</span></li>
-                    <li><img src="img/ini.png" /> general.ini - <span class="gray">general purpose settings file.</span></li>
+                    <li><img src="img/exe.png" /> FrostBite(.exe) - <span class="gray">application executable</span></li>
+                    <li><img src="img/ini.png" /> api.ini - <span class="gray">contains the api server port</span></li>
+                    <li><img src="img/ini.png" /> client.ini - <span class="gray">settings file for general client settings</span></li>
+                    <li><img src="img/ini.png" /> highlights.ini - <span class="gray">settings file for color highlights</span></li>
+                    <li><img src="img/ini.png" /> log.ini - <span class="gray">client logger settings - log4qt</span></li>
+                    <li><img src="img/ini.png" /> macros.ini - <span class="gray">settings file for macros</span></li>
+                    <li><img src="img/ini.png" /> general.ini - <span class="gray">general purpose settings file</span></li>
                 </ul>
             </ul>
         </div>
