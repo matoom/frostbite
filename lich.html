@@ -106,7 +106,21 @@
 
             Then connect to a character via Frostbite like normally.<br/>
         </p>
+        <h4>Note for RVM users</h4>
+        <p>
+            If you are using rvm, you will want to use rvmsudo to do the sudo call (else you will use whatever ruby version sudo defaults to which will lead to Problems). Setting up rvmsudo is detailed here: <a href="https://rvm.io/integration/sudo"> https://rvm.io/integration/sudo</a>. The steps are as follows:
 
+            <ol type="1">
+                <li> Add <i>export rvmsudo_secure_path=0 to ~/.bashrc</i></li>
+                <br/>
+                <li> Add <i>Defaults env_keep +="rvm_bin_path GEM_HOME IRBRC MY_RUBY_HOME rvm_path rvm_prefix rvm_version GEM_PATH rvmsudo_secure_path RUBY_VERSION rvm_ruby_string rvm_delete_flag</i>" to /etc/sudoers (careful...)</li>
+                <br/>
+                <li> Comment out <i>Defaults secure_path=...</i> in /etc/sudoers</li>
+            </ol>
+            
+            <br/>
+            Now run <i>rvmsudo ./lich.rbw --dragonrealms --frostbite</i>
+        </p>
         <br />
     </div>
     <footer>
