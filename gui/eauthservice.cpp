@@ -159,12 +159,21 @@ void EAuthService::negotiateSession(QByteArray buffer) {
     } else if(buffer.startsWith("P\t")) {
         this->write("C\n");
     } else if(buffer.startsWith("C\t")) {
-        QList<QByteArray> cResponse = buffer.split('\t');
+        QRegExp rx("\\\t(\\w{2,})");
+        int pos = 0;
+        QStringList list;
 
-        QString name = QString::fromLocal8Bit(cResponse.takeLast()).trimmed();
-        QString id = QString::fromLocal8Bit(cResponse.takeLast().trimmed());
+        while ((pos = rx.indexIn(buffer, pos)) != -1) {
+            list << rx.cap(1);
+            pos += rx.matchedLength();
+        }
 
-        emit addCharacter(id, name);
+        for(int i = 0; i < list.length(); i = i+2) {
+            QString id = list[i];
+            QString name = list[i+1];
+
+            emit addCharacter(id, name);
+        }
     } else if(buffer.startsWith("L\t")) {
         QList<QByteArray> lResponse = buffer.split('\t');
 
