@@ -8,12 +8,12 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
 
     mapData = new MapData(this);
 
+    dir = QDir(QApplication::applicationDirPath() + "/maps");
+
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
 }
 
-void MapReader::init() {
-    QDir dir(QApplication::applicationDirPath() + "/maps");
-
+void MapReader::init() {    
     QStringList filter;
     filter << "*.xml";
 
@@ -22,8 +22,14 @@ void MapReader::init() {
     foreach(QString file, fileList) {        
         MapZone* zone = readZone(dir.path(), file);
         zones.insert(zone->getId(), zone);
-    }    
+    }
+
     emit readyRead();
+}
+
+QDir MapReader::getDir() {
+    QReadLocker locker(&lock);
+    return this->dir;
 }
 
 void MapReader::setInitialized() {

@@ -46,6 +46,8 @@ public:
     MapData* getMapData();
     QHash<QString, RoomNode> getLocations();
 
+    QDir getDir();
+
     void init();
 
     bool isInitialized();
@@ -62,6 +64,8 @@ private:
     void roomToHash();
 
     void setInitialized();
+
+    QDir dir;
 
     bool initialized;
 

@@ -10,7 +10,7 @@ MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
 
     this->scale(1.0, 1.0);
 
-    this->buildContextMenu();
+    this->buildContextMenu();        
 }
 
 void MapWindow::scaleView(qreal scaleFactor) {
@@ -29,6 +29,14 @@ void MapWindow::zoomIn() {
 
 void MapWindow::zoomOut() {
     scaleView(pow((double)2, -1 / 2.4));
+}
+
+void MapWindow::reset() {
+    QString text = GameDataContainer::Instance()->getRoomName() +
+            GameDataContainer::Instance()->getRoomDesc() +
+            GameDataContainer::Instance()->getCompassDirections().join("");
+
+    emit updateMapWindow(TextUtils::Instance()->toHash(text));
 }
 
 void MapWindow::selectNode(MapZone* zone, int nodeId) {    

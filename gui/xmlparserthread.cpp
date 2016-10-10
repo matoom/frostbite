@@ -254,6 +254,8 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             }
             qSort(directions);
 
+            GameDataContainer::Instance()->setCompassDirections(directions);
+
             QString text = GameDataContainer::Instance()->getRoomName() +
                     GameDataContainer::Instance()->getRoomDesc() + directions.join("");
 

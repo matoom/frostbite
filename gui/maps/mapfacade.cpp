@@ -8,7 +8,7 @@ MapFacade::MapFacade(MainWindow *parent) : QObject(parent) {
 }
 
 void MapFacade::init() {
-    mapWindow = mapWindowFactory->createWindow(DOCK_TITLE_MAP);
+    mapWindow = mapWindowFactory->createWindow(DOCK_TITLE_MAP);    
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, mapWindow);
 
     mapDialog = new MapDialog(this, mainWindow);
@@ -18,6 +18,9 @@ void MapFacade::init() {
     mapIdLabel = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "IdLabel");
     mapView = mapWindow->findChild<MapWindow*>(QString(DOCK_TITLE_MAP)+ "View");
 
+    connect(mapView, SIGNAL(updateMapWindow(QString)),
+            this, SLOT(updateMapWindow(QString)));
+
     mapReader = new MapReader(this);
     connect(mapReader, SIGNAL(ready()), this, SLOT(mapsReady()));
 
@@ -25,7 +28,12 @@ void MapFacade::init() {
 }
 
 void MapFacade::mapsReady() {
-    if(!mapReader->isInitialized()) return;
+    if(!mapReader->isInitialized()) {
+        QGraphicsScene* scene = new QGraphicsScene(0, 0, 0, 0, this);
+        scene->addText("No map files found in - \n" + mapReader->getDir().absolutePath());
+        mapView->setScene(scene);
+        return;
+    }
 
     QMap<QString, MapZone*> zones = mapReader->getZones();
 

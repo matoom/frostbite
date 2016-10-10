@@ -33,11 +33,13 @@ private:
     QMenu* menu;
 
 signals:
+    void updateMapWindow(QString);
 
 public slots:
     void zoomIn();
     void zoomOut();
     void selectNode(MapZone* zone, int nodeId);
+    void reset();
 };
 
 #endif // MAPWINDOW_H
