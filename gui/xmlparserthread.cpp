@@ -166,8 +166,6 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             QString d = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(d);
             gameText += d;
-
-            emit updateStoreWindow(d);
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {            
             QString preset = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(preset);
