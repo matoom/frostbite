@@ -124,6 +124,17 @@ class Exp
     $_api_socket.puts "GET EXP_STATE?#{exp_string.to_s.downcase}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
+
+  # List of internal exp names
+  #
+  # @return [Array] list of exp names
+  # @example Using exp state in script.
+  #   echo Exp::names
+  #   >> ["Teaching", "Light Crossbow", "Scholarship", "First Aid", "Climbing"]
+  def self.names()
+    $_api_socket.puts "GET EXP_NAMES\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
+  end
 end
 
 class Room
@@ -476,6 +487,20 @@ class Client
   # @param [String] user account password
   def self.connect_host(host, port, game, name, user, pass)
     $_api_socket.puts "CLIENT CONNECT?#{host}&#{port}&#{user}&#{pass}&#{game}&#{name}\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
+  end
+
+  # Track exp row in exp window
+  #
+  # @param [String] internal exp name
+  def self.track_exp(name)
+    $_api_socket.puts "CLIENT TRACK_EXP?#{name}\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
+  end
+
+  # Clear all tracked exp in exp window
+  def self.track_exp_clear
+    $_api_socket.puts "CLIENT TRACK_EXP_CLEAR\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 end

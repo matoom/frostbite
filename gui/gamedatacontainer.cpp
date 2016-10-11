@@ -222,6 +222,16 @@ QString GameDataContainer::getRoomExtra() {
     return this->roomExtra;
 }
 
+void GameDataContainer::setCompassDirections(QList<QString> compassDirections) {
+    QWriteLocker locker(&lock);
+    this->compassDirections = compassDirections;
+}
+
+QList<QString> GameDataContainer::getCompassDirections() {
+    QReadLocker locker(&lock);
+    return this->compassDirections;
+}
+
 void GameDataContainer::setRight(QString right) {
     QWriteLocker locker(&lock);
     this->wieldRight = right;

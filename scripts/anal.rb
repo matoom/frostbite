@@ -106,6 +106,7 @@ def execute_seq maneuvers
 end
 
 face $args.first
+wait
 1000.times do
   hunt
   execute_seq extract_seq analyze

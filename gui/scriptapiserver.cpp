@@ -3,7 +3,12 @@
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
     mainWindow = (MainWindow*)parent;
     mapData = mainWindow->getWindowFacade()->getMapFacade()->getData();
-    tcpClient = mainWindow->getTcpClient();
+    tcpClient = mainWindow->getTcpClient();        
+
+    expWindow = ((GridWindow*)mainWindow->getWindowFacade()->getExpWindow()->widget());
+
+    connect(this, SIGNAL(track(QString)), expWindow, SLOT(track(QString)));
+    connect(this, SIGNAL(clearTracked()), expWindow, SLOT(clearTracked()));
 
     data = GameDataContainer::Instance();    
 
@@ -17,7 +22,7 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
     } else {
         sessionOpened();
     }
-    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));       
 }
 
 void ScriptApiServer::sessionOpened() {
@@ -105,6 +110,8 @@ void ScriptApiServer::readyRead() {
                 this->write(socket, tr("%1\\0").arg(data->getRoomExits()));
             } else if(request.name == "RT") {
                 this->write(socket, tr("%1\\0").arg(data->getRt()));
+            } else if(request.name == "EXP_NAMES") {
+                this->write(socket, tr("%1\\0").arg(data->getExp().keys().join("\n")));
             } else {
                 this->write(socket, tr("\\0"));
             }
@@ -146,6 +153,17 @@ void ScriptApiServer::readyRead() {
                     tcpClient->connectApi(args.at(0), args.at(1), args.at(2), args.at(3), args.at(4), args.at(5));
                     this->write(socket, tr("0\\0"));
                 }
+            } else if(request.name == "TRACK_EXP") {
+                QStringList args = request.args;
+                if(args.size() < 1) {
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    emit track(args.at(0));
+                    this->write(socket, tr("0\\0"));
+                }
+            } else if(request.name == "TRACK_EXP_CLEAR") {
+                emit clearTracked();
+                this->write(socket, tr("\\0"));
             }
         } else {
             this->write(socket, tr("\\0"));

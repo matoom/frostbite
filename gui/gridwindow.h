@@ -18,8 +18,7 @@ public:
 
     QLabel* gridValueLabel(QWidget* parent, GeneralSettings* settings, QString key);
 
-    void track(QString skillName, QWidget* widget);
-    void clearTracked();
+    void track(QString skillName, QWidget* widget);  
 
 private:
     MainWindow* mainWindow;
@@ -36,6 +35,8 @@ signals:
 public slots:
     void addRemoveTracked(int, int);
     void updateSettings();
+    void track(QString skillName);
+    void clearTracked();
 };
 
 #endif // EXPWINDOW_H

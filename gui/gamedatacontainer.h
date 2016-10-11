@@ -42,6 +42,9 @@ public:
     QString getRoomExits();
     QString getRoomExtra();
 
+    void setCompassDirections(QList<QString>);
+    QList<QString> getCompassDirections();
+
     void setRight(QString);
     void setRightNoun(QString);
     void setLeft(QString);
@@ -140,6 +143,8 @@ private:
     QString roomPlayers;
     QString roomExits;
     QString roomExtra;
+
+    QList<QString> compassDirections;
 
     QString wieldRightNoun;
     QString wieldRight;

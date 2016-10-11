@@ -57,7 +57,25 @@ void GridWindow::invertColors(QWidget* widget) {
     widget->setPalette(p);
 }
 
-void GridWindow::track(QString skillName, QWidget* widget) {
+void GridWindow::track(QString skillName) {
+    if(!tracked.contains(skillName)) {
+        tracked << skillName;
+    }
+
+    int rows = this->rowCount();
+
+    QRegExp rx(skillName);
+    rx.setCaseSensitivity(Qt::CaseInsensitive);
+
+    for(int i = 0; i < rows; i++) {
+        QWidget* widget = this->cellWidget(i, 0);
+        if(widget != NULL) {
+            if(rx.exactMatch(widget->objectName())) track(skillName, widget);
+        }
+    }
+}
+
+void GridWindow::track(QString skillName, QWidget* widget) {    
     if(tracked.contains(skillName)) {
         if(widget->property("tracked") == QVariant::Invalid ||
                 widget->property("tracked") == 0) {

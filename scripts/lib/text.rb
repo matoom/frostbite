@@ -137,7 +137,7 @@ end
 #   wait
 #   put "remove my shield"
 def wait
-  $_api_queue.clear
+  #$_api_queue.clear
   wait_for(/>/)
 end
 

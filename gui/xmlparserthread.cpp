@@ -22,7 +22,6 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
     connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
     connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade, SLOT(updateFamiliarWindow(QString)));
-    connect(this, SIGNAL(updateStoreWindow(QString)), windowFacade, SLOT(updateStoreWindow(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
@@ -258,6 +257,8 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 compassNode = compassNode.nextSibling();
             }
             qSort(directions);
+
+            GameDataContainer::Instance()->setCompassDirections(directions);
 
             QString text = GameDataContainer::Instance()->getRoomName() +
                     GameDataContainer::Instance()->getRoomDesc() + directions.join("");

@@ -290,7 +290,7 @@ def take item, n
       take item, n
     when :fail
       echo "Failed attempt recorded! - total fails: #{@fails += 1}"
-      @fails_list << {:item => item, :attempt => n}
+      @fails_list << {:item => item, :attempt => n + 1}
       raise result.to_s
     when :leave
       stow_items
@@ -1303,4 +1303,5 @@ check_for_mites
 
 put "hide"
 
+echo "Fails:"
 echo @fails_list.inspect

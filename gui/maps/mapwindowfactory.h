@@ -25,6 +25,7 @@ private:
     QComboBox* getLevelSelect(QWidget* parent, QString name);
     QComboBox* getMapSelect(QWidget* parent, QString name);
     QLabel* getMapIdLabel(QWidget* parent, QString name);
+    QPushButton* getResetButton(QWidget* parent, QString name);
     QPushButton* getZoomInButton(QWidget* parent, QString name);
     QPushButton* getZoomOutButton(QWidget* parent, QString name);
 
