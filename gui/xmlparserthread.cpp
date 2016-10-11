@@ -22,6 +22,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
     connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
     connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade, SLOT(updateFamiliarWindow(QString)));
+    connect(this, SIGNAL(updateStoreWindow(QString)), windowFacade, SLOT(updateStoreWindow(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
@@ -117,6 +118,8 @@ void XmlParserThread::processGameData(QByteArray data) {
         n = n.nextSibling();
     }
 
+    //qDebug() << "Raw data is: " << rawData;
+
     // process pushstream
     processPushStream(rawData);
 
@@ -164,6 +167,8 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             QString d = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(d);
             gameText += d;
+
+            emit updateStoreWindow(d);
         } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {            
             QString preset = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(preset);
@@ -451,7 +456,10 @@ void XmlParserThread::writeGameText(QByteArray rawData) {
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            emit writeText(line.toLocal8Bit(), false);
+            auto theLine = line.toLocal8Bit();
+            if(theLine != "") {
+                emit writeText(line.toLocal8Bit(), false);
+            }
         }
     } else if(gameText != "") {
         emit writeText(gameText.toLocal8Bit(), prompt);
