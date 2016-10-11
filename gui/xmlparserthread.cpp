@@ -117,8 +117,6 @@ void XmlParserThread::processGameData(QByteArray data) {
         n = n.nextSibling();
     }
 
-    //qDebug() << "Raw data is: " << rawData;
-
     // process pushstream
     processPushStream(rawData);
 
