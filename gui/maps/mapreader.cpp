@@ -11,6 +11,8 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     dir = QDir(QApplication::applicationDirPath() + "/maps");
 
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
+
+    labelsFont = QFont(DEFAULT_FONT, MAP_FONT_SIZE);
 }
 
 void MapReader::init() {    
@@ -91,7 +93,7 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
             QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
             scene->setObjectName(zone->getId());
             scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
-                           QString::number(levels.size() - 1) + ")");
+                           QString::number(levels.size() - 1) + ")", labelsFont);
 
             QGraphicsEllipseItem* selected = scene->addEllipse(0, 0, 12, 12,  QColor("red"));
             selected->hide();
@@ -127,7 +129,7 @@ void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
 void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapLabel* label, zone->getLabels()) {
         QGraphicsScene* scene = scenes.value(label->getPosition()->getZ()).scene;
-        QGraphicsTextItem* textItem = scene->addText(label->getText());
+        QGraphicsTextItem* textItem = scene->addText(label->getText(), labelsFont);
         textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
                          label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
     }

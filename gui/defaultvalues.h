@@ -35,10 +35,13 @@
 
 #ifdef Q_OS_WIN
 #define DEFAULT_FONT "Consolas"
+#define MAP_FONT_SIZE 8
 #elif defined(Q_OS_LINUX)
 #define DEFAULT_FONT "Monospace"
+#define MAP_FONT_SIZE 8
 #elif defined(Q_OS_MAC)
 #define DEFAULT_FONT "Monaco"
+#define MAP_FONT_SIZE 8
 #endif
 
 #define DEFAULT_MAIN_FONT DEFAULT_FONT

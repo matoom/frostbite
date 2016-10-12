@@ -66,6 +66,7 @@ private:
     void setInitialized();
 
     QDir dir;
+    QFont labelsFont;
 
     bool initialized;
 
