@@ -45,8 +45,6 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     bold = false;
     initRoundtime = false;
     prompt = false;
-
-    familiarElementCount = 0;
 }
 
 void XmlParserThread::updateHighlighterSettings() {
@@ -102,8 +100,6 @@ void XmlParserThread::processGameData(QByteArray data) {
 
     QDomElement root = doc.documentElement();
     QDomNode n = root.firstChild();
-
-    familiarElementCount = 0;
 
     gameText = "";
     while(!n.isNull()) {
@@ -446,17 +442,12 @@ void XmlParserThread::writeGameText(QByteArray rawData) {
         QString line = rawData;
 
         // remove CRs
-        if(line.endsWith("\r")) {
-            line.chop(1);
-        }
+        if(line.endsWith("\r")) line.chop(1);
 
         this->fixMonoTags(line);
 
-        if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            auto theLine = line.toLocal8Bit();
-            if(theLine != "") {
-                emit writeText(line.toLocal8Bit(), false);
-            }
+        if(line != "" && !rawData.startsWith("<output class=\"mono\"/>")) {
+            emit writeText(line.toLocal8Bit(), false);
         }
     } else if(gameText != "") {
         emit writeText(gameText.toLocal8Bit(), prompt);

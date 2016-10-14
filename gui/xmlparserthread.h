@@ -61,8 +61,6 @@ private:
     bool initRoundtime;
     bool prompt;
 
-    int familiarElementCount;
-
     void processGameData(QByteArray);
     void processPushStream(QByteArray);
     void writeGameText(QByteArray);
