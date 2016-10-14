@@ -453,7 +453,10 @@ void XmlParserThread::writeGameText(QByteArray rawData) {
         this->fixMonoTags(line);
 
         if(!rawData.startsWith("<output class=\"mono\"/>")) {
-            emit writeText(line.toLocal8Bit(), false);
+            auto theLine = line.toLocal8Bit();
+            if(theLine != "") {
+                emit writeText(line.toLocal8Bit(), false);
+            }
         }
     } else if(gameText != "") {
         emit writeText(gameText.toLocal8Bit(), prompt);
