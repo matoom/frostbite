@@ -183,8 +183,8 @@ OTHER_FILES += \
     resources.rc
 
 # use relative path for libs in unix
-unix:!mac{
-  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+unix:!mac{  
+    QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/lib\'"
 }
 
 ICON = images/shield.icns
@@ -197,6 +197,7 @@ ICON = images/shield.icns
 #QMAKE_CXXFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_MT_DBG += -pg
 #QMAKE_LFLAGS_DEBUG += -pg
+
 
 
 
