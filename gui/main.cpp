@@ -8,7 +8,7 @@
 
 #include "maps/mapreader.h"
 
-bool MainWindow::DEBUG = true;
+bool MainWindow::DEBUG = false;
 
 int main(int argc, char *argv[]) {
 
