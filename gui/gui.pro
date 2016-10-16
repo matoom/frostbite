@@ -28,11 +28,11 @@ include(maps/maps.pri)
 include(highlights/highlights.pri)
 
 win32 {
-    TARGET = ../../FrostBite
+    TARGET = ../../Frostbite
 }
 
 unix {
-    TARGET = ../FrostBite
+    TARGET = ../Frostbite
 }
 
 TEMPLATE = app

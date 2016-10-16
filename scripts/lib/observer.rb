@@ -76,7 +76,6 @@ class Observer
 
   # Terminate the observer execution
   #
-  # @param
   # @return [void]
   # @example Terminating the observer
   #   Observer.instance.terminate
