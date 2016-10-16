@@ -172,102 +172,6 @@ thread is stuck in round time.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#match_get-instance_method" title="#match_get (instance method)">- (Hash) <strong>match_get</strong>(pattern) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Matches regex patterns and returns pattern name along with matched text.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#match_get_m-instance_method" title="#match_get_m (instance method)">- (Hash) <strong>match_get_m</strong>(pattern) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Match get for multiple lines.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#match_wait-instance_method" title="#match_wait (instance method)">- (Symbol) <strong>match_wait</strong>(pattern) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Matches regex patterns and returns the name of the matching pattern.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#match_wait_goto-instance_method" title="#match_wait_goto (instance method)">- (Void) <strong>match_wait_goto</strong>(pattern) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Matches regex patterns and goes to defined label.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="top-level-namespace.html#move-instance_method" title="#move (instance method)">- (void) <strong>move</strong>(dir) </a>
     
 
@@ -331,7 +235,7 @@ thread is stuck in round time.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Pauses for current roundtime.</p>
+<p>Pauses during rt and accounts for interrupted time.</p>
 </div></span>
   
 </li>
@@ -380,78 +284,6 @@ thread is stuck in round time.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Require a script by name.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#wait-instance_method" title="#wait (instance method)">- (void) <strong>wait</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Waits for a prompt character.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#wait_for-instance_method" title="#wait_for (instance method)">- (void) <strong>wait_for</strong>(pattern) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Runs until matching regex pattern is found in game text.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#wait_for_roundtime-instance_method" title="#wait_for_roundtime (instance method)">- (void) <strong>wait_for_roundtime</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Waits for roundtime and pauses for the duration.</p>
 </div></span>
   
 </li>
@@ -525,15 +357,15 @@ thread is stuck in round time.</p>
       <pre class="lines">
 
 
-234
-235
-236</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 234</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_ECHO_PREFIX</span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_ECHO_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -585,12 +417,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-267
-268
-269</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 267</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_match_rt'>get_match_rt</span>
   <span class='gvar'>$_api_current_rt</span>
@@ -659,437 +491,15 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-250
-251
-252</pre>
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 250</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>/../</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>.rb</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="match_get-instance_method">
-  
-    - (<tt>Hash</tt>) <strong>match_get</strong>(pattern) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Matches regex patterns and returns pattern name along with matched text</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Retrieve the text from a matching pattern.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>open my trunk</span><span class='tstring_end'>&quot;</span></span>
-<span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:m</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>you open</span><span class='regexp_end'>/i</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-<span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_match_get'>match_get</span> <span class='id identifier rubyid_match'>match</span>
-<span class='id identifier rubyid_result'>result</span> <span class='comment'>#=&gt; {:key =&gt;:m, :match =&gt; &quot;You open the steel trunk...&quot;}</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>pattern</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>list of regex patterns and names</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>name and text from the matching pattern</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-116
-117
-118
-119
-120
-121
-122
-123
-124</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 116</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_match_get'>match_get</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
-
-  <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:match_get</span>
-
-  <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='id identifier rubyid_api_get_match'>api_get_match</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='comma'>,</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_m'>m</span> <span class='op'>=</span> <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='op'>!</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='rbrace'>}</span>
-  <span class='lbrace'>{</span><span class='symbol'>:key</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_m'>m</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:match</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_m'>m</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="match_get_m-instance_method">
-  
-    - (<tt>Hash</tt>) <strong>match_get_m</strong>(pattern) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Match get for multiple lines.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Retrieve text from matching patterns.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>health</span><span class='tstring_end'>&quot;</span></span>
-<span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:vitals</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Your</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-         <span class='symbol'>:scars</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>You have</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-         <span class='symbol'>:match_end</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;|\.\.\.wait|you may only type ahead</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span>
-<span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_match_get_m'>match_get_m</span> <span class='id identifier rubyid_match'>match</span>
-<span class='id identifier rubyid_result'>result</span> <span class='comment'>#=&gt;
-</span><span class='comment'>#{:vitals=&gt;[&quot;Your body feels very beat up.&quot;, &quot;Your spirit feels full of life.&quot;],
-</span><span class='comment'># :scars=&gt;[&quot;You have some tiny scratches to the neck.&quot;], :match_end=&gt;[&quot;&gt;&quot;]}</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>pattern</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>list of regex patterns and names</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>found matches arranged by pattern names</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-139
-140
-141
-142
-143
-144
-145
-146</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 139</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_match_get_m'>match_get_m</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_validate_get_m'>validate_get_m</span> <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
-
-  <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:match_get_m</span>
-
-  <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='id identifier rubyid_api_get_match'>api_get_match</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='comma'>,</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='rbrace'>}</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="match_wait-instance_method">
-  
-    - (<tt>Symbol</tt>) <strong>match_wait</strong>(pattern) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Matches regex patterns and returns the name of the matching pattern.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Match for game text.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:retry</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:open</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>you open</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-<span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_match_wait'>match_wait</span> <span class='id identifier rubyid_match'>match</span>
-<span class='id identifier rubyid_result'>result</span> <span class='comment'>#=&gt; :retry or :open
-</span><span class='kw'>case</span> <span class='id identifier rubyid_result'>result</span>
-  <span class='kw'>when</span> <span class='symbol'>:open</span>
-    <span class='id identifier rubyid_echo'>echo</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>open!</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>pattern</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>list of regex patterns and names</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Symbol</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>name of the regex pattern</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-98
-99
-100
-101
-102
-103
-104</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 98</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
-  <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:match_wait</span>
-
-  <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='id identifier rubyid_api_get_match'>api_get_match</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='comma'>,</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='op'>!</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="match_wait_goto-instance_method">
-  
-    - (<tt>Void</tt>) <strong>match_wait_goto</strong>(pattern) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Matches regex patterns and goes to defined label.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Using match patterns and jumping to labels on a successful match.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_labels_start'>labels_start</span>
-
-<span class='id identifier rubyid_label'>label</span><span class='lparen'>(</span><span class='symbol'>:retry</span><span class='rparen'>)</span><span class='lbrace'>{</span>
-  <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:retry</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:next</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>you open</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_match_wait_goto'>match_wait_goto</span> <span class='id identifier rubyid_match'>match</span>
-<span class='rbrace'>}</span>
-
-<span class='id identifier rubyid_label'>label</span><span class='lparen'>(</span><span class='symbol'>:next</span><span class='rparen'>)</span><span class='lbrace'>{</span>
-  <span class='id identifier rubyid_echo'>echo</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>next</span><span class='tstring_end'>&quot;</span></span>
-<span class='rbrace'>}</span>
-
-<span class='id identifier rubyid_labels_end'>labels_end</span></code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>pattern</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>list of regex patterns and names</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Void</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-165
-166
-167
-168
-169
-170</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 165</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_match_wait_goto'>match_wait_goto</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-  <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:match_wait_goto</span>
-
-  <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='id identifier rubyid_api_get_match'>api_get_match</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='comma'>,</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_goto'>goto</span> <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='op'>!</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1156,41 +566,35 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211</pre>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 190</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span> <span class='op'>+</span> <span class='id identifier rubyid_dir'>dir</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span>
-
-  <span class='id identifier rubyid_p'>p</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='symbol'>:room</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\{nav\}$</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='symbol'>:stand</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>You can&#39;t do that while (sitting|kneeling|lying)|must be standing|cannot manage to stand</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='symbol'>:retreat</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>if you first retreat|You are engaged|do that while engaged</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
-        <span class='symbol'>:wait</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait|you may only type ahead</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-
-  <span class='kw'>case</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='id identifier rubyid_p'>p</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_dir'>dir</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='symbol'>:room</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\{nav\}$</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+                    <span class='symbol'>:stand</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>You can&#39;t do that while (sitting|kneeling|lying)|must be standing|cannot manage to stand</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+                    <span class='symbol'>:retreat</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>if you first retreat|You are engaged|do that while engaged</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='comma'>,</span>
+                    <span class='symbol'>:wait</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.\.\.wait|you may only type ahead</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='kw'>when</span> <span class='symbol'>:wait</span>
       <span class='id identifier rubyid_pause'>pause</span> <span class='float'>0.5</span>
       <span class='id identifier rubyid_move'>move</span> <span class='id identifier rubyid_dir'>dir</span>
@@ -1270,12 +674,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-242
-243
-244</pre>
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 242</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause'>pause</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>1</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_value'>value</span>
@@ -1297,7 +701,7 @@ thread is stuck in round time</p>
 </h3><div class="docstring">
   <div class="discussion">
     <p class="note returns_void">This method returns an undefined value.</p>
-<p>Pauses for current roundtime</p>
+<p>Pauses during rt and accounts for interrupted time</p>
 
 
   </div>
@@ -1311,14 +715,14 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-58
-59
-60
-61
-62</pre>
+121
+122
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause_for_roundtime'>pause_for_roundtime</span>
   <span class='kw'>if</span> <span class='gvar'>$_api_current_rt</span> <span class='op'>&gt;</span> <span class='int'>0</span>
@@ -1376,17 +780,17 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-176
-177
-178
-179</pre>
+69
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='gvar'>$_api_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span> <span class='op'>+</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span>
+  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>ApiSettings</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1452,232 +856,15 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-259
-260
-261</pre>
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 259</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_require'>require</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>/../</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>.rb</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="wait-instance_method">
-  
-    - (<tt>void</tt>) <strong>wait</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Waits for a prompt character.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Using wait in script to run consecutive commands.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>remove my shield</span><span class='tstring_end'>&quot;</span></span>
-<span class='id identifier rubyid_wait'>wait</span>
-<span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wear my shield</span><span class='tstring_end'>&quot;</span></span>
-<span class='id identifier rubyid_wait'>wait</span>
-<span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>remove my shield</span><span class='tstring_end'>&quot;</span></span></code></pre>
-    
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-222
-223
-224
-225</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 222</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span>
-  <span class='gvar'>$_api_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>&gt;</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="wait_for-instance_method">
-  
-    - (<tt>void</tt>) <strong>wait_for</strong>(pattern) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Runs until matching regex pattern is found in game text.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>pattern</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>regex pattern.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 69</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_pattern'>pattern</span> <span class='op'>=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>|</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-
-  <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_api_sync_read'>api_sync_read</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-        <span class='kw'>return</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.01</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="wait_for_roundtime-instance_method">
-  
-    - (<tt>void</tt>) <strong>wait_for_roundtime</strong> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
-<p>Waits for roundtime and pauses for the duration.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Wait for the duration of round time before executing next command.</p>
-</div></p>
-      
-      <pre class="example code"><code><span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hide</span><span class='tstring_end'>&quot;</span></span>
-<span class='id identifier rubyid_wait_for_roundtime'>wait_for_roundtime</span>
-<span class='id identifier rubyid_put'>put</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>unhide</span><span class='tstring_end'>&quot;</span></span></code></pre>
-    
-  </div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 42</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_wait_for_roundtime'>wait_for_roundtime</span>
-  <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_api_sync_read'>api_sync_read</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_api_sleep'>api_sleep</span> <span class='id identifier rubyid_line'>line</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
-        <span class='kw'>return</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.01</span>
-  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1689,7 +876,7 @@ thread is stuck in round time</p>
 </div>
 
     <div id="footer">
-  Generated on Thu May 26 15:06:41 2016 by
+  Generated on Sun Oct 16 11:36:54 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

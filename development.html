@@ -73,9 +73,9 @@
     <h2 class="contents_head" id="contents">4 Development</h2>
     <div class="about">
         <p>
-            The software is mostly written in C/C++ and initially using <a href="http://qt.digia.com/">Qt</a>
+            The software is mostly written in C/C++ and initially using <a href="https://www.qt.io">Qt</a>
             framework version 4.7 but now is updated to compile with version 5.6.
-            The project is set up on <a href="http://qt.digia.com/Product/Developer-Tools/">Qt Creator IDE</a>.
+            The project is set up on <a href="https://www.qt.io/ide/">Qt Creator IDE</a>.
             All the Qt tools are free to use for open source projects and can be downloaded from the
             <a href="http://qt-project.org/downloads">Qt website</a>.
         </p>
@@ -105,15 +105,15 @@
         <p>The entry point for the Frostbite application is <i>main.cpp</i> which runs the <i>mainwindow.cpp</i> application.</p>
         <p>The MainWindow class holds instances for some of the main purpose models like:</p>
             <ul class="list">
-                <li>windowmanager.cpp - <span class="gray">everything related to game windows</span></li>
-                <li>toolbarmanager.cpp - <span class="gray">handles items on the toolbar</span></li>
+                <li>windowfacade.cpp - <span class="gray">everything related to game windows</span></li>
+                <li>toolbar.cpp - <span class="gray">handles items on the toolbar</span></li>
                 <li>timerbar.cpp - <span class="gray">holds timer bar logic</span></li>
                 <li>commandline.cpp - <span class="gray">the client command line</span></li>
                 <li>tcpclient.cpp - <span class="gray">everything related to game connection and data handling</span></li>
                 <li>scriptservice.cpp - <span class="gray">handles scripting processes</span></li>
                 <li>menuhandler.cpp - <span class="gray">handles client main menu logic</span></li>
+                <li>xmlparserthread.cpp - <span class="gray">parse SF protocol as XML</span></li>
             </ul>
-
     </div>
     <footer>
         <p><small>Github: https://github.com/matoom/frostbite</small></p>
