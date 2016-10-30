@@ -89,7 +89,7 @@ def do_maneuver maneuver
       advance
       do_maneuver maneuver
     when :dead
-      load "skin"
+      load "skin.rb"
       face $args.first
       return :analyze
   end

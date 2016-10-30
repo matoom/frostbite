@@ -69,7 +69,7 @@ label(:advance) {
 }
 
 label(:dead) {
-  load "skin"
+  load "skin.rb"
   goto :start
 }
 

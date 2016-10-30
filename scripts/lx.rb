@@ -147,7 +147,7 @@ def check_status
     when :wait
       check_status
     when :dead
-      load "skin"
+      load "skin.rb"
     when :pause
       pause 3
       check_status

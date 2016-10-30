@@ -1,26 +1,26 @@
 @dest = $args.first
 
 def from_xing_to_shard
-  load "leth"
-  load "gond"
-  load "ugond"
-  load "shard"
+  load "leth.rb"
+  load "gond.rb"
+  load "ugond.rb"
+  load "shard.rb"
 end
 
 def from_shard_to_xing
-  load "xshard"
-  load "xugond"
-  load "xgond"
-  load "xleth"
+  load "xshard.rb"
+  load "xugond.rb"
+  load "xgond.rb"
+  load "xleth.rb"
 end
 
 def from_xing_to_haven
-  load "haven"
+  load "haven.rb"
 end
 
 def from_xing_to_ross
-  load "haven"
-  load "rossmans"
+  load "haven.rb"
+  load "rossmans.rb"
 end
 
 if @dest == "shard"

@@ -9,7 +9,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     highlighter = new Highlighter(parent);
 
     rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
-    rxDmg.setPattern("fail to\\b|attempt to\\b|counter little of\\b|You evade, barely\\b");
+    rxDmg.setPattern("\\blands.*hit to your\\b.*\\.$");
 
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
@@ -253,7 +253,8 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             GameDataContainer::Instance()->setCompassDirections(directions);
 
             QString text = GameDataContainer::Instance()->getRoomName() +
-                    GameDataContainer::Instance()->getRoomDesc() + directions.join("");
+                    TextUtils::Instance()->stripMapSpecial(GameDataContainer::Instance()->getRoomDesc())
+                    + directions.join("");
 
             QString hash = TextUtils::Instance()->toHash(text);
 

@@ -38,4 +38,4 @@ pause 1
 
 $args.clear << "rock"
 
-load "col"
+load "col.rb"

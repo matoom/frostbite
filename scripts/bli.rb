@@ -84,7 +84,7 @@ catch (:done) do
         pause 1
       when :loot
         stow_pick
-        load "lootbox"
+        load "lootbox.rb"
         throw :done
       when :done
         exit!

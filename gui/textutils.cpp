@@ -117,3 +117,7 @@ QString TextUtils::toBrief(QString direction) {
     return "";
 }
 
+QString TextUtils::stripMapSpecial(QString text) {
+    return text.remove("&quot;");
+}
+

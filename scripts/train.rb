@@ -5,25 +5,6 @@ require "armor"
 @start_plan = $args.first
 @plan = [:utility, :locksmith, :outdoor]
 
-=begin
-
-[The Black Spire, Stairwell]
-The air, thick with smoke from dim oil lamps, is filled with the acrid odor of incense.  Stone steps rise into the gloom and descend to an oak door.  A dark shaft stretches upwards into shadow at the center of the tower.
-Obvious exits: west, up.
-
-
-[The Black Spire, Chamber of Death]
-Oddly shaped to fit along the curved tower walls, chairs surround a modest table in the center of the room.  Pitted and marked by the points of countless knives, it is bare except for an elegantly detailed deobar box.  Near the table, an open chest contains short swords, serrated daggers, sharp pointed knives and bucklers of varying styles.  You also see a Dragon Priest assassin, a Dragon Priest assassin, an embroidery needle, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a Dragon Priest assassin, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt, a Dragon Priest assassin, a crossbow bolt, a crossbow bolt, a crossbow bolt, a crossbow bolt and some junk.
-Obvious exits: east, southeast.
->
-
-[Wyvern Mountain, Steep Trail] -- final
-[Wyvern Mountain, Narrow Plateau] -- trail
-
-stow box
-
-=end
-
 if @start_plan
   @plan.each do |item|
     break if item.to_s.include?(@start_plan)
@@ -35,10 +16,14 @@ echo "Training plan - #{@plan.inspect}"
 
 def reset
   sleep Rt::value
-  #you cannot manage to stand
-  put_wait "stand", /You stand|already standing/ unless Status::standing
-  put_wait "khri stop", /unable to maintain|lose concentration|can no longer|attempt to relax/ unless Spell::active.empty?
-  pause
+  until Status::standing
+    put_wait "stand", /You stand|already standing/
+    pause
+  end
+  if Spell::active.any?
+    put_wait "khri stop", /unable to maintain|lose concentration|can no longer|attempt to relax/
+    pause
+  end
 end
 
 def stow
@@ -65,7 +50,7 @@ module Locksmith
   def self.do_run
     $args.clear
     Thread.new {
-      load("bli")
+      load("bli.rb")
     }
   end
 end
@@ -86,7 +71,7 @@ module Outdoor
   def self.do_run
     $args.clear << "rock"
     Thread.new {
-      load("col")
+      load("col.rb")
     }
   end
 end
@@ -105,44 +90,7 @@ module Utility
   def self.do_run
     $args.clear
     Thread.new {
-      load("med")
-    }
-  end
-end
-
-module Crossbow
-  def self.before
-    if Room::title.downcase.include?("crossing")
-      unless Armor::wearing_armor?
-        load("xvarmor")
-      end
-      load("bank")
-      pause
-      move "out"
-      $args.clear << "shard"
-      load("travel")
-    end
-
-    if Room::title == /\[Wyvern Trail, Journey's Rest\]/
-      load("raven")
-      move "se"
-    end
-
-    put "remove crossbow"
-    put "stance custom"
-    pause
-  end
-
-  def self.after
-    echo ":: after crossbow ::"
-    put "wear crossbow"
-    pause
-  end
-
-  def self.do_run
-    $args.clear
-    Thread.new {
-      load("lx")
+      load("med.rb")
     }
   end
 end
@@ -161,6 +109,7 @@ def rewrite_finally thread, obj
     if thread
       abort_module thread, obj
     end
+    Client::track_exp_clear
     sleep Rt::value
     obj.send("after")
   end

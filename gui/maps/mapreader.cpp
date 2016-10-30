@@ -291,10 +291,10 @@ void MapReader::roomToHash() {
         QString text = "[" + mapNode->getName() + "]" + desc + list.join("");
         QString hash = TextUtils::Instance()->toHash(text);
 
-        /*if(mapNode->getId() == 100) {
+        /*if(mapNode->getId() == 192) {
             qDebug() << text;
             qDebug() << hash;
-        }*/        
+        }*/
 
         int level = mapNode->getPosition()->getZ();
         int nodeId = mapNode->getId();

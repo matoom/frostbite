@@ -25,7 +25,7 @@ if Room::title.eql? "[The Crossing, Alamhif Trace]"
   move "go square"
   move "go door"
 else
-  load "dir"
+  load "dir.rb"
 end
 
 enter doors

@@ -26,6 +26,7 @@ public:
 
     QString toHash(QString text);
     QString toBrief(QString direction);
+    QString stripMapSpecial(QString text);
 
 private:
     TextUtils(QObject *parent = 0);
