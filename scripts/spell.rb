@@ -15,6 +15,7 @@ def spell_start e
   pause Rt::value
   put "khri start #{e}"
   match = { :wait => [/\.\.wait/],
+            :no_spell => ["rephrase that command"],
             :recover => ["not recovered"],
             :running => ["Roundtime", "already using the"] }
   result = match_wait match
@@ -25,6 +26,8 @@ def spell_start e
       Observer.instance.call_event "spell_start", e
     when :recover
       $recover_ts = Time.now
+    when :no_spell
+      Thread.exit
   end
 end
 

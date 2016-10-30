@@ -9,7 +9,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     highlighter = new Highlighter(parent);
 
     rxAmp.setPattern("&(?!#?[a-z0-9]+;)");
-    rxDmg.setPattern("\\blands.*hit to your\\b.*\\.$");
+    rxDmg.setPattern("\\bat you\\..*\\blands\\b");
 
     connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
