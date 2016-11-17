@@ -205,6 +205,18 @@ class Room
   def self.count_objects(value)
     self.objects.scan(value).length
   end
+
+  # Monsters bold.
+  #
+  # @return [Array] list of bold monsters in room
+  # @example Using monsters bold in script.
+  # @note set MonsterBold
+  #   echo Room::monsters_bold
+  #   => ["a ship's rat"]
+  def self.monsters_bold
+    $_api_socket.puts "GET ROOM_MONSTERS_BOLD\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
+  end
 end
 
 class Vitals

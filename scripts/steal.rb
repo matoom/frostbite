@@ -22,7 +22,7 @@
       :bard => { :item => "silverwillow fiddle", :amount => 5 }, #[The True Bard D'Or, Fine Instruments] wyndewood fiddle
       :bard_private => { :item => "bodhran", :amount => 4 }, #[Luthier's, Private Showroom] horn
       :armor => { :item => "kite shield", :amount => 5 }, #[Tembeg's Armory, Salesroom]
-      :weapon => { :item => :none, :amount => 2 }, #[Milgrym's Weapons, Showroom]
+      :weapon => { :item => "claymore", :amount => 6, :location => "on rack"}, #[Milgrym's Weapons, Showroom]
       :jewelry_appraisal_room => { :item => "gold anklet", :amount => 1 }, #[Grisgonda's, Appraisal Room] #platinum wristcuff",
       :jewelry => { :item => "platinum engagement ring", :amount => 1, :bin => true }, #[Grisgonda's Gems and Jewels] # platinum engagement ring (trivial 938)
       :macipur => { :item => :none, :amount => 2 }, #[Marcipur's Stitchery, Workshop]  -- gold brocade long coat (trivial 809)

@@ -119,6 +119,12 @@ void GameDataContainer::removeExpField(QString name) {
     expMap.remove(name.toLower());
 }
 
+void GameDataContainer::clearExp() {
+    QWriteLocker locker(&lock);
+    exp.clear();
+    expMap.clear();
+}
+
 QHash<QString, QString> GameDataContainer::getExp() {
     QReadLocker locker(&lock);
     return exp;
@@ -180,6 +186,16 @@ void GameDataContainer::setRoomDesc(QString desc) {
 QString GameDataContainer::getRoomDesc() {
     QReadLocker locker(&lock);
     return this->roomDesc;
+}
+
+void GameDataContainer::setRoomObjsData(QString objs) {
+    QWriteLocker locker(&lock);
+    this->roomObjsData = objs;
+}
+
+QString GameDataContainer::getRoomObjsData() {
+    QReadLocker locker(&lock);
+    return this->roomObjsData;
 }
 
 void GameDataContainer::setRoomObjs(QString objs) {

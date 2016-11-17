@@ -31,6 +31,7 @@ public:
     void setRoomName(QString);
     void setRoomDesc(QString);
     void setRoomObjs(QString);
+    void setRoomObjsData(QString);
     void setRoomPlayers(QString);
     void setRoomExits(QString);
     void setRoomExtra(QString);
@@ -38,6 +39,7 @@ public:
     QString getRoomName();
     QString getRoomDesc();
     QString getRoomObjs();
+    QString getRoomObjsData();
     QString getRoomPlayers();
     QString getRoomExits();
     QString getRoomExtra();
@@ -107,6 +109,7 @@ public:
     QHash<QString, QString> getExp();
     QMap<QString, int> getExp(QString name);
     void removeExpField(QString);
+    void clearExp();
     QStringList getInventory();
     QStringList getContainer();
 
@@ -140,6 +143,7 @@ private:
     QString roomName;
     QString roomDesc;
     QString roomObjs;
+    QString roomObjsData;
     QString roomPlayers;
     QString roomExits;
     QString roomExtra;

@@ -28,7 +28,7 @@ Plugins = PlugIns
 create folder -> Contents/PlugIns
 
 run: 
-macdeployqt FrostBite.app/ -dmg -no-plugins
+macdeployqt FrostBite.app/ -dmg
 
 if needed remove unnecessary frameworks/plugins
 

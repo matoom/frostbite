@@ -1,3 +1,3 @@
-load("disarm")
-load("pick")
-load("lootbox")
+load("disarm.rb")
+load("pick.rb")
+load("lootbox.rb")

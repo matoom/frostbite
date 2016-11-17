@@ -63,11 +63,15 @@ private:
 
     void processGameData(QByteArray);
     void processPushStream(QByteArray);
+    void processMono(QByteArray);
     void writeGameText(QByteArray);
     //void writeScript(QByteArray);
     void fixMonoTags(QString&);
     QString stripTags(QString);
     QString stripPushTags(QString);
+    QString stripRootTags(QString);
+    QString parseThoughts(QString);
+    QString addTime(QString);
 
     QRegExp rxAmp;
     QRegExp rxDmg;

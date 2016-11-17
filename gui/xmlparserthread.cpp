@@ -116,6 +116,9 @@ void XmlParserThread::processGameData(QByteArray data) {
     // process pushstream
     processPushStream(rawData);
 
+    // mono data
+    processMono(rawData);
+
     // Write game text and raw data
     writeGameText(rawData);
 }
@@ -174,10 +177,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             thought.insert(thought.indexOf("&quot;"), "</span>");
             thought.prepend("<span class=\"thinking\">");
 
-            QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
-            emit updateThoughtsWindow(thought + time);
-
+            emit updateThoughtsWindow(addTime(thought));
         } else if(e.tagName() == "preset" && e.attribute("id") == "speech") {
             QString presetSpeech = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(presetSpeech);
@@ -188,9 +188,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             speech.insert(speech.indexOf("&quot;"), "</span>");
             speech.prepend("<span class=\"speech\">");
 
-            QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
-            emit updateConversationsWindow(speech + time);
+            emit updateConversationsWindow(addTime(speech));
         } else if(e.tagName() == "preset" && e.attribute("id") == "whisper") {
             QString presetWhisper = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(presetWhisper);
@@ -201,9 +199,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             whisper.insert(whisper.indexOf("&quot;"), "</span>");
             whisper.prepend("<span class=\"whisper\">");
 
-            QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
-            emit updateConversationsWindow(whisper + time);
+            emit updateConversationsWindow(addTime(whisper));
         } else if(e.tagName() == "b") {
             QString b = e.text().trimmed();
             TextUtils::Instance()->plainToHtml(b);
@@ -214,9 +210,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             yell.insert(yell.indexOf("&quot;"), "</span>");
             yell.prepend("<span class=\"speech\">");
 
-            QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
-            emit updateConversationsWindow(yell + time);
+            emit updateConversationsWindow(addTime(yell));
         }
     }
     return true;
@@ -326,7 +320,7 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                     } else {
                         gameDataContainer->removeExpField(id);
                         emit updateExpWindow(id, text);
-                    }                    
+                    }
                 }
             } else if(e.attribute("id").startsWith("room")) {
                 QString id = e.attribute("id");
@@ -334,7 +328,12 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                     QString roomDesc = e.text();
                     TextUtils::Instance()->plainToHtml(roomDesc);
                     gameDataContainer->setRoomDesc(roomDesc);
-                } else if (id.endsWith("objs")) {
+                } else if (id.endsWith("objs")) {                    
+                    QString str;
+                    QTextStream stream(&str);
+                    e.save(stream, QDomNode::ElementNode);
+                    gameDataContainer->setRoomObjsData(str);
+
                     QString roomObjs = e.text();
                     TextUtils::Instance()->plainToHtml(roomObjs);
                     gameDataContainer->setRoomObjs(roomObjs);
@@ -365,21 +364,19 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             }
 
             if(e.attribute("id") == "logons") {
-                QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-                emit updateArrivalsWindow(root.text().trimmed() + time);
+                emit updateArrivalsWindow(addTime(root.text().trimmed()));
             } else if(e.attribute("id") == "thoughts") {
-                QString thought = root.text().trimmed();
-                TextUtils::Instance()->plainToHtml(thought);
-
-                thought.insert(thought.indexOf("&quot;"), "</span>");
-                thought.prepend("<span class=\"thinking\">");
-
-                QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-
-                emit updateThoughtsWindow(thought + time);
+                QString thought;
+                QTextStream stream(&thought);
+                root.save(stream, QDomNode::TextNode);
+                emit updateThoughtsWindow(addTime(parseThoughts(thought)));
+            } else if(e.attribute("id") == "chatter") {
+                QString chatter;
+                QTextStream stream(&chatter);
+                root.save(stream, QDomNode::TextNode);
+                emit updateThoughtsWindow(addTime(parseThoughts(chatter)));
             } else if(e.attribute("id") == "death") {
-                QString time = " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
-                emit updateDeathsWindow(root.text().trimmed() + time);
+                emit updateDeathsWindow(addTime(root.text().trimmed()));
             } else if(e.attribute("id") == "atmospherics") {
                 gameText += root.text();
             } else if(e.attribute("id") == "inv") {
@@ -392,6 +389,10 @@ void XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameText += ooc;
             } else if(e.attribute("id") == "percWindow") {
                 perc = true;
+            } else if(e.attribute("id") == "experience") {
+                foreach(QString key, gameDataContainer->getExp().keys()) {
+                    emit updateExpWindow(key, "");
+                }
             }
         } else if(e.tagName() == "popStream") {
             pushStream = false;
@@ -434,12 +435,8 @@ void XmlParserThread::processPushStream(QByteArray rawData) {
     }
 }
 
-void XmlParserThread::writeGameText(QByteArray rawData) {
-    if (rawData.size() == 1) {
-        emit writeText("", false);
-    } else if (mono && !pushStream) {
-        /* mono handled separately otherwise white spaces
-        before tags are not recognized as text */
+void XmlParserThread::processMono(QByteArray rawData) {
+    if (mono) {
         QString line = rawData;
 
         // remove CRs
@@ -447,9 +444,20 @@ void XmlParserThread::writeGameText(QByteArray rawData) {
 
         this->fixMonoTags(line);
 
-        if(line != "" && !rawData.startsWith("<output class=\"mono\"/>")) {
-            emit writeText(line.toLocal8Bit(), false);
+        if(bold) {
+            line.prepend("<span class=\"bold\">");
+            line.append("</span>");
         }
+
+        if(line != "") {
+            gameText += line.toLocal8Bit();
+        }
+    }
+}
+
+void XmlParserThread::writeGameText(QByteArray rawData) {
+    if (rawData.size() == 1) {
+        emit writeText("", false);
     } else if(gameText != "") {
         emit writeText(gameText.toLocal8Bit(), prompt);
     }
@@ -460,16 +468,25 @@ void XmlParserThread::fixMonoTags(QString& line) {
     // strip tags from cmd=flag
     if(line.startsWith("  <d cmd=\"flag")) {
         line = stripTags("<temp>" + line + "</temp>");
-        if(line.endsWith('\n')) {
-            line.chop(1);
-        }
+        if(line.endsWith('\n')) line.chop(1);
+    } else if(line.startsWith("<output")) {
+        line = "";
+    } else if(line.startsWith("<compDef")) {
+        line = "";
     } else {
         // fix ids
         line.replace("preset id=\"thought\"", "preset class=\"penalty\"");
         line.replace("preset id=\"speech\"", "preset class=\"bonus\"");
         // fix bold
-        line.replace("pushBold/", "span class=\"bold\"");
-        line.replace("popBold/", "/span");
+        if(line.startsWith("<pushBold/>") && line.endsWith("<popBold/>")) {
+            line.replace("pushBold/", "span class=\"bold\"");
+            line.replace("popBold/", "/span");
+        } else if(line == "<popBold/>") {
+            line = " ";
+        } else {
+            line.replace("<pushBold/>", "");
+            line.replace("<popBold/>", "");
+        }
     }
 }
 
@@ -490,6 +507,28 @@ QString XmlParserThread::stripPushTags(QString line) {
     line = line.remove(push);
     line = line.remove(QRegExp("<popStream\\/>"));
     return line;
+}
+
+QString XmlParserThread::stripRootTags(QString line) {
+    line = line.remove(QRegExp("<root>"));
+    line = line.remove(QRegExp("</root>"));
+    return line;
+}
+
+QString XmlParserThread::parseThoughts(QString data) {
+    data = stripRootTags(stripPushTags(data)).trimmed();
+
+    TextUtils::Instance()->plainToHtml(data);
+
+    data.replace("&lt;preset id=&quot;thought&quot;&gt;", "<span class=\"thinking\">");
+    data.replace("&lt;/preset&gt;", "</span>");
+    data.remove("&#xd;");
+
+    return data;
+}
+
+QString XmlParserThread::addTime(QString data) {
+    return data + " <span class=\"body\">[" + QTime::currentTime().toString("h:mm ap") + "]</span>";
 }
 
 XmlParserThread::~XmlParserThread() {
