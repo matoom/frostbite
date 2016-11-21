@@ -3,6 +3,7 @@
 # run: hunting area
 
 require "target"
+require "defines"
 
 @rt_adjust = 0
 
@@ -84,7 +85,7 @@ label(:wait_for) {
   end
 
   echo "*** WAITING ***<br/>"
-  wait_for(/begins to advance you|closes to melee range/)
+  wait_for(/begins to advance you|closes to melee range|at you\./)
   goto :start
 }
 

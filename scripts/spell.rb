@@ -1,11 +1,10 @@
-@spell_maintain = ["sagacity"]
 @recover = 30
 $recover_ts = -1
 
-def spell_activate
+def spell_activate verb, spells
   return if $recover_ts.to_i > -1 && Time.now - $recover_ts < @recover
-  @spell_maintain.each do |spell|
-    unless Spell::active.any? { |s| /khri #{spell}/i =~ s}
+  spells.each do |spell|
+    unless Spell::active.any? { |s| /#{verb} #{spell}/i =~ s}
       Observer.instance.call_event "spell_start", spell
     end
   end

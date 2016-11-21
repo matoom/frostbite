@@ -6,9 +6,15 @@ require "spell"
 
 Target::auto "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
+Client::track_exp "Tactics"
+
+def finally_do
+  Client::track_exp_clear
+end
+
 Thread.new do
   while true
-    spell_activate
+    spell_activate "khri", ["sagacity"]
     sleep 15
   end
 end
