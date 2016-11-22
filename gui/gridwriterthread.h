@@ -15,12 +15,12 @@ struct GridEntry {
 
 typedef QMap<QString, QString> GridItems;
 
-class GridHighlighterThread : public QThread {
+class GridWriterThread : public QThread {
     Q_OBJECT
 
 public:
-    explicit GridHighlighterThread(QObject *parent);
-    ~GridHighlighterThread();
+    explicit GridWriterThread(QObject *parent);
+    ~GridWriterThread();
 
     virtual void run();
 

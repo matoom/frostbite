@@ -9,7 +9,7 @@
 
 #include <mainwindow.h>
 #include <gamedatacontainer.h>
-#include <highlights/highlighter.h>
+#include <text/highlight/highlighter.h>
 
 class MainWindow;
 class WindowFacade;

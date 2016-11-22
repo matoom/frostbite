@@ -1,6 +1,6 @@
-#include "highlighterthread.h"
+#include "windowwriterthread.h"
 
-HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
+WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window) {
     mainWindow = (MainWindow*)parent;
     this->textEdit = dynamic_cast<QPlainTextEdit*>(window);
     this->window = window;
@@ -13,17 +13,17 @@ HighlighterThread::HighlighterThread(QObject *parent, WindowInterface* window) {
     connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
 }
 
-void HighlighterThread::updateSettings() {
+void WindowWriterThread::updateSettings() {
     highlighter->reloadSettings();
 }
 
-void HighlighterThread::addText(QString text) {
+void WindowWriterThread::addText(QString text) {
     mMutex.lock();
     dataQueue.enqueue(text);
     mMutex.unlock();
 }
 
-void HighlighterThread::run() {
+void WindowWriterThread::run() {
     while(!this->exit) {
         while(!dataQueue.isEmpty()) {
             mMutex.lock();
@@ -35,7 +35,7 @@ void HighlighterThread::run() {
     }
 }
 
-void HighlighterThread::process(QString data) {
+void WindowWriterThread::process(QString data) {
     if(window->append()) {
         setText(highlighter->highlight(data));
     } else {
@@ -56,13 +56,13 @@ void HighlighterThread::process(QString data) {
     }
 }
 
-void HighlighterThread::setText(QString text) {
+void WindowWriterThread::setText(QString text) {
     emit writeText("<span class=\"body\">"
                    + (text.isEmpty() ? "&nbsp;" : text) +
                    "</span>");
 }
 
-HighlighterThread::~HighlighterThread() {
+WindowWriterThread::~WindowWriterThread() {
     this->exit = true;
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");

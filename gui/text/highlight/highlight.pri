@@ -4,11 +4,10 @@ HEADERS += \
     $$PWD/highlightdialog.h \
     $$PWD/highlighteditdialog.h \
     $$PWD/highlighter.h \
-    $$PWD/highlighterthread.h \
     $$PWD/highlightgeneraltab.h \
     $$PWD/highlightsettings.h \
     $$PWD/highlightsettingsentry.h \
-    $$PWD/highlighttexttab.h \
+    $$PWD/highlighttexttab.h 
 
 SOURCES += \
     $$PWD/highlightadddialog.cpp \
@@ -16,11 +15,10 @@ SOURCES += \
     $$PWD/highlightdialog.cpp \
     $$PWD/highlighteditdialog.cpp \
     $$PWD/highlighter.cpp \
-    $$PWD/highlighterthread.cpp \
     $$PWD/highlightgeneraltab.cpp \
     $$PWD/highlightsettings.cpp \
     $$PWD/highlightsettingsentry.cpp \
-    $$PWD/highlighttexttab.cpp
+    $$PWD/highlighttexttab.cpp 
 
 FORMS += \
     $$PWD/highlightadddialog.ui \

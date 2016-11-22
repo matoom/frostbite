@@ -1,25 +1,25 @@
-#ifndef HIGHLIGHTERTHREAD_H
-#define HIGHLIGHTERTHREAD_H
+#ifndef WINDOWWRITERTHREAD_H
+#define WINDOWWRITERTHREAD_H
 
 #include <QObject>
 #include <QPlainTextEdit>
 #include <QQueue>
 #include <QMutex>
 
-#include <highlights/highlighter.h>
+#include <text/highlight/highlighter.h>
 #include <globaldefines.h>
 
-#include <log4qt/logger.h>
+//#include <log4qt/logger.h>
 
 class Highlighter;
 
-class HighlighterThread : public QThread {
+class WindowWriterThread : public QThread {
     Q_OBJECT
-    LOG4QT_DECLARE_QCLASS_LOGGER
+    //LOG4QT_DECLARE_QCLASS_LOGGER
 
 public:
-    HighlighterThread(QObject *parent, WindowInterface* window);
-    ~HighlighterThread();
+    WindowWriterThread(QObject *parent, WindowInterface* window);
+    ~WindowWriterThread();
 
     virtual void run();
 
@@ -29,7 +29,7 @@ private:
     Highlighter* highlighter;
     MainWindow* mainWindow;
     QMutex mMutex;
-    QList<QString> logWindows;
+    //QList<QString> logWindows;
     QRegExp rxRemoveTags;
     QString localData;
     WindowInterface *window;
@@ -49,4 +49,4 @@ signals:
 
 };
 
-#endif // HIGHLIGHTERTHREAD_H
+#endif // WINDOWWRITERTHREAD_H

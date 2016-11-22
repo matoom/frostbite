@@ -25,7 +25,7 @@ greaterThan(QT_VERSION, 5){
 
 include(maps/maps.pri)
 
-include(highlights/highlights.pri)
+include(text/text.pri)
 
 win32 {
     TARGET = ../../Frostbite
@@ -92,10 +92,11 @@ SOURCES += main.cpp\
     shareddataservice.cpp \
     gridwindowfactory.cpp \
     gridwindow.cpp \
-    gridhighlighterthread.cpp \
     scriptapiserver.cpp \
     apisettings.cpp \
-    authlogger.cpp
+    authlogger.cpp \
+    windowwriterthread.cpp \
+    gridwriterthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -158,10 +159,11 @@ HEADERS  += mainwindow.h \
     shareddataservice.h \
     gridwindowfactory.h \
     gridwindow.h \
-    gridhighlighterthread.h \
     scriptapiserver.h \
     apisettings.h \
-    authlogger.h
+    authlogger.h \
+    windowwriterthread.h \
+    gridwriterthread.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

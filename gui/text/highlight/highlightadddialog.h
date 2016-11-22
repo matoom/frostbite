@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QtGui>
 
-#include <highlights/highlighttexttab.h>
-#include <highlights/highlightsettings.h>
-#include <highlights/highlightsettingsentry.h>
+#include <text/highlight/highlighttexttab.h>
+#include <text/highlight/highlightsettings.h>
+#include <text/highlight/highlightsettingsentry.h>
 
 class HighlightTextTab;
 
