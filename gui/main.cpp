@@ -4,13 +4,36 @@
 #include "log4qt/logger.h"
 #include <log4qt/propertyconfigurator.h>
 
-#include "scriptapiserver.h"
-
-#include "maps/mapreader.h"
+#ifdef __linux__
+#include <stdio.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+#endif
 
 bool MainWindow::DEBUG = false;
 
+#ifdef __linux__
+void handler(int sig) {
+  void *array[50];
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(array, 50);
+
+  // print out all the frames to stderr
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(1);
+}
+#endif
+
 int main(int argc, char *argv[]) {
+
+    #ifdef __linux__
+    signal(SIGSEGV, handler);
+    #endif
 
     GuiApplication a(argc, argv);
 

@@ -24,7 +24,6 @@ greaterThan(QT_VERSION, 5){
 }
 
 include(maps/maps.pri)
-
 include(text/text.pri)
 
 win32 {
