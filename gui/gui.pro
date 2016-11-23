@@ -185,7 +185,7 @@ OTHER_FILES += \
 
 # use relative path for libs in unix
 unix:!mac{  
-    QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/lib\'"
+    QMAKE_LFLAGS += -rdynamic "-Wl,-rpath,\'\$$ORIGIN/lib\'"
 }
 
 ICON = images/shield.icns
