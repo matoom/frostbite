@@ -25,6 +25,7 @@ greaterThan(QT_VERSION, 5){
 
 include(maps/maps.pri)
 include(text/text.pri)
+include(xml/xml.pri)
 
 win32 {
     TARGET = ../../Frostbite
@@ -87,7 +88,6 @@ SOURCES += main.cpp\
     tcpclient.cpp \
     windowfacade.cpp \
     textutils.cpp \
-    xmlparserthread.cpp \
     shareddataservice.cpp \
     gridwindowfactory.cpp \
     gridwindow.cpp \
@@ -154,7 +154,6 @@ HEADERS  += mainwindow.h \
     tcpclient.h \
     windowfacade.h \
     textutils.h \
-    xmlparserthread.h \
     shareddataservice.h \
     gridwindowfactory.h \
     gridwindow.h \

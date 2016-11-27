@@ -36,6 +36,7 @@
 #define HEALTH_BG_100 ":/images/health_100.png"
 #define HEALTH ":/images/health.png"
 #define CONCENTRATION_BG ":/images/concentration.png"
+#define MANA_BG ":/images/mana.png"
 #define FATIGUE_BG ":/images/fatigue.png"
 #define SPIRIT_BG ":/images/spirit.png"
 

@@ -99,11 +99,16 @@ public:
     void setSpirit(int);
     int getSpirit();
 
+    void setMana(int);
+    int getMana();
+
     void setFatigue(int);
     int getFatigue();
 
     void setRt(int);
     int getRt();
+
+    void setCt(int ct);
 
     QString getExpField(QString name);
     QHash<QString, QString> getExp();
@@ -158,6 +163,7 @@ private:
     int health;
     int concentration;
     int spirit;
+    int mana;
     int fatigue;
 
     bool standing;
@@ -173,6 +179,7 @@ private:
     bool dead;
 
     int rt;
+    int ct;
 
     QStringList activeSpells;
 

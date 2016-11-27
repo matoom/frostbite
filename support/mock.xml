@@ -294,6 +294,8 @@ You are wearing a midnight-black herb pouch pinioned with blood-red iera flowers
 
 <prompt time="1324816375">&gt;</prompt>
 <dialogData id='minivitals'><progressBar id='concentration' value='90' text='concentration 90%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1324816375">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='mana' value='90' text='mana 90%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 <prompt time="1324816381">&gt;</prompt>
 Galadriel carefully makes another fold in her paper.
 <prompt time="1324816381">&gt;</prompt>
@@ -769,7 +771,7 @@ Obvious exits: <d>out</d>.
 <popStream/><prompt time="1361728441">&gt;</prompt>
 <pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><b>Frodo yells,</b> "Hello."
 <popStream/><b>Frodo yells,</b> "Hello."
-<prompt time="1361728440">&gt;</prompt>
+<popStream/><prompt time="1361728440">&gt;</prompt>
 <roundTime value='1325173145'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='98' text='fatigue 98%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 &lt; You kick your foot at a musk hog.  A musk hog fails to evade, taking the full blow.  <pushBold/>The foot lands a massive strike that blasts hard into the left arm and causes purple welts to appear almost immediately, lightly stunning it.<popBold/>
 [You're incredibly balanced and overwhelming opponent.]
@@ -924,6 +926,7 @@ Obvious exits: <d>out</d>.
 <prompt time="1446936439">&gt;</prompt>
 
 <compass><dir value="n"/><dir value="e"/><dir value="se"/><dir value="s"/><dir value="sw"/><dir value="w"/><dir value="nw"/><dir value="out"/><dir value="up"/><dir value="down"/><dir value="ne"/></compass><pushStream id="logons"/> * Florist Legolas joins the adventure.
+<popStream/><prompt time="1446936439">&gt;</prompt>
 
 You rest your hand on Troll's arm with a soft smile.
 
@@ -999,3 +1002,4 @@ Obvious paths: <d>north</d>, <d>east</d>, <d>west</d>.
 
 <component id='room objs'>You also see <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/> and <pushBold/>a ship's rat<popBold/>.</component>
 <prompt time="1479308021">&gt;</prompt>
+

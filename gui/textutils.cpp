@@ -13,8 +13,7 @@ TextUtils* TextUtils::Instance() {
 TextUtils::TextUtils(QObject *parent) : QObject(parent) {
     this->populateExpStates();
 
-    rxNumber.setPattern("(\\d+)");
-    rxRemoveTags.setPattern("<[^>]*>");
+
 }
 
 void TextUtils::populateExpStates() {
@@ -43,6 +42,7 @@ int TextUtils::expStateToNumeric(QString state) {
 }
 
 int TextUtils::expBriefToNumeric(QString state) {
+    QRegExp rxNumber("(\\d+)");
     rxNumber.indexIn(state, 0);
     return rxNumber.cap(1).toInt();
 }
@@ -60,21 +60,24 @@ QString TextUtils::msToMMSS(int ms) {
 }
 
 QString TextUtils::findLowestActiveValue(QStringList list) {
-    int minVal = std::numeric_limits<int>::max();
+    QRegExp rxNumber("(\\d+)");
+
+    int minVal = 100000;
     foreach(QString item, list) {
         rxNumber.indexIn(item, 0);
         int value = rxNumber.cap(1).toInt();
 
-        if(value < minVal && value != 0) {
+        if(value < minVal && value > 0) {
             minVal = value;
         }
     }
-    if(minVal == std::numeric_limits<int>::max()) return "-";
+    if(minVal == 100000) return "-";
 
     return QString::number(minVal);
 }
 
 QString TextUtils::htmlToPlain(QString& data) {
+    QRegExp rxRemoveTags("<[^>]*>");
     data.remove(rxRemoveTags);
     data.replace("&amp;", "&").replace("&quot;", "\"")
             .replace("&apos;", "\'").replace("&lt;", "<").replace("&gt;", ">");

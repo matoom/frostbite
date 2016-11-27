@@ -1,5 +1,5 @@
-#ifndef XmlParserThread_H
-#define XmlParserThread_H
+#ifndef XMLPARSERTHREAD_H
+#define XMLPARSERTHREAD_H
 
 #include <QObject>
 #include <QQueue>
@@ -26,7 +26,7 @@ class XmlParserThread : public QThread {
 public:
     explicit XmlParserThread(QObject *parent = 0);
     ~XmlParserThread();
-    
+
     virtual void run();
 
     void process(QByteArray);
@@ -36,7 +36,7 @@ private:
     QMutex mMutex;
 
     bool filterPlainText(QDomElement, QDomNode);
-    void filterDataTags(QDomElement, QDomNode);
+    bool filterDataTags(QDomElement, QDomNode);
 
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
@@ -47,33 +47,34 @@ private:
     QStringList inventory;
 
     QString gameText;
-    QString scriptText;
-    QDateTime time;
+    QDateTime time;    
     QDateTime roundTime;
+    QDateTime castTime;
+
+    QString activeSpells;
+
+    QHash<QString, QVariant> scheduled;
 
     bool exit;
-    bool pushStream;
-    bool inv;
-    bool familiar;
-    bool perc;
-    bool mono;
     bool bold;
     bool initRoundtime;
+    bool initCastTime;
     bool prompt;
 
     void processGameData(QByteArray);
-    void processPushStream(QByteArray);
-    void processMono(QByteArray);
-    void writeGameText(QByteArray);
-    //void writeScript(QByteArray);
-    void fixMonoTags(QString&);
+    void processPushStream(QString);
+    void processOutput(QString);
+    void warnUnknownEntity(QString ref, QString xml);
+
+    QString parseTalk(QDomElement element);
+    QString toString(QDomElement element);
+    QString fixInputXml(QString);
     QString stripTags(QString);
-    QString stripPushTags(QString);
-    QString stripRootTags(QString);
-    QString parseThoughts(QString);
     QString addTime(QString);
 
-    QRegExp rxAmp;
+    void runScheduledEvents();
+    void runEvent(QString event, QVariant data);
+
     QRegExp rxDmg;
 
     QByteArray localData;
@@ -96,10 +97,12 @@ signals:
     void updateWieldLeft(QString);
     void updateWieldRight(QString);
     void updateSpell(QString);
-    void updateActiveSpells();
+    void updateActiveSpells(QStringList);
     void clearActiveSpells();
 
     void setTimer(int);
+    void setCastTimer(int);
+
     void writeScriptMessage(QByteArray);
     void setMainTitle(QString);
     void writeText(QByteArray, bool);
@@ -111,4 +114,4 @@ public slots:
     void updateHighlighterSettings();
 };
 
-#endif // XmlParserThread_H
+#endif // XMLPARSERTHREAD_H

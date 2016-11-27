@@ -21,6 +21,7 @@ public:
     QProgressBar* concentrationBar;
     QProgressBar* fatigueBar;
     QProgressBar* spiritBar;
+    QProgressBar* manaBar;
 
 private:
     QProgressBar* vitalsProgress(const char*, const char*, qint8);

@@ -7,23 +7,28 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     timer = new QTimer;
     timer->setInterval(1000);
 
-    time = 0;
-
     settings = new GeneralSettings();
-    color = this->getColor();
+
+    rtColor = this->getRtColor();
+    ctColor = this->getCtColor();
+
+    roundTime = 0;
+    castTime = 0;
 
     connect(timer, SIGNAL(timeout()), this, SLOT(intervalEvent()));
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+    connect(this, SIGNAL(callPaint(int, int)), this, SLOT(paint(int, int)));
 }
 
 void RoundTimeDisplay::reloadSettings() {
     settings->init();
-    color = this->getColor();
+    rtColor = this->getRtColor();
+    ctColor = this->getCtColor();
 }
 
 void RoundTimeDisplay::setTimer(int seconds) {
-    time = seconds;
-    gameDataContainer->setRt(time);
+    roundTime = seconds;
+    gameDataContainer->setRt(roundTime);
 
     if(!timer->isActive()) {
         timer->start();
@@ -31,42 +36,85 @@ void RoundTimeDisplay::setTimer(int seconds) {
         timer->stop();
         timer->start();
     }
+    emit callPaint(roundTime, this->castTime);
+}
 
-    paint(time);
+void RoundTimeDisplay::setCastTimer(int seconds) {
+    castTime = seconds;
+    gameDataContainer->setCt(castTime);
+
+    if(!timer->isActive()) {
+        timer->start();
+    } else {
+        timer->stop();
+        timer->start();
+    }
+    emit callPaint(this->roundTime, castTime);
 }
 
 void RoundTimeDisplay::intervalEvent() {
-    gameDataContainer->setRt(--time);
-    if(time < 1) timer->stop();
-    paint(time);
+    gameDataContainer->setRt(--roundTime);
+    gameDataContainer->setCt(--castTime);
+
+    if(roundTime < 1 && castTime < 1) timer->stop();
+
+    emit callPaint(roundTime, castTime);
 }
 
 void RoundTimeDisplay::repaint() {
-    paint(time);
+    emit callPaint(roundTime, castTime);
 }
 
-void RoundTimeDisplay::paint(int seconds) {
-    if(seconds < 1) {
-        mainWindow->getCommandLine()->clearRt();
+void RoundTimeDisplay::paint(int rt, int ct) {
+    CommandLine* cmd = mainWindow->getCommandLine();
+    if(rt < 1 && ct < 1) {
+        cmd->clearRt();
         return;
     }
-    mainWindow->getCommandLine()->insertRtIndicator(segmentDisplay(seconds), numericDisplay(seconds));
+    cmd->insertRtIndicator(segmentDisplay(rt, ct), numericDisplay(rt));
 }
 
-QPixmap RoundTimeDisplay::segmentDisplay(int seconds) {
-    QPixmap collage(30 * seconds, 10);
+QPixmap RoundTimeDisplay::segmentDisplay(int rt, int ct) {
+    int max = qMax(rt, ct);
+    int min = qMin(rt, ct);
+
+    QPixmap collage(RT_SEGMENT_WIDTH * max, 10);
     collage.fill(Qt::transparent);
 
     QPainter painter(&collage);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    if(painter.isActive()) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    painter.setBrush(color);
-    painter.setPen(color);
+        painter.setBrush(rtColor);
+        painter.setPen(rtColor);
 
-    int x = 5;
-    for(int i = 0; i < seconds; i++) {
-        painter.drawRect(QRect(x, 4, 25, 3));
-        x += 30;
+        int x = 5;
+        for(int i = 0; i < min; i++) {
+            painter.drawRect(QRect(x, 4, 12, 4));
+            x += RT_SEGMENT_WIDTH;
+        }
+        painter.setBrush(ctColor);
+        painter.setPen(ctColor);
+
+        x = 19;
+        for(int i = 0; i < min; i++) {
+            painter.drawRect(QRect(x, 4, 11, 4));
+            x += RT_SEGMENT_WIDTH;
+        }
+
+        if(rt > ct) {
+            painter.setBrush(rtColor);
+            painter.setPen(rtColor);
+        } else {
+            painter.setBrush(ctColor);
+            painter.setPen(ctColor);
+        }
+
+        x = 5 + (30 * min);
+        for(int i = 0; i < max - min; i++) {
+            painter.drawRect(QRect(x, 4, 25, 4));
+            x += RT_SEGMENT_WIDTH;
+        }
     }
     return collage;
 }
@@ -75,25 +123,39 @@ QPixmap RoundTimeDisplay::numericDisplay(int seconds) {
     QPixmap collage(40, 40);
     collage.fill(Qt::transparent);
 
+    if(seconds < 1) return collage;
+
     QPainter painter(&collage);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    if(painter.isActive()) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    painter.setBrush(color);
-    painter.setPen(color);
+        painter.setBrush(rtColor);
+        painter.setPen(rtColor);
 
-    painter.setFont(QFont("Fixedsys", 12));
-    painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, QString::number(seconds));
-
+        painter.setFont(QFont("Fixedsys", 12));
+        painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, QString::number(seconds));
+    }
     return collage;
 }
 
-QColor RoundTimeDisplay::getColor() {
-    QColor color = settings->gameWindowBackground();
+QColor RoundTimeDisplay::getRtColor() {
+    return QColor("#E86850");
+    /*QColor color = settings->gameWindowBackground();
     if(color == Qt::white) {
         return QColor(159, 50, 50);
     } else {
         return QColor(color.rgba()^0xffffff);
-    }
+    }*/
+}
+
+QColor RoundTimeDisplay::getCtColor() {
+    return QColor("#66A7C5");
+    /*QColor color = settings->gameWindowBackground();
+    if(color == Qt::white) {
+        return QColor(51, 153, 255);
+    } else {
+        return QColor(color.rgba()^0xffffff);
+    }*/
 }
 
 RoundTimeDisplay::~RoundTimeDisplay() {

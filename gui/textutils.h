@@ -37,9 +37,6 @@ private:
     void populateExpStates();
     QStringList mindStates;
 
-    QRegExp rxNumber;
-    QRegExp rxRemoveTags;
-
 signals:
     
 public slots:

@@ -17,6 +17,7 @@ public:
     QWidget* create();
     void setToolTip(QString text);
     void setText(QString text);
+    void setText(QString lowest, QString count);
 
     QLabel* spellLabel;
 

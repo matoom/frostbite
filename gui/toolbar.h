@@ -64,7 +64,7 @@ public slots:
     void updateWieldRight(QString value);
     void updateSpell(QString);
 
-    void updateActiveSpells();
+    void updateActiveSpells(QStringList);
     void clearActiveSpells();
 };
 

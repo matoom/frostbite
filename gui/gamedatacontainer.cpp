@@ -428,6 +428,16 @@ int GameDataContainer::getSpirit() {
     return this->spirit;
 }
 
+void GameDataContainer::setMana(int mana) {
+    QWriteLocker locker(&lock);
+    this->mana = mana;
+}
+
+int GameDataContainer::getMana() {
+    QReadLocker locker(&lock);
+    return this->mana;
+}
+
 void GameDataContainer::setFatigue(int fatigue) {
 
     QWriteLocker locker(&lock);
@@ -441,9 +451,14 @@ int GameDataContainer::getFatigue() {
 
 void GameDataContainer::setRt(int rt) {
     if(rt < 0) rt = 0;
-
     QWriteLocker locker(&lock);
     this->rt = rt;
+}
+
+void GameDataContainer::setCt(int ct) {
+    if(ct < 0) ct = 0;
+    QWriteLocker locker(&lock);
+    this->ct = ct;
 }
 
 int GameDataContainer::getRt() {
