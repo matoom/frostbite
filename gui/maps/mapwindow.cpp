@@ -36,7 +36,7 @@ void MapWindow::reset() {
             GameDataContainer::Instance()->getRoomDesc() +
             GameDataContainer::Instance()->getCompassDirections().join("");
 
-    emit updateMapWindow(TextUtils::Instance()->toHash(text));
+    emit updateMapWindow(TextUtils::toHash(text));
 }
 
 void MapWindow::selectNode(MapZone* zone, int nodeId) {    

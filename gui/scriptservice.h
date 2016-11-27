@@ -32,7 +32,6 @@ public:
     bool isScriptActive();
 
 private:
-    TextUtils* textUtils;
     ScriptWriterThread* scriptWriter;
     MainWindow* mainWindow;
     CommandLine* commandLine;

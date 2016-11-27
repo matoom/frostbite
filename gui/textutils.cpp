@@ -1,28 +1,13 @@
 #include "textutils.h"
 
-TextUtils* TextUtils::m_pInstance = NULL;
-
-TextUtils* TextUtils::Instance() {
-    if (!m_pInstance) {
-        m_pInstance = new TextUtils;
-    }
-
-    return m_pInstance;
-}
-
-TextUtils::TextUtils(QObject *parent) : QObject(parent) {
-    this->populateExpStates();
-
-
-}
-
-void TextUtils::populateExpStates() {
-    mindStates << "clear" << "dabbling" << "perusing" << "learning" << "thoughtful"
+QStringList TextUtils::mindStates = QStringList() << "clear" << "dabbling" << "perusing" << "learning" << "thoughtful"
         << "thinking" << "considering" << "pondering" << "ruminating" << "concentrating"
         << "attentive" << "deliberative" << "interested" << "examining" << "understanding" << "absorbing"
         << "intrigued" << "scrutinizing" << "analyzing" << "studious" << "focused" << "very focused"
         << "engaged" << "very engaged" << "cogitating" << "fascinated" << "captivated" << "engrossed" << "riveted"
         << "very riveted" << "rapt" << "very rapt" << "enthralled" << "nearly locked" << "mind lock";
+
+TextUtils::TextUtils(QObject *parent) : QObject(parent) {
 }
 
 QString TextUtils::addNumericStateToExp(QString exp) {
@@ -61,7 +46,6 @@ QString TextUtils::msToMMSS(int ms) {
 
 QString TextUtils::findLowestActiveValue(QStringList list) {
     QRegExp rxNumber("(\\d+)");
-
     int minVal = 100000;
     foreach(QString item, list) {
         rxNumber.indexIn(item, 0);
@@ -72,7 +56,6 @@ QString TextUtils::findLowestActiveValue(QStringList list) {
         }
     }
     if(minVal == 100000) return "-";
-
     return QString::number(minVal);
 }
 
@@ -122,5 +105,8 @@ QString TextUtils::toBrief(QString direction) {
 
 QString TextUtils::stripMapSpecial(QString text) {
     return text.remove("&quot;");
+}
+
+TextUtils::~TextUtils() {
 }
 

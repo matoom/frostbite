@@ -132,15 +132,12 @@ private:
     GameDataContainer& operator = (GameDataContainer const& copy);
     static GameDataContainer* m_pInstance;
 
-    TextUtils* textUtils;
     //SharedDataService* sharedDataService;
     QHash<QString, QString> exp;
     QMap<QString, QMap<QString, int> > expMap;
     QMap<QString, qint64> expGain;
     QStringList container;
     QStringList inventory;
-
-    QRegExp rxNumber;
 
     QStringList extractExp(QString, bool brief);
     QReadWriteLock lock;

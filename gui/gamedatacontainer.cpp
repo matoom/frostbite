@@ -10,14 +10,11 @@ GameDataContainer* GameDataContainer::Instance() {
 }
 
 GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
-    textUtils = TextUtils::Instance();
-
-    rxNumber.setPattern("(\\d+)");
-
     health = 0;
     concentration = 0;
     spirit = 0;
     fatigue = 0;
+    mana = 0;
 
     standing = false;
     sitting = false;
@@ -32,19 +29,21 @@ GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
     dead = false;
 
     rt = 0;
+    ct = 0;
 }
 
-QStringList GameDataContainer::extractExp(QString exp, bool brief) {
+QStringList GameDataContainer::extractExp(QString exp, bool brief) {        
     QStringList result;
 
+    QRegExp rxNumber("(\\d+)");
     rxNumber.indexIn(exp, 0);
     result << rxNumber.cap(1);
 
     int index = exp.indexOf('%') + 1;
     if(brief) {
-        result << QString::number(textUtils->expBriefToNumeric(exp.mid(index).trimmed()));
+        result << QString::number(TextUtils::expBriefToNumeric(exp.mid(index).trimmed()));
     } else {
-        result << QString::number(textUtils->expStateToNumeric(exp.mid(index).trimmed()));
+        result << QString::number(TextUtils::expStateToNumeric(exp.mid(index).trimmed()));
     }
     return result;
 }
@@ -83,7 +82,7 @@ void GameDataContainer::setExpField(QString name, QString exp) {
     this->expMap.insert(name.toLower(), expValueMap);
 
     /* setting exp for exp window */
-    this->exp.insert(name, textUtils->addNumericStateToExp(exp));        
+    this->exp.insert(name, TextUtils::addNumericStateToExp(exp));
 }
 
 void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
@@ -487,9 +486,11 @@ void GameDataContainer::clearActiveSpells() {
 }
 
 QList<QString> GameDataContainer::getDirections() {
+    QReadLocker locker(&lock);
     return this->directions;
 }
 
 void GameDataContainer::setDirections(QList<QString> directions) {
+    QWriteLocker locker(&lock);
     this->directions = directions;
 }

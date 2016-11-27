@@ -148,7 +148,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         emit writeModeSettings();
     } else if(e.tagName() == "style" && e.attribute("id") == "roomName") {
         QString roomName = root.text().trimmed();
-        TextUtils::Instance()->plainToHtml(roomName);
+        TextUtils::plainToHtml(roomName);
         gameText += "<span class=\"room-name\">" + roomName + "</span>";
         return false;
     /* All plain text without tags */
@@ -156,7 +156,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         // compensate for qdomnode discarding &lt
         QString textData = n.toText().data();
 
-        TextUtils::Instance()->plainToHtml(textData);
+        TextUtils::plainToHtml(textData);
 
         if(bold) {
             if(root.text().contains(rxDmg)) {
@@ -170,11 +170,11 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     /* Process game text between tags */
     } else if(e.tagName() == "d") {
         QString d = e.text().trimmed();
-        TextUtils::Instance()->plainToHtml(d);
+        TextUtils::plainToHtml(d);
         gameText += d;
     } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
         QString preset = e.text().trimmed();
-        TextUtils::Instance()->plainToHtml(preset);
+        TextUtils::plainToHtml(preset);
         gameText += preset;
     } else if(e.tagName() == "preset" && e.attribute("id") == "thought") {
         gameText += this->parseTalk(e);
@@ -229,10 +229,10 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             GameDataContainer::Instance()->setCompassDirections(directions);
 
             QString text = GameDataContainer::Instance()->getRoomName() +
-                    TextUtils::Instance()->stripMapSpecial(GameDataContainer::Instance()->getRoomDesc())
+                    TextUtils::stripMapSpecial(GameDataContainer::Instance()->getRoomDesc())
                     + directions.join("");
 
-            QString hash = TextUtils::Instance()->toHash(text);
+            QString hash = TextUtils::toHash(text);
 
             /*qDebug() << "====";
             qDebug() << text;
@@ -296,7 +296,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                     if(!text.isEmpty()) {
                         if(e.elementsByTagName("d").count() == 0) {
                             gameDataContainer->setExpField(false, id, text);
-                            emit updateExpWindow(id, TextUtils::Instance()->addNumericStateToExp(text));
+                            emit updateExpWindow(id, TextUtils::addNumericStateToExp(text));
                         } else {
                             gameDataContainer->setExpField(true, id, text);
                             emit updateExpWindow(id, text);
@@ -310,7 +310,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 QString id = e.attribute("id");
                 if(id.endsWith("desc")) {
                     QString roomDesc = e.text();
-                    TextUtils::Instance()->plainToHtml(roomDesc);
+                    TextUtils::plainToHtml(roomDesc);
                     gameDataContainer->setRoomDesc(roomDesc);
                 } else if (id.endsWith("objs")) {
                     QString str;
@@ -318,19 +318,19 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                     e.save(stream, QDomNode::ElementNode);
                     gameDataContainer->setRoomObjsData(str);
                     QString roomObjs = e.text();
-                    TextUtils::Instance()->plainToHtml(roomObjs);
+                    TextUtils::plainToHtml(roomObjs);
                     gameDataContainer->setRoomObjs(roomObjs);
                 } else if (id.endsWith("players")) {
                     QString roomPlayers = e.text();
-                    TextUtils::Instance()->plainToHtml(roomPlayers);
+                    TextUtils::plainToHtml(roomPlayers);
                     gameDataContainer->setRoomPlayers(roomPlayers);
                 } else if (id.endsWith("exits")) {
                     QString roomExits = e.text();
-                    TextUtils::Instance()->plainToHtml(roomExits);
+                    TextUtils::plainToHtml(roomExits);
                     gameDataContainer->setRoomExits(roomExits);
                 } else if (id.endsWith("extra")) {
                     QString roomExtra = e.text();
-                    TextUtils::Instance()->plainToHtml(roomExtra);
+                    TextUtils::plainToHtml(roomExtra);
                     gameDataContainer->setRoomExtra(roomExtra);
                 }
                 emit updateRoomWindow();
@@ -370,12 +370,12 @@ void XmlParserThread::processPushStream(QString data) {
         if(element.tagName() == "preset") {
             if(element.attribute("id") == "speech") {
                 QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::Instance()->plainToHtml(elementText);
+                TextUtils::plainToHtml(elementText);
                 QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
                 emit updateConversationsWindow(addTime(text));
             } else if(element.attribute("id") == "thought") {
                 QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::Instance()->plainToHtml(elementText);
+                TextUtils::plainToHtml(elementText);
                 QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
                 emit updateThoughtsWindow(addTime(text));
             } else {
@@ -383,7 +383,7 @@ void XmlParserThread::processPushStream(QString data) {
             }
         } else if(element.tagName() == "b") {
             QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::Instance()->plainToHtml(elementText);
+            TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateConversationsWindow(addTime(text));
         } else {
@@ -406,7 +406,7 @@ void XmlParserThread::processPushStream(QString data) {
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {
             QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::Instance()->plainToHtml(elementText);
+            TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateThoughtsWindow(addTime(text));
         } else {
@@ -420,7 +420,7 @@ void XmlParserThread::processPushStream(QString data) {
         QDomElement element = e.firstChild().toElement();
         if(element.attribute("id") == "whisper") {
             QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::Instance()->plainToHtml(elementText);
+            TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateConversationsWindow(addTime(text));
         } else {
@@ -433,7 +433,7 @@ void XmlParserThread::processPushStream(QString data) {
             QDomElement first = element.firstChild().toElement();
             if(first.attribute("id") == "speech" || first.attribute("id") == "whisper" || first.tagName() == "b") {
                 QString elementText = first.nextSibling().toText().data().trimmed();
-                TextUtils::Instance()->plainToHtml(elementText);
+                TextUtils::plainToHtml(elementText);
                 QString text = tr("%1%2").arg(this->parseTalk(first), elementText);
                 emit updateFamiliarWindow(text);
             } else {
@@ -441,7 +441,7 @@ void XmlParserThread::processPushStream(QString data) {
             }
         } else if(id == "speech" || id == "whisper") {
             QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::Instance()->plainToHtml(elementText);
+            TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateFamiliarWindow(text);
         } else if (id == "familiar") {
@@ -455,7 +455,7 @@ void XmlParserThread::processPushStream(QString data) {
         if(element.tagName() == "preset") {
             if(element.attribute("id") == "whisper") {
                 QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::Instance()->plainToHtml(elementText);
+                TextUtils::plainToHtml(elementText);
                 QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
                 emit updateConversationsWindow(addTime(text));
             } else {
@@ -463,7 +463,7 @@ void XmlParserThread::processPushStream(QString data) {
             }
         } else {
             QString ooc = root.text().trimmed();
-            TextUtils::Instance()->plainToHtml(ooc);
+            TextUtils::plainToHtml(ooc);
             emit writeText(ooc.toLocal8Bit(), false);
         }
     } else if(e.attribute("id") == "percWindow") {
@@ -484,7 +484,7 @@ void XmlParserThread::processPushStream(QString data) {
             if(element.attribute("id") == "thought") {
                 QString elementText = element.nextSibling().toText().data();
                 QString trimTrailing = elementText.remove(QRegularExpression("\r\n$"));
-                TextUtils::Instance()->plainToHtml(trimTrailing);
+                TextUtils::plainToHtml(trimTrailing);
                 QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
                 emit updateThoughtsWindow(addTime(text));
             } else {

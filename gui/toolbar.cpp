@@ -3,7 +3,6 @@
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
-    textUtils = TextUtils::Instance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -132,7 +131,7 @@ void Toolbar::quickButtonAction() {
 }
 
 void Toolbar::updateActiveSpells(QStringList activeSpells) {
-    activeSpell->setText(textUtils->findLowestActiveValue(activeSpells), QString::number(activeSpells.count()));
+    activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells), QString::number(activeSpells.count()));
 
     QString text = "<table style='margin: 4px;'>";
     foreach(QString activeSpell, activeSpells) {

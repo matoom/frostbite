@@ -1003,3 +1003,5 @@ Obvious paths: <d>north</d>, <d>east</d>, <d>west</d>.
 <component id='room objs'>You also see <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/> and <pushBold/>a ship's rat<popBold/>.</component>
 <prompt time="1479308021">&gt;</prompt>
 
+<clearStream id="moonWindow"/>
+<pushStream id="moonWindow"/> [k]+(0) [y]+(17) [x]+(129)<popStream/>

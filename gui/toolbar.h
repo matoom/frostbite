@@ -45,7 +45,6 @@ private:
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     GameDataContainer* gameDataContainer;
-    TextUtils* textUtils;
     QuickButtonDisplay* quickButtonDisplay;
     QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;

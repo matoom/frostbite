@@ -30,7 +30,7 @@ void ScriptWriterThread::run() {
 
 void ScriptWriterThread::process(QString line) {
     line = line.remove(rxRemoveTags);
-    TextUtils::Instance()->htmlToPlain(line);
+    TextUtils::htmlToPlain(line);
     emit writeText(line.toLocal8Bit());
 }
 

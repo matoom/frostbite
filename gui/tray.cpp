@@ -58,7 +58,7 @@ void Tray::conversationsChanged() {
 }
 
 void Tray::showMessage(QString title, QString trayEntry) {
-    TextUtils::Instance()->htmlToPlain(trayEntry);
+    TextUtils::htmlToPlain(trayEntry);
     if(title == DOCK_TITLE_CONVERSATIONS) {
         if(conversations) {
             trayIcon->showMessage(title, trayEntry, QSystemTrayIcon::NoIcon, 3 * 1000);

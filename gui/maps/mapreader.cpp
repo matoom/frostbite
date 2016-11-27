@@ -279,17 +279,17 @@ void MapReader::roomToHash() {
 
     QHash<int, MapDestination*>::iterator i;
     for (i = dest.begin(); i != dest.end(); ++i) {
-        QString d = TextUtils::Instance()->toBrief(i.value()->getExit());
+        QString d = TextUtils::toBrief(i.value()->getExit());
         if(!d.isEmpty()) list << d;
     }
     qSort(list);
 
     QStringList descList = mapNode->getDesc();
     foreach(QString desc, descList) {
-        TextUtils::Instance()->plainToHtml(desc);
+        TextUtils::plainToHtml(desc);
 
         QString text = "[" + mapNode->getName() + "]" + desc + list.join("");
-        QString hash = TextUtils::Instance()->toHash(text);
+        QString hash = TextUtils::toHash(text);
 
         /*if(mapNode->getId() == 192) {
             qDebug() << text;
