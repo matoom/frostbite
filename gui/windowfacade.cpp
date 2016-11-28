@@ -34,6 +34,7 @@ void WindowFacade::reloadHighlighterSettings() {
     emit updateConversationsSettings();
     emit updateFamiliarSettings();
     emit updateExpSettings();
+    emit updateSpellSettings();
 }
 
 QPlainTextEdit* WindowFacade::getGameWindow() {
@@ -206,6 +207,11 @@ void WindowFacade::loadWindows() {
     dockWindows << familiarWindow;
     connect(familiarWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(familiarVisibility(bool)));
 
+    spellWindow = genericWindowFactory->createWindow(DOCK_TITLE_SPELL);
+    mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, spellWindow);
+    dockWindows << spellWindow;
+    connect(spellWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(spellVisibility(bool)));
+
     mapFacade = new MapFacade(mainWindow);
 
     this->initWindowWriters();
@@ -215,6 +221,7 @@ void WindowFacade::loadWindows() {
         mainWindow->tabifyDockWidget(thoughtsWindow, arrivalsWindow);
         mainWindow->tabifyDockWidget(arrivalsWindow, deathsWindow);
         mainWindow->tabifyDockWidget(deathsWindow, familiarWindow);
+        mainWindow->tabifyDockWidget(familiarWindow, spellWindow);
         mainWindow->tabifyDockWidget(roomWindow, conversationsWindow);
         mainWindow->tabifyDockWidget(conversationsWindow, mapFacade->getMapWindow());
     }
@@ -256,6 +263,10 @@ void WindowFacade::initWindowWriters() {
     familiarWriter = new WindowWriterThread(mainWindow, (GenericWindow*)familiarWindow->widget());
     connect(this, SIGNAL(updateFamiliarSettings()), familiarWriter, SLOT(updateSettings()));
     writers << familiarWriter;
+
+    spellWriter = new WindowWriterThread(mainWindow, (GenericWindow*)spellWindow->widget());
+    connect(this, SIGNAL(updateSpellSettings()), spellWriter, SLOT(updateSettings()));
+    writers << spellWriter;
 }
 
 void WindowFacade::initLoggers() {
@@ -292,6 +303,11 @@ void WindowFacade::familiarVisibility(bool visibility) {
     familiarVisible = visibility;
 }
 
+void WindowFacade::spellVisibility(bool visibility) {
+    spellWindow->setWindowTitle(DOCK_TITLE_SPELL);
+    spellVisible = visibility;
+}
+
 void WindowFacade::setVisibilityIndicator(QDockWidget* widget, bool visible, QString title) {
     if(visible) {
         widget->setWindowTitle(title);
@@ -326,6 +342,10 @@ QDockWidget* WindowFacade::getConversationsWindow() {
 
 QDockWidget* WindowFacade::getFamiliarWindow() {
     return this->familiarWindow;
+}
+
+QDockWidget* WindowFacade::getSpellWindow() {
+    return this->spellWindow;
 }
 
 MapFacade* WindowFacade::getMapFacade() {
@@ -534,6 +554,18 @@ void WindowFacade::updateFamiliarWindow(QString familiarText) {
 
     if(!familiarWriter->isRunning()) {
         familiarWriter->start();
+    }
+}
+
+void WindowFacade::updateSpellWindow(QString spellText) {
+    setVisibilityIndicator(spellWindow, spellVisible, DOCK_TITLE_SPELL);
+
+    spellWriter->clearWriter();
+    spellWriter->clearText();
+
+    spellWriter->addText(spellText.trimmed());
+    if(!spellWriter->isRunning()) {
+        spellWriter->start();
     }
 }
 
