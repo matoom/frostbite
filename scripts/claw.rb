@@ -14,7 +14,7 @@ def claw
     when :wait
       pause 0.4
     when :skin
-      load "skin"
+      load "skin.rb"
     when :wait_for
       echo "*** WAITING ***"
       wait_for(/begins to advance on you|closes to melee range/)

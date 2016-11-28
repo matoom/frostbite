@@ -1,3 +1,3 @@
 $args << "northeast gate"
 
-load "dir"
+load "dir.rb"

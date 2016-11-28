@@ -2,7 +2,7 @@
 #define HIGHLIGHTER_H
 
 #include <QObject>
-#include <highlights/highlightsettings.h>
+#include <text/highlight/highlightsettings.h>
 #include <audioplayer.h>
 #include <mainwindow.h>
 #include <textutils.h>

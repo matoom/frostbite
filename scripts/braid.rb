@@ -58,13 +58,15 @@ label(:braid) {
 
 label(:pull) {
   put "pull my #{$args.join(" ")}"
-  match = { :dispose => [/proudly examine your new braided|braided vines breaks apart|Roundtime/] }
+  match = { :dispose => [/proudly examine your new braided|braided vines breaks apart|Roundtime/],
+            :braid => [/nod with satisfaction for your work/],
+            :forage => [/breaks apart in your hands/]}
   match_wait_goto match
 }
 
 label(:dispose) {
   pause Rt::value
-  put "put my rope in buck"
+  put "put my #{Wield::right_noun} in buck"
   goto :start
 }
 

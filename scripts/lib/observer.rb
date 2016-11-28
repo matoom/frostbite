@@ -25,8 +25,8 @@ class Observer
       $_api_observer_started = true
       until @@terminated
         if events.size > 0
-          text = sync_read
-          if text
+          while text = sync_read
+            return unless text
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
@@ -76,7 +76,6 @@ class Observer
 
   # Terminate the observer execution
   #
-  # @param
   # @return [void]
   # @example Terminating the observer
   #   Observer.instance.terminate

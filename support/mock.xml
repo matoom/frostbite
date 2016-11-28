@@ -294,6 +294,8 @@ You are wearing a midnight-black herb pouch pinioned with blood-red iera flowers
 
 <prompt time="1324816375">&gt;</prompt>
 <dialogData id='minivitals'><progressBar id='concentration' value='90' text='concentration 90%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
+<prompt time="1324816375">&gt;</prompt>
+<dialogData id='minivitals'><progressBar id='mana' value='90' text='mana 90%' left='75%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 <prompt time="1324816381">&gt;</prompt>
 Galadriel carefully makes another fold in her paper.
 <prompt time="1324816381">&gt;</prompt>
@@ -769,7 +771,7 @@ Obvious exits: <d>out</d>.
 <popStream/><prompt time="1361728441">&gt;</prompt>
 <pushStream id="familiar" ifClosedStyle="watching"/><pushStream id="talk"/><b>Frodo yells,</b> "Hello."
 <popStream/><b>Frodo yells,</b> "Hello."
-<prompt time="1361728440">&gt;</prompt>
+<popStream/><prompt time="1361728440">&gt;</prompt>
 <roundTime value='1325173145'/><dialogData id='minivitals'><skin id='staminaSkin' name='staminaBar' controls='stamina' left='25%' top='0%' width='25%' height='100%'/><progressBar id='stamina' value='98' text='fatigue 98%' left='25%' customText='t' top='0%' width='25%' height='100%'/></dialogData>
 &lt; You kick your foot at a musk hog.  A musk hog fails to evade, taking the full blow.  <pushBold/>The foot lands a massive strike that blasts hard into the left arm and causes purple welts to appear almost immediately, lightly stunning it.<popBold/>
 [You're incredibly balanced and overwhelming opponent.]
@@ -905,7 +907,7 @@ Frodo joins your group.
 <popStream/><preset id="whisper">OocTest whispers,</preset> "OOC: I am so confused at what is going on."
 <prompt time="1446069627">&gt;</prompt>
 
-<pushStream id="thoughts"/><preset id='thought'>[Sauron] </preset>"{faintly}" "what are &amp; these things&amp;gt;"
+<pushStream id="thoughts"/><preset id='thought'>[Sauron] </preset>"{faintly}" "what are &amp; these things&amp;&gt;"
 <popStream/><prompt time="1446984836">&gt;</prompt>
 
 [Assuming you mean Milgrym the Weaponsmith's.]
@@ -924,6 +926,7 @@ Obvious exits: <d>out</d>.
 <prompt time="1446936439">&gt;</prompt>
 
 <compass><dir value="n"/><dir value="e"/><dir value="se"/><dir value="s"/><dir value="sw"/><dir value="w"/><dir value="nw"/><dir value="out"/><dir value="up"/><dir value="down"/><dir value="ne"/></compass><pushStream id="logons"/> * Florist Legolas joins the adventure.
+<popStream/><prompt time="1446936439">&gt;</prompt>
 
 You rest your hand on Troll's arm with a soft smile.
 
@@ -972,3 +975,33 @@ Troll has normal vitality.
 <spell>None</spell>You gesture.
 
 <spell exist='spell'>Iron Constitution</spell>Since you're not feeding enough power into the spell pattern to make it coherent, you quickly work your way to the minimum required.
+
+<output class="mono"/>
+The following channels are available to you.
+<pushBold/>Bold channels are currently active.
+<popBold/>
+General  - Global channel for general chit-chat.
+<pushBold/>Trade    - Global channel for financial transactions.
+<popBold/>Guild    - Conversations with other members of your guild.
+Race     - Conversations with other members of your race.
+Local    - Conversations shared among those in your nearby geographical location.
+Private  - Conversations shared among those who have the same telepathic password.
+Personal - Listening for messages directed specifically toward you (with the SEND command).
+<output class=""/>
+
+<pushStream id="chatter"/><preset id='thought'>Chatter[test]</preset> with the raw channeling feat am i able to cast spells while having a cyclic spell active?
+<popStream/><prompt time="1479307991">&gt;</prompt>
+
+<pushStream id="thoughts"/><preset id='thought'>Your mind hears Puff thinking, </preset>"Anyone out there need healing?"
+<popStream/>
+
+<resource picture="0"/><style id="roomName" />[Barana's Shipyard, Lumber Storage]
+<style id=""/><preset id='roomDesc'>Massive lengths of wood, destined to become tillers and rudder-posts, lie in staggered rows.  Each one has been cut and sanded to a fine smoothness that gives each the soft sheen of satin.  A portable block and tackle mounted on wheels stands nearby, as each post easily weighs as much as several Gor'Tog.</preset>  You also see <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/> and <pushBold/>a ship's rat<popBold/>.
+Obvious paths: <d>north</d>, <d>east</d>, <d>west</d>.
+<compass><dir value="n"/><dir value="e"/><dir value="w"/></compass><prompt time="1479308020">&gt;</prompt>
+
+<component id='room objs'>You also see <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/>, <pushBold/>a ship's rat<popBold/> and <pushBold/>a ship's rat<popBold/>.</component>
+<prompt time="1479308021">&gt;</prompt>
+
+<clearStream id="moonWindow"/>
+<pushStream id="moonWindow"/> [k]+(0) [y]+(17) [x]+(129)<popStream/>

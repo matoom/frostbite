@@ -112,6 +112,14 @@ void ScriptApiServer::readyRead() {
                 this->write(socket, tr("%1\\0").arg(data->getRt()));
             } else if(request.name == "EXP_NAMES") {
                 this->write(socket, tr("%1\\0").arg(data->getExp().keys().join("\n")));
+            } else if(request.name == "ROOM_MONSTERS_BOLD") {
+                QRegularExpression re("<pushBold\\/>(.*?)<popBold\\/>");
+                QRegularExpressionMatchIterator i = re.globalMatch(data->getRoomObjsData());
+                QList<QString> found;
+                while(i.hasNext()) {
+                    found << i.next().captured(1);
+                }
+                this->write(socket, tr("%1\\0").arg(found.join("\n")));
             } else {
                 this->write(socket, tr("\\0"));
             }

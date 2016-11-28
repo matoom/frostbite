@@ -45,7 +45,6 @@ private:
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     GameDataContainer* gameDataContainer;
-    TextUtils* textUtils;
     QuickButtonDisplay* quickButtonDisplay;
     QuickButtonEditDialog* editDialog;
     WieldIndicator* wieldLeft;
@@ -64,7 +63,7 @@ public slots:
     void updateWieldRight(QString value);
     void updateSpell(QString);
 
-    void updateActiveSpells();
+    void updateActiveSpells(QStringList);
     void clearActiveSpells();
 };
 

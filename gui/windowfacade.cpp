@@ -59,8 +59,8 @@ void WindowFacade::updateWindowColors() {
 }
 
 QString WindowFacade::textColor(QString name, QString defaultValue) {
-    return settings->getSingleParameter(
-        "GeneralHighlight/" + name + "/color", defaultValue).value<QColor>().name();
+    return settings->getSingleParameter("GeneralHighlight/" + name + "/color", defaultValue)
+            .value<QColor>().name();
 }
 
 void WindowFacade::setGameWindowFont(QFont font) {
@@ -208,7 +208,7 @@ void WindowFacade::loadWindows() {
 
     mapFacade = new MapFacade(mainWindow);
 
-    this->initWindowHighlighters();
+    this->initWindowWriters();
     this->initLoggers();
 
     if(!clientSettings->hasValue("MainWindow/state")) {
@@ -222,40 +222,40 @@ void WindowFacade::loadWindows() {
     this->updateWindowStyle();    
 }
 
-void WindowFacade::initWindowHighlighters() {
-    gameWindowHighlighter = new HighlighterThread(mainWindow, (GameWindow*)gameWindow);
-    connect(this, SIGNAL(updateGameWindowSettings()), gameWindowHighlighter, SLOT(updateSettings()));
-    highlighters << gameWindowHighlighter;
+void WindowFacade::initWindowWriters() {
+    mainWriter = new WindowWriterThread(mainWindow, (GameWindow*)gameWindow);
+    connect(this, SIGNAL(updateGameWindowSettings()), mainWriter, SLOT(updateSettings()));
+    writers << mainWriter;
 
     ((GenericWindow*)roomWindow->widget())->setAppend(false);
-    roomHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)roomWindow->widget());
-    connect(this, SIGNAL(updateRoomSettings()), roomHighlighter, SLOT(updateSettings()));
-    highlighters << roomHighlighter;
+    roomWriter = new WindowWriterThread(mainWindow, (GenericWindow*)roomWindow->widget());
+    connect(this, SIGNAL(updateRoomSettings()), roomWriter, SLOT(updateSettings()));
+    writers << roomWriter;
 
-    arrivalsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)arrivalsWindow->widget());
-    connect(this, SIGNAL(updateArrivalsSettings()), arrivalsHighlighter, SLOT(updateSettings()));
-    highlighters << arrivalsHighlighter;
+    arrivalsWriter = new WindowWriterThread(mainWindow, (GenericWindow*)arrivalsWindow->widget());
+    connect(this, SIGNAL(updateArrivalsSettings()), arrivalsWriter, SLOT(updateSettings()));
+    writers << arrivalsWriter;
 
-    deathsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)deathsWindow->widget());
-    connect(this, SIGNAL(updateDeathsSettings()), deathsHighlighter, SLOT(updateSettings()));
-    highlighters << deathsHighlighter;
+    deathsWriter = new WindowWriterThread(mainWindow, (GenericWindow*)deathsWindow->widget());
+    connect(this, SIGNAL(updateDeathsSettings()), deathsWriter, SLOT(updateSettings()));
+    writers << deathsWriter;
 
-    thoughtsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)thoughtsWindow->widget());
-    connect(this, SIGNAL(updateThoughtsSettings()), thoughtsHighlighter, SLOT(updateSettings()));
-    highlighters << thoughtsHighlighter;
+    thoughtsWriter = new WindowWriterThread(mainWindow, (GenericWindow*)thoughtsWindow->widget());
+    connect(this, SIGNAL(updateThoughtsSettings()), thoughtsWriter, SLOT(updateSettings()));
+    writers << thoughtsWriter;
 
-    expHighlighter = new GridHighlighterThread(mainWindow);
-    connect(expHighlighter, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
-    connect(this, SIGNAL(updateExpSettings()), expHighlighter, SLOT(updateSettings()));
-    gridHighlighters << expHighlighter;
+    expWriter = new GridWriterThread(mainWindow);
+    connect(expWriter, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
+    connect(this, SIGNAL(updateExpSettings()), expWriter, SLOT(updateSettings()));
+    gridWriters << expWriter;
 
-    conversationsHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)conversationsWindow->widget());
-    connect(this, SIGNAL(updateConversationsSettings()), conversationsHighlighter, SLOT(updateSettings()));
-    highlighters << conversationsHighlighter;
+    conversationsWriter = new WindowWriterThread(mainWindow, (GenericWindow*)conversationsWindow->widget());
+    connect(this, SIGNAL(updateConversationsSettings()), conversationsWriter, SLOT(updateSettings()));
+    writers << conversationsWriter;
 
-    familiarHighlighter = new HighlighterThread(mainWindow, (GenericWindow*)familiarWindow->widget());
-    connect(this, SIGNAL(updateFamiliarSettings()), familiarHighlighter, SLOT(updateSettings()));
-    highlighters << familiarHighlighter;
+    familiarWriter = new WindowWriterThread(mainWindow, (GenericWindow*)familiarWindow->widget());
+    connect(this, SIGNAL(updateFamiliarSettings()), familiarWriter, SLOT(updateSettings()));
+    writers << familiarWriter;
 }
 
 void WindowFacade::initLoggers() {
@@ -413,20 +413,20 @@ void WindowFacade::updateMapWindow(QString hash) {
 }
 
 void WindowFacade::updateExpWindow(QString name, QString text) {
-    expHighlighter->addItem(name, text);
+    expWriter->addItem(name, text);
 
-    if(!expHighlighter->isRunning()) {
-        expHighlighter->start();
+    if(!expWriter->isRunning()) {
+        expWriter->start();
     }
 }
 
 void WindowFacade::updateConversationsWindow(QString conversationText) {
     setVisibilityIndicator(conversationsWindow, conversationsVisible, DOCK_TITLE_CONVERSATIONS);
 
-    conversationsHighlighter->addText(conversationText.trimmed());
+    conversationsWriter->addText(conversationText.trimmed());
 
-    if(!conversationsHighlighter->isRunning()) {
-        conversationsHighlighter->start();
+    if(!conversationsWriter->isRunning()) {
+        conversationsWriter->start();
     }
     this->logConversationsText(conversationText);
     mainWindow->getTray()->showMessage(DOCK_TITLE_CONVERSATIONS, conversationText.trimmed());
@@ -445,10 +445,10 @@ void WindowFacade::logConversationsText(QString conversationText) {
 void WindowFacade::updateDeathsWindow(QString deathText) {
     setVisibilityIndicator(deathsWindow, deathsVisible, DOCK_TITLE_DEATHS);
 
-    deathsHighlighter->addText(deathText.trimmed());
+    deathsWriter->addText(deathText.trimmed());
 
-    if(!deathsHighlighter->isRunning()) {
-        deathsHighlighter->start();
+    if(!deathsWriter->isRunning()) {
+        deathsWriter->start();
     }
     this->logDeathsText(deathText);
 }
@@ -466,10 +466,10 @@ void WindowFacade::logDeathsText(QString deathsText) {
 void WindowFacade::updateThoughtsWindow(QString thoughtText) {
     setVisibilityIndicator(thoughtsWindow, thoughtsVisible, DOCK_TITLE_THOUGHTS);
 
-    thoughtsHighlighter->addText(thoughtText.trimmed());
+    thoughtsWriter->addText(thoughtText.trimmed());
 
-    if(!thoughtsHighlighter->isRunning()) {
-        thoughtsHighlighter->start();
+    if(!thoughtsWriter->isRunning()) {
+        thoughtsWriter->start();
     }
     this->logThoughtsText(thoughtText);
 }
@@ -487,10 +487,10 @@ void WindowFacade::logThoughtsText(QString thoughtText) {
 void WindowFacade::updateArrivalsWindow(QString arrivalText) {
     setVisibilityIndicator(arrivalsWindow, arrivalsVisible, DOCK_TITLE_ARRIVALS);
 
-    arrivalsHighlighter->addText(arrivalText.trimmed());
+    arrivalsWriter->addText(arrivalText.trimmed());
 
-    if(!arrivalsHighlighter->isRunning()) {
-        arrivalsHighlighter->start();
+    if(!arrivalsWriter->isRunning()) {
+        arrivalsWriter->start();
     }
     this->logArrivalsText(arrivalText);
 }
@@ -520,20 +520,20 @@ void WindowFacade::updateRoomWindow() {
     QString exits = gameDataContainer->getRoomExits();
     roomText += exits.isEmpty() ? "" : exits + "\n";
 
-    roomHighlighter->addText(roomText);
+    roomWriter->addText(roomText);
 
-    if(!roomHighlighter->isRunning()) {
-        roomHighlighter->start();
+    if(!roomWriter->isRunning()) {
+        roomWriter->start();
     }
 }
 
 void WindowFacade::updateFamiliarWindow(QString familiarText) {
     setVisibilityIndicator(familiarWindow, familiarVisible, DOCK_TITLE_FAMILIAR);
 
-    familiarHighlighter->addText(familiarText.trimmed());
+    familiarWriter->addText(familiarText.trimmed());
 
-    if(!familiarHighlighter->isRunning()) {
-        familiarHighlighter->start();
+    if(!familiarWriter->isRunning()) {
+        familiarWriter->start();
     }
 }
 
@@ -544,26 +544,26 @@ void WindowFacade::updateRoomWindowTitle(QString title) {
 void WindowFacade::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         mainWindow->getScriptService()->writeScriptText(text);
-        gameWindowHighlighter->addText(text);        
+        mainWriter->addText(text);
         this->logGameText(text, MainLogger::PROMPT);
         writePrompt = false;
     } else if(!prompt) {
         mainWindow->getScriptService()->writeScriptText(text);
-        gameWindowHighlighter->addText(text);        
+        mainWriter->addText(text);
         this->logGameText(text);
         writePrompt = true;
     }    
 
-    if(!gameWindowHighlighter->isRunning()) {
-        gameWindowHighlighter->start();
+    if(!mainWriter->isRunning()) {
+        mainWriter->start();
     }
 }
 
 void WindowFacade::writeGameWindow(QByteArray text) {
-    gameWindowHighlighter->addText(text);
+    mainWriter->addText(text);
 
-    if(!gameWindowHighlighter->isRunning()) {
-        gameWindowHighlighter->start();
+    if(!mainWriter->isRunning()) {
+        mainWriter->start();
     }
     this->logGameText(text);
 }
@@ -591,15 +591,15 @@ WindowFacade::~WindowFacade() {
         delete dock;
     }
 
-    foreach(HighlighterThread* highlighter, highlighters) {
+    foreach(WindowWriterThread* writer, writers) {
         // terminate threads at application exit.
-        highlighter->terminate();
-        delete highlighter;
+        writer->terminate();
+        delete writer;
     }
 
-    foreach(GridHighlighterThread* highlighter, gridHighlighters) {
-        highlighter->terminate();
-        delete highlighter;
+    foreach(GridWriterThread* writer, gridWriters) {
+        writer->terminate();
+        delete writer;
     }
 
     delete mainLogger;

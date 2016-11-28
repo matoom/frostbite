@@ -4,4 +4,4 @@
 
 $args << "bank"
 
-load "dir"
+load "dir.rb"

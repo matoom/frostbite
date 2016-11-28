@@ -18,21 +18,32 @@ public:
     QTimer *timer;
 
 private:
+    static const int RT_SEGMENT_WIDTH = 30;
+
     MainWindow* mainWindow;
     GameDataContainer* gameDataContainer;
-    int time;    
 
-    void paint(int);
-    QPixmap segmentDisplay(int seconds);
+    int roundTime;
+    int castTime;
+
+    QPixmap segmentDisplay(int rt, int ct);
     QPixmap numericDisplay(int seconds);
 
-    QColor getColor();
+    QColor getRtColor();
+    QColor getCtColor();
 
     GeneralSettings* settings;
-    QColor color;
+
+    QColor rtColor;
+    QColor ctColor;
+
+signals:
+    void callPaint(int, int);
 
 public slots:
     void setTimer(int seconds);
+    void setCastTimer(int seconds);
+    void paint(int, int);
 
 private slots:
     void intervalEvent();

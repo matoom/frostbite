@@ -44,6 +44,10 @@ QWidget* VitalsIndicator::create() {
     QFrame* healthIndicator = vitalsFrame(healthBar);
     hLayout->addWidget(healthIndicator);
 
+    manaBar = vitalsProgress("mana", MANA_BG, 100);
+    QFrame* manaIndicator = vitalsFrame(manaBar);
+    hLayout->addWidget(manaIndicator);
+
     concentrationBar = vitalsProgress("concentration", CONCENTRATION_BG, 100);
     QFrame* concentrationIndicator = vitalsFrame(concentrationBar);
     hLayout->addWidget(concentrationIndicator);
@@ -63,6 +67,7 @@ QWidget* VitalsIndicator::create() {
 
 VitalsIndicator::~VitalsIndicator() {
     delete healthBar;
+    delete manaBar;
     delete concentrationBar;
     delete fatigueBar;
     delete spiritBar;

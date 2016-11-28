@@ -8,9 +8,9 @@
 #include <mainwindow.h>
 #include <clientsettings.h>
 
-#include <highlights/highlightgeneraltab.h>
-#include <highlights/highlighttexttab.h>
-#include <highlights/highlightalerttab.h>
+#include <text/highlight/highlightgeneraltab.h>
+#include <text/highlight/highlighttexttab.h>
+#include <text/highlight/highlightalerttab.h>
 
 class MainWindow;
 class ClientSettings;
@@ -50,7 +50,7 @@ public:
     QCheckBox* getTextStartingWith();
     QComboBox* getTextHighlightGroup();
 
-    /* text tab items */
+    /* alert tab items */
     QGroupBox* getBleedingGroup();
     QPushButton* getBleedingPlayButton();
     QComboBox* getBleedingPlaySelect();

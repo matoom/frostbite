@@ -6,9 +6,15 @@ require "spell"
 
 Target::auto "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
+Client::track_exp "Tactics"
+
+def finally_do
+  Client::track_exp_clear
+end
+
 Thread.new do
   while true
-    spell_activate
+    spell_activate "khri", ["sagacity"]
     sleep 15
   end
 end
@@ -89,7 +95,7 @@ def do_maneuver maneuver
       advance
       do_maneuver maneuver
     when :dead
-      load "skin"
+      load "skin.rb"
       face $args.first
       return :analyze
   end
@@ -106,7 +112,6 @@ def execute_seq maneuvers
 end
 
 face $args.first
-wait
 1000.times do
   hunt
   execute_seq extract_seq analyze

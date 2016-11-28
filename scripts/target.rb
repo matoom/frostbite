@@ -1,7 +1,6 @@
-require "defines"
-
 class Target
   @auto = false
+  @filter = ["leopard", "owl"]
 
   def self.auto usage_msg
     unless $args.first
@@ -15,11 +14,13 @@ class Target
   end
 
   def self.find
-    COMBAT::CRITTERS.select{ |critter| Room::objects.include?(critter) }.first
+    Room::monsters_bold.each do |m|
+      return m.split(' ').last unless @filter.all? { |e| m.include?(e) }
+    end
+    return nil
   end
 
   def self.is_auto
     @auto
   end
-
 end

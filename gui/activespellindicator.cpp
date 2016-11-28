@@ -8,12 +8,13 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     spellLabel->setToolTip("None");
     spellLabel->setObjectName("activeSpells");
     spellLabel->setAlignment(Qt::AlignCenter);
+    spellLabel->setTextFormat(Qt::RichText);
     spellLabel->setStyleSheet("QLabel {border: 1px solid rgb(190, 190, 190);"
                              "background: #383533;"
                              "padding-right: 5px;"
                              "padding-left: 5px;"
                              "color: #E0E0E0;"
-                             "min-width: 23px;"
+                             "min-width: 35px;"
                              "border-radius: 5px; }"
                              "QToolTip {color: #F8F8F8;"
                              "background-color: #383533;"
@@ -22,7 +23,7 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     QFont f(DEFAULT_FONT, 14, QFont::Bold);
     spellLabel->setFont(f);
 
-    this->setText("-");
+    this->setText("-", "-");
     this->setToolTip("None");
 
     spellLabel->setCursor(Qt::WhatsThisCursor);
@@ -42,11 +43,17 @@ QWidget* ActiveSpellIndicator::create() {
 }
 
 void ActiveSpellIndicator::setToolTip(QString text) {
-    spellLabel->setToolTip(text);
+    spellLabel->setToolTip("<table style='margin: 2px;'><tr><td>" + text + "</td></tr></table>");
 }
 
 void ActiveSpellIndicator::setText(QString text) {
     spellLabel->setText(text);
+}
+
+void ActiveSpellIndicator::setText(QString lowest, QString count) {
+    QString formattedCount = tr("<span style='font-size: 10px;'>|%1</span>").arg(count);
+
+    this->setText(lowest + formattedCount);
 }
 
 ActiveSpellIndicator::~ActiveSpellIndicator() {

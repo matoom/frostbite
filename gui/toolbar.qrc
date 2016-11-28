@@ -33,5 +33,6 @@
         <file>images/web.png</file>
         <file>images/fullscreen_exit.png</file>
         <file>images/fullscreen.png</file>
+        <file>images/mana.png</file>
     </qresource>
 </RCC>

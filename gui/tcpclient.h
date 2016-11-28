@@ -9,7 +9,7 @@
 #include <windowfacade.h>
 #include <clientsettings.h>
 #include <eauthservice.h>
-#include <xmlparserthread.h>
+#include <xml/xmlparserthread.h>
 #include <debuglogger.h>
 
 #include <environment.h>
@@ -43,7 +43,7 @@ private:
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
-    XmlParserThread* xmlParserThread;
+    XmlParserThread* xmlParser;
     DebugLogger* debugLogger;
 
     void loadMockData();

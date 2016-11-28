@@ -11,6 +11,8 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     dir = QDir(QApplication::applicationDirPath() + "/maps");
 
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
+
+    labelsFont = QFont(DEFAULT_FONT, MAP_FONT_SIZE);
 }
 
 void MapReader::init() {    
@@ -91,7 +93,7 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
             QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
             scene->setObjectName(zone->getId());
             scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
-                           QString::number(levels.size() - 1) + ")");
+                           QString::number(levels.size() - 1) + ")", labelsFont);
 
             QGraphicsEllipseItem* selected = scene->addEllipse(0, 0, 12, 12,  QColor("red"));
             selected->hide();
@@ -127,7 +129,7 @@ void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
 void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapLabel* label, zone->getLabels()) {
         QGraphicsScene* scene = scenes.value(label->getPosition()->getZ()).scene;
-        QGraphicsTextItem* textItem = scene->addText(label->getText());
+        QGraphicsTextItem* textItem = scene->addText(label->getText(), labelsFont);
         textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
                          label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
     }
@@ -277,22 +279,22 @@ void MapReader::roomToHash() {
 
     QHash<int, MapDestination*>::iterator i;
     for (i = dest.begin(); i != dest.end(); ++i) {
-        QString d = TextUtils::Instance()->toBrief(i.value()->getExit());
+        QString d = TextUtils::toBrief(i.value()->getExit());
         if(!d.isEmpty()) list << d;
     }
     qSort(list);
 
     QStringList descList = mapNode->getDesc();
     foreach(QString desc, descList) {
-        TextUtils::Instance()->plainToHtml(desc);
+        TextUtils::plainToHtml(desc);
 
         QString text = "[" + mapNode->getName() + "]" + desc + list.join("");
-        QString hash = TextUtils::Instance()->toHash(text);
+        QString hash = TextUtils::toHash(text);
 
-        /*if(mapNode->getId() == 100) {
+        /*if(mapNode->getId() == 192) {
             qDebug() << text;
             qDebug() << hash;
-        }*/        
+        }*/
 
         int level = mapNode->getPosition()->getZ();
         int nodeId = mapNode->getId();

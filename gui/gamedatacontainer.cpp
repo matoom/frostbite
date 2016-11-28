@@ -10,14 +10,11 @@ GameDataContainer* GameDataContainer::Instance() {
 }
 
 GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
-    textUtils = TextUtils::Instance();
-
-    rxNumber.setPattern("(\\d+)");
-
     health = 0;
     concentration = 0;
     spirit = 0;
     fatigue = 0;
+    mana = 0;
 
     standing = false;
     sitting = false;
@@ -32,19 +29,21 @@ GameDataContainer::GameDataContainer(QObject *parent) : QObject(parent) {
     dead = false;
 
     rt = 0;
+    ct = 0;
 }
 
-QStringList GameDataContainer::extractExp(QString exp, bool brief) {
+QStringList GameDataContainer::extractExp(QString exp, bool brief) {        
     QStringList result;
 
+    QRegExp rxNumber("(\\d+)");
     rxNumber.indexIn(exp, 0);
     result << rxNumber.cap(1);
 
     int index = exp.indexOf('%') + 1;
     if(brief) {
-        result << QString::number(textUtils->expBriefToNumeric(exp.mid(index).trimmed()));
+        result << QString::number(TextUtils::expBriefToNumeric(exp.mid(index).trimmed()));
     } else {
-        result << QString::number(textUtils->expStateToNumeric(exp.mid(index).trimmed()));
+        result << QString::number(TextUtils::expStateToNumeric(exp.mid(index).trimmed()));
     }
     return result;
 }
@@ -83,7 +82,7 @@ void GameDataContainer::setExpField(QString name, QString exp) {
     this->expMap.insert(name.toLower(), expValueMap);
 
     /* setting exp for exp window */
-    this->exp.insert(name, textUtils->addNumericStateToExp(exp));        
+    this->exp.insert(name, TextUtils::addNumericStateToExp(exp));
 }
 
 void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
@@ -117,6 +116,12 @@ void GameDataContainer::removeExpField(QString name) {
     QWriteLocker locker(&lock);
     exp.remove(name);
     expMap.remove(name.toLower());
+}
+
+void GameDataContainer::clearExp() {
+    QWriteLocker locker(&lock);
+    exp.clear();
+    expMap.clear();
 }
 
 QHash<QString, QString> GameDataContainer::getExp() {
@@ -180,6 +185,16 @@ void GameDataContainer::setRoomDesc(QString desc) {
 QString GameDataContainer::getRoomDesc() {
     QReadLocker locker(&lock);
     return this->roomDesc;
+}
+
+void GameDataContainer::setRoomObjsData(QString objs) {
+    QWriteLocker locker(&lock);
+    this->roomObjsData = objs;
+}
+
+QString GameDataContainer::getRoomObjsData() {
+    QReadLocker locker(&lock);
+    return this->roomObjsData;
 }
 
 void GameDataContainer::setRoomObjs(QString objs) {
@@ -412,6 +427,16 @@ int GameDataContainer::getSpirit() {
     return this->spirit;
 }
 
+void GameDataContainer::setMana(int mana) {
+    QWriteLocker locker(&lock);
+    this->mana = mana;
+}
+
+int GameDataContainer::getMana() {
+    QReadLocker locker(&lock);
+    return this->mana;
+}
+
 void GameDataContainer::setFatigue(int fatigue) {
 
     QWriteLocker locker(&lock);
@@ -425,9 +450,14 @@ int GameDataContainer::getFatigue() {
 
 void GameDataContainer::setRt(int rt) {
     if(rt < 0) rt = 0;
-
     QWriteLocker locker(&lock);
     this->rt = rt;
+}
+
+void GameDataContainer::setCt(int ct) {
+    if(ct < 0) ct = 0;
+    QWriteLocker locker(&lock);
+    this->ct = ct;
 }
 
 int GameDataContainer::getRt() {
@@ -456,9 +486,11 @@ void GameDataContainer::clearActiveSpells() {
 }
 
 QList<QString> GameDataContainer::getDirections() {
+    QReadLocker locker(&lock);
     return this->directions;
 }
 
 void GameDataContainer::setDirections(QList<QString> directions) {
+    QWriteLocker locker(&lock);
     this->directions = directions;
 }

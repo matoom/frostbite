@@ -1,7 +1,10 @@
-Kernel.require "#{File.dirname(__FILE__)}/models.rb"
-Kernel.require "#{File.dirname(__FILE__)}/ruby_goto.rb"
-Kernel.require "#{File.dirname(__FILE__)}/observer.rb"
-Kernel.require "#{File.dirname(__FILE__)}/text.rb"
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../")
+
+require "models"
+require "ruby_goto"
+require "observer"
+require "text"
 
 # show warnings
 #$VERBOSE = true
@@ -95,7 +98,7 @@ end
 # @param [String] name name of the file
 # @return [Void]
 def load(name)
-  Kernel.load "#{File.dirname(__FILE__)}/../#{name}.rb"
+  Kernel.load name
 end
 
 # Require a script by name. Only loads file
@@ -104,7 +107,7 @@ end
 # @param [String] name name of the file
 # @return [Void]
 def require(name)
-  Kernel.require "#{File.dirname(__FILE__)}/../#{name}.rb"
+  Kernel.require name
 end
 
 # Current match round time -- can be used in

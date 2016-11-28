@@ -4,7 +4,6 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     commandLine = mainWindow->getCommandLine();
     windowFacade = mainWindow->getWindowFacade();
-    textUtils = TextUtils::Instance();
     scriptWriter = new ScriptWriterThread(this);
 
     script = new Script(this);
@@ -55,7 +54,7 @@ void ScriptService::terminateScript() {
     if(script->isRunning()) {
         emit killScript();
         windowFacade->writeGameWindow("[Script terminated after " +
-            textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+            TextUtils::msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
         terminateFlag = false;
     }
 }
@@ -65,7 +64,7 @@ void ScriptService::abortScript() {
         if(!terminateFlag) {
             emit sendMessage("exit#\n");
             windowFacade->writeGameWindow("[Script aborted after " +
-                textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+                TextUtils::msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
             terminateFlag = true;
         } else {
             this->terminateScript();
@@ -75,7 +74,7 @@ void ScriptService::abortScript() {
 
 void ScriptService::scriptFinished() {
     windowFacade->writeGameWindow("[Script finished, Execution time - " +
-        textUtils->msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
+        TextUtils::msToMMSS(timer.elapsed()).toLocal8Bit() + ".]");
     timer.invalidate();
     terminateFlag = false;
 }

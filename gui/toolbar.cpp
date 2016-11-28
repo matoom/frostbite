@@ -3,7 +3,6 @@
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
-    textUtils = TextUtils::Instance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -96,6 +95,11 @@ void Toolbar::updateVitals(QString name, QString value) {
         vitalsIndicator->spiritBar->setValue(intValue);
         vitalsIndicator->spiritBar->setToolTip("Spirit: " + value + "%");
         vitalsIndicator->spiritBar->repaint();
+    } else if(name == "mana") {
+        gameDataContainer->setMana(intValue);
+        vitalsIndicator->manaBar->setValue(intValue);
+        vitalsIndicator->manaBar->setToolTip("Mana: " + value + "%");
+        vitalsIndicator->manaBar->repaint();
     }
 }
 
@@ -126,14 +130,12 @@ void Toolbar::quickButtonAction() {
     emit mainWindow->getCommandLine()->sendCommand();
 }
 
-void Toolbar::updateActiveSpells() {
-    QStringList activeSpells = gameDataContainer->getActiveSpells();
-
-    activeSpell->setText(textUtils->findLowestActiveValue(activeSpells));
+void Toolbar::updateActiveSpells(QStringList activeSpells) {
+    activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells), QString::number(activeSpells.count()));
 
     QString text = "<table style='margin: 4px;'>";
     foreach(QString activeSpell, activeSpells) {
-        text +="<tr><td><div style='font-size: 14px; white-space: nowrap;'>" + activeSpell + "</div><td/></tr>";
+        text += "<tr><td><div style='font-size: 14px; white-space: pre;'>" + activeSpell + "</div><td/></tr>";
     }
     text += "</table>";
 
@@ -141,8 +143,8 @@ void Toolbar::updateActiveSpells() {
 }
 
 void Toolbar::clearActiveSpells() {
-    activeSpell->setText("-");
-    activeSpell->setToolTip("<table style='margin: 2px;'><tr><td>None</td></tr></table>");
+    activeSpell->setText("-", "-");
+    activeSpell->setToolTip("None");
 }
 
 Toolbar::~Toolbar() {

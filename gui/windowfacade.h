@@ -9,11 +9,11 @@
 #include <gamewindow.h>
 #include <navigationdisplay.h>
 #include <gamedatacontainer.h>
-#include <highlights/highlighter.h>
 #include <defaultvalues.h>
-#include <highlights/highlightsettings.h>
-#include <highlights/highlighterthread.h>
-#include <gridhighlighterthread.h>
+#include <text/highlight/highlighter.h>
+#include <text/highlight/highlightsettings.h>
+#include <windowwriterthread.h>
+#include <gridwriterthread.h>
 #include <mainlogger.h>
 #include <thoughtslogger.h>
 #include <conversationslogger.h>
@@ -35,8 +35,8 @@ class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
 class Highlighter;
-class HighlighterThread;
-class GridHighlighterThread;
+class WindowWriterThread;
+class GridWriterThread;
 class MainLogger;
 class ThoughtsLogger;
 class ConversationsLogger;
@@ -60,7 +60,7 @@ public:
     void scriptRunning(bool);
     void updateWindowStyle();
     QString getStyle();
-    void initWindowHighlighters();
+    void initWindowWriters();
     void initLoggers();
     void updateWindowColors();
     void setGameWindowFont(QFont);
@@ -156,16 +156,16 @@ private:
 
     QRegExp rxRemoveTags;
 
-    HighlighterThread* gameWindowHighlighter;
-    HighlighterThread* roomHighlighter;
-    GridHighlighterThread* expHighlighter;
-    HighlighterThread* arrivalsHighlighter;
-    HighlighterThread* thoughtsHighlighter;
-    HighlighterThread* deathsHighlighter;
-    HighlighterThread* conversationsHighlighter;
-    HighlighterThread* familiarHighlighter;
-    QList<HighlighterThread*> highlighters;
-    QList<GridHighlighterThread*> gridHighlighters;
+    WindowWriterThread* mainWriter;
+    WindowWriterThread* roomWriter;
+    GridWriterThread* expWriter;
+    WindowWriterThread* arrivalsWriter;
+    WindowWriterThread* thoughtsWriter;
+    WindowWriterThread* deathsWriter;
+    WindowWriterThread* conversationsWriter;
+    WindowWriterThread* familiarWriter;
+    QList<WindowWriterThread*> writers;
+    QList<GridWriterThread*> gridWriters;
 
     MainLogger* mainLogger;
     ThoughtsLogger* thoughtsLogger;

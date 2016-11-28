@@ -5,9 +5,9 @@
 #include <QWidget>
 #include <QLabel>
 
-#include <highlights/highlightdialog.h>
-#include <highlights/highlightsettings.h>
-#include <highlights/highlightsettingsentry.h>
+#include <text/highlight/highlightdialog.h>
+#include <text/highlight/highlightsettings.h>
+#include <text/highlight/highlightsettingsentry.h>
 #include <audioplayer.h>
 
 class HighlightDialog;

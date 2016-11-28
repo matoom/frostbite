@@ -19,7 +19,6 @@ module COMBAT
 		            "and collapses to its knees", " leaving behind a bloody mass of scorched robes",
 		            "falls limp with a final sputtering sigh", "life within him having been extinguished",
                 "then grows still, its body rapidly cooling"]
-  CRITTERS = ["wyvern", "assassin", "magus", "thrall", "archimage", "vindicator", "slayer", "intercessor"]
   DAMAGE = ["light hit", "good hit", "good strike", "solid hit", "hard hit", "strong hit", "heavy strike", "very heavy hit",
             "extremely heavy hit", "powerful strike", "massive strike", "awesome strike", "vicious strike", "earth-shaking strike",
             "demolishing hit", "spine-rattling strike", "devastating hit", "devastating hit (That'll leave a mark!)",
@@ -31,12 +30,6 @@ module ITEMS
 end
 
 module LOCKSMITH
-  class << self
-    attr_accessor :current_box
-  end
-
-  self.current_box = ""
-
   BOX_TYPES = ["chest", "trunk", "box", "skippet", "strongbox", "coffer", "crate", "casket", "caddy"]
   DISARMED_BOX_CONTAINER = "haversack"
 end

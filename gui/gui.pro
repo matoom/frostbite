@@ -24,15 +24,15 @@ greaterThan(QT_VERSION, 5){
 }
 
 include(maps/maps.pri)
-
-include(highlights/highlights.pri)
+include(text/text.pri)
+include(xml/xml.pri)
 
 win32 {
-    TARGET = ../../FrostBite
+    TARGET = ../../Frostbite
 }
 
 unix {
-    TARGET = ../FrostBite
+    TARGET = ../Frostbite
 }
 
 TEMPLATE = app
@@ -88,14 +88,14 @@ SOURCES += main.cpp\
     tcpclient.cpp \
     windowfacade.cpp \
     textutils.cpp \
-    xmlparserthread.cpp \
     shareddataservice.cpp \
     gridwindowfactory.cpp \
     gridwindow.cpp \
-    gridhighlighterthread.cpp \
     scriptapiserver.cpp \
     apisettings.cpp \
-    authlogger.cpp
+    authlogger.cpp \
+    windowwriterthread.cpp \
+    gridwriterthread.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -154,14 +154,14 @@ HEADERS  += mainwindow.h \
     tcpclient.h \
     windowfacade.h \
     textutils.h \
-    xmlparserthread.h \
     shareddataservice.h \
     gridwindowfactory.h \
     gridwindow.h \
-    gridhighlighterthread.h \
     scriptapiserver.h \
     apisettings.h \
-    authlogger.h
+    authlogger.h \
+    windowwriterthread.h \
+    gridwriterthread.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \
@@ -183,8 +183,8 @@ OTHER_FILES += \
     resources.rc
 
 # use relative path for libs in unix
-unix:!mac{
-  QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN
+unix:!mac{  
+    QMAKE_LFLAGS += -rdynamic "-Wl,-rpath,\'\$$ORIGIN/lib\'"
 }
 
 ICON = images/shield.icns
@@ -197,6 +197,7 @@ ICON = images/shield.icns
 #QMAKE_CXXFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_MT_DBG += -pg
 #QMAKE_LFLAGS_DEBUG += -pg
+
 
 
 

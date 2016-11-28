@@ -8,7 +8,15 @@ windows:
 include dependencies in app folder
 
 deploy on linux:
-copy dependencies from ldd into app folder
+copy -> dependencies from ldd into app/lib folder
+copy -> /plugins/platforms/libqxcb.so
+
+create -> qt.conf
+
+[Paths]
+Prefix=./
+Libraries=lib
+Plugins=plugins
 
 deploy on mac:
 
@@ -20,7 +28,7 @@ Plugins = PlugIns
 create folder -> Contents/PlugIns
 
 run: 
-macdeployqt FrostBite.app/ -dmg -no-plugins
+macdeployqt FrostBite.app/ -dmg
 
 if needed remove unnecessary frameworks/plugins
 

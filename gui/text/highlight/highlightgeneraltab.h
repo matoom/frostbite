@@ -8,8 +8,8 @@
 #include <QComboBox>
 #include <QPushButton>
 
-#include <highlights/highlightdialog.h>
-#include <highlights/highlightsettings.h>
+#include <text/highlight/highlightdialog.h>
+#include <text/highlight/highlightsettings.h>
 #include <audioplayer.h>
 #include <defaultvalues.h>
 #include <generalsettings.h>

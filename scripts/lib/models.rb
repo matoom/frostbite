@@ -205,6 +205,18 @@ class Room
   def self.count_objects(value)
     self.objects.scan(value).length
   end
+
+  # Monsters bold.
+  #
+  # @return [Array] list of bold monsters in room
+  # @example Using monsters bold in script.
+  # @note set MonsterBold
+  #   echo Room::monsters_bold
+  #   => ["a ship's rat"]
+  def self.monsters_bold
+    $_api_socket.puts "GET ROOM_MONSTERS_BOLD\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
+  end
 end
 
 class Vitals
@@ -435,7 +447,7 @@ class Client
   #
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect_prime(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:prime], name, user, pass)
   end
@@ -444,7 +456,7 @@ class Client
   #
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect_test(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:test], name, user, pass)
   end
@@ -453,7 +465,7 @@ class Client
   #
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect_fallen(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:fallen], name, user, pass)
   end
@@ -462,7 +474,7 @@ class Client
   #
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect_plat(name, user, pass)
     Client.connect(ApiSettings::AUTH_GAMES[:plat], name, user, pass)
   end
@@ -472,7 +484,7 @@ class Client
   # @param [String] game game instance code (DR, DRT, DRX, DRF)
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect(game, name, user, pass)
     Client.connect_host(ApiSettings::AUTH_HOST, ApiSettings::AUTH_PORT, game, name, user, pass)
   end
@@ -484,7 +496,7 @@ class Client
   # @param [String] game game instance code (DR, DRT, DRX, DRF)
   # @param [String] name character name
   # @param [String] user account user name
-  # @param [String] user account password
+  # @param [String] pass account password
   def self.connect_host(host, port, game, name, user, pass)
     $_api_socket.puts "CLIENT CONNECT?#{host}&#{port}&#{user}&#{pass}&#{game}&#{name}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
@@ -492,7 +504,7 @@ class Client
 
   # Track exp row in exp window
   #
-  # @param [String] internal exp name
+  # @param [String] name internal exp name
   def self.track_exp(name)
     $_api_socket.puts "CLIENT TRACK_EXP?#{name}\n"
     $_api_socket.gets('\0').chomp('\0').to_s

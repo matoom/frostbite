@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QCheckBox>
 
-#include <highlights/highlightdialog.h>
-#include <highlights/highlightadddialog.h>
-#include <highlights/highlighteditdialog.h>
-#include <highlights/highlightsettings.h>
-#include <highlights/highlightsettingsentry.h>
+#include <text/highlight/highlightdialog.h>
+#include <text/highlight/highlightadddialog.h>
+#include <text/highlight/highlighteditdialog.h>
+#include <text/highlight/highlightsettings.h>
+#include <text/highlight/highlightsettingsentry.h>
 #include <audioplayer.h>
 #include <generalsettings.h>
 

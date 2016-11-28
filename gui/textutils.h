@@ -13,31 +13,25 @@ class TextUtils : public QObject {
     Q_OBJECT
 
 public:
-    static TextUtils* Instance();
+    explicit TextUtils(QObject *parent = 0);
+    ~TextUtils();
 
-    int expStateToNumeric(QString);
-    int expBriefToNumeric(QString);
-    QString expNumericToState(int);
-    QString msToMMSS(int);
-    QString addNumericStateToExp(QString exp);
-    QString findLowestActiveValue(QStringList list);
-    QString htmlToPlain(QString& data);
-    void plainToHtml(QString& data);
+    static int expStateToNumeric(QString);
+    static int expBriefToNumeric(QString);
+    static QString expNumericToState(int);
+    static QString msToMMSS(int);
+    static QString addNumericStateToExp(QString exp);
+    static QString findLowestActiveValue(QStringList list);
+    static QString htmlToPlain(QString& data);
+    static void plainToHtml(QString& data);
 
-    QString toHash(QString text);
-    QString toBrief(QString direction);
+    static QString toHash(QString text);
+    static QString toBrief(QString direction);
+    static QString stripMapSpecial(QString text);
 
 private:
-    TextUtils(QObject *parent = 0);
-    TextUtils(TextUtils const& copy);
-    TextUtils& operator = (TextUtils const& copy);
-    static TextUtils* m_pInstance;
-
-    void populateExpStates();
-    QStringList mindStates;
-
-    QRegExp rxNumber;
-    QRegExp rxRemoveTags;
+    static void populateExpStates();
+    static QStringList mindStates;
 
 signals:
     

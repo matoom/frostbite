@@ -16,11 +16,11 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     }    
 
-    xmlParserThread = new XmlParserThread(parent);
-    connect(this, SIGNAL(addToQueue(QByteArray)), xmlParserThread, SLOT(addData(QByteArray)));
-    connect(this, SIGNAL(updateHighlighterSettings()), xmlParserThread, SLOT(updateHighlighterSettings()));
-    connect(xmlParserThread, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
-    connect(xmlParserThread, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
+    xmlParser = new XmlParserThread(parent);
+    connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
+    connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
+    connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
+    connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
 
     if(MainWindow::DEBUG) {
         this->loadMockData();
@@ -43,8 +43,8 @@ void TcpClient::loadMockData() {
 
     emit addToQueue(mockData);
 
-    if(!xmlParserThread->isRunning()) {
-        xmlParserThread->start();
+    if(!xmlParser->isRunning()) {
+        xmlParser->start();
     }
 }
 
@@ -165,8 +165,8 @@ void TcpClient::socketReadyRead() {
     if(buffer.endsWith("\n")){
         // process raw data
         emit addToQueue(buffer);
-        if(!xmlParserThread->isRunning()) {
-            xmlParserThread->start();
+        if(!xmlParser->isRunning()) {
+            xmlParser->start();
         }
 
         // log raw data
@@ -225,6 +225,6 @@ TcpClient::~TcpClient() {
 
     delete debugLogger;
     delete tcpSocket;
-    delete xmlParserThread;
+    delete xmlParser;
     delete eAuth;    
 }

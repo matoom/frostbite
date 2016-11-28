@@ -31,6 +31,7 @@ public:
     void setRoomName(QString);
     void setRoomDesc(QString);
     void setRoomObjs(QString);
+    void setRoomObjsData(QString);
     void setRoomPlayers(QString);
     void setRoomExits(QString);
     void setRoomExtra(QString);
@@ -38,6 +39,7 @@ public:
     QString getRoomName();
     QString getRoomDesc();
     QString getRoomObjs();
+    QString getRoomObjsData();
     QString getRoomPlayers();
     QString getRoomExits();
     QString getRoomExtra();
@@ -97,16 +99,22 @@ public:
     void setSpirit(int);
     int getSpirit();
 
+    void setMana(int);
+    int getMana();
+
     void setFatigue(int);
     int getFatigue();
 
     void setRt(int);
     int getRt();
 
+    void setCt(int ct);
+
     QString getExpField(QString name);
     QHash<QString, QString> getExp();
     QMap<QString, int> getExp(QString name);
     void removeExpField(QString);
+    void clearExp();
     QStringList getInventory();
     QStringList getContainer();
 
@@ -124,7 +132,6 @@ private:
     GameDataContainer& operator = (GameDataContainer const& copy);
     static GameDataContainer* m_pInstance;
 
-    TextUtils* textUtils;
     //SharedDataService* sharedDataService;
     QHash<QString, QString> exp;
     QMap<QString, QMap<QString, int> > expMap;
@@ -132,14 +139,13 @@ private:
     QStringList container;
     QStringList inventory;
 
-    QRegExp rxNumber;
-
     QStringList extractExp(QString, bool brief);
     QReadWriteLock lock;
 
     QString roomName;
     QString roomDesc;
     QString roomObjs;
+    QString roomObjsData;
     QString roomPlayers;
     QString roomExits;
     QString roomExtra;
@@ -154,6 +160,7 @@ private:
     int health;
     int concentration;
     int spirit;
+    int mana;
     int fatigue;
 
     bool standing;
@@ -169,6 +176,7 @@ private:
     bool dead;
 
     int rt;
+    int ct;
 
     QStringList activeSpells;
 

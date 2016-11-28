@@ -15,7 +15,7 @@ Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 Thread.new do
   while true
-    spell_activate
+    spell_activate "khri", ["sagacity"]
     sleep 15
   end
 end
@@ -112,7 +112,8 @@ def fire
   put "fire"
   match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|able to move/],
             :pause => [/You are still stunned/],
-            :reload => [/Roundtime|isn't loaded/] }
+            :reload => [/Roundtime|isn't loaded/],
+            :loot => [/is already quite dead/]}
   result = match_wait match
 
   case result
@@ -124,6 +125,8 @@ def fire
       fire
     when :reload
       reload
+    when :loot
+      check_status
   end
 end
 
@@ -147,7 +150,7 @@ def check_status
     when :wait
       check_status
     when :dead
-      load "skin"
+      load "skin.rb"
     when :pause
       pause 3
       check_status

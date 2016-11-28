@@ -21,7 +21,7 @@ QString Highlighter::highlight(QString text) {
 
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry highlightEntry = highlightList->at(i);
-            TextUtils::Instance()->plainToHtml(highlightEntry.value);
+            TextUtils::plainToHtml(highlightEntry.value);
 
             // match whole or partial words
             if(highlightEntry.options.at(1)) {

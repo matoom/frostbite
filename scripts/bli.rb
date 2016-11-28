@@ -14,8 +14,8 @@ def stow_pick
 end
 
 def stow_box
-  unless LOCKSMITH::current_box.empty?
-    put_wait "put my #{LOCKSMITH::current_box} in my #{LOCKSMITH::DISARMED_BOX_CONTAINER}", /You put|referring to/
+  unless Wield::right_noun.empty?
+    put_wait "put my #{Wield::right_noun} in my #{LOCKSMITH::DISARMED_BOX_CONTAINER}", /You put|referring to/
   end
 end
 
@@ -39,7 +39,6 @@ def get_box
   if wield_right != ""
     LOCKSMITH::BOX_TYPES.each do |box|
       if wield_right == box
-        LOCKSMITH::current_box = box
         return
       end
     end
@@ -54,7 +53,6 @@ def get_box
 
     case res
       when :open
-        LOCKSMITH::current_box = box
         break
       when :wait
         pause 0.5
@@ -84,7 +82,7 @@ catch (:done) do
         pause 1
       when :loot
         stow_pick
-        load "lootbox"
+        load "lootbox.rb"
         throw :done
       when :done
         exit!
