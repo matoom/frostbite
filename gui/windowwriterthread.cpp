@@ -27,6 +27,8 @@ void WindowWriterThread::clearWriter() {
     mMutex.lock();
     dataQueue.clear();
     mMutex.unlock();
+
+    emit clearText();
 }
 
 void WindowWriterThread::run() {

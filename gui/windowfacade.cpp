@@ -561,7 +561,6 @@ void WindowFacade::updateSpellWindow(QString spellText) {
     setVisibilityIndicator(spellWindow, spellVisible, DOCK_TITLE_SPELL);
 
     spellWriter->clearWriter();
-    spellWriter->clearText();
 
     spellWriter->addText(spellText.trimmed());
     if(!spellWriter->isRunning()) {
