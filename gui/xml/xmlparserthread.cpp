@@ -43,6 +43,9 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     initRoundtime = false;
     initCastTime = false;
     prompt = false;
+
+    streamPending = false;
+    outputPending = false;
 }
 
 void XmlParserThread::updateHighlighterSettings() {
@@ -79,6 +82,21 @@ QString XmlParserThread::fixInputXml(QString data) {
     data.replace(QRegularExpression("<output.*\"\"[^>]*\\/>"), "]]></output>\r\n<!---->");
 
     return data;
+}
+
+/* lich stream caching when data pushed in segmented packets */
+void XmlParserThread::cache(QByteArray data) {
+    if(data.contains("<pushStream")) streamPending = true;
+    if(data.contains("<popStream")) streamPending = false;
+
+    if(data.contains("<output class=\"mono\"")) outputPending = true;
+    if(data.contains("<output class=\"\"")) outputPending = false;
+
+    streamCache.append(data);
+    if(!streamPending && !outputPending) {
+        this->process(streamCache);
+        streamCache.clear();
+    }
 }
 
 void XmlParserThread::process(QByteArray data) {
@@ -341,7 +359,6 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameDataContainer->clearActiveSpells();
                 emit clearActiveSpells();
                 this->activeSpells.clear();
-                emit updateSpellWindow(this->activeSpells);
             }
         } else if (e.tagName() == "pushBold") {
             bold = true;
@@ -475,9 +492,6 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             activeSpells += root.text();
         }
-
-        emit updateSpellWindow(activeSpells);
-
         QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);
         gameDataContainer->setActiveSpells(list);
         scheduled.insert(e.attribute("id"), list);
@@ -565,6 +579,7 @@ void XmlParserThread::runScheduledEvents() {
 void XmlParserThread::runEvent(QString event, QVariant data) {
     if(event == "percWindow") {
         emit updateActiveSpells(data.toStringList());
+        emit updateSpellWindow(data.toStringList().join("\n"));
     } else {
         qDebug() << tr("Event \"%1\" not found").arg(event);
     }

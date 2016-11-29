@@ -23,14 +23,6 @@ void WindowWriterThread::addText(QString text) {
     mMutex.unlock();
 }
 
-void WindowWriterThread::clearWriter() {
-    mMutex.lock();
-    dataQueue.clear();
-    mMutex.unlock();
-
-    emit clearText();
-}
-
 void WindowWriterThread::run() {
     while(!this->exit) {
         while(!dataQueue.isEmpty()) {

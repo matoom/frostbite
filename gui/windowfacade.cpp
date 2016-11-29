@@ -264,6 +264,7 @@ void WindowFacade::initWindowWriters() {
     connect(this, SIGNAL(updateFamiliarSettings()), familiarWriter, SLOT(updateSettings()));
     writers << familiarWriter;
 
+    ((GenericWindow*)spellWindow->widget())->setAppend(false);
     spellWriter = new WindowWriterThread(mainWindow, (GenericWindow*)spellWindow->widget());
     connect(this, SIGNAL(updateSpellSettings()), spellWriter, SLOT(updateSettings()));
     writers << spellWriter;
@@ -560,9 +561,7 @@ void WindowFacade::updateFamiliarWindow(QString familiarText) {
 void WindowFacade::updateSpellWindow(QString spellText) {
     setVisibilityIndicator(spellWindow, spellVisible, DOCK_TITLE_SPELL);
 
-    spellWriter->clearWriter();
-
-    spellWriter->addText(spellText.trimmed());
+    spellWriter->addText(spellText + "\n");
     if(!spellWriter->isRunning()) {
         spellWriter->start();
     }

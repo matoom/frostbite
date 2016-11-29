@@ -35,6 +35,8 @@ private:
     QQueue<QByteArray> dataQueue;
     QMutex mMutex;
 
+    void cache(QByteArray data);
+
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
 
@@ -60,6 +62,11 @@ private:
     bool initRoundtime;
     bool initCastTime;
     bool prompt;
+
+    QByteArray streamCache;
+
+    bool streamPending;
+    bool outputPending;
 
     void processGameData(QByteArray);
     void processPushStream(QString);
