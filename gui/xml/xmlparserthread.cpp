@@ -64,7 +64,7 @@ void XmlParserThread::run() {
             mMutex.lock();
             localData = dataQueue.dequeue();
             mMutex.unlock();
-            process(localData);
+            cache(localData);
         }
         msleep(25);
     }
@@ -358,6 +358,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             if(e.attribute("id") == "percWindow") {
                 gameDataContainer->clearActiveSpells();
                 emit clearActiveSpells();
+                emit updateSpellWindow("");
                 this->activeSpells.clear();
             }
         } else if (e.tagName() == "pushBold") {
