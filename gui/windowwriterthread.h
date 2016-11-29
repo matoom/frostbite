@@ -41,6 +41,7 @@ private:
 
 public slots:
     void addText(QString);
+    void clearWriter();
     void updateSettings();
 
 signals:

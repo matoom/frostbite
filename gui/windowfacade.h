@@ -83,6 +83,7 @@ public:
     QDockWidget* getDeathsWindow();
     QDockWidget* getConversationsWindow();
     QDockWidget* getFamiliarWindow();
+    QDockWidget* getSpellWindow();
 
     MapFacade* getMapFacade();
 
@@ -91,6 +92,7 @@ public:
     bool arrivalsVisible;
     bool conversationsVisible;
     bool familiarVisible;
+    bool spellVisible;
     bool writePrompt;
 
 public slots:
@@ -106,6 +108,7 @@ public slots:
     void updateThoughtsWindow(QString);    
     void updateArrivalsWindow(QString);
     void updateFamiliarWindow(QString);
+    void updateSpellWindow(QString);
 
     void logThoughtsText(QString);
     void logConversationsText(QString);
@@ -127,6 +130,7 @@ private slots:
     void arrivalsVisibility(bool);
     void conversationsVisibility(bool);
     void familiarVisibility(bool);
+    void spellVisibility(bool);
     void writeExpWindow(GridItems);
 
 private:
@@ -149,6 +153,7 @@ private:
     QDockWidget* deathsWindow;
     QDockWidget* conversationsWindow;
     QDockWidget* familiarWindow;
+    QDockWidget* spellWindow;
     QList<QDockWidget*> dockWindows;
     QList<QDockWidget*> gridWindows;
 
@@ -164,6 +169,7 @@ private:
     WindowWriterThread* deathsWriter;
     WindowWriterThread* conversationsWriter;
     WindowWriterThread* familiarWriter;
+    WindowWriterThread* spellWriter;
     QList<WindowWriterThread*> writers;
     QList<GridWriterThread*> gridWriters;
 
@@ -187,6 +193,7 @@ signals:
     void updateDeathsSettings();
     void updateConversationsSettings();
     void updateFamiliarSettings();
+    void updateSpellSettings();
 
     //void setMapLabel(QString text);
     //void nodeSelected(MapZone* zone, int nodeId);

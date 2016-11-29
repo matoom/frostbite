@@ -21,6 +21,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
     connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
     connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade, SLOT(updateFamiliarWindow(QString)));
+    connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade, SLOT(updateSpellWindow(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
@@ -340,6 +341,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameDataContainer->clearActiveSpells();
                 emit clearActiveSpells();
                 this->activeSpells.clear();
+                emit updateSpellWindow(this->activeSpells);
             }
         } else if (e.tagName() == "pushBold") {
             bold = true;
@@ -473,6 +475,9 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             activeSpells += root.text();
         }
+
+        emit updateSpellWindow(activeSpells);
+
         QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);
         gameDataContainer->setActiveSpells(list);
         scheduled.insert(e.attribute("id"), list);
