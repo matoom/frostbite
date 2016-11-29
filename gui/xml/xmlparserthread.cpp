@@ -512,6 +512,8 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             this->warnUnknownEntity("chatter", data);
         }
+    } else if(e.attribute("id") == "moonWindow") {
+        // ignore warning for now but window to be implemented
     } else {
         this->warnUnknownEntity("push-stream", data);
     }
