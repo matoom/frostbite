@@ -192,7 +192,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
             QString response = "A\t" + user.toUpper() + "\t" + enc + "\n";
             this->write(response.toLatin1());
         } else {
-            emit connectionError("Unable to obtain session key.");
+            emit connectionError("Unable to obtain session key. Try again.");
         }
     }
 }

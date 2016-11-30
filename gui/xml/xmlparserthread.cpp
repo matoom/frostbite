@@ -44,8 +44,8 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     initCastTime = false;
     prompt = false;
 
-    streamPending = false;
-    outputPending = false;
+    streamCount = 0;
+    outputCount = 0;
 }
 
 void XmlParserThread::updateHighlighterSettings() {
@@ -78,29 +78,35 @@ QString XmlParserThread::fixInputXml(QString data) {
     data.replace(QRegularExpression("<popStream[^>]*\\/>"), "</pushStream>\r\n<!---->");
 
     // mono
-    data.replace(QRegularExpression("<output.*\"mono\"[^>]*\\/>"), "<!---->\r\n<output class=\"mono\"><![CDATA[");
-    data.replace(QRegularExpression("<output.*\"\"[^>]*\\/>"), "]]></output>\r\n<!---->");
+    data.replace(QRegularExpression("<output.*['\"]mono['\"][^>]*\\/>"), "<!---->\r\n<output class=\"mono\"><![CDATA[");
+    data.replace(QRegularExpression("<output.*['\"]['\"][^>]*\\/>"), "]]></output>\r\n<!---->");
 
     return data;
 }
 
 /* lich stream caching when data pushed in segmented packets */
 void XmlParserThread::cache(QByteArray data) {
-    if(data.contains("<pushStream")) streamPending = true;
-    if(data.contains("<popStream")) streamPending = false;
+    QString cache = QString::fromLocal8Bit(data);
 
-    if(data.contains("<output class=\"mono\"")) outputPending = true;
-    if(data.contains("<output class=\"\"")) outputPending = false;
+    streamCount += cache.count("<pushStream") - cache.count("<popStream");
+    outputCount += cache.count(QRegularExpression("<output class=['\"]mono['\"]")) -
+            cache.count(QRegularExpression("<output class=['\"]['\"]"));
 
-    streamCache.append(data);
-    if(!streamPending && !outputPending) {
+    if(streamCache.size() > 10240) {
+        qDebug() << "Stream limit exceeded!";
+        streamCount = 0, outputCount = 0;
+    }
+
+    streamCache.append(cache);
+    if((streamCount <= 0 && outputCount <= 0)) {
+        streamCount = 0, outputCount = 0;
         this->process(streamCache);
         streamCache.clear();
     }
 }
 
-void XmlParserThread::process(QByteArray data) {
-    QString str = fixInputXml(QString::fromLocal8Bit(data.trimmed()));
+void XmlParserThread::process(QString data) {
+    QString str = fixInputXml(data.trimmed());
 
     QList<QString> lines = str.split("\r\n");
 
@@ -117,10 +123,17 @@ void XmlParserThread::process(QByteArray data) {
         } else if(lines.at(i).startsWith("<output")) {
             QString output = lines.at(i) + "\n";
             while(i < lines.size() - 1) {
-                output += lines.at(++i) + "\n";
                 if(lines.at(i).endsWith("</output>")) break;
+                output += lines.at(++i) + "\n";                
             }
             processOutput(output);
+        } else if(lines.at(i).startsWith("<dynaStream")) {
+            QString dynaStream = lines.at(i) + "\n";
+            while(i < lines.size() - 1) {
+                if(lines.at(i).endsWith("</dynaStream>")) break;
+                dynaStream += lines.at(++i) + "\n";
+            }
+            processDynaStream(dynaStream);
         } else {
             processGameData(lines.at(i).toLocal8Bit());
         }
@@ -133,7 +146,7 @@ void XmlParserThread::processGameData(QByteArray data) {
 
     QDomDocument doc("gameData");
     if(!doc.setContent(data)) {
-        this->warnUnknownEntity("game-data-doc", data);
+        this->warnInvalidXml("game-data-doc", data);
         return;
     }
 
@@ -279,7 +292,10 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
             emit updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
             highlighter->alert(vitalsElement.attribute("id"), vitalsElement.attribute("value").toInt());
-        }  else if(e.tagName() == "indicator") {
+        } else if(e.tagName() == "dialogData" && e.attribute("id") == "spellChoose") {
+            QDomElement closeButton = e.firstChildElement("closeButton");
+            gameText += closeButton.attribute("value") + ": [<span class=\"bold\">" + closeButton.attribute("cmd") + "</span>]";
+        } else if(e.tagName() == "indicator") {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
             emit updateStatus(e.attribute("visible"), e.attribute("id"));
@@ -354,7 +370,9 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 }
                 emit updateRoomWindow();
             }
-        } else if(e.tagName() == "clearStream") {
+        }/* else if(e.tagName() == "dynaStream") {
+            gameText += e.text();
+        } */else if(e.tagName() == "clearStream") {
             if(e.attribute("id") == "percWindow") {
                 gameDataContainer->clearActiveSpells();
                 emit clearActiveSpells();
@@ -376,7 +394,7 @@ void XmlParserThread::processPushStream(QString data) {
 
     QDomDocument doc("pushStream");
     if(!doc.setContent(data)) {
-        this->warnUnknownEntity("push-stream-doc", data);
+        this->warnInvalidXml("push-stream-doc", data);
         return;
     }
 
@@ -429,8 +447,8 @@ void XmlParserThread::processPushStream(QString data) {
             TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateThoughtsWindow(addTime(text));
-        } else {
-            this->warnUnknownEntity("thoughts", data);
+        } else {            
+            emit updateThoughtsWindow(addTime(e.text().trimmed()));
         }
     } else if(e.attribute("id") == "death") {
         emit updateDeathsWindow(addTime(root.text().trimmed()));
@@ -532,7 +550,7 @@ void XmlParserThread::processOutput(QString data) {
 
     QDomDocument doc("output");
     if(!doc.setContent(data)) {
-        this->warnUnknownEntity("output-doc", data);
+        this->warnInvalidXml("output-doc", data);
         return;
     }
 
@@ -543,14 +561,52 @@ void XmlParserThread::processOutput(QString data) {
 
     if(e.attribute("class") == "mono") {
         QString text = e.text();
+        text.replace(QRegularExpression("<d cmd=\"(.*)\">(.*)</d>(.*)"), "\\2\\3 [<span class=\"bold\">\\1</span>]");
+
         if(text.startsWith('\n')) text = text.right(text.size() - 1);
         if(text.endsWith('\n')) text.chop(1);
         emit writeText(text.toLocal8Bit(), false);
     }
 }
 
+void XmlParserThread::processDynaStream(QString data) {
+    data.prepend("<root>");
+    data.append("</root>");
+
+    QDomDocument doc("dynaStream");
+    if(!doc.setContent(data)) {
+        this->warnInvalidXml("dyna-stream-doc", data);
+        return;
+    }
+
+    QDomElement root = doc.documentElement();
+    QDomNode n = root.firstChild();
+
+    QDomElement e = n.toElement();
+    if(e.attribute("id") == "spellInfo") {
+        emit writeText(e.text().toLocal8Bit(), false);
+    } else {
+        this->warnUnknownEntity("dynaStream", data);
+    }
+
+    /*QDomElement element = doc.documentElement();
+    for(QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        QDomElement e = n.toElement();
+
+        if(e.attribute("id") == "spellInfo") {
+            qDebug() << e.text();
+        } else {
+            this->warnUnknownEntity("dynaStream", data);
+        }
+    }*/
+}
+
 void XmlParserThread::warnUnknownEntity(QString ref, QString xml) {
     qDebug() << tr("unknown xml event (%1): %2").arg(ref, xml);
+}
+
+void XmlParserThread::warnInvalidXml(QString ref, QString xml) {
+    qDebug() << tr("invalid xml (%1): %2").arg(ref, xml);
 }
 
 QString XmlParserThread::parseTalk(QDomElement element) {

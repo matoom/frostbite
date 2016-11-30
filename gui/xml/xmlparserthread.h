@@ -29,7 +29,7 @@ public:
 
     virtual void run();
 
-    void process(QByteArray);
+    void process(QString);
 
 private:
     QQueue<QByteArray> dataQueue;
@@ -63,15 +63,19 @@ private:
     bool initCastTime;
     bool prompt;
 
-    QByteArray streamCache;
+    QString streamCache;
 
-    bool streamPending;
-    bool outputPending;
+    int streamCount;
+    int outputCount;
 
     void processGameData(QByteArray);
+
     void processPushStream(QString);
-    void processOutput(QString);
+    void processOutput(QString);    
+    void processDynaStream(QString);
+
     void warnUnknownEntity(QString ref, QString xml);
+    void warnInvalidXml(QString ref, QString xml);
 
     QString parseTalk(QDomElement element);
     QString toString(QDomElement element);

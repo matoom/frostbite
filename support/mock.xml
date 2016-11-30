@@ -1005,3 +1005,47 @@ Obvious paths: <d>north</d>, <d>east</d>, <d>west</d>.
 
 <clearStream id="moonWindow"/>
 <pushStream id="moonWindow"/> [k]+(0) [y]+(17) [x]+(129)<popStream/>
+
+<openDialog type='dynamic' id='spellChoose' resident='false' title='Choose A New Spell' save='false' location='center' height='460' width='600'><dialogData id='spellChoose' clear='t'><streamBox id='spells' top='40' left='15' width='250' height='380' /><streamBox id='spellInfo' top='40' left='20' width='300' height='380' anchor_left='spells' /><closeButton id='chooseSpell' value='Close' width='200' top='-10' left='0' align='s' /><label id='Instructions1' value='Spells available for you to choose are listed in the left panel.  Click the spell on the left' top='0' left='10' wrap='true'/><label id='Instructions2' value='panel and then click the button below to choose it from your guildleader.' top='16' left='10' wrap='true'/></dialogData></openDialog>
+<exposeDialog id='spellChoose'/>
+<output class='mono'/>
+<dynaStream id='spells'>Perception</dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Clear Vision">Clear Vision</d></dynaStream>
+<dynaStream id='spells'></dynaStream>
+<dynaStream id='spells'>Psychic Projection</dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Calm">Calm</d></dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Telekinetic Throw">Telekinetic Throw</d></dynaStream>
+<dynaStream id='spells'></dynaStream>
+<dynaStream id='spells'>Moonlight Manipulation</dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Focus Moonbeam">Focus Moonbeam</d></dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Dazzle">Dazzle</d></dynaStream>
+<dynaStream id='spells'>  <d cmd="_magic ask -831 Dinazen Olkar">Dinazen Olkar</d></dynaStream>
+<dynaStream id='spells'></dynaStream>
+<output class=''/>
+Kssarh grumbles to himself and then mutters, "Yes, yes!  The guild regulations say you're entitled to hear about spells whenever you wish."  He sighs, and then flips through a large, leather-bound tome on his desk for a few moments.
+
+Moments later, he looks up and says, "Well, Master Jigurius, it appears in fact that you are entitled to hear about the Clear Vision spell from the Perception book, the Calm and Telekinetic Throw spells from the Psychic Projection book, and the Focus Moonbeam, Dazzle, and Dinazen Olkar spells from the Moonlight Manipulation book.  If you wish to hear more about any of these blasted books, then you'd bleeding do well to say so now!"
+
+Kssarh locks eyes with you.  "Amazingly enough," he says, "you are entitled" -- he grimaces a moment -- "to learn more of the magic of this guild.  You may choose a bloody spell if you can force that pea-brain to make a decision!"
+<prompt time="1480455989">&gt;</prompt>
+
+<clearDynaStream id='spellInfo'/>
+<dialogData id='spellChoose'><closeButton id='chooseSpell' value="Choose Clear Vision" cmd="Choose clear vision      Spell" top='-10' left='0' align='s' width='200' /></dialogData>
+<dynaStream id='spellInfo'>     Kssarh says, "Clear Vision enhances the subject's perception at the psychic level, increasing the acumen of his senses.  All the senses are affected to some degree, but the spell is best known for the clarity of sight that inspired its name.</dynaStream>
+<dynaStream id='spellInfo'></dynaStream>
+<dynaStream id='spellInfo'>While all the sects had tools to augment their senses, Clear Vision was invented by the Nomads of the Arid Steppe.  To this day, Nomad casting techniques allow the spell to be cast with unusual finesse."</dynaStream>
+<dynaStream id='spellInfo'></dynaStream>
+<dynaStream id='spellInfo'>This spell costs 1 spell slot.</dynaStream>
+<prompt time="1480456670">&gt;</prompt>
+
+<clearDynaStream id='spellInfo'/>
+<dialogData id='spellChoose'><closeButton id='chooseSpell' value="Choose Dazzle" cmd="Choose dazzle       Spell" top='-10' left='0' align='s' width='200' /></dialogData>
+<dynaStream id='spellInfo'>     Kssarh says, "The Dazzle spell bathes the target in a bright flash of light.  It's such a bright flash that it will disorient the target and cause them to stop in their tracks.  The duration of the flash depends on the amount of power you put into the spell.  While the flash will never last more than a moment, this can mean the difference between a barely seen flicker and a blinding experience."
+
+"Dazzle also interacts with the sigils lunar enchanters use to create their devices.  While it is not the most elegant tool at an artificer's disposal, it favored by journeyman enchanters who want all their spells to be useful in the field."</dynaStream>
+<dynaStream id='spellInfo'></dynaStream>
+<dynaStream id='spellInfo'>This spell costs 2 spell slots.</dynaStream>
+<prompt time="1480525554">&gt;</prompt>
+
+<pushStream id="thoughts"/>[DRPrime]-DR:Italshan: "is it possible to braid some vines into bundling rope?"
+<popStream/>
