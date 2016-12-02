@@ -79,7 +79,7 @@ QToolButton:pressed {
     titlebar-normal-icon:  url(&quot;:/images/minus.png&quot;);
 	titlebar-close-icon: url(&quot;:/images/close.png&quot;);
 	color: #dfdfdf;
-    font: 7pt &quot;Microsoft JhengHei&quot;;
+	font-size: 7pt;
  }
 
  QDockWidget::close-button, QDockWidget::float-button {
@@ -110,6 +110,12 @@ QDialogButtonBox {
 	height: 25px;
 	max-height: 25px;
 }
+
+QTabBar {
+	/*height:26px;*/
+	font-size: 8pt;
+}
+
 </string>
   </property>
   <property name="locale">

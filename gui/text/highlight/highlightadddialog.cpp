@@ -33,23 +33,21 @@ QComboBox* HighlightAddDialog::getGroupSelect() {
 
 void HighlightAddDialog::okPressed() {
     QString group = ui->groupSelect->currentText();
-    QString text = ui->textLine->text();
+    QString text = ui->textLine->text();       
 
-    QColor color(255, 255, 255);
-    if (textTab->bgColor.value() > 150) {
-        color.setRgb(0, 0, 0);
+    if(!text.isEmpty()) {
+        QColor color(textTab->bgColor.rgba()^0xffffff);
+        HighlightSettingsEntry entry = HighlightSettingsEntry(0, text, group,
+            color, false, "", false, 0, "", QBitArray(3));
+
+        settings->addParameter("TextHighlight", entry);
+
+        textTab->reloadHighlightList();
+
+        ui->textLine->setText("");
+
+        this->accept();
     }
-
-    HighlightSettingsEntry entry = HighlightSettingsEntry(0, text, group,
-        color, false, "", false, 0, "", QBitArray(3));
-
-    settings->addParameter("TextHighlight", entry);
-
-    textTab->reloadHighlightList();
-
-    ui->textLine->setText("");
-
-    this->accept();
 }
 
 void HighlightAddDialog::cancelPressed() {
