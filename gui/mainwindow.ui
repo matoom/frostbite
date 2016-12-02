@@ -36,11 +36,11 @@
 /*	 background-repeat: repeat-xy;*/
 }
 
-QWidget#cmdLine {
+/*QWidget#cmdLine {
     min-width: 50em;
     padding: 6px;
-	padding-top: 10px;
-}
+	padding-top: 12px;
+}*/
 /*
 QWidget#gameWindow {	
 border-color: rgb(0, 170, 0);
@@ -111,11 +111,17 @@ QDialogButtonBox {
 	max-height: 25px;
 }
 
-QTabBar {
-	/*height:26px;*/
+QDialog QWidget {
 	font-size: 8pt;
 }
 
+QDialog QListWidget {
+	font-size: 10pt;
+}
+
+QTabBar {
+	font-size: 8pt;
+}
 </string>
   </property>
   <property name="locale">

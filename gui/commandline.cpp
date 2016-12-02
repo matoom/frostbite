@@ -14,7 +14,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     this->setStyleSheet("QLineEdit { min-width: 50em;"
                         "padding: 2px;"
                         "padding-bottom: 6px;"
-                        "padding-top: 10px;}");
+                        "padding-top: 12px;}");
 
     connect(this, SIGNAL(returnPressed()), this, SLOT(sendCommand()));
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(resetCompleter(const QString&)));

@@ -132,7 +132,7 @@ QPixmap RoundTimeDisplay::numericDisplay(int seconds) {
         painter.setBrush(rtColor);
         painter.setPen(rtColor);
 
-        painter.setFont(QFont(DEFAULT_FONT, 12));
+        painter.setFont(settings->gameWindowFont());
         painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, QString::number(seconds));
     }
     return collage;

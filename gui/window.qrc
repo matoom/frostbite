@@ -11,7 +11,7 @@
         <file>images/shield_110.png</file>
         <file>images/shield.png</file>
         <file>images/shield.icns</file>
-        <file>images/arrow_right.png</file>
         <file>images/loading.gif</file>
+        <file>images/arrow_right.png</file>
     </qresource>
 </RCC>
