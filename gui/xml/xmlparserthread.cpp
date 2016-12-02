@@ -370,9 +370,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 }
                 emit updateRoomWindow();
             }
-        }/* else if(e.tagName() == "dynaStream") {
-            gameText += e.text();
-        } */else if(e.tagName() == "clearStream") {
+        } else if(e.tagName() == "clearStream") {
             if(e.attribute("id") == "percWindow") {
                 gameDataContainer->clearActiveSpells();
                 emit clearActiveSpells();
@@ -588,17 +586,6 @@ void XmlParserThread::processDynaStream(QString data) {
     } else {
         this->warnUnknownEntity("dynaStream", data);
     }
-
-    /*QDomElement element = doc.documentElement();
-    for(QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
-        QDomElement e = n.toElement();
-
-        if(e.attribute("id") == "spellInfo") {
-            qDebug() << e.text();
-        } else {
-            this->warnUnknownEntity("dynaStream", data);
-        }
-    }*/
 }
 
 void XmlParserThread::warnUnknownEntity(QString ref, QString xml) {

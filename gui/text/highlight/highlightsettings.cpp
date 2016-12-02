@@ -1,13 +1,18 @@
 #include "highlightsettings.h"
 
 HighlightSettings::HighlightSettings() {
-    this->init();
+    settingsCache = new QList<HighlightSettingsEntry>();
+    this->create();
 }
 
 void HighlightSettings::init() {
+    initSettings = true;
+}
+
+void HighlightSettings::create() {
     QString path = ClientSettings::Instance()->profilePath();
     settings = new QSettings(path + "highlights.ini", QSettings::IniFormat);
-    settingsList = NULL;
+    settingsCache->clear();
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
@@ -54,33 +59,34 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue(group + "/size", size);
 }
 
-void HighlightSettings::loadSettings(QString group) {
-    settingsList = new QList<HighlightSettingsEntry>();
-
+void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
     int size = settings->beginReadArray(group);
 
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
 
         settingsList->append(HighlightSettingsEntry((const int&)i,
-            (const QString&)settings->value("value").toString(),
-            (const QString&)settings->value("group").toString(),
-            (const QColor&)settings->value("color").value<QColor>(),
-            (const bool&)settings->value("alert").toBool(),
-            (const QString&)settings->value("alertValue").toString(),
-            (const bool&)settings->value("timer").toBool(),
-            (const int&)settings->value("timerValue").toInt(),
-            (const QString&)settings->value("timerAction").toString(),
-            (const QBitArray&)settings->value("options").value<QBitArray>()));
+                (const QString&)settings->value("value", "").toString(),
+                (const QString&)settings->value("group", "").toString(),
+                (const QColor&)settings->value("color", QColor()).value<QColor>(),
+                (const bool&)settings->value("alert", false).toBool(),
+                (const QString&)settings->value("alertValue", "").toString(),
+                (const bool&)settings->value("timer", false).toBool(),
+                (const int&)settings->value("timerValue", 0).toInt(),
+                (const QString&)settings->value("timerAction", "").toString(),
+                (const QBitArray&)settings->value("options", QBitArray(3)).value<QBitArray>()));
     }
     settings->endArray();
 }
 
-QList<HighlightSettingsEntry>* HighlightSettings::getSettings(QString group) {       
-    if(!settingsList) {
-        this->loadSettings(group);
+QList<HighlightSettingsEntry>* HighlightSettings::getTextHighlights() {
+    if(initSettings) {
+        delete settings;
+        this->create();
+        this->loadSettings("TextHighlight", settingsCache);
+        initSettings = false;
     }
-    return settingsList;
+    return settingsCache;
 }
 
 void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
@@ -106,5 +112,5 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 
 HighlightSettings::~HighlightSettings() {
     delete settings;
-    delete settingsList;
+    delete settingsCache;
 }

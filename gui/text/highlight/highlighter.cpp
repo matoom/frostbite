@@ -17,7 +17,7 @@ void Highlighter::reloadSettings() {
 
 QString Highlighter::highlight(QString text) {  
     if(!text.isEmpty()) {
-        highlightList = highlightSettings->getSettings("TextHighlight");
+        highlightList = highlightSettings->getTextHighlights();
 
         for(int i = 0; i < highlightList->size(); ++i) {
             HighlightSettingsEntry highlightEntry = highlightList->at(i);

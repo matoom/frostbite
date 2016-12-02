@@ -44,6 +44,7 @@ private:
 signals:
     void playAudio(QString);
     void setTimer(int);
+    void updateSettings();
     
 public slots:
 

@@ -3,7 +3,7 @@
 HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     highlightSettings = new HighlightSettings();
     audioPlayer = AudioPlayer::Instance();
-    highlightList = highlightSettings->getSettings("TextHighlight");
+    highlightList = highlightSettings->getTextHighlights();
     generalSettings = new GeneralSettings();
 
     highlightDialog = (HighlightDialog*)parent;
@@ -145,8 +145,8 @@ void HighlightTextTab::updateSettings() {
 }
 
 void HighlightTextTab::populateHighlights() {
-    highlightSettings->loadSettings("TextHighlight");
-    highlightList = highlightSettings->getSettings("TextHighlight");
+    highlightSettings->init();
+    highlightList = highlightSettings->getTextHighlights();
 }
 
 void HighlightTextTab::loadHighlightList() {

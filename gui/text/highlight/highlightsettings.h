@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QApplication>
 #include <QDebug>
+#include <QReadWriteLock>
 
 #include <text/highlight/highlightsettingsentry.h>
 #include <clientsettings.h>
@@ -17,14 +18,21 @@ public:
     void setSingleParameter(QString name, QVariant value);
     QVariant getSingleParameter(QString name, QVariant defaultValue);
 
-    QList<HighlightSettingsEntry>* settingsList;
+    QList<HighlightSettingsEntry>* settingsCache;
 
     void init();
     void setParameter(QString, HighlightSettingsEntry entry);
     void addParameter(QString, HighlightSettingsEntry entry);
-    QList<HighlightSettingsEntry>* getSettings(QString);
+    QList<HighlightSettingsEntry>* getTextHighlights();
     void setSettings(QString, QList<HighlightSettingsEntry>*);
-    void loadSettings(QString);
+
+    bool initSettings;
+
+private:
+    void create();
+
+public slots:
+    void loadSettings(QString, QList<HighlightSettingsEntry>*);
 
 private:
     QSettings* settings;
