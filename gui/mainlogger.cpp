@@ -24,13 +24,13 @@ void MainLogger::run() {
 
 void MainLogger::log(LogEntry logEntry) {    
     if(logEntry.type == COMMAND && prevType == PROMPT) {
-        logger()->info(TextUtils::htmlToPlain(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags)).prepend(">"));
+        logger()->info(TextUtils::htmlToPlain(logEntry.text.remove(rxRemoveTags)).prepend(">"));
     } else {
         if (logEntry.type != PROMPT) {
             if(prevType == PROMPT) {
                 logger()->info(">");
             }
-            logger()->info(TextUtils::htmlToPlain(logEntry.text.remove(QRegExp("[\\n]")).remove(rxRemoveTags)));
+            logger()->info(TextUtils::htmlToPlain(logEntry.text.remove(rxRemoveTags)));
         }
     }
     prevType = logEntry.type;
