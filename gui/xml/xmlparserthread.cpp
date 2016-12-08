@@ -121,16 +121,20 @@ void XmlParserThread::process(QString data) {
             }
             processPushStream(pushStream);
         } else if(lines.at(i).startsWith("<output")) {
+            int count = 0;
             QString output = lines.at(i) + "\n";
             while(i < lines.size() - 1) {
-                if(lines.at(i).endsWith("</output>")) break;
-                output += lines.at(++i) + "\n";                
+                count += lines.at(i).count("<output") - lines.at(i).count("</output>");
+                if(count <= 0) break;
+                output += lines.at(++i) + "\n";
             }
             processOutput(output);
         } else if(lines.at(i).startsWith("<dynaStream")) {
+            int count = 0;
             QString dynaStream = lines.at(i) + "\n";
             while(i < lines.size() - 1) {
-                if(lines.at(i).endsWith("</dynaStream>")) break;
+                count += lines.at(i).count("<dynaStream") - lines.at(i).count("</dynaStream>");
+                if(count <= 0) break;
                 dynaStream += lines.at(++i) + "\n";
             }
             processDynaStream(dynaStream);
@@ -545,6 +549,9 @@ void XmlParserThread::processOutput(QString data) {
 
     data.replace("preset id=\"thought\"", "preset class=\"penalty\"");
     data.replace("preset id=\"speech\"", "preset class=\"bonus\"");
+
+    data.remove("<output class=\"mono\"><![CDATA[\n<!---->");
+    data.remove("<!---->\n]]></output>");
 
     QDomDocument doc("output");
     if(!doc.setContent(data)) {

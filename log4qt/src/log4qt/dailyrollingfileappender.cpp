@@ -38,7 +38,7 @@
 #include "log4qt/helpers/datetime.h"
 #include "log4qt/layout.h"
 #include "log4qt/loggingevent.h"
-
+#include <QApplication>
 
 
 namespace Log4Qt
@@ -334,7 +334,7 @@ namespace Log4Qt
 	
 	    QString target_file_name = file() + roll_over_suffix;
 
-	    QFile f(target_file_name);        
+        QFile f(QApplication::applicationDirPath() + "/" + target_file_name);
         if (f.exists() && !removeFile(f)) return;
 
         f.setFileName(file());
