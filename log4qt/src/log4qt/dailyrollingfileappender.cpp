@@ -39,6 +39,7 @@
 #include "log4qt/layout.h"
 #include "log4qt/loggingevent.h"
 #include <QApplication>
+#include <QFileInfo>
 
 
 namespace Log4Qt
@@ -331,13 +332,28 @@ namespace Log4Qt
 	        return;
 	
 	    closeFile();
-	
-	    QString target_file_name = file() + roll_over_suffix;
 
-        QFile f(QApplication::applicationDirPath() + "/" + target_file_name);
+        QFileInfo info(file());
+        bool relative = info.isRelative();
+
+        QString target_file_name;
+        if(relative) {
+            target_file_name = QApplication::applicationDirPath() + "/" + file() + roll_over_suffix;
+        } else {
+            target_file_name = file() + roll_over_suffix;
+        }
+
+        QFile f(target_file_name);
         if (f.exists() && !removeFile(f)) return;
 
-        f.setFileName(file());
+        QString file_name;
+        if(relative) {
+             file_name = QApplication::applicationDirPath() + "/" + file();
+        } else {
+            file_name = file();
+        }
+
+        f.setFileName(file_name);
         if (f.exists() && !renameFile(f, target_file_name)) return;
 
 	    openFile();

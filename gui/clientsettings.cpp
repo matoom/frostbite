@@ -28,7 +28,7 @@ QString ClientSettings::profilePath() {
     QString profile = value("Profile/name", "").toString();
 
     if(!profile.isEmpty()) {
-        QDir dir(QApplication::applicationDirPath()  + "/profiles/" + profile);
+        QDir dir(QApplication::applicationDirPath() + "/profiles/" + profile);
 
         if(dir.exists()) {
             return dir.absolutePath() + "/";
