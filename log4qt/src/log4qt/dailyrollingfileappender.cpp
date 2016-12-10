@@ -348,7 +348,7 @@ namespace Log4Qt
 
         QString file_name;
         if(relative) {
-             file_name = QApplication::applicationDirPath() + "/" + file();
+            file_name = QApplication::applicationDirPath() + "/" + file();
         } else {
             file_name = file();
         }

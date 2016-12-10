@@ -441,7 +441,8 @@ void XmlParserThread::processPushStream(QString data) {
         // ignored
         // <compDef id='room desc'/> ..
     } else if(e.attribute("id") == "assess") {
-        // ignored
+        QByteArray ass = root.text().trimmed().toLocal8Bit();
+        if(!ass.isEmpty()) emit writeText(ass, false);
     } else if(e.attribute("id") == "thoughts") {
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {
@@ -455,7 +456,8 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "death") {
         emit updateDeathsWindow(addTime(root.text().trimmed()));
     } else if(e.attribute("id") == "atmospherics") {
-        emit writeText(root.text().trimmed().toLocal8Bit(), false);
+        QByteArray atmo = root.text().trimmed().toLocal8Bit();
+        if(!atmo.isEmpty()) emit writeText(atmo, false);
     } else if(e.attribute("id") == "whispers") {
         QDomElement element = e.firstChild().toElement();
         if(element.attribute("id") == "whisper") {

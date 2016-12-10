@@ -152,6 +152,7 @@ void TcpClient::writeModeSettings() {
     this->writeCommand("_STATE CHATMODE OFF");
 }
 
+// TODO: does this have any effect?
 void TcpClient::writeSettings() {
     this->writeCommand("");
     this->writeCommand("_swclose sassess");
