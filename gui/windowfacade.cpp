@@ -574,7 +574,7 @@ void WindowFacade::updateRoomWindowTitle(QString title) {
     roomWindow->setWindowTitle("Room " + title);
 }
 
-void WindowFacade::writeGameText(QByteArray text, bool prompt) {
+void WindowFacade::writeGameText(QByteArray text, bool prompt) {   
     if(prompt && writePrompt) {
         mainWindow->getScriptService()->writeScriptText(text);
         mainWriter->addText(text);

@@ -572,7 +572,10 @@ void XmlParserThread::processOutput(QString data) {
 
         if(text.startsWith('\n')) text = text.right(text.size() - 1);
         if(text.endsWith('\n')) text.chop(1);
-        emit writeText(text.toLocal8Bit(), false);
+
+        for(QString mono: text.split('\n')) {
+            emit writeText(mono.toLocal8Bit(), false);
+        }
     }
 }
 

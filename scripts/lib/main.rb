@@ -164,6 +164,7 @@ class ApiCommThread
   def write(line)
     $_api_gets_mutex.synchronize do
       $_api_queue << line
+      echo $_api_queue
       if $_api_observer_started
         $_api_observer_queue << line
       end
