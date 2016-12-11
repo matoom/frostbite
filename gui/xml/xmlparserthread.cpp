@@ -441,8 +441,8 @@ void XmlParserThread::processPushStream(QString data) {
         // ignored
         // <compDef id='room desc'/> ..
     } else if(e.attribute("id") == "assess") {
-        QByteArray ass = root.text().trimmed().toLocal8Bit();
-        if(!ass.isEmpty()) emit writeText(ass, false);
+        QString ass = root.text().trimmed();
+        if(!ass.isEmpty()) this->writeTextLines(ass);
     } else if(e.attribute("id") == "thoughts") {
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {
@@ -456,8 +456,8 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "death") {
         emit updateDeathsWindow(addTime(root.text().trimmed()));
     } else if(e.attribute("id") == "atmospherics") {
-        QByteArray atmo = root.text().trimmed().toLocal8Bit();
-        if(!atmo.isEmpty()) emit writeText(atmo, false);
+        QString atmo = root.text().trimmed();
+        if(!atmo.isEmpty()) this->writeTextLines(atmo);
     } else if(e.attribute("id") == "whispers") {
         QDomElement element = e.firstChild().toElement();
         if(element.attribute("id") == "whisper") {
@@ -505,8 +505,8 @@ void XmlParserThread::processPushStream(QString data) {
             }
         } else {
             QString ooc = root.text().trimmed();
-            TextUtils::plainToHtml(ooc);
-            emit writeText(ooc.toLocal8Bit(), false);
+            TextUtils::plainToHtml(ooc);            
+            this->writeTextLines(ooc);
         }
     } else if(e.attribute("id") == "percWindow") {
         QDomElement element = e.firstChild().toElement();
@@ -573,9 +573,7 @@ void XmlParserThread::processOutput(QString data) {
         if(text.startsWith('\n')) text = text.right(text.size() - 1);
         if(text.endsWith('\n')) text.chop(1);
 
-        for(QString mono: text.split('\n')) {
-            emit writeText(mono.toLocal8Bit(), false);
-        }
+        this->writeTextLines(text);
     }
 }
 
@@ -594,7 +592,7 @@ void XmlParserThread::processDynaStream(QString data) {
 
     QDomElement e = n.toElement();
     if(e.attribute("id") == "spellInfo") {
-        emit writeText(e.text().toLocal8Bit(), false);
+        this->writeTextLines(e.text());
     } else {
         this->warnUnknownEntity("dynaStream", data);
     }
@@ -659,6 +657,12 @@ QString XmlParserThread::stripTags(QString line) {
         }
     }
     return textString;
+}
+
+void XmlParserThread::writeTextLines(QString text) {
+    for(QString line: text.split('\n')) {
+        emit writeText(line.toLocal8Bit(), false);
+    }
 }
 
 QString XmlParserThread::addTime(QString data) {

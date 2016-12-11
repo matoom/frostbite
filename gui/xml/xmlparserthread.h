@@ -77,11 +77,13 @@ private:
     void warnUnknownEntity(QString ref, QString xml);
     void warnInvalidXml(QString ref, QString xml);
 
+    void writeTextLines(QString text);
+
     QString parseTalk(QDomElement element);
     QString toString(QDomElement element);
     QString fixInputXml(QString);
     QString stripTags(QString);
-    QString addTime(QString);
+    QString addTime(QString);    
 
     void runScheduledEvents();
     void runEvent(QString event, QVariant data);
