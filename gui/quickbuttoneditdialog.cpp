@@ -11,7 +11,8 @@ QuickButtonEditDialog::QuickButtonEditDialog(QWidget *parent) : QDialog(parent),
 }
 
 void QuickButtonEditDialog::updateSettings() {
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
 }
 
 void QuickButtonEditDialog::updateLocation(const QPoint& point) {

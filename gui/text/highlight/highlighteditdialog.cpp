@@ -15,8 +15,9 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
 }
 
-void HighlightEditDialog::updateSettings() {
-    settings->init();
+void HighlightEditDialog::updateSettings() {    
+    delete settings;
+    settings = new HighlightSettings();
 }
 
 void HighlightEditDialog::showEvent(QShowEvent * event) {

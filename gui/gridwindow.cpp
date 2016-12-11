@@ -13,7 +13,8 @@ GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
 }
 
 void GridWindow::updateSettings() {
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
 }
 
 void GridWindow::loadSettings() {

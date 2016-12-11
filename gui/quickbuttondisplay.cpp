@@ -8,7 +8,8 @@ QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
 
 void QuickButtonDisplay::updateSettings() {
     editDialog->updateSettings();
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
 }
 
 void QuickButtonDisplay::reloadSettings() {

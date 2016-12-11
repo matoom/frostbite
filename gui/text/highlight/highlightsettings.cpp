@@ -1,6 +1,7 @@
 #include "highlightsettings.h"
 
 HighlightSettings::HighlightSettings() {
+    initSettings = true;
     settingsCache = new QList<HighlightSettingsEntry>();
     this->create();
 }
@@ -12,7 +13,6 @@ void HighlightSettings::init() {
 void HighlightSettings::create() {
     QString path = ClientSettings::Instance()->profilePath();
     settings = new QSettings(path + "highlights.ini", QSettings::IniFormat);
-    settingsCache->clear();
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
@@ -79,10 +79,12 @@ void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry
     settings->endArray();
 }
 
+// TODO: profile cache/remove?
 QList<HighlightSettingsEntry>* HighlightSettings::getTextHighlights() {
     if(initSettings) {
-        delete settings;
+        settings->deleteLater();
         this->create();
+        settingsCache->clear();
         this->loadSettings("TextHighlight", settingsCache);
         initSettings = false;
     }

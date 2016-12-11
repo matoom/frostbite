@@ -36,8 +36,11 @@ void HighlightGeneralTab::setBackground() {
 }
 
 void HighlightGeneralTab::updateSettings() {
-    settings->init();
-    generalSettings->init();
+    delete settings;
+    settings = new HighlightSettings();
+
+    delete generalSettings;
+    generalSettings = new GeneralSettings();
 
     this->loadSettings();
     this->setBackground();

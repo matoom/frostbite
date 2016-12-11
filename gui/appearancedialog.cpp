@@ -18,7 +18,8 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 }
 
 void AppearanceDialog::updateSettings() {
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
 }
 
 void AppearanceDialog::loadSettings() {

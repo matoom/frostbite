@@ -21,7 +21,9 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
 }
 
 void RoundTimeDisplay::reloadSettings() {
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
+
     rtColor = this->getRtColor();
     ctColor = this->getCtColor();
 }

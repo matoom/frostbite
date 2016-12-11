@@ -525,7 +525,7 @@ void XmlParserThread::processPushStream(QString data) {
         if(element.tagName() == "preset") {
             if(element.attribute("id") == "thought") {
                 QString elementText = element.nextSibling().toText().data();
-                QString trimTrailing = elementText.remove(QRegularExpression("\r\n$"));
+                QString trimTrailing = elementText.remove(QRegularExpression("\n$"));
                 TextUtils::plainToHtml(trimTrailing);
                 QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
                 emit updateThoughtsWindow(addTime(text));

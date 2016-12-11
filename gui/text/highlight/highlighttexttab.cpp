@@ -136,8 +136,12 @@ void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
 }
 
 void HighlightTextTab::updateSettings() {
-    highlightSettings->init();
-    generalSettings->init();
+    delete highlightSettings;
+    highlightSettings = new HighlightSettings();
+
+    delete generalSettings;
+    generalSettings = new GeneralSettings();
+
     highlightEditDialog->updateSettings();
     highlightAddDialog->updateSettings();
 
@@ -145,7 +149,9 @@ void HighlightTextTab::updateSettings() {
 }
 
 void HighlightTextTab::populateHighlights() {
-    highlightSettings->init();
+    delete highlightSettings;
+    highlightSettings = new HighlightSettings();
+
     highlightList = highlightSettings->getTextHighlights();
 }
 
@@ -171,7 +177,7 @@ void HighlightTextTab::createListItem(int id, QString value, QColor color) {
     newItem->setFont(QFont(DEFAULT_FONT, 12));
 }
 
-void HighlightTextTab::reloadHighlightList() {
+void HighlightTextTab::reloadHighlightList() {    
     // reload settings for window highlighters
     highlightDialog->reloadHighlighterSettings();
 

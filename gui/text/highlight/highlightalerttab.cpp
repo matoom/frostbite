@@ -57,7 +57,8 @@ HighlightAlertTab::HighlightAlertTab(QObject *parent) : QObject(parent) {
 }
 
 void HighlightAlertTab::updateSettings() {
-    settings->init();
+    delete settings;
+    settings = new HighlightSettings();
 }
 
 void HighlightAlertTab::initSettings() {

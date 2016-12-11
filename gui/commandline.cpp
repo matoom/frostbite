@@ -27,7 +27,8 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
 }
 
 void CommandLine::reloadSettings() {
-    settings->init();
+    delete settings;
+    settings = new GeneralSettings();
     this->loadSettings();
 }
 

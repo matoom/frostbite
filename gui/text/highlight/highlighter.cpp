@@ -12,7 +12,7 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
 }
 
 void Highlighter::reloadSettings() {
-   highlightSettings->init();
+    highlightSettings->init();
 }
 
 QString Highlighter::highlight(QString text) {  

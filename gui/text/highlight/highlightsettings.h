@@ -21,6 +21,7 @@ public:
     QList<HighlightSettingsEntry>* settingsCache;
 
     void init();
+
     void setParameter(QString, HighlightSettingsEntry entry);
     void addParameter(QString, HighlightSettingsEntry entry);
     QList<HighlightSettingsEntry>* getTextHighlights();

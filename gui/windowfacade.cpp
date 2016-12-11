@@ -18,10 +18,13 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
 void WindowFacade::reloadSettings() {
     this->reloadHighlighterSettings();
 
-    settings->init();
+    delete settings;
+    settings = new HighlightSettings();
+
     this->updateWindowStyle();
 
-    generalSettings->init();
+    delete generalSettings;
+    generalSettings = new GeneralSettings();
     this->updateWindowColors();    
 }
 

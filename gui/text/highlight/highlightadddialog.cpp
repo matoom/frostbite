@@ -17,7 +17,8 @@ HighlightAddDialog::HighlightAddDialog(HighlightTextTab *textTab, QWidget *paren
 }
 
 void HighlightAddDialog::updateSettings() {
-    settings->init();
+    delete settings;
+    settings = new HighlightSettings();
 }
 
 void HighlightAddDialog::showEvent(QShowEvent* event) {
