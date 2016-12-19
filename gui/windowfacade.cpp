@@ -3,7 +3,7 @@
 
 QStringList WindowFacade::staticWindows = QStringList() << "inv" << "familiar" << "thoughts"
     << "logons" << "death" << "assess" << "conversation" << "whispers" << "talk" << "experience"
-    << "group" << "atmospherics" << "ooc" << "room" << "percWindow";
+    << "group" << "atmospherics" << "ooc" << "room" << "percWindow" << "chatter";
 
 WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
