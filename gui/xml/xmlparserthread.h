@@ -123,6 +123,10 @@ signals:
     void writeSettings();
     void writeModeSettings();
 
+    void registerStreamWindow(QString, QString);
+    void writeStreamWindow(QString, QString);
+    void clearStreamWindow(QString);
+
 public slots:
     void addData(QByteArray);
     void updateHighlighterSettings();

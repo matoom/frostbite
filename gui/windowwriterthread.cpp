@@ -9,6 +9,11 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
 
     this->exit = false;
 
+    GenericWindow* genericWindow = dynamic_cast<GenericWindow*>(window);
+    if(genericWindow != NULL) {
+        connect(this, SIGNAL(writeStream(const QString&)), genericWindow, SLOT(appendHtmlStream(const QString&)));
+    }
+
     connect(this, SIGNAL(writeText(const QString&)), this->textEdit, SLOT(appendHtml(const QString&)));
     connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
 }
@@ -36,7 +41,13 @@ void WindowWriterThread::run() {
 }
 
 void WindowWriterThread::process(QString data) {
-    if(window->append()) {
+    if(window->stream()) {
+        if(data.startsWith("{clear}")) {
+            emit clearText();
+        } else {
+            emit writeStream(highlighter->highlight(data));
+        }
+    } else if(window->append()) {
         setText(highlighter->highlight(data));
     } else {
         QString text = "";

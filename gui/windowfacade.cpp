@@ -1,5 +1,10 @@
 #include "windowfacade.h"
 
+
+QStringList WindowFacade::staticWindows = QStringList() << "inv" << "familiar" << "thoughts"
+    << "logons" << "death" << "assess" << "conversation" << "whispers" << "talk" << "experience"
+    << "group" << "atmospherics" << "ooc" << "room" << "percWindow";
+
 WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     genericWindowFactory = new GenericWindowFactory(parent);
@@ -38,6 +43,7 @@ void WindowFacade::reloadHighlighterSettings() {
     emit updateFamiliarSettings();
     emit updateExpSettings();
     emit updateSpellSettings();
+    emit updateStreamWindowSettings();
 }
 
 QPlainTextEdit* WindowFacade::getGameWindow() {
@@ -85,6 +91,12 @@ void WindowFacade::setTextDockFontColor(QColor fontColor) {
         p.setColor(QPalette::Text, fontColor);
         ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
     }
+
+    foreach(QDockWidget* dock, streamWindows) {
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Text, fontColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+    }
 }
 
 void WindowFacade::setTextDockBackground(QColor backgroundColor) {
@@ -94,10 +106,20 @@ void WindowFacade::setTextDockBackground(QColor backgroundColor) {
         p.setColor(QPalette::Base, backgroundColor);
         ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
     }
+
+    foreach(QDockWidget* dock, streamWindows) {
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Base, backgroundColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+    }
 }
 
 void WindowFacade::setTextDockFont(QFont font) {
     foreach(QDockWidget* dock, dockWindows) {
+        ((QPlainTextEdit*)dock->widget())->setFont(font);
+    }
+
+    foreach(QDockWidget* dock, streamWindows) {
         ((QPlainTextEdit*)dock->widget())->setFont(font);
     }
 }
@@ -611,6 +633,33 @@ void WindowFacade::logGameText(QByteArray text, char type) {
     }
 }
 
+void WindowFacade::registerStreamWindow(QString id, QString title) {
+    if(streamWindows.contains(id)) return;
+
+    QDockWidget* streamWindow = genericWindowFactory->createWindow(title.toLatin1().constData());
+    ((GenericWindow*)streamWindow->widget())->setStream(true);
+    mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, streamWindow);
+    streamWindows.insert(id, streamWindow);
+
+    WindowWriterThread* streamWriter = new WindowWriterThread(mainWindow, (GenericWindow*)streamWindow->widget());
+    connect(this, SIGNAL(updateStreamWindowSettings()), streamWriter, SLOT(updateSettings()));
+    streamWriters.insert(id, streamWriter);
+}
+
+void WindowFacade::writeStreamWindow(QString id, QString text) {
+    WindowWriterThread* streamWriter = streamWriters.value(id);
+    if(streamWriter == NULL) return;
+
+    streamWriter->addText(text);
+    if(!streamWriter->isRunning()) {
+        streamWriter->start();
+    }
+}
+
+void WindowFacade::clearStreamWindow(QString id) {
+    this->writeStreamWindow(id, "{clear}");
+}
+
 WindowFacade::~WindowFacade() {
     delete genericWindowFactory;
     delete gameWindow;
@@ -624,6 +673,10 @@ WindowFacade::~WindowFacade() {
         delete dock;
     }
 
+    foreach(QDockWidget* dock, streamWindows) {
+        delete dock;
+    }
+
     foreach(WindowWriterThread* writer, writers) {
         // terminate threads at application exit.
         writer->terminate();
@@ -631,6 +684,11 @@ WindowFacade::~WindowFacade() {
     }
 
     foreach(GridWriterThread* writer, gridWriters) {
+        writer->terminate();
+        delete writer;
+    }
+
+    foreach(WindowWriterThread* writer, streamWriters) {
         writer->terminate();
         delete writer;
     }

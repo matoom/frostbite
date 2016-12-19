@@ -95,6 +95,8 @@ public:
     bool spellVisible;
     bool writePrompt;
 
+    static QStringList staticWindows;
+
 public slots:
     void updateConversationsWindow(QString);
     void writeGameText(QByteArray, bool);    
@@ -116,13 +118,9 @@ public slots:
     void logDeathsText(QString);
     void logArrivalsText(QString);
 
-    /*
-    void mapsReady();
-    void mapSelected(int index);
-    void mapLevelSelected(int index);
-    void showMap(QString id, int level = 0);
-    void selectNode(QString zoneId, int nodeId);
-    */
+    void registerStreamWindow(QString id, QString title);
+    void writeStreamWindow(QString id, QString text);
+    void clearStreamWindow(QString id);
 
 private slots:
     void thoughtsVisibility(bool);    
@@ -156,6 +154,7 @@ private:
     QDockWidget* spellWindow;
     QList<QDockWidget*> dockWindows;
     QList<QDockWidget*> gridWindows;
+    QHash<QString, QDockWidget*> streamWindows;
 
     MapFacade* mapFacade;
 
@@ -170,8 +169,9 @@ private:
     WindowWriterThread* conversationsWriter;
     WindowWriterThread* familiarWriter;
     WindowWriterThread* spellWriter;
-    QList<WindowWriterThread*> writers;
+    QList<WindowWriterThread*> writers;    
     QList<GridWriterThread*> gridWriters;
+    QHash<QString, WindowWriterThread*> streamWriters;
 
     MainLogger* mainLogger;
     ThoughtsLogger* thoughtsLogger;
@@ -194,9 +194,8 @@ signals:
     void updateConversationsSettings();
     void updateFamiliarSettings();
     void updateSpellSettings();
+    void updateStreamWindowSettings();
 
-    //void setMapLabel(QString text);
-    //void nodeSelected(MapZone* zone, int nodeId);
 };
 
 #endif // WindowFacade_H

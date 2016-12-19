@@ -17,6 +17,8 @@ public:
 
     virtual void setAppend(bool) = 0;
     virtual bool append() = 0;
+    virtual void setStream(bool) = 0;
+    virtual bool stream() = 0;
 
 public slots:
 

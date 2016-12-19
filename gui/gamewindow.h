@@ -33,6 +33,9 @@ public:
     void setAppend(bool append);
     bool append();
 
+    void setStream(bool stream);
+    bool stream();
+
 private:
     void contextMenuEvent(QContextMenuEvent* event);
     void resizeEvent(QResizeEvent* event);
@@ -56,6 +59,7 @@ private:
     QMenu* menu;
 
     bool _append;
+    bool _stream;
 
 signals:    
 

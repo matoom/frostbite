@@ -166,12 +166,10 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
     action->setText(action->text() + " window");
     ui->menuWindow->addAction(action);
 
-    if(settings->hasValue("MainWindow/state")) {
-        restoreDockWidget(dock);
-        restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
-    } else {
+    if(!restoreDockWidget(dock)) {
         addDockWidget(area, dock);
     }
+    restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
 }
 
 void MainWindow::addToolbarWidget(QWidget *widget) {

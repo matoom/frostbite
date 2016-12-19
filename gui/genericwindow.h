@@ -9,6 +9,7 @@
 #include <mainwindow.h>
 #include <windowinterface.h>
 #include <snapshot.h>
+#include <QScrollBar>
 
 class MainWindow;
 class WindowFacade;
@@ -31,6 +32,9 @@ public:
     void setAppend(bool);
     bool append();
 
+    void setStream(bool);
+    bool stream();
+
 private:
     void contextMenuEvent(QContextMenuEvent* event);
     void buildContextMenu();
@@ -50,6 +54,7 @@ private:
     QMenu* menu;
 
     bool _append;
+    bool _stream;
 
 signals:
 
@@ -60,6 +65,7 @@ private slots:
     void changeAppearance();
     
 public slots:
+    void appendHtmlStream(const QString&);
 
 };
 

@@ -32,6 +32,14 @@ bool GameWindow::append() {
     return this->_append;
 }
 
+void GameWindow::setStream(bool stream) {
+    this->_stream = stream;
+}
+
+bool GameWindow::stream() {
+    return this->_stream;
+}
+
 void GameWindow::showEvent(QShowEvent* event) {
     QPlainTextEdit::showEvent(event);
 }

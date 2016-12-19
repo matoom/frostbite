@@ -15,6 +15,7 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->document()->setMaximumBlockCount(1000);
 
     _append = true;
+    _stream = false;
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 }
@@ -25,6 +26,14 @@ void GenericWindow::setAppend(bool append) {
 
 bool GenericWindow::append() {
     return this->_append;
+}
+
+void GenericWindow::setStream(bool stream) {
+    this->_stream = stream;
+}
+
+bool GenericWindow::stream() {
+    return this->_stream;
 }
 
 void GenericWindow::loadSettings() {
@@ -106,6 +115,31 @@ void GenericWindow::copySelected() {
     QTextCursor textCursor = this->textCursor();
     textCursor.clearSelection();
     this->setTextCursor(textCursor);
+}
+
+void GenericWindow::appendHtmlStream(const QString &html) {
+    QScrollBar* p_scroll_bar = this->verticalScrollBar();
+    bool bool_at_bottom = (p_scroll_bar->value() == p_scroll_bar->maximum());
+
+    QTextCursor text_cursor = QTextCursor(this->document());
+    text_cursor.beginEditBlock();
+
+    text_cursor.movePosition(QTextCursor::End);
+
+    QStringList string_list = html.split("\n");
+    for (int i = 0; i < string_list.size(); i++){
+        text_cursor.insertHtml("<span class=\"body\" style=\"white-space: pre-wrap;\">" +
+                               string_list.at(i) +
+                               "</span>");
+        if ((i + 1) < string_list.size()){
+            text_cursor.insertBlock();
+        }
+    }
+
+    text_cursor.endEditBlock();
+    if (bool_at_bottom) {
+        p_scroll_bar->setValue(p_scroll_bar->maximum());
+    }
 }
 
 GenericWindow::~GenericWindow() {

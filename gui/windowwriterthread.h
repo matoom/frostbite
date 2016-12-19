@@ -40,6 +40,7 @@ public slots:
     void updateSettings();
 
 signals:
+    void writeStream(const QString&);
     void writeText(const QString&);
     void clearText();
 

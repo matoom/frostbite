@@ -38,6 +38,10 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
     connect(this, SIGNAL(writeText(QByteArray, bool)), windowFacade, SLOT(writeGameText(QByteArray, bool)));
 
+    connect(this, SIGNAL(registerStreamWindow(QString, QString)), windowFacade, SLOT(registerStreamWindow(QString, QString)));
+    connect(this, SIGNAL(writeStreamWindow(QString, QString)), windowFacade, SLOT(writeStreamWindow(QString, QString)));
+    connect(this, SIGNAL(clearStreamWindow(QString)), windowFacade, SLOT(clearStreamWindow(QString)));
+
     exit = false;
     bold = false;
     initRoundtime = false;
@@ -380,11 +384,19 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 emit clearActiveSpells();
                 emit updateSpellWindow("");
                 this->activeSpells.clear();
+            } else {
+                if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
+                    emit clearStreamWindow(e.attribute("id"));
+                }
             }
         } else if (e.tagName() == "pushBold") {
             bold = true;
         } else if (e.tagName() == "popBold") {
             bold = false;
+        } else if (e.tagName() == "streamWindow") {
+            if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
+                emit registerStreamWindow(e.attribute("id"), e.attribute("title"));
+            }
         }
     }
     return gameText == "";
@@ -535,8 +547,8 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             this->warnUnknownEntity("chatter", data);
         }
-    } else if(e.attribute("id") == "moonWindow") {
-        // ignore warning for now but window to be implemented
+    } else if(e.tagName() == "pushStream") {
+        emit writeStreamWindow(e.attribute("id"), e.text());
     } else {
         this->warnUnknownEntity("push-stream", data);
     }
