@@ -17,6 +17,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->document()->setMaximumBlockCount(GAME_WINDOW_LIMIT);
 
     _append = true;
+    _stream = false;
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 

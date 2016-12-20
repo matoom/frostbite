@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
     /* Prohibit running more than one copy of appliction. */
     if(a.isRunning()) {
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->info("Application already running.");
+        a.sendMessage("show", 1000);
         exit(0);
     }
 
@@ -49,6 +50,8 @@ int main(int argc, char *argv[]) {
 
     MainWindow w;
     w.show();
+
+    QObject::connect(&a, SIGNAL(messageReceived(const QString&)), &w, SLOT(handleAppMessage(const QString&)));
 
     QStringList args = QCoreApplication::arguments();
     if(!args.isEmpty() && args.count() > 1) {

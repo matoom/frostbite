@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // load client settings
     this->initSettings();
 
-    ui->statusBar->hide();
+    ui->statusBar->hide();    
 }
 
 void MainWindow::appSetup() {
@@ -233,6 +233,13 @@ void MainWindow::setMainTitle(QString roomName) {
 
 void MainWindow::connectEnabled(bool enabled) {
     ui->actionConnect->setEnabled(enabled);
+}
+
+void MainWindow::handleAppMessage(const QString& msg) {
+    if(msg == "show") {
+        this->raise();
+        this->activateWindow();
+    }
 }
 
 void MainWindow::saveWindow() {

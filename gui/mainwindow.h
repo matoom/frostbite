@@ -118,6 +118,7 @@ signals:
 
 public slots:
     void setMainTitle(QString);
+    void handleAppMessage(const QString&);
 
 /*private slots:
     void menuTriggered(QAction*);*/
