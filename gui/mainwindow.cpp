@@ -30,8 +30,18 @@ void MainWindow::appSetup() {
     // https://bugreports.qt-project.org/browse/QTBUG-21371
 
     // load client window state
+    // workaround:
+    // https://bugreports.qt.io/browse/QTBUG-16252
     settings = ClientSettings::Instance();
-    restoreGeometry(settings->getParameter("MainWindow/geometry", "").toByteArray());
+
+    if(settings->hasValue("MainWindow/geometry")) {
+        QVariant::Type t = settings->getParameter("MainWindow/geometry", "").type();
+        if(t == QVariant::Type::Rect) {
+            setGeometry(settings->getParameter("MainWindow/geometry", "").toRect());
+        } else if(t == QVariant::Type::ByteArray) {
+            restoreGeometry(settings->getParameter("MainWindow/geometry", "").toByteArray());
+        }
+    }
     restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
 
     // load general settings
@@ -169,7 +179,6 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
     if(!restoreDockWidget(dock)) {
         addDockWidget(area, dock);
     }
-    restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
 }
 
 void MainWindow::addToolbarWidget(QWidget *widget) {
@@ -244,7 +253,7 @@ void MainWindow::handleAppMessage(const QString& msg) {
 
 void MainWindow::saveWindow() {
     settings->setParameter("MainWindow/state", saveState());
-    settings->setParameter("MainWindow/geometry", saveGeometry());
+    settings->setParameter("MainWindow/geometry", QVariant(geometry()));
 }
 
 void MainWindow::closeEvent(QCloseEvent*) {
