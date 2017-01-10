@@ -5,7 +5,7 @@ HighlightDialog::HighlightDialog(QWidget *parent) : QDialog(parent), ui(new Ui::
     ui->setupUi(this);
 
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings();
 
     generalTab = new HighlightGeneralTab(this);
     textTab = new HighlightTextTab(this);
@@ -207,5 +207,6 @@ void HighlightDialog::applyPressed() {
 }
 
 HighlightDialog::~HighlightDialog() {
+    delete settings;
     delete ui;
 }

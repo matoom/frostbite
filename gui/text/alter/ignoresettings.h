@@ -10,7 +10,6 @@ class IgnoreSettings {
 
 public:
     IgnoreSettings();
-
     ~IgnoreSettings();
 
     void setParameter(AlterSettingsEntry entry);
@@ -22,6 +21,7 @@ private:
     void init();
 
     QSettings* settings;
+    ClientSettings* clientSettings;
 };
 
 #endif // IGNORESETTINGS_H

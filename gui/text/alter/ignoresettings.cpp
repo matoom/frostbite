@@ -1,12 +1,12 @@
 #include "ignoresettings.h"
 
 IgnoreSettings::IgnoreSettings() {
+    clientSettings = new ClientSettings();
     this->init();
 }
 
 void IgnoreSettings::init() {
-    QString path = ClientSettings::Instance()->profilePath();
-    settings = new QSettings(path + "ignores.ini", QSettings::IniFormat);
+    settings = new QSettings(clientSettings->profilePath() + "ignores.ini", QSettings::IniFormat);
 }
 
 void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
@@ -60,5 +60,6 @@ QList<AlterSettingsEntry> IgnoreSettings::getIgnores() {
 }
 
 IgnoreSettings::~IgnoreSettings() {
+    delete clientSettings;
     delete settings;
 }

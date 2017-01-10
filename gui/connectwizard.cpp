@@ -5,7 +5,7 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     ui->setupUi(this);
 
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings;
 
     movie = new QMovie(":/window/images/loading.gif");
 
@@ -270,6 +270,7 @@ void ConnectWizard::showError(QString errorMsg) {
 }
 
 ConnectWizard::~ConnectWizard() {
+    delete settings;
     delete movie;
     delete ui;
 }

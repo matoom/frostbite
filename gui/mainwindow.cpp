@@ -32,7 +32,7 @@ void MainWindow::appSetup() {
     // load client window state
     // workaround:
     // https://bugreports.qt.io/browse/QTBUG-16252
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings();
 
     if(settings->hasValue("MainWindow/geometry")) {
         QVariant::Type t = settings->getParameter("MainWindow/geometry", "").type();

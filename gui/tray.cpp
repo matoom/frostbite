@@ -3,7 +3,7 @@
 Tray::Tray(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings();
     conversations = settings->getParameter("Tray/conversations", true).toBool();
 
     createTrayIcon();
@@ -78,4 +78,8 @@ void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     default:
         ;
     }
+}
+
+Tray::~Tray() {
+    delete settings;
 }

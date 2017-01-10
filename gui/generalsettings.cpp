@@ -1,12 +1,12 @@
 #include "generalsettings.h"
 
 GeneralSettings::GeneralSettings() {
+    clientSettings = new ClientSettings();
     this->init();
 }
 
 void GeneralSettings::init() {
-    QString path = ClientSettings::Instance()->profilePath();
-    settings = new QSettings(path + "general.ini", QSettings::IniFormat);
+    settings = new QSettings(clientSettings->profilePath() + "general.ini", QSettings::IniFormat);
 }
 
 void GeneralSettings::setParameter(QString name, QVariant value) {
@@ -48,5 +48,6 @@ QColor GeneralSettings::dockWindowBackground(){
 }
 
 GeneralSettings::~GeneralSettings() {
+    delete clientSettings;
     delete settings;
 }

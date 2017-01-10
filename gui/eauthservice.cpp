@@ -1,7 +1,7 @@
 #include "eauthservice.h"
 
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings();
     tcpSocket = new QTcpSocket(this);
     tcpClient = (TcpClient*)parent;
     authLogger = new AuthLogger();
@@ -230,5 +230,6 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
 
 EAuthService::~EAuthService() {
     tcpSocket->disconnectFromHost();
+    delete settings;
     delete tcpSocket;
 }

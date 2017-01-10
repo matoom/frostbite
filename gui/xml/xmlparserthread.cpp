@@ -96,7 +96,7 @@ void XmlParserThread::cache(QByteArray data) {
     outputCount += cache.count(QRegularExpression("<output class=['\"]mono['\"]")) -
             cache.count(QRegularExpression("<output class=['\"]['\"]"));
 
-    if(streamCache.size() > 10240) {
+    if(streamCache.size() > 20240) {
         qDebug() << "Stream limit exceeded!";
         streamCount = 0, outputCount = 0;
     }
@@ -338,12 +338,11 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 if(id != "tdp") {
                     if(!text.isEmpty()) {
                         if(e.elementsByTagName("d").count() == 0) {
-                            gameDataContainer->setExpField(false, id, text);
-                            emit updateExpWindow(id, TextUtils::addNumericStateToExp(text));
+                            gameDataContainer->setExpField(false, id, text);                            
                         } else {
-                            gameDataContainer->setExpField(true, id, text);
-                            emit updateExpWindow(id, text);
+                            gameDataContainer->setExpField(true, id, text);                            
                         }
+                        emit updateExpWindow(id, text);
                     } else {
                         gameDataContainer->removeExpField(id);
                         emit updateExpWindow(id, text);

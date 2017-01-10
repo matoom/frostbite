@@ -10,7 +10,7 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     gridWindowFactory = new GridWindowFactory(parent);    
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
-    clientSettings = ClientSettings::Instance();
+    clientSettings = new ClientSettings();
     settings = new HighlightSettings();
     generalSettings = new GeneralSettings();
 
@@ -703,6 +703,7 @@ WindowFacade::~WindowFacade() {
 
     delete settings;
     delete generalSettings;
+    delete clientSettings;
 
     delete mapFacade->getMapWindow();
 }

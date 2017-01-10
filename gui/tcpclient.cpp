@@ -5,7 +5,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     eAuth = new EAuthService(this);
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
-    settings = ClientSettings::Instance();
+    settings = new ClientSettings();
 
     debugLogger = new DebugLogger();
 
@@ -223,6 +223,7 @@ void TcpClient::disconnectFromServer() {
 TcpClient::~TcpClient() {
     this->disconnectFromServer();
 
+    delete settings;
     delete debugLogger;
     delete tcpSocket;
     delete xmlParser;

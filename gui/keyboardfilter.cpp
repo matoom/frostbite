@@ -3,11 +3,12 @@
 
 /* add all keys to map:key, modifier, flags and action text */
 KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {
-    macroSettings = MacroSettings::Instance();
+    macroSettings = new MacroSettings();
 }
 
 void KeyboardFilter::reloadSettings() {
-    macroSettings->init();
+    delete macroSettings;
+    macroSettings = new MacroSettings();
 }
 
 bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
@@ -86,4 +87,8 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
     }
 
     return false;
+}
+
+KeyboardFilter::~KeyboardFilter() {
+    delete macroSettings;
 }

@@ -1,11 +1,11 @@
 #include "substitutionsettings.h"
 
 SubstitutionSettings::SubstitutionSettings() {
+    clientSettings = new ClientSettings();
     this->init();
 }
 void SubstitutionSettings::init() {
-    QString path = ClientSettings::Instance()->profilePath();
-    settings = new QSettings(path + "substitutes.ini", QSettings::IniFormat);
+    settings = new QSettings(clientSettings->profilePath() + "substitutes.ini", QSettings::IniFormat);
 }
 
 void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
@@ -63,5 +63,6 @@ QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
 }
 
 SubstitutionSettings::~SubstitutionSettings() {
+    delete clientSettings;
     delete settings;
 }

@@ -82,7 +82,7 @@ void GameDataContainer::setExpField(QString name, QString exp) {
     this->expMap.insert(name.toLower(), expValueMap);
 
     /* setting exp for exp window */
-    this->exp.insert(name, TextUtils::addNumericStateToExp(exp));
+    this->exp.insert(name, exp);
 }
 
 void GameDataContainer::setExpFieldBrief(QString name, QString exp) {

@@ -19,8 +19,7 @@ public:
     static int expStateToNumeric(QString);
     static int expBriefToNumeric(QString);
     static QString expNumericToState(int);
-    static QString msToMMSS(int);
-    static QString addNumericStateToExp(QString exp);
+    static QString msToMMSS(int);    
     static QString findLowestActiveValue(QStringList list);
     static QString htmlToPlain(QString& data);
     static void plainToHtml(QString& data);

@@ -19,6 +19,7 @@ private:
     void init();
 
     QSettings* settings;
+    ClientSettings* clientSettings;
 
 signals:
 

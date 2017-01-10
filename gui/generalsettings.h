@@ -30,6 +30,8 @@ public:
 private:
     QSettings* settings;
 
+    ClientSettings* clientSettings;
+
 };
 
 #endif // GENERALSETTINGS_H

@@ -15,6 +15,8 @@ class KeyboardFilter : public QObject {
 
 public:
     explicit KeyboardFilter(QObject *parent = 0);
+    ~KeyboardFilter();
+
     void reloadSettings();
 
 protected:

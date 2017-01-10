@@ -15,6 +15,7 @@ class Tray : public QObject {
 
 public:
     Tray(QObject *parent = 0);
+    ~Tray();
 
 private:
     MainWindow* mainWindow;

@@ -1,6 +1,8 @@
 #include "highlightsettings.h"
 
 HighlightSettings::HighlightSettings() {
+    clientSettings = new ClientSettings();
+
     initSettings = true;
     settingsCache = new QList<HighlightSettingsEntry>();
     this->create();
@@ -11,8 +13,7 @@ void HighlightSettings::init() {
 }
 
 void HighlightSettings::create() {
-    QString path = ClientSettings::Instance()->profilePath();
-    settings = new QSettings(path + "highlights.ini", QSettings::IniFormat);
+    settings = new QSettings(clientSettings->profilePath() + "highlights.ini", QSettings::IniFormat);
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
@@ -115,4 +116,5 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 HighlightSettings::~HighlightSettings() {
     delete settings;
     delete settingsCache;
+    delete clientSettings;
 }

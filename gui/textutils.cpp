@@ -10,18 +10,6 @@ QStringList TextUtils::mindStates = QStringList() << "clear" << "dabbling" << "p
 TextUtils::TextUtils(QObject *parent) : QObject(parent) {
 }
 
-QString TextUtils::addNumericStateToExp(QString exp) {
-    int index = 0;
-    for(int i = mindStates.length() - 1; i >= 0; i--) {
-        index = exp.indexOf(mindStates.at(i));
-        if(index != -1) {
-            exp.insert(index, QString("%1 ").arg(i, 2, 10));
-            break;
-        }
-    }
-    return exp;
-}
-
 int TextUtils::expStateToNumeric(QString state) {
     return mindStates.indexOf(state);
 }

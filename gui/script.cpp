@@ -2,7 +2,7 @@
 
 Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this)) {
     scriptService = (ScriptService*)parent;
-    clientSettings = ClientSettings::Instance();
+    clientSettings = new ClientSettings();
 
     connect(script_proc, SIGNAL(readyReadStandardOutput()), this, SLOT(displayOutputMsg()));
     connect(script_proc, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorMsg()));
@@ -95,5 +95,6 @@ void Script::handleError(QProcess::ProcessError error) {
 }
 
 Script::~Script() {
+    delete clientSettings;
     delete script_proc;
 }

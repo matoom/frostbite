@@ -36,6 +36,7 @@ public slots:
     void loadSettings(QString, QList<HighlightSettingsEntry>*);
 
 private:
+    ClientSettings* clientSettings;
     QSettings* settings;
 
 };

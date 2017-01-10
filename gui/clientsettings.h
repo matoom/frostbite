@@ -11,7 +11,7 @@
 class ClientSettings : QSettings {
 
 public:
-    static ClientSettings* Instance();
+    ClientSettings();
 
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue);
@@ -20,10 +20,7 @@ public:
     QString profilePath();
 
 private:
-    ClientSettings();
-    ClientSettings(ClientSettings const& copy);
-    ClientSettings& operator = (ClientSettings const& copy);
-    static ClientSettings* m_pInstance;        
+
 };
 
 #endif // CLIENTSETTINGS_H

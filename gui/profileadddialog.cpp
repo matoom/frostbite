@@ -4,7 +4,7 @@
 ProfileAddDialog::ProfileAddDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ProfileAddDialog) {
     ui->setupUi(this);
 
-    clientSettings = ClientSettings::Instance();
+    clientSettings = new ClientSettings();
 
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okClicked()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelClicked()));
@@ -29,5 +29,6 @@ void ProfileAddDialog::cancelClicked() {
 }
 
 ProfileAddDialog::~ProfileAddDialog() {
+    delete clientSettings;
     delete ui;
 }

@@ -2,7 +2,7 @@
 
 MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    clientSettings = ClientSettings::Instance();
+    clientSettings = new ClientSettings();
 
     connectWizard = new ConnectWizard(qobject_cast<QWidget *>(parent));
     highlightDialog = new HighlightDialog(qobject_cast<QWidget *>(parent));
@@ -136,6 +136,7 @@ void MenuHandler::loadLoggingMenu() {
 }
 
 MenuHandler::~MenuHandler() {
+    delete clientSettings;
     delete appearanceDialog;
     delete highlightDialog;
     delete macroDialog;

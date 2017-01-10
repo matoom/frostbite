@@ -1,14 +1,5 @@
 #include "clientsettings.h"
 
-ClientSettings* ClientSettings::m_pInstance = NULL;
-
-ClientSettings* ClientSettings::Instance() {
-    if (!m_pInstance) {
-        m_pInstance = new ClientSettings;
-    }
-    return m_pInstance;
-}
-
 ClientSettings::ClientSettings() : QSettings(QApplication::applicationDirPath() + "/client.ini", QSettings::IniFormat) {
 }
 

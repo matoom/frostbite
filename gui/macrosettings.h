@@ -8,7 +8,8 @@
 class MacroSettings {
 
 public:
-    static MacroSettings* Instance();
+    MacroSettings();
+    ~MacroSettings();
 
     void init();
     void setParameter(QString name, QVariant value);
@@ -17,12 +18,9 @@ public:
     bool hasValue(QString);
 
 private:
-    MacroSettings();
-    MacroSettings(MacroSettings const& copy);
-    MacroSettings& operator = (MacroSettings const& copy);
-    static MacroSettings* m_pInstance;
+    ClientSettings* clientSettings;
     QSettings* settings;
-    
+
 signals:
     
 public slots:

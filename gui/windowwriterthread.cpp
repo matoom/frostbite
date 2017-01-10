@@ -63,13 +63,12 @@ void WindowWriterThread::write(QString data) {
 
         int size = lines.size() - 1;
         for(int i = 0; i < size; ++i) {
-            text += this->process(data, window->getObjectName());
+            text += this->process(lines.at(i), window->getObjectName());
 
             if(i < size - 1) {
                 text += "\n";
             }
         }
-
         emit clearText();
         setText(text);
     }
