@@ -13,5 +13,6 @@
         <file>images/shield.icns</file>
         <file>images/loading.gif</file>
         <file>images/arrow_right.png</file>
+        <file>images/alter.png</file>
     </qresource>
 </RCC>

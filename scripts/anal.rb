@@ -51,7 +51,7 @@ def analyze
   match = { :wait => [/\.\.\.wait/],
             :fail => [/fail to find/],
             :adv => [/closer to use tactical abilities/],
-            :pause => [/still stunned|entangled in a web/],
+            :pause => [/still stunned|entangled in a web|Analyze what/],
             :continue => [/by landing a/] }
   result = match_get match
 

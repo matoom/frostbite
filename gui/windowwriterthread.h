@@ -7,6 +7,7 @@
 #include <QMutex>
 
 #include <text/highlight/highlighter.h>
+#include <text/alter/alter.h>
 #include <globaldefines.h>
 
 class Highlighter;
@@ -23,14 +24,19 @@ public:
 private:
     QQueue<QString> dataQueue;
     QPlainTextEdit* textEdit;
+
     Highlighter* highlighter;
+    Alter* alter;
+
     MainWindow* mainWindow;
     QMutex mMutex;
     QRegExp rxRemoveTags;
     QString localData;
     WindowInterface *window;
 
-    void process(QString);
+    void write(QString);
+    QString process(QString text, QString win);
+
     void setText(QString);
 
     bool exit;

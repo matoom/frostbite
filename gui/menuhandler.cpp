@@ -7,6 +7,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     connectWizard = new ConnectWizard(qobject_cast<QWidget *>(parent));
     highlightDialog = new HighlightDialog(qobject_cast<QWidget *>(parent));
     macroDialog = new MacroDialog(qobject_cast<QWidget *>(parent));
+    alterDialog = new AlterDialog(qobject_cast<QWidget *>(parent));
     appearanceDialog = new AppearanceDialog(qobject_cast<QWidget *>(parent));
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
@@ -26,6 +27,8 @@ void MenuHandler::openAppearanceDialog() {
 }
 
 void MenuHandler::updateDialogSettings() {
+    alterDialog->updateSettings();
+
     highlightDialog->updateSettings();
     highlightDialog->loadSettings();
 
@@ -47,6 +50,8 @@ void MenuHandler::menuTriggered(QAction* action) {
         highlightDialog->show();
     } else if (action->objectName() == "actionMacros") {
         macroDialog->show();
+    } else if (action->objectName() == "actionSubstitute") {
+        alterDialog->show();
     } else if (action->objectName() == "actionAppearance") {
         appearanceDialog->show();
     } else if(action->objectName() == "actionExit") {
@@ -134,6 +139,7 @@ MenuHandler::~MenuHandler() {
     delete appearanceDialog;
     delete highlightDialog;
     delete macroDialog;
+    delete alterDialog;
     delete aboutDialog;
     delete scriptEditDialog;
     delete profileAddDialog;

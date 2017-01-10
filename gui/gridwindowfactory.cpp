@@ -32,7 +32,7 @@ QTableWidget* GridWindowFactory::tableBox(QString name) {
     gridWindow->setShowGrid(false);
     gridWindow->setColumnCount(1);
 
-    // clipping issue when fonts changed during runtime?
+    //TODO: clipping issue when fonts changed during runtime?
     QHeaderView *verticalHeader = gridWindow->verticalHeader();
     verticalHeader->setDefaultSectionSize(verticalHeader->fontMetrics().height() + 5);
 
@@ -41,7 +41,7 @@ QTableWidget* GridWindowFactory::tableBox(QString name) {
 
 QDockWidget* GridWindowFactory::createWindow(const char* name) {
     QDockWidget *dock = new QDockWidget(QObject::tr(name), mainWindow);
-    dock->setObjectName(QObject::tr(name) + "Window");
+    dock->setObjectName(QObject::tr(name));
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
     dock->setWidget(this->tableBox(name));
 

@@ -1,6 +1,5 @@
 #include "windowfacade.h"
 
-
 QStringList WindowFacade::staticWindows = QStringList() << "inv" << "familiar" << "thoughts"
     << "logons" << "death" << "assess" << "conversation" << "whispers" << "talk" << "experience"
     << "group" << "atmospherics" << "ooc" << "room" << "percWindow" << "chatter";
@@ -57,15 +56,9 @@ void WindowFacade::updateWindowColors() {
     mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
 
     // text window
-    this->setTextDockBackground(generalSettings->dockWindowBackground());
-    this->setTextDockFont(generalSettings->dockWindowFont());
-    this->setTextDockFontColor(generalSettings->dockWindowFontColor());
-
-    // grid window
-    ((GridWindow*)expWindow->widget())->clearTracked();
-    this->setGridDockBackground(generalSettings->dockWindowBackground());
-    this->setGridDockFont(generalSettings->dockWindowFont());
-    this->setGridDockFontColor(generalSettings->dockWindowFontColor());
+    this->setDockBackground(generalSettings->dockWindowBackground());
+    this->setDockFont(generalSettings->dockWindowFont());
+    this->setDockFontColor(generalSettings->dockWindowFontColor());
 }
 
 QString WindowFacade::textColor(QString name, QString defaultValue) {
@@ -84,87 +77,81 @@ void WindowFacade::setGameWindowFontColor(QColor color) {
     gameWindow->viewport()->setPalette(p);    
 }
 
-void WindowFacade::setTextDockFontColor(QColor fontColor) {
-    QPalette p;
-    foreach(QDockWidget* dock, dockWindows) {        
-        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
-        p.setColor(QPalette::Text, fontColor);
-        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
-    }
-
-    foreach(QDockWidget* dock, streamWindows) {
-        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
-        p.setColor(QPalette::Text, fontColor);
-        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
-    }
-}
-
-void WindowFacade::setTextDockBackground(QColor backgroundColor) {
+void WindowFacade::setDockFontColor(QColor fontColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {
-        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
-        p.setColor(QPalette::Base, backgroundColor);
-        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
-    }
-
-    foreach(QDockWidget* dock, streamWindows) {
-        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
-        p.setColor(QPalette::Base, backgroundColor);
-        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
-    }
-}
-
-void WindowFacade::setTextDockFont(QFont font) {
-    foreach(QDockWidget* dock, dockWindows) {
-        ((QPlainTextEdit*)dock->widget())->setFont(font);
-    }
-
-    foreach(QDockWidget* dock, streamWindows) {
-        ((QPlainTextEdit*)dock->widget())->setFont(font);
-    }
-}
-
-void WindowFacade::setGridDockFontColor(QColor fontColor) {
-    foreach(QDockWidget* gridWindow, gridWindows) {
-        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();        
-        for(int i = 0; i < tableWidget->rowCount(); i++) {
-            QLabel* widget = (QLabel*)tableWidget->cellWidget(i, 0);
-            QPalette p = widget->palette();
+        if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
+            p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
             p.setColor(QPalette::Text, fontColor);
-            widget->setPalette(p);
-        }
-    }
-}
-
-void WindowFacade::setGridDockBackground(QColor backgroundColor) {
-    foreach(QDockWidget* gridWindow, gridWindows) {
-        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();
-
-        QPalette p;
-        p = tableWidget->viewport()->palette();
-        p.setColor(QPalette::Base, backgroundColor);
-        tableWidget->viewport()->setPalette(p);
-
-        for(int i = 0; i < tableWidget->rowCount(); i++) {
-            QWidget* widget = tableWidget->cellWidget(i, 0);
-            QLabel* label = ((QLabel*)widget);
-
-            p = label->palette();
-            p.setColor(QPalette::Base, backgroundColor);
-            ((QLabel*)widget)->setPalette(p);
-        }
-    }
-}
-
-void WindowFacade::setGridDockFont(QFont font) {
-    foreach(QDockWidget* gridWindow, gridWindows) {
-        QTableWidget* tableWidget = (QTableWidget*)gridWindow->widget();        
-        for(int i = 0; i < tableWidget->rowCount(); i++) {
-            QWidget* widget = tableWidget->cellWidget(i, 0);
-            if(widget != NULL) {
-                ((QLabel*)widget)->setFont(font);
+            ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+        } else if(qobject_cast<QTableWidget*>(dock->widget()) != NULL) {
+            QTableWidget* tableWidget = (QTableWidget*)dock->widget();
+            for(int i = 0; i < tableWidget->rowCount(); i++) {
+                QLabel* widget = (QLabel*)tableWidget->cellWidget(i, 0);
+                QPalette p = widget->palette();
+                p.setColor(QPalette::Text, fontColor);
+                widget->setPalette(p);
             }
         }
+    }
+
+    foreach(QDockWidget* dock, streamWindows) {
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Text, fontColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+    }
+}
+
+void WindowFacade::setDockBackground(QColor backgroundColor) {
+    QPalette p;
+    foreach(QDockWidget* dock, dockWindows) {
+        if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
+            p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+            p.setColor(QPalette::Base, backgroundColor);
+            ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+        } else if(qobject_cast<QTableWidget*>(dock->widget()) != NULL) {
+            QTableWidget* tableWidget = (QTableWidget*)dock->widget();
+
+            QPalette p;
+            p = tableWidget->viewport()->palette();
+            p.setColor(QPalette::Base, backgroundColor);
+            tableWidget->viewport()->setPalette(p);
+
+            for(int i = 0; i < tableWidget->rowCount(); i++) {
+                QWidget* widget = tableWidget->cellWidget(i, 0);
+                QLabel* label = ((QLabel*)widget);
+
+                p = label->palette();
+                p.setColor(QPalette::Base, backgroundColor);
+                ((QLabel*)widget)->setPalette(p);
+            }
+        }
+    }
+
+    foreach(QDockWidget* dock, streamWindows) {
+        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p.setColor(QPalette::Base, backgroundColor);
+        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+    }
+}
+
+void WindowFacade::setDockFont(QFont font) {
+    foreach(QDockWidget* dock, dockWindows) {
+        if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
+            ((QPlainTextEdit*)dock->widget())->setFont(font);
+        } else if(qobject_cast<QTableWidget*>(dock->widget()) != NULL) {
+            QTableWidget* tableWidget = (QTableWidget*)dock->widget();
+            for(int i = 0; i < tableWidget->rowCount(); i++) {
+                QWidget* widget = tableWidget->cellWidget(i, 0);
+                if(widget != NULL) {
+                    ((QLabel*)widget)->setFont(font);
+                }
+            }
+        }
+    }
+
+    foreach(QDockWidget* dock, streamWindows) {
+        ((QPlainTextEdit*)dock->widget())->setFont(font);
     }
 }
 
@@ -182,7 +169,9 @@ void WindowFacade::updateWindowStyle() {
             "span {white-space:pre-wrap;}";
 
     foreach(QDockWidget* dock, dockWindows) {
-        ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
+        if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
+            ((QPlainTextEdit*)dock->widget())->document()->setDefaultStyleSheet(style);
+        }
     }
     ((GameWindow*)this->gameWindow)->document()->setDefaultStyleSheet(style);
 }
@@ -201,7 +190,9 @@ void WindowFacade::loadWindows() {
 
     //qDebug() << ((QPlainTextEdit*)roomWindow->widget())->toPlainText();
 
-    //https://bugreports.qt-project.org/browse/QTBUG-16252
+    // DockWidgets of maximized windows are not restored to the correct size when calling
+    // QWidget::restoreGeometry() , QMainWindow::restoreState() in a sequence
+    // https://bugreports.qt.io/browse/QTBUG-16252
 
     arrivalsWindow = genericWindowFactory->createWindow(DOCK_TITLE_ARRIVALS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, arrivalsWindow);
@@ -220,7 +211,7 @@ void WindowFacade::loadWindows() {
 
     expWindow = gridWindowFactory->createWindow(DOCK_TITLE_EXP);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
-    gridWindows << expWindow;
+    dockWindows << expWindow;
 
     conversationsWindow = genericWindowFactory->createWindow(DOCK_TITLE_CONVERSATIONS);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, conversationsWindow);
@@ -276,7 +267,7 @@ void WindowFacade::initWindowWriters() {
     connect(this, SIGNAL(updateThoughtsSettings()), thoughtsWriter, SLOT(updateSettings()));
     writers << thoughtsWriter;
 
-    expWriter = new GridWriterThread(mainWindow);
+    expWriter = new GridWriterThread(mainWindow, (GridWindow*)expWindow->widget());
     connect(expWriter, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
     connect(this, SIGNAL(updateExpSettings()), expWriter, SLOT(updateSettings()));
     gridWriters << expWriter;
@@ -342,6 +333,19 @@ void WindowFacade::setVisibilityIndicator(QDockWidget* widget, bool visible, QSt
     }
 }
 
+QStringList WindowFacade::getWindowNames() {
+    QStringList names;
+    names << gameWindow->objectName();
+    for(QDockWidget* dock : dockWindows) {
+        names << dock->objectName();
+    }
+    return names;
+}
+
+QList<QDockWidget*> WindowFacade::getDockWindows() {
+    return this->dockWindows;
+}
+
 QDockWidget* WindowFacade::getRoomWindow() {
     return this->roomWindow;
 }
@@ -380,10 +384,12 @@ MapFacade* WindowFacade::getMapFacade() {
 
 void WindowFacade::copyDock() {
     foreach(QDockWidget* dock, dockWindows) {
-        QTextCursor cursor = ((QPlainTextEdit*)dock->widget())->textCursor();
-        if(cursor.hasSelection()) {
-            ((QPlainTextEdit*)dock->widget())->copy();
-            break;
+        if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
+            QTextCursor cursor = ((QPlainTextEdit*)dock->widget())->textCursor();
+            if(cursor.hasSelection()) {
+                ((QPlainTextEdit*)dock->widget())->copy();
+                break;
+            }
         }
     }
 }
@@ -666,10 +672,6 @@ WindowFacade::~WindowFacade() {
     delete navigationDisplay;    
 
     foreach(QDockWidget* dock, dockWindows) {
-        delete dock;
-    }
-
-    foreach(QDockWidget* dock, gridWindows) {
         delete dock;
     }
 

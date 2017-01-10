@@ -6,7 +6,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     settings = new GeneralSettings();
     snapshot = new Snapshot(this);
 
-    this->setObjectName("Main");
+    this->setObjectName(WINDOW_TITLE_MAIN);
 
     this->loadSettings();   
     this->buildContextMenu();

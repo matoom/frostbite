@@ -1,14 +1,17 @@
 #include "gridwriterthread.h"
 
-GridWriterThread::GridWriterThread(QObject *parent) {
+GridWriterThread::GridWriterThread(QObject *parent, GridWindow* window) {
     mainWindow = (MainWindow*)parent;
     highlighter = new Highlighter(parent);
+    alter = new Alter();
 
+    this->window = window;
     this->exit = false;
 }
 
 void GridWriterThread::updateSettings() {
     highlighter->reloadSettings();
+    alter->reloadSettings();
 }
 
 void GridWriterThread::addItem(QString name, QString text) {
@@ -24,17 +27,23 @@ void GridWriterThread::run() {
             mMutex.lock();
             localData = dataQueue.dequeue();
             mMutex.unlock();
-            process(localData);
+            this->write(localData);
         }
         msleep(200);
     }
 }
 
-void GridWriterThread::process(GridEntry gridEntry) {
+QString GridWriterThread::process(QString text, QString win) {
+    return highlighter->highlight(alter->substitute(text, win));
+}
+
+void GridWriterThread::write(GridEntry gridEntry) {
+    if(alter->ignore(gridEntry.text, window->objectName())) return;
+
     if(gridEntry.text.isEmpty()) {
         highlightedItems.remove(gridEntry.name);
     } else {
-        highlightedItems.insert(gridEntry.name, highlighter->highlight(gridEntry.text));
+        highlightedItems.insert(gridEntry.name, this->process(gridEntry.text, window->objectName()));
     }
     emit writeGrid(highlightedItems);
 }

@@ -6,6 +6,7 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
     this->window = window;
 
     highlighter = new Highlighter(parent);
+    alter = new Alter();
 
     this->exit = false;
 
@@ -20,6 +21,7 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
 
 void WindowWriterThread::updateSettings() {
     highlighter->reloadSettings();
+    alter->reloadSettings();
 }
 
 void WindowWriterThread::addText(QString text) {
@@ -34,28 +36,34 @@ void WindowWriterThread::run() {
             mMutex.lock();
             localData = dataQueue.dequeue();
             mMutex.unlock();
-            process(localData);
+            this->write(localData);
         }
         msleep(200);
     }
 }
 
-void WindowWriterThread::process(QString data) {
+QString WindowWriterThread::process(QString text, QString win) {
+    return highlighter->highlight(alter->substitute(text, win));
+}
+
+void WindowWriterThread::write(QString data) {
+    if(alter->ignore(data, window->getObjectName())) return;
+
     if(window->stream()) {
         if(data.startsWith("{clear}")) {
             emit clearText();
         } else {
-            emit writeStream(highlighter->highlight(data));
+            emit writeStream(this->process(data, window->getObjectName()));
         }
     } else if(window->append()) {
-        setText(highlighter->highlight(data));
+        setText(this->process(data, window->getObjectName()));
     } else {
         QString text = "";
         QList<QString> lines = data.split('\n');
 
         int size = lines.size() - 1;
         for(int i = 0; i < size; ++i) {
-            text += highlighter->highlight(lines.at(i));
+            text += this->process(data, window->getObjectName());
 
             if(i < size - 1) {
                 text += "\n";

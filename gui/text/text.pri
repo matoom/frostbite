@@ -1,2 +1,2 @@
 include(highlight/highlight.pri)
-include(substitute/substitute.pri)
+include(alter/alter.pri)

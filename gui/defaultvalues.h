@@ -54,6 +54,8 @@
 #define DEFAULT_DOCK_FONT_COLOR "#000000"
 #define DEFAULT_DOCK_BACKGROUND "#FFFFFF"
 
+#define WINDOW_TITLE_MAIN "Main"
+
 #define DOCK_TITLE_DEATHS "Deaths"
 #define DOCK_TITLE_ARRIVALS "Arrivals"
 #define DOCK_TITLE_THOUGHTS "Thoughts"

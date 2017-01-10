@@ -201,6 +201,7 @@ QTabBar {
     </property>
     <addaction name="actionAppearance"/>
     <addaction name="actionText_Highlight"/>
+    <addaction name="actionSubstitute"/>
     <addaction name="actionMacros"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
@@ -313,7 +314,7 @@ QTabBar {
      <normaloff>:/window/images/highlight.png</normaloff>:/window/images/highlight.png</iconset>
    </property>
    <property name="text">
-    <string>Highlight</string>
+    <string>Highlight text</string>
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
@@ -325,13 +326,16 @@ QTabBar {
      <normaloff>:/window/images/keyboard.png</normaloff>:/window/images/keyboard.png</iconset>
    </property>
    <property name="text">
-    <string>Macros</string>
+    <string>Keyboard macros</string>
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
    </property>
   </action>
   <action name="actionAppearance">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="window.qrc">
      <normaloff>:/window/images/window.png</normaloff>:/window/images/window.png</iconset>
@@ -430,6 +434,15 @@ QTabBar {
    </property>
    <property name="text">
     <string>Auth</string>
+   </property>
+  </action>
+  <action name="actionSubstitute">
+   <property name="icon">
+    <iconset resource="window.qrc">
+     <normaloff>:/window/images/alter.png</normaloff>:/window/images/alter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Alter text</string>
    </property>
   </action>
  </widget>

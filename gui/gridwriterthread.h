@@ -5,8 +5,10 @@
 #include <QThread>
 
 #include <mainwindow.h>
+#include <text/alter/alter.h>
 
 class Highlighter;
+class GridWindow;
 
 struct GridEntry {
     QString name;
@@ -19,14 +21,17 @@ class GridWriterThread : public QThread {
     Q_OBJECT
 
 public:
-    explicit GridWriterThread(QObject *parent);
+    explicit GridWriterThread(QObject *parent, GridWindow* window);
     ~GridWriterThread();
 
     virtual void run();
 
 private:
     QQueue<GridEntry> dataQueue;
+
     Highlighter* highlighter;
+    Alter* alter;
+
     MainWindow* mainWindow;
     QMutex mMutex;
     bool append;
@@ -34,7 +39,10 @@ private:
     GridEntry localData;
     QMap<QString, QString> highlightedItems;
 
-    void process(GridEntry);
+    GridWindow* window;
+
+    void write(GridEntry);
+    QString process(QString text, QString win);
 
     bool exit;
 

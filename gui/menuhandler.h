@@ -9,6 +9,7 @@
 #include <connectwizard.h>
 #include <text/highlight/highlightdialog.h>
 #include <macrodialog.h>
+#include <text/alter/alterdialog.h>
 #include <appearancedialog.h>
 #include <aboutdialog.h>
 #include <scripteditdialog.h>
@@ -19,6 +20,7 @@ class ConnectWizard;
 class MainWindow;
 class HighlightDialog;
 class AppearanceDialog;
+class AlterDialog;
 class AboutDialog;
 class ScriptEditDialog;
 class ProfileAddDialog;
@@ -41,6 +43,7 @@ private:
     ConnectWizard* connectWizard;
     HighlightDialog* highlightDialog;
     MacroDialog* macroDialog;
+    AlterDialog* alterDialog;
     AppearanceDialog* appearanceDialog;
     AboutDialog* aboutDialog;
     ScriptEditDialog* scriptEditDialog;

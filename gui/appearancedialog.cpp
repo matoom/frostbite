@@ -126,13 +126,9 @@ void AppearanceDialog::reset() {
     windowFacade->setGameWindowFont(mainFontValue);
     windowFacade->setGameWindowFontColor(mainFontColorValue);
 
-    windowFacade->setTextDockBackground(dockBackgroundValue);
-    windowFacade->setTextDockFont(dockFontValue);
-    windowFacade->setTextDockFontColor(dockFontColorValue);
-
-    windowFacade->setGridDockBackground(dockBackgroundValue);
-    windowFacade->setGridDockFont(dockFontValue);
-    windowFacade->setGridDockFontColor(dockFontColorValue);
+    windowFacade->setDockBackground(dockBackgroundValue);
+    windowFacade->setDockFont(dockFontValue);
+    windowFacade->setDockFontColor(dockFontColorValue);
 }
 
 void AppearanceDialog::selectMainBg() {
@@ -177,8 +173,7 @@ void AppearanceDialog::selectDockBg() {
     if(dockBackgroundValue.isValid()) {
         dockBgSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                       "border: 1px solid #C0C0C0; }").arg(dockBackgroundValue.name()));
-        windowFacade->setTextDockBackground(dockBackgroundValue);
-        windowFacade->setGridDockBackground(dockBackgroundValue);
+        windowFacade->setDockBackground(dockBackgroundValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/background", dockBackgroundValue);
@@ -191,8 +186,7 @@ void AppearanceDialog::selectDockFont() {
 
     if(ok) {
         dockFontSelect->setText(dockFontValue.family() + "," + QString::number(dockFontValue.pointSize()));
-        windowFacade->setTextDockFont(dockFontValue);
-        windowFacade->setGridDockFont(dockFontValue);
+        windowFacade->setDockFont(dockFontValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/font", dockFontValue);
@@ -204,8 +198,7 @@ void AppearanceDialog::selectDockFontColor() {
     if(dockFontColorValue.isValid()) {
         dockFontColorSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                              "border: 1px solid #C0C0C0; }").arg(dockFontColorValue.name()));
-        windowFacade->setTextDockFontColor(dockFontColorValue);
-        windowFacade->setGridDockFontColor(dockFontColorValue);
+        windowFacade->setDockFontColor(dockFontColorValue);
 
         ui->applyButton->setEnabled(true);
         changeList.insert("DockWindow/fontColor", dockFontColorValue);

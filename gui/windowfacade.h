@@ -65,17 +65,15 @@ public:
     void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
-    void setTextDockFontColor(QColor);
-    void setTextDockBackground(QColor);
-    void setTextDockFont(QFont font);
-    void setGridDockBackground(QColor);
-    void setGridDockFontColor(QColor);
-    void setGridDockFont(QFont font);
+    void setDockFontColor(QColor);
+    void setDockBackground(QColor);
+    void setDockFont(QFont font);
     void copyDock();
     void saveArrivals();
     void reloadSettings();
     void reloadHighlighterSettings();    
 
+    QList<QDockWidget*> getDockWindows();
     QDockWidget* getRoomWindow();
     QDockWidget* getArrivalsWindow();
     QDockWidget* getThoughtsWindow();
@@ -84,6 +82,8 @@ public:
     QDockWidget* getConversationsWindow();
     QDockWidget* getFamiliarWindow();
     QDockWidget* getSpellWindow();
+
+    QStringList getWindowNames();
 
     MapFacade* getMapFacade();
 
@@ -153,7 +153,6 @@ private:
     QDockWidget* familiarWindow;
     QDockWidget* spellWindow;
     QList<QDockWidget*> dockWindows;
-    QList<QDockWidget*> gridWindows;
     QHash<QString, QDockWidget*> streamWindows;
 
     MapFacade* mapFacade;
