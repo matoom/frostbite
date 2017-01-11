@@ -1,7 +1,7 @@
 #ifndef ABSTRACTTABLETAB_H
 #define ABSTRACTTABLETAB_H
 
-#include <QHash>
+#include <QMap>
 #include <QTableWidget>
 #include <QPushButton>
 #include <QDockWidget>
@@ -24,13 +24,14 @@ public:
     virtual QTableWidget* getTable() = 0;
     virtual QPushButton* getApplyButton() = 0;
     virtual QList<QDockWidget*> getDockWindows() = 0;
+    virtual void print(QString) = 0;
 
     void registerChange(int, TableChangeEvent);
 
-    bool hasAny(QHash<int, QList<TableChangeEvent>> changeList, TableChangeEvent event);
+    bool hasAny(QMap<int, QList<TableChangeEvent>> changeList, TableChangeEvent event);
 
-    QHash<int, QList<TableChangeEvent>>& getChangeEvents();
-    void setChangeEvents(QHash<int, QList<TableChangeEvent>> changeEvents);
+    QMap<int, QList<TableChangeEvent>>& getChangeEvents();
+    void setChangeEvents(QMap<int, QList<TableChangeEvent>> changeEvents);
 
     QList<AlterSettingsEntry>& getSettingEntries();
     void setSettingEntries(QList<AlterSettingsEntry> settingEntries);
@@ -41,7 +42,7 @@ public:
     void displayMenu(QPoint pos);
 
 private:
-    QHash<int, QList<TableChangeEvent>> changeEvents;
+    QMap<int, QList<TableChangeEvent>> changeEvents;
     QList<AlterSettingsEntry> settingEntries;
 
 };

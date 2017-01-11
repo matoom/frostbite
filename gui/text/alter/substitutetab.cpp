@@ -29,6 +29,10 @@ SubstituteTab::SubstituteTab(QObject *parent) : QObject(parent), AbstractTableTa
     this->initSubstitutionList();
 }
 
+void SubstituteTab::print(QString text) {
+    qDebug() << text;
+}
+
 void SubstituteTab::updateSettings() {
     delete settings;
     settings = new SubstitutionSettings();
@@ -70,7 +74,7 @@ void SubstituteTab::populateTableRow(int row, AlterSettingsEntry entry) {
     QTableWidgetItem* patternItem = new QTableWidgetItem(entry.pattern);
     patternItem->setData(Qt::UserRole, "pattern");
 
-    if(QRegExp(entry.pattern).isValid()) {
+    if(QRegularExpression(entry.pattern).isValid()) {
         patternItem->setBackgroundColor(QColor(Qt::transparent));
     } else {
         patternItem->setBackgroundColor(QColor("#EE3233"));
@@ -90,19 +94,15 @@ void SubstituteTab::saveChanges() {
     } else {
         for(int id : this->getChangeEvents().keys()) {
             AlterSettingsEntry entry = this->getSettingEntries().at(id);
-            QListIterator<TableChangeEvent> it(this->getChangeEvents().value(id));
-            it.toBack();
-            while (it.hasPrevious()) {
-                TableChangeEvent e = it.previous();
-                if(e == TableChangeEvent::Add) {
-                    settings->addParameter(entry);
-                    break;
-                } else if(e == TableChangeEvent::Update) {
-                    settings->setParameter(entry);
-                }
+            QList<TableChangeEvent> changeEvents = this->getChangeEvents().value(id);
+            if(changeEvents.contains(TableChangeEvent::Add)) {
+                settings->addParameter(entry);
+            } else if(changeEvents.contains(TableChangeEvent::Update)) {
+                settings->setParameter(entry);
             }
         }
     }
+    // does not work
     this->getChangeEvents().clear();
 }
 

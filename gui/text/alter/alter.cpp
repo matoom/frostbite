@@ -18,11 +18,7 @@ QString Alter::substitute(QString text, QString window) {
         for(AlterSettingsEntry entry : alterList) {
             if(entry.pattern.isEmpty()) continue;
             if(!entry.targetList.empty() && !entry.targetList.contains(window)) continue;
-
-            TextUtils::plainToHtml(entry.pattern);
-            TextUtils::plainToHtml(entry.substitute);
-
-            text.replace(QRegExp(entry.pattern + "(?=[^>]*(<|$))"), entry.substitute);
+            text.replace(QRegularExpression(entry.pattern + "(?=[^>]*(<|$))"), entry.substitute);
         }
     }
     return text;
@@ -33,10 +29,8 @@ bool Alter::ignore(QString text, QString window) {
     for(AlterSettingsEntry entry : ignoreList) {
         if(entry.pattern.isEmpty()) continue;
         if(!entry.targetList.empty() && !entry.targetList.contains(window)) continue;
-
-        TextUtils::plainToHtml(entry.pattern);
-        if(QRegExp(entry.pattern + "(?=[^>]*(<|$))").indexIn(text) != -1) {
-            return true;
+        if (QRegularExpression(entry.pattern + "(?=[^>]*(<|$))").match(text).hasMatch()) {
+           return true;
         }
     }
     return false;

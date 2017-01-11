@@ -2,6 +2,7 @@
 #define ALTER_H
 
 #include <QObject>
+#include <QRegularExpression>
 
 #include <text/alter/substitutionsettings.h>
 #include <text/alter/ignoresettings.h>

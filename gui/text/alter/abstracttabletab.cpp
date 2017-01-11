@@ -4,7 +4,7 @@ AbstractTableTab::AbstractTableTab() {
 
 }
 
-bool AbstractTableTab::hasAny(QHash<int, QList<TableChangeEvent>> changeList, TableChangeEvent event) {
+bool AbstractTableTab::hasAny(QMap<int, QList<TableChangeEvent>> changeList, TableChangeEvent event) {
     for(int id : changeList.keys()) {
         for(TableChangeEvent e : changeList.value(id)) {
             if(e == event) return true;
@@ -13,11 +13,11 @@ bool AbstractTableTab::hasAny(QHash<int, QList<TableChangeEvent>> changeList, Ta
     return false;
 }
 
-QHash<int, QList<TableChangeEvent>>& AbstractTableTab::getChangeEvents() {
+QMap<int, QList<TableChangeEvent>>& AbstractTableTab::getChangeEvents() {
     return this->changeEvents;
 }
 
-void AbstractTableTab::setChangeEvents(QHash<int, QList<TableChangeEvent>> changeEvents) {
+void AbstractTableTab::setChangeEvents(QMap<int, QList<TableChangeEvent>> changeEvents) {
    this->changeEvents = changeEvents;
 }
 
@@ -42,7 +42,7 @@ void AbstractTableTab::updateEntry(QTableWidgetItem* item) {
         entry.substitute = item->text();
     }
 
-    if(QRegExp(entry.pattern).isValid()) {
+    if(QRegularExpression(entry.pattern).isValid()) {
         item->setBackgroundColor(QColor(Qt::transparent));
     } else {
         item->setBackgroundColor(QColor("#EE3233"));
@@ -126,10 +126,10 @@ void AbstractTableTab::displayMenu(QPoint pos) {
         if(a != NULL) {
             if(a->isChecked()) {
                 entry.targetList.append(a->text());
-                settingEntries.insert(index.row(), entry);
+                settingEntries.replace(index.row(), entry);
             } else {
                 entry.targetList.removeAll(a->text());
-                settingEntries.insert(index.row(), entry);
+                settingEntries.replace(index.row(), entry);
             }
             this->registerChange(index.row(), TableChangeEvent::Update);
         }

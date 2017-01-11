@@ -20,6 +20,8 @@ public:
     void saveChanges();
     void cancelChanges();
 
+    void print(QString text);
+
     QTableWidget* getTable();
     QPushButton* getApplyButton();
     QList<QDockWidget*> getDockWindows();
