@@ -45,7 +45,7 @@ void AbstractTableTab::updateEntry(QTableWidgetItem* item) {
     if(QRegularExpression(entry.pattern).isValid()) {
         item->setBackgroundColor(QColor(Qt::transparent));
     } else {
-        item->setBackgroundColor(QColor("#EE3233"));
+        item->setBackgroundColor(QColor(REGEX_ERROR_COLOR_HEX));
     }
 
     settingEntries.replace(row, entry);

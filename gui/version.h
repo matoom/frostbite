@@ -8,12 +8,12 @@
 #define VER_PRODUCTVERSION_STR      "1.4\0"
 
 #define VER_COMPANYNAME_STR         "matoom"
-#define VER_FILEDESCRIPTION_STR     "DragonRealms MUD Frontend"
+#define VER_FILEDESCRIPTION_STR     "Frostbite Frontend"
 #define VER_INTERNALNAME_STR        "frostbite"
 #define VER_LEGALCOPYRIGHT_STR      "MIT"
 #define VER_LEGALTRADEMARKS1_STR    "No Rights Reserved"
 #define VER_LEGALTRADEMARKS2_STR    VER_LEGALTRADEMARKS1_STR
-#define VER_ORIGINALFILENAME_STR    "FrostBite.exe"
+#define VER_ORIGINALFILENAME_STR    "frostbite.exe"
 #define VER_PRODUCTNAME_STR         "Frostbite Frontend"
 
 #define VER_COMPANYDOMAIN_STR       "github.com/matoom/frostbite"

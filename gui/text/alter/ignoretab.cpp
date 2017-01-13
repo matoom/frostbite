@@ -77,7 +77,7 @@ void IgnoreTab::populateTableRow(int row, AlterSettingsEntry entry) {
     if(QRegularExpression(entry.pattern).isValid()) {
         patternItem->setBackgroundColor(QColor(Qt::transparent));
     } else {
-        patternItem->setBackgroundColor(QColor("#EE3233"));
+        patternItem->setBackgroundColor(QColor(REGEX_ERROR_COLOR_HEX));
     }
 
     ignoreTable->setItem(row, 0, patternItem);

@@ -8,10 +8,9 @@
 #include <QMenu>
 
 #include <defaultvalues.h>
+#include <globaldefines.h>
 
 #include <text/alter/altersettingsentry.h>
-
-#define WINDOW_SELECT_ALL "All"
 
 enum class TableChangeEvent { Add, Remove, Update };
 

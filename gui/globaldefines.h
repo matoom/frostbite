@@ -5,4 +5,7 @@
 
 #define MAP_TOP_MARGIN 20
 
+#define WINDOW_SELECT_ALL "All"
+#define REGEX_ERROR_COLOR_HEX "#EE3233"
+
 #endif // GLOBALDEFINES_H
