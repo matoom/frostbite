@@ -4,6 +4,8 @@
 #include <mainwindow.h>
 #include <gamedatacontainer.h>
 
+#include <globaldefines.h>
+
 class MainWindow;
 class GameDataContainer;
 

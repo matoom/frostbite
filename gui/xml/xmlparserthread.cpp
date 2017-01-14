@@ -239,8 +239,8 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             if(initRoundtime) {
                 time.setTime_t(e.attribute("time").toInt());
 
-                int t_to = time.secsTo(roundTime);
-                emit setTimer(t_to > 300 ? 300 : t_to);
+                int t_to = time.msecsTo(roundTime);
+                emit setTimer(t_to > 300000 ? 300000 : t_to);
 
                 initRoundtime = false;
             }
@@ -248,8 +248,8 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             if(initCastTime) {
                 time.setTime_t(e.attribute("time").toInt());
 
-                int t_to = time.secsTo(castTime);
-                emit setCastTimer(t_to > 300 ? 300 : t_to);
+                int t_to = time.msecsTo(castTime);
+                emit setCastTimer(t_to > 300000 ? 300000 : t_to);
 
                 initCastTime = false;
             }

@@ -6,6 +6,10 @@
 #define MAP_TOP_MARGIN 20
 
 #define WINDOW_SELECT_ALL "All"
+
 #define REGEX_ERROR_COLOR_HEX "#EE3233"
+
+#define RT_COLOR_HEX "#E86850"
+#define CT_COLOR_HEX "#66A7C5"
 
 #endif // GLOBALDEFINES_H
