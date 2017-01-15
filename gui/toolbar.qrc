@@ -30,9 +30,9 @@
         <file>images/invisible.png</file>
         <file>images/vitals_frame.png</file>
         <file>images/frame_bg.png</file>
-        <file>images/web.png</file>
         <file>images/fullscreen_exit.png</file>
         <file>images/fullscreen.png</file>
         <file>images/mana.png</file>
+        <file>images/web.png</file>
     </qresource>
 </RCC>

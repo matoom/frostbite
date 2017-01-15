@@ -93,7 +93,7 @@ void CommandLine::clearRt() {
     this->setPalette(pal);
 }
 
-void CommandLine::insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay) {
+void CommandLine::insertRt(QPixmap segmentDisplay, QPixmap numericDisplay) {
     QPalette pal = this->palette();
 
     QPixmap collage(this->width(), this->height());

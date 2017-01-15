@@ -25,7 +25,7 @@ public:
     ~CommandLine();
 
     void focus();
-    void insertRtIndicator(QPixmap segmentDisplay, QPixmap numericDisplay);
+    void insertRt(QPixmap segmentDisplay, QPixmap numericDisplay);
     RoundTimeDisplay* getRoundtimeDisplay();
 
     void clearRt();

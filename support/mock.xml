@@ -181,7 +181,7 @@ All Rights Reserved
 <openDialog id='quick-blank' location='quickBar' title='Blank'><dialogData id='quick-blank' clear='true'></dialogData></openDialog>
 <switchQuickBar id='quick-char'/>
 <app char="Legolas" game="DR" title="[DR: Legolas] StormFront"/>
-<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/><indicator id="IconSITTING" visible="n"/><indicator id="IconSTANDING" visible="y"/><indicator id="IconSTUNNED" visible="n"/><indicator id="IconHIDDEN" visible="n"/><indicator id="IconINVISIBLE" visible="n"/><indicator id="IconDEAD" visible="n"/><indicator id="IconWEBBED" visible="n"/><indicator id="IconJOINED" visible="y"/><spell>None</spell><left>Empty</left><right>Empty</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
+<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/><indicator id="IconSITTING" visible="n"/><indicator id="IconSTANDING" visible="y"/><indicator id="IconSTUNNED" visible="n"/><indicator id="IconHIDDEN" visible="n"/><indicator id="IconINVISIBLE" visible="n"/><indicator id="IconDEAD" visible="n"/><indicator id="IconWEBBED" visible="y"/><indicator id="IconJOINED" visible="y"/><spell>None</spell><left>Empty</left><right>Empty</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:
   a midnight-black herb pouch pinioned with blood-red iera flowers
   a jet black leather thigh quiver
   a tattered black cloak

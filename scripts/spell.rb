@@ -22,7 +22,7 @@ def spell_start e
   case result
     when :wait
       pause 0.5
-      Observer.instance.call_event "spell_start", e
+      spell_start e
     when :recover
       $recover_ts = Time.now
     when :no_spell

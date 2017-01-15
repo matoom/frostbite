@@ -21,9 +21,10 @@ public:
 
 private:
     static const int RT_SEGMENT_WIDTH = 30;
+    static const int RT_INTERVAL_MS = 200;
 
     MainWindow* mainWindow;
-    GameDataContainer* gameDataContainer;
+    GameDataContainer* data;
 
     int roundTime;
     int castTime;
@@ -38,6 +39,9 @@ private:
 
     QColor rtColor;
     QColor ctColor;
+
+    void initTimer();
+    int toSeconds(int ms);
 
 signals:
     void callPaint(int, int);

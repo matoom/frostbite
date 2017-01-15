@@ -2,10 +2,10 @@
 
 RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    gameDataContainer = GameDataContainer::Instance();
+    data = GameDataContainer::Instance();
 
     timer = new QTimer;
-    timer->setInterval(200);
+    timer->setInterval(RT_INTERVAL_MS);
 
     settings = new GeneralSettings();
 
@@ -28,38 +28,37 @@ void RoundTimeDisplay::reloadSettings() {
     ctColor = this->getCtColor();
 }
 
-void RoundTimeDisplay::setTimer(int ms) {
-    roundTime = ms;
-    gameDataContainer->setRt(roundTime / 1000);
-
+void RoundTimeDisplay::initTimer() {
     if(!timer->isActive()) {
         timer->start();
     } else {
         timer->stop();
         timer->start();
     }
+}
+
+void RoundTimeDisplay::setTimer(int ms) {
+    roundTime = ms;
+    data->setRt(toSeconds(ms));
+
+    this->initTimer();
     emit callPaint(roundTime, this->castTime);
 }
 
 void RoundTimeDisplay::setCastTimer(int ms) {
     castTime = ms;
-    gameDataContainer->setCt(castTime / 1000);
+    data->setCt(toSeconds(ms));
 
-    if(!timer->isActive()) {
-        timer->start();
-    } else {
-        timer->stop();
-        timer->start();
-    }
+    this->initTimer();
     emit callPaint(this->roundTime, castTime);
 }
 
-void RoundTimeDisplay::intervalEvent() {
-    roundTime -= 200;
-    castTime -= 200;
+void RoundTimeDisplay::intervalEvent() {    
+    roundTime -= RT_INTERVAL_MS;
+    castTime -= RT_INTERVAL_MS;
 
-    gameDataContainer->setRt(roundTime / 1000);
-    gameDataContainer->setCt(castTime / 1000);
+    data->setRt(toSeconds(roundTime));
+    data->setCt(toSeconds(castTime));
 
     if(roundTime < 1000 && castTime < 1000) timer->stop();
 
@@ -74,15 +73,12 @@ void RoundTimeDisplay::paint(int rt, int ct) {
     CommandLine* cmd = mainWindow->getCommandLine();
     if(rt < 1000 && ct < 1000) {
         cmd->clearRt();
-        return;
+    } else {
+        cmd->insertRt(segmentDisplay(toSeconds(rt), toSeconds(ct)), numericDisplay(rt));
     }
-    cmd->insertRtIndicator(segmentDisplay(rt, ct), numericDisplay(rt));
 }
 
 QPixmap RoundTimeDisplay::segmentDisplay(int rt, int ct) {
-    rt = rt / 1000;
-    ct = ct / 1000;
-
     int max = qMax(rt, ct);
     int min = qMin(rt, ct);
 
@@ -139,11 +135,16 @@ QPixmap RoundTimeDisplay::numericDisplay(int ms) {
 
         painter.setBrush(rtColor);
         painter.setPen(rtColor);
-
         painter.setFont(settings->gameWindowFont());
-        painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, QString::number(ms / 1000));
+
+        QString text = QString::number(toSeconds(ms));
+        painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, text);
     }
     return collage;
+}
+
+int RoundTimeDisplay::toSeconds(int ms) {
+    return ceil(ms / 1000);
 }
 
 QColor RoundTimeDisplay::getRtColor() {
