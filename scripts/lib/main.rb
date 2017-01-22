@@ -32,8 +32,6 @@ $_api_exec_state = :idle
 $_api_observer_started = false
 $_api_current_rt = 0
 
-@_api_comm_thread = Thread.new { ApiCommThread.new.run }
-
 $rt_adjust = 0
 
 # Sends a move command to client and
@@ -236,6 +234,7 @@ sleep Rt::value
 
 # run script here
 begin
+  @_api_comm_thread = Thread.new { ApiCommThread.new.run }
   Kernel.require @_file
 rescue Exception => e
   raise e
