@@ -2,7 +2,6 @@
     <qresource prefix="/window">
         <file>images/highlight.png</file>
         <file>images/color.png</file>
-        <file>images/keyboard.png</file>
         <file>images/connect.png</file>
         <file>images/disconnect.png</file>
         <file>images/edit.png</file>
@@ -14,5 +13,6 @@
         <file>images/loading.gif</file>
         <file>images/arrow_right.png</file>
         <file>images/alter.png</file>
+        <file>images/keyboard.png</file>
     </qresource>
 </RCC>

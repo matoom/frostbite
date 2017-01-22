@@ -26,6 +26,18 @@ MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDia
     connect(ui->sequenceTime, SIGNAL(textChanged(const QString&)),
             this, SLOT(sequenceTimeChanged(const QString&)));
 
+    ui->altTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->altTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    ui->ctrlTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->ctrlTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    ui->functionTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->functionTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
+    ui->keypadTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->keypadTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+
     ui->altTable->setFocus();
 }
 

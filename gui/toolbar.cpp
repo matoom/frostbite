@@ -131,7 +131,7 @@ void Toolbar::quickButtonAction() {
 }
 
 void Toolbar::updateActiveSpells(QStringList activeSpells) {
-    activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells), QString::number(activeSpells.count()));
+    activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells));
 
     QString text = "<table style='margin: 4px;'>";
     foreach(QString activeSpell, activeSpells) {
@@ -143,7 +143,7 @@ void Toolbar::updateActiveSpells(QStringList activeSpells) {
 }
 
 void Toolbar::clearActiveSpells() {
-    activeSpell->setText("-", "-");
+    activeSpell->setText("-");
     activeSpell->setToolTip("None");
 }
 

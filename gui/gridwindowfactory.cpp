@@ -32,9 +32,7 @@ QTableWidget* GridWindowFactory::tableBox(QString name) {
     gridWindow->setShowGrid(false);
     gridWindow->setColumnCount(1);
 
-    //TODO: clipping issue when fonts changed during runtime?
-    QHeaderView *verticalHeader = gridWindow->verticalHeader();
-    verticalHeader->setDefaultSectionSize(verticalHeader->fontMetrics().height() + 5);
+    //gridWindow->setStyleSheet("item { margin: -10px; padding: -10px: border: none; }");
 
     return (QTableWidget*)gridWindow;
 }

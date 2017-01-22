@@ -58,7 +58,7 @@ void AbstractTableTab::addNewTableRow() {
     int count = getTable()->rowCount();
     getTable()->insertRow(count);
 
-    AlterSettingsEntry entry(count, "", QStringList());
+    AlterSettingsEntry entry(count, true, "", QStringList());
     settingEntries.insert(count, entry);
 
     this->populateTableRow(count, entry);
@@ -110,7 +110,7 @@ void AbstractTableTab::displayMenu(QPoint pos) {
 
         QAction* allAction = menu.addAction(WINDOW_SELECT_ALL);
         allAction->setCheckable(true);
-        allAction->setChecked(all);
+        allAction->setChecked(all);        
 
         QAction* mainAction = menu.addAction(WINDOW_TITLE_MAIN);
         mainAction->setCheckable(true);
@@ -122,15 +122,22 @@ void AbstractTableTab::displayMenu(QPoint pos) {
             action->setChecked(!all && selected.contains(dock->objectName()));
         }
 
+        menu.addSeparator();
+
+        QAction* enabled = menu.addAction("Enabled");
+        enabled->setCheckable(true);
+        enabled->setChecked(entry.enabled);
+
         QAction *a = menu.exec(getTable()->viewport()->mapToGlobal(pos));
         if(a != NULL) {
-            if(a->isChecked()) {
-                entry.targetList.append(a->text());
-                settingEntries.replace(index.row(), entry);
+            if(a->text() == "Enabled") {
+                entry.enabled = a->isChecked();
+            } else if(a->isChecked()) {
+                entry.targetList.append(a->text());                
             } else {
                 entry.targetList.removeAll(a->text());
-                settingEntries.replace(index.row(), entry);
             }
+            settingEntries.replace(index.row(), entry);
             this->registerChange(index.row(), TableChangeEvent::Update);
         }
     }

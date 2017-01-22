@@ -8,6 +8,7 @@ GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
     this->loadSettings();
 
     connect(this, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(addRemoveTracked(int, int)));
+    connect(this->verticalHeader(), SIGNAL(sectionCountChanged(int, int)), this, SLOT(resize(int, int)));
 
     this->setFocusPolicy(Qt::NoFocus);
 }
@@ -21,6 +22,12 @@ void GridWindow::loadSettings() {
     QFont font = settings->dockWindowFont();
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
+}
+
+void GridWindow::resize(int, int) {
+    this->resizeRowsToContents();
+    int height = this->verticalHeader()->fontMetrics().height();
+    this->verticalHeader()->setDefaultSectionSize(height + 4);
 }
 
 QColor GridWindow::getBgColor() {

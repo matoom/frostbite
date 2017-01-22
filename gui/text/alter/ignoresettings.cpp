@@ -17,6 +17,7 @@ void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
         AlterSettingsEntry entry = entries.at(i);
 
         settings->setArrayIndex(i);
+        settings->setValue("enabled", entry.enabled);
         settings->setValue("pattern", entry.pattern);
         settings->setValue("target", entry.targetList);
     }
@@ -28,6 +29,7 @@ void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
 
     settings->beginWriteArray("ignore");
     settings->setArrayIndex(id);
+    settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
     settings->setValue("target", entry.targetList);
     settings->endArray();
@@ -38,6 +40,7 @@ void IgnoreSettings::setParameter(AlterSettingsEntry entry) {
 
     settings->beginWriteArray("ignore");
     settings->setArrayIndex(entry.id);
+    settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
     settings->setValue("target", entry.targetList);
     settings->endArray();
@@ -52,6 +55,7 @@ QList<AlterSettingsEntry> IgnoreSettings::getIgnores() {
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
         entries.append(AlterSettingsEntry((const int&)i,
+                (const bool&)settings->value("enabled", "").toBool(),
                 (const QString&)settings->value("pattern", "").toString(),
                 (const QStringList&)settings->value("target", QStringList()).value<QStringList>()));
     }

@@ -969,7 +969,7 @@ Troll has normal vitality.
 <pushStream id="percWindow"/>Gift of Life<popStream/><pushStream id="percWindow"/>  (11 roisaen)
 <popStream/><pushStream id="percWindow"/>Mental Focus<popStream/><pushStream id="percWindow"/>  (10 roisaen)
 <popStream/><pushStream id="percWindow"/>Regenerate<popStream/><pushStream id="percWindow"/>  (Indefinite)
-<popStream/><pushStream id="percWindow"/>Iron Constitution<popStream/><pushStream id="percWindow"/>  (8 roisaen)
+<popStream/><pushStream id="percWindow"/>Iron Constitution<popStream/><pushStream id="percWindow"/>  (20 roisaen)
 <popStream/><prompt time="1460671338">&gt;</prompt>
 
 <spell>None</spell>You gesture.

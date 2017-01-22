@@ -60,12 +60,14 @@ void AlterDialog::applyPressed() {
 void AlterDialog::okPressed() {
     substituteTab->saveChanges();
     ignoreTab->saveChanges();
+    ui->applyButton->setEnabled(false);
     this->accept();
 }
 
 void AlterDialog::cancelPressed() {
     substituteTab->cancelChanges();
     ignoreTab->cancelChanges();
+    ui->applyButton->setEnabled(false);
     this->reject();
 }
 

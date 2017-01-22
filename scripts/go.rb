@@ -18,8 +18,10 @@ moves = Map::path room[:zone], room[:id], $args.first.to_i
 echo moves
 
 moves.each do |m|
-  if m.start_with? "script" 
+  if m.start_with? "script "
     run m[7, m.length]
+  elsif m.start_with? "rt "
+    move m[3, m.length]
   else
     move m
   end

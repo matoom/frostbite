@@ -16,6 +16,7 @@ void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
         AlterSettingsEntry entry = entries.at(i);
 
         settings->setArrayIndex(i);
+        settings->setValue("enabled", entry.enabled);
         settings->setValue("pattern", entry.pattern);
         settings->setValue("substitute", entry.substitute);
         settings->setValue("target", entry.targetList);
@@ -28,6 +29,7 @@ void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
 
     settings->beginWriteArray("substitution");
     settings->setArrayIndex(id);
+    settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
     settings->setValue("substitute", entry.substitute);
     settings->setValue("target", entry.targetList);
@@ -39,6 +41,7 @@ void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
 
     settings->beginWriteArray("substitution");
     settings->setArrayIndex(entry.id);
+    settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
     settings->setValue("substitute", entry.substitute);
     settings->setValue("target", entry.targetList);
@@ -54,6 +57,7 @@ QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
         entries.append(AlterSettingsEntry((const int&)i,
+                (const bool&)settings->value("enabled", "").toBool(),
                 (const QString&)settings->value("pattern", "").toString(),
                 (const QString&)settings->value("substitute", "").toString(),
                 (const QStringList&)settings->value("target", QStringList()).value<QStringList>()));

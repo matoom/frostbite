@@ -431,7 +431,11 @@ void WindowFacade::writeExpWindow(GridItems items) {
     QTableWidget* table = ((QTableWidget*)expWindow->widget());
     GridWindow* window = ((GridWindow*)expWindow->widget());
 
-    table->setRowCount(items.size());
+    int size = items.size();
+    table->setRowCount(size);
+
+    QString title = QStringLiteral(DOCK_TITLE_EXP) + " (" + QString::number(size) + ")";
+    expWindow->setWindowTitle(title);
 
     int i = 0;
     foreach(QString key, items.keys()) {        
@@ -449,15 +453,16 @@ void WindowFacade::writeExpWindow(GridItems items) {
         if(item != NULL) {
             item->setText(text);
             item->setObjectName(key);
+            //item->setAlignment(Qt::AlignTop);
             window->track(key, item);
         } else {
             QLabel* label = window->gridValueLabel(table, generalSettings, key);
             label->setText(text);
             table->setCellWidget(i++, 0, label);            
             window->track(key, label);
-        }        
+        }
         i++;
-    }
+    }    
 }
 
 void WindowFacade::updateMapWindow(QString hash) {

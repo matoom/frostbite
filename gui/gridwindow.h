@@ -37,6 +37,8 @@ public slots:
     void updateSettings();
     void track(QString skillName);
     void clearTracked();
+    void resize(int, int);
+
 };
 
 #endif // EXPWINDOW_H

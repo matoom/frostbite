@@ -2,11 +2,9 @@
 # requirements: ?
 # run: climbing available
 
-@ordinal_numbers = ["first", "second", "third", "fourth", "fifth",
-                    "sixth", "seventh", "eighth", "ninth", "tenth",
-                    "eleventh", "twelfth", "thirteenth", "fourteenth",
-                    "fifteenth", "sixteenth"]
-@song_type = "fantasia"
+@ordinal_numbers = %w(first second third fourth fifth sixth seventh eighth ninth tenth
+                      eleventh twelfth thirteenth fourteenth fifteenth sixteenth)
+@song_type = "rondo"
 @obj = $args.join(" ")
 
 def finally_do
@@ -25,12 +23,10 @@ put "get bones"
   put "play #{@song_type} on my bones"
 
   wait
-  count = Room::count_objects(@obj)
-  put "climb practice #{@ordinal_numbers[count]} #{@obj}"
+  put "climb practice #{@ordinal_numbers[Room::count_objects(@obj)]} #{@obj}"
 
   6.times do
     pause 20
-
     if Exp::state("Athletics") > 32
       echo "*** Finished! ***"
       exit
