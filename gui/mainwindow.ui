@@ -444,6 +444,9 @@ QTabBar {
    <property name="text">
     <string>Alter text</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
