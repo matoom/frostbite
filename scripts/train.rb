@@ -15,7 +15,7 @@ end
 echo "Training plan - #{@plan.inspect}"
 
 def reset
-  sleep Rt::value
+  pause_rt
   until Status::standing
     put_wait "stand", /You stand|already standing/
     pause

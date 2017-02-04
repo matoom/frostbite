@@ -14,7 +14,9 @@ class Target
   end
 
   def self.find
-    Room::monsters_bold.each do |m|
+    monsters = Room::monsters_bold
+    return nil if Room::count_objects("trying to remain hidden") >= monsters.size
+    monsters.each do |m|
       return m.split(' ').last unless @filter.all? { |e| m.include?(e) }
     end
     return nil

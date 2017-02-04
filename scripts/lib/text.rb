@@ -8,13 +8,11 @@
 def wait_for_roundtime
   $_api_exec_state = :wait_for_roundtime
   (0..1000000).each do
-    line = api_sync_read
-    if line
-      if line.match(/Roundtime/)
-        $_api_exec_state = :idle
-        api_sleep line[/\d+/].to_i + $rt_adjust
+    line = API::sync_read
+    if line and line.match(/Roundtime/)
+        $_api_exec_state = :none
+        API::sleep_rt line[/\d+/].to_i + $rt_adjust
         return
-      end
     end
     sleep 0.01
   end
@@ -31,12 +29,10 @@ def wait_for(pattern)
   end
 
   (0..1000000).each do
-    line = api_sync_read
-    if line
-      if line.match(pattern)
-        $_api_exec_state = :idle
+    line = API::sync_read
+    if line and line.match(pattern)
+        $_api_exec_state = :none
         return
-      end
     end
     sleep 0.01
   end
@@ -152,17 +148,17 @@ end
 
 # @private
 def validate_get_m pattern
-  unless pattern.has_key?(ApiSettings::MATCH_END_KEY)
+  unless pattern.has_key?(API::MATCH_END_KEY)
     raise "MatchError: match pattern does not" +
-              "contain '#{ApiSettings::MATCH_END_KEY}' end condition."
+              "contain '#{API::MATCH_END_KEY}' end condition."
   end
   pattern
 end
 
 # @private
 def api_match_start pattern
-  if pattern.has_key?(ApiSettings::MATCH_START_KEY)
-    wait_for(pattern[ApiSettings::MATCH_START_KEY]);
+  if pattern.has_key?(API::MATCH_START_KEY)
+    wait_for(pattern[API::MATCH_START_KEY]);
   end
 end
 
@@ -171,23 +167,15 @@ def api_get_match pattern, match
   api_match_start pattern
 
   match_found, rt = false, 0
-
   (0..1000000).each do
-    line = api_sync_read
+    line = API::sync_read
     if line
-      unless match_found
-        match_found = api_match match, line, pattern
-      end
-
+      match_found = api_match(match, line, pattern) unless match_found
       rt += api_read_rt line
-
-      if match_found
-        $_api_exec_state = :idle
-
-        if />/ =~ line
-          api_sleep rt
-          return match
-        end
+      if match_found and />/ =~ line
+        $_api_exec_state = :none
+        API::sleep_rt rt
+        return match
       end
     end
     sleep 0.01
@@ -200,8 +188,8 @@ def api_match match, line, pattern
     value.each do |m|
       if line.match(m)
         match[key] << line
-        return pattern.has_key?(ApiSettings::MATCH_END_KEY) ?
-            key == ApiSettings::MATCH_END_KEY : true
+        return pattern.has_key?(API::MATCH_END_KEY) ?
+            key == API::MATCH_END_KEY : true
       end
     end
   end

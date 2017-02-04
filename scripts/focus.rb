@@ -1,8 +1,9 @@
 Observer.instance.register_event({ :exit => ["already under the effects", "you think that you've grasped"] })
 
 def exit
-  pause_for_roundtime
-  Kernel::exit
+  Observer::sync_rt {
+    Kernel::exit
+  }
 end
 
 subject = $args.join(" ")

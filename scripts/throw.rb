@@ -1,10 +1,8 @@
 @arrange_count = 5
-@weapon = "mallet"
-
-@target = $args.join(" ")
+@weapon = $args.join(" ")
 
 def finally_do
-  pause_for_roundtime
+  pause_rt
   put "stow #{@weapon}"
 end
 
@@ -68,14 +66,14 @@ def loot
   end
 end
 
-def throw target
-  put "throw #{target}"
+def lob target
+  put "lob #{target}"
   match = { :wait => [/\.\.\.wait|entangled in a web/],
             :stunned => [/still stunned/],
             :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
                       "ceases all movement", "collapses into a massive heap","massive heap before",
                       "sharp halt", "crumbles", "life force fades away"],
-            :wait_for => ["trying to throw"],
+            :wait_for => ["trying to lob"],
             :continue => ["Roundtime"] }
 
   case match_wait match
@@ -94,5 +92,5 @@ end
 get_weapon
 
 1000.times do
-  throw @target
+  lob @target
 end

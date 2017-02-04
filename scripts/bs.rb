@@ -46,7 +46,7 @@ label(:hide) {
 
 label(:stop_stalk) {
   put "stop stalk"
-  pause_for_roundtime
+  pause_rt
   goto :feint
 }
 
@@ -55,7 +55,7 @@ label(:feint) {
   match = { :dead => COMBAT::MATCH_DEAD,
             :advance => ["would help if you were closer", "aren't close enough"],
             :hide => ["Roundtime", "hidden to backstab"],
-            :start => ["You can't backstab that."],
+            :start => ["You can't backstab that.", "Backstab what?"],
             :wait => [/\.\.\.wait/]}
   go_wait(match_wait(match), :feint)
 }

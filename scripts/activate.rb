@@ -1,18 +1,23 @@
 @recover = 30
 $recover_ts = -1
 
-def spell_activate verb, spells
+def activate verb, spells
   return if $recover_ts.to_i > -1 && Time.now - $recover_ts < @recover
   spells.each do |spell|
     unless Spell::active.any? { |s| /#{verb} #{spell}/i =~ s}
-      Observer.instance.call_event "spell_start", spell
+      Observer.instance.call_event "activate_event", "#{verb} start #{spell}"
     end
   end
 end
 
-def spell_start e
-  pause Rt::value
-  put "khri start #{e}"
+def activate_event e
+  Observer::sync_rt {
+    activate_sync e
+  }
+end
+
+def activate_sync e
+  put "#{e}"
   match = { :wait => [/\.\.wait/],
             :no_spell => ["rephrase that command"],
             :recover => ["not recovered"],
@@ -22,7 +27,7 @@ def spell_start e
   case result
     when :wait
       pause 0.5
-      spell_start e
+      activate_sync e
     when :recover
       $recover_ts = Time.now
     when :no_spell

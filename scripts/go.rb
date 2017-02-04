@@ -1,5 +1,5 @@
-def run script
-  if script.eql? "sandspit"
+def script name
+  if name.eql? "sandspit"
     put "go barrel"
     match = { :ok => [/You duck quietly/],
               :second => [/can't do that/] }
@@ -11,6 +11,20 @@ def run script
   end
 end
 
+def search_and_move m
+  put "search"
+  match = { :go => ["You search"],
+            :wait => [/\.\.\.wait/] }
+  result = match_wait match
+  case result
+    when :wait
+      pause 0.5
+      search_and_move m
+    when :go
+      move m
+  end
+end
+
 room = Map::current_room
 echo room
 
@@ -19,9 +33,11 @@ echo moves
 
 moves.each do |m|
   if m.start_with? "script "
-    run m[7, m.length]
+    script m[7, m.length]
   elsif m.start_with? "rt "
     move m[3, m.length]
+  elsif m.start_with? "search "
+    search_and_move m[7, m.length]
   else
     move m
   end

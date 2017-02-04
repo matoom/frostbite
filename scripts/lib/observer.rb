@@ -4,33 +4,28 @@ class Observer
   include Singleton
 
   # @private
-  @@api_observer_thread = []
-  # @private
-  @@events = []
-  # @private
-  @@terminated = false
-  # @private
-  @@interrupted = false
-
-  # @private
   def initialize
+    @api_observer_thread = []
+    @events = []
+    @terminated = false
+    @interrupted = false
     init
   end
 
   # @private
   def init
-    @@terminated = false
+    @terminated = false
 
-    @@api_observer_thread = Thread.new(@@events) { |events|
+    @api_observer_thread = Thread.new(@events) { |events|
       $_api_observer_started = true
-      until @@terminated
+      until @terminated
         if events.size > 0
           while text = sync_read
             return unless text
             events.each do |event|
               event.each_pair do |k, v|
                 if text.match(v)
-                  pause 0.1 while @@interrupted
+                  pause 0.1 while @interrupted
                   observer_event k, text
                 end
               end
@@ -49,7 +44,7 @@ class Observer
   # @return [void]
   def call_event(event, text)
     t = Thread.new do
-      pause 0.1 while @@interrupted
+      pause 0.1 while @interrupted
       observer_event event, text
     end
     t.join
@@ -71,7 +66,7 @@ class Observer
         event[k] = Regexp.new(v.join('|'))
       end
     }
-    @@events << event
+    @events << event
   end
 
   # Terminate the observer execution
@@ -81,7 +76,20 @@ class Observer
   #   Observer.instance.terminate
   #
   def terminate
-    @@terminated = true
+    @terminated = true
+  end
+
+  # Synchronize round times with main
+  # thread / pause for the duration of
+  # round time before calling the block
+  #
+  # @param [hash] block block reference
+  # @return [void]
+  # @example synchronize round times
+  #   Observer::sync_rt { echo "ready" }
+  def self.sync_rt(&block)
+    pause_rt
+    block.call
   end
 
   # @private
@@ -92,20 +100,31 @@ class Observer
   end
 
   # @private
+  # measure "block" execute time and
+  # register as api interrupt
+  def sync_main(&block)
+    interrupt_start = Time.now
+    block.call
+    $_api_interrupt_time = (Time.now - interrupt_start).floor
+  end
+
+  # @private
+  # register software interrupt "INT" and
+  # call event method for the duration of the interrupt, always
+  # waits until all matching functions are finished working
+  # before calling the interrupt
   def observer_event(method_name, text)
-    @@interrupted = true
+    @interrupted = true
     Signal.trap("INT") do
-      t = Thread.new {
-        start_time = Time.now
-        call_method method_name, text
-        $_api_interrupt_time = (Time.now - start_time).floor
-        @@interrupted = false
+      interrupt = Thread.new {
+        sync_main { call_method method_name, text }
+        @interrupted = false
       }
-      t.join
+      interrupt.join
     end
 
     pid = Process.pid
-    sleep 0.1 while $_api_exec_state != :idle
+    sleep 0.1 while $_api_exec_state != :none
 
     Process.detach(pid)
     Process.kill("INT", pid)
@@ -120,6 +139,6 @@ class Observer
     end
   end
 
-  private :init, :sync_read, :observer_event, :call_method
+  private :init, :sync_read, :observer_event, :call_method, :sync_main
 
 end

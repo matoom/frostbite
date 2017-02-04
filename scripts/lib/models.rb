@@ -449,7 +449,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect_prime(name, user, pass)
-    Client.connect(ApiSettings::AUTH_GAMES[:prime], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:prime], name, user, pass)
   end
 
   # Connect test
@@ -458,7 +458,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect_test(name, user, pass)
-    Client.connect(ApiSettings::AUTH_GAMES[:test], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:test], name, user, pass)
   end
 
   # Connect fallen
@@ -467,7 +467,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect_fallen(name, user, pass)
-    Client.connect(ApiSettings::AUTH_GAMES[:fallen], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:fallen], name, user, pass)
   end
 
   # Connect plat
@@ -476,7 +476,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect_plat(name, user, pass)
-    Client.connect(ApiSettings::AUTH_GAMES[:plat], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:plat], name, user, pass)
   end
 
   # Connect game
@@ -486,7 +486,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect(game, name, user, pass)
-    Client.connect_host(ApiSettings::AUTH_HOST, ApiSettings::AUTH_PORT, game, name, user, pass)
+    Client.connect_host(API::AUTH_HOST, API::AUTH_PORT, game, name, user, pass)
   end
 
   # Connect host

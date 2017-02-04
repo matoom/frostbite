@@ -3,7 +3,7 @@
 # run: anywhere
 
 def finally_do
-  pause_for_roundtime
+  pause_rt
   put "put my compendium in my shroud"
 end
 

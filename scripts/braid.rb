@@ -19,7 +19,7 @@ end
 # executed in the end of the script
 # or if script is aborted by the user
 def finally_do
-  pause_for_roundtime
+  pause_rt
 
   right = Wield::right_noun
   unless right.empty?

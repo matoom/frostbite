@@ -46,7 +46,7 @@ label(:hide) {
 
 label(:stop_stalk) {
   put "stop stalk"
-  pause_for_roundtime
+  pause_rt
   goto :feint
 }
 

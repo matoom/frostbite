@@ -2,7 +2,7 @@
 
 require "target"
 require "hunt"
-require "spell"
+require "activate"
 
 Target::auto "*** analyze what? usage: .anal &lt;critter_name&gt; ***"
 
@@ -14,7 +14,7 @@ end
 
 Thread.new do
   while true
-    spell_activate "khri", ["sagacity"]
+    activate "khri", ["sagacity"]
     sleep 15
   end
 end

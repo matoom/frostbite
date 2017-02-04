@@ -20,7 +20,7 @@ def attack
       wait_for(/begins to advance on you|closes to melee range/)
     when :adv
       put "advance"
-      pause 2
+      pause 6
     when :pause
       pause 3
   end

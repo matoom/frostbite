@@ -1,5 +1,5 @@
 def finally_do
-  pause_for_roundtime
+  pause_rt
   stow_knife
 
   left = Wield::left_noun

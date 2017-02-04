@@ -6,7 +6,7 @@
 require "target"
 require "hunt"
 require "lx_perf"
-require "spell"
+require "activate"
 
 @ammo = "bolt"
 @circle_count = 1
@@ -15,7 +15,7 @@ Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 Thread.new do
   while true
-    spell_activate "khri", ["sagacity"]
+    activate "khri", ["sagacity"]
     sleep 15
   end
 end

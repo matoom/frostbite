@@ -54,13 +54,16 @@ void RoundTimeDisplay::setCastTimer(int ms) {
 }
 
 void RoundTimeDisplay::intervalEvent() {    
-    roundTime -= RT_INTERVAL_MS;
-    castTime -= RT_INTERVAL_MS;
+    roundTime = roundTime - RT_INTERVAL_MS;
+    castTime = castTime - RT_INTERVAL_MS;
 
     data->setRt(toSeconds(roundTime));
     data->setCt(toSeconds(castTime));
 
-    if(roundTime < 1000 && castTime < 1000) timer->stop();
+    if(roundTime < RT_INTERVAL_MS &&
+            castTime < RT_INTERVAL_MS) {
+        timer->stop();
+    }
 
     emit callPaint(roundTime, castTime);
 }
@@ -71,10 +74,13 @@ void RoundTimeDisplay::repaint() {
 
 void RoundTimeDisplay::paint(int rt, int ct) {
     CommandLine* cmd = mainWindow->getCommandLine();
-    if(rt < 1000 && ct < 1000) {
+    if(rt < RT_INTERVAL_MS && ct < RT_INTERVAL_MS) {
         cmd->clearRt();
     } else {
-        cmd->insertRt(segmentDisplay(toSeconds(rt), toSeconds(ct)), numericDisplay(rt));
+        int rt_s = toSeconds(rt);
+        int ct_s = toSeconds(ct);
+        cmd->insertRt(segmentDisplay(rt_s, ct_s),
+                      numericDisplay(rt_s));
     }
 }
 
@@ -123,11 +129,11 @@ QPixmap RoundTimeDisplay::segmentDisplay(int rt, int ct) {
     return collage;
 }
 
-QPixmap RoundTimeDisplay::numericDisplay(int ms) {
+QPixmap RoundTimeDisplay::numericDisplay(int rt) {
     QPixmap collage(40, 40);
     collage.fill(Qt::transparent);
 
-    if(ms < 1000) return collage;
+    if(rt < 0) return collage;
 
     QPainter painter(&collage);
     if(painter.isActive()) {
@@ -137,14 +143,14 @@ QPixmap RoundTimeDisplay::numericDisplay(int ms) {
         painter.setPen(rtColor);
         painter.setFont(settings->gameWindowFont());
 
-        QString text = QString::number(toSeconds(ms));
+        QString text = QString::number(rt);
         painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, text);
     }
     return collage;
 }
 
 int RoundTimeDisplay::toSeconds(int ms) {
-    return ceil(ms / 1000);
+    return ceil((double)ms / 1000);
 }
 
 QColor RoundTimeDisplay::getRtColor() {
