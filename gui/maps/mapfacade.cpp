@@ -16,7 +16,8 @@ void MapFacade::init() {
     mapSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "Select");
     levelSelect = mapWindow->findChild<QComboBox*>(QString(DOCK_TITLE_MAP) + "LevelSelect");
     mapIdLabel = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "IdLabel");
-    mapView = mapWindow->findChild<MapWindow*>(QString(DOCK_TITLE_MAP)+ "View");
+    zoomLabel = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "ZoomLabel");
+    mapView = mapWindow->findChild<MapWindow*>(QString(DOCK_TITLE_MAP)+ "View");    
 
     connect(mapView, SIGNAL(updateMapWindow(QString)),
             this, SLOT(updateMapWindow(QString)));
@@ -130,6 +131,10 @@ void MapFacade::selectNode(QWidget* widget, QString zoneId, int level, int nodeI
 
         mapDialog->setInfo(node);
     }
+}
+
+void MapFacade::setZoom(QString zoomLevel) {
+    this->zoomLabel->setText(zoomLevel);
 }
 
 void MapFacade::selectNode(QString zoneId, int level, int nodeId) {

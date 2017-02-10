@@ -13,22 +13,27 @@ MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
     this->buildContextMenu();        
 }
 
-void MapWindow::scaleView(qreal scaleFactor) {
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.5 || factor > 25) return;
-    scale(scaleFactor, scaleFactor);
+void MapWindow::scaleView(qreal step) {
+    qreal scale = transform().scale(1, 1).mapRect(QRectF(0, 0, 1, 1)).width();
+
+    if ((step < 0 && scale <= 0.5) || (step > 0 && scale >= 5)) return;
+
+    qreal scaleFactor = (scale + step) / (qreal)scale;
+
+    this->scale(scaleFactor, scaleFactor);
+    mapFacade->setZoom(QString::number(scale * scaleFactor) + "x");
 }
 
 void MapWindow::wheelEvent(QWheelEvent* event) {
-    scaleView(pow((double)2, event->delta() / 240.0));
+    scaleView(event->delta() / qFabs(event->delta() * 2));
 }
 
 void MapWindow::zoomIn() {
-    scaleView(pow((double)2, 1 / 2.4));
+    scaleView(0.5);
 }
 
 void MapWindow::zoomOut() {
-    scaleView(pow((double)2, -1 / 2.4));
+    scaleView(-0.5);
 }
 
 void MapWindow::reset() {

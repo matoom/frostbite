@@ -50,6 +50,7 @@ QStringList MapData::getDirections(QHash<int, MapNode*>& nodes, int startId, int
     QQueue<MapNode*> queue;
 
     visited.insert(startId, true);
+
     queue.push_back(nodes.value(startId));
 
     QHash<MapNode*, MapNode*> prev;
@@ -70,9 +71,11 @@ QStringList MapData::getDirections(QHash<int, MapNode*>& nodes, int startId, int
             if(!visited.value(destId) && destId != -1) {
                 visited.insert(destId, true);
 
-                MapNode* destNode = nodes.value(destId);
-                queue.push_back(destNode);
-                prev.insert(destNode, currentNode);
+                MapNode* destNode = nodes.value(destId);                                                
+                if(destNode != NULL) {
+                    queue.push_back(destNode);
+                    prev.insert(destNode, currentNode);
+                }
             }
         }
     }

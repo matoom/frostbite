@@ -22,12 +22,13 @@ public:
 
 private:    
     QGraphicsView* getView(QString name);
-    QComboBox* getLevelSelect(QWidget* parent, QString name);
-    QComboBox* getMapSelect(QWidget* parent, QString name);
-    QLabel* getMapIdLabel(QWidget* parent, QString name);
-    QPushButton* getResetButton(QWidget* parent, QString name);
-    QPushButton* getZoomInButton(QWidget* parent, QString name);
-    QPushButton* getZoomOutButton(QWidget* parent, QString name);
+    QComboBox* createLevelSelect(QWidget* parent, QString name);
+    QComboBox* createMapSelect(QWidget* parent, QString name);
+    QLabel* createMapIdLabel(QWidget* parent, QString name);
+    QLabel* createZoomLabel(QWidget* parent, QString name);
+    QPushButton* createResetButton(QWidget* parent, QString name);
+    QPushButton* createZoomInButton(QWidget* parent, QString name);
+    QPushButton* createZoomOutButton(QWidget* parent, QString name);
 
     MapFacade* mapFacade;
     MapWindow* mapWindow;

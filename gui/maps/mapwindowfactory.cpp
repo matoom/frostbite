@@ -5,7 +5,7 @@ MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
     mapWindow = new MapWindow(mapFacade);
 }
 
-QPushButton* MapWindowFactory::getResetButton(QWidget* parent, QString name) {
+QPushButton* MapWindowFactory::createResetButton(QWidget* parent, QString name) {
     QPushButton* button = new QPushButton(parent);
     button->setObjectName(name + "Reset");
     button->setMaximumWidth(15);
@@ -21,7 +21,7 @@ QPushButton* MapWindowFactory::getResetButton(QWidget* parent, QString name) {
 }
 
 
-QPushButton* MapWindowFactory::getZoomInButton(QWidget* parent, QString name) {
+QPushButton* MapWindowFactory::createZoomInButton(QWidget* parent, QString name) {
     QPushButton* button = new QPushButton(parent);
     button->setObjectName(name + "ZoomIn");
     button->setMaximumWidth(15);
@@ -36,7 +36,7 @@ QPushButton* MapWindowFactory::getZoomInButton(QWidget* parent, QString name) {
     return button;
 }
 
-QPushButton* MapWindowFactory::getZoomOutButton(QWidget* parent, QString name) {
+QPushButton* MapWindowFactory::createZoomOutButton(QWidget* parent, QString name) {
     QPushButton* button = new QPushButton(parent);
     button->setObjectName(name + "ZoomOut");
     button->setMaximumWidth(15);
@@ -51,7 +51,7 @@ QPushButton* MapWindowFactory::getZoomOutButton(QWidget* parent, QString name) {
     return button;
 }
 
-QComboBox* MapWindowFactory::getLevelSelect(QWidget* parent, QString name) {
+QComboBox* MapWindowFactory::createLevelSelect(QWidget* parent, QString name) {
    QComboBox* combo = new QComboBox(parent);
    combo->setObjectName(name + "LevelSelect");
    combo->setDisabled(true);
@@ -62,7 +62,7 @@ QComboBox* MapWindowFactory::getLevelSelect(QWidget* parent, QString name) {
    return combo;
 }
 
-QComboBox* MapWindowFactory::getMapSelect(QWidget* parent, QString name) {
+QComboBox* MapWindowFactory::createMapSelect(QWidget* parent, QString name) {
    QComboBox* combo = new QComboBox(parent);
    combo->setObjectName(name + "Select");
    combo->setDisabled(true);
@@ -71,12 +71,20 @@ QComboBox* MapWindowFactory::getMapSelect(QWidget* parent, QString name) {
    return combo;
 }
 
-QLabel* MapWindowFactory::getMapIdLabel(QWidget* parent, QString name) {
+QLabel* MapWindowFactory::createMapIdLabel(QWidget* parent, QString name) {
    QLabel* label = new QLabel(parent);
    label->setObjectName(name + "IdLabel");   
    label->setText("-");
    label->setToolTip("Room id");
    return label;
+}
+
+QLabel* MapWindowFactory::createZoomLabel(QWidget* parent, QString name) {
+    QLabel* label = new QLabel(parent);
+    label->setObjectName(name + "ZoomLabel");
+    label->setText("1x");
+    label->setToolTip("Zoom level");
+    return label;
 }
 
 QGraphicsView* MapWindowFactory::getView(QString name) {
@@ -93,13 +101,14 @@ QDockWidget* MapWindowFactory::createWindow(const char* name) {
     QWidget* controls = new QWidget(dock);
     QHBoxLayout *hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
-    hLayout->addWidget(getMapSelect(controls, name));
-    hLayout->addWidget(getLevelSelect(controls, name));
-    hLayout->addWidget(getMapIdLabel(controls, name));
-    hLayout->addStretch();
-    hLayout->addWidget(getResetButton(controls, name));
-    hLayout->addWidget(getZoomOutButton(controls, name));
-    hLayout->addWidget(getZoomInButton(controls, name));
+    hLayout->addWidget(createMapSelect(controls, name));
+    hLayout->addWidget(createLevelSelect(controls, name));
+    hLayout->addWidget(createMapIdLabel(controls, name));
+    hLayout->addStretch();        
+    hLayout->addWidget(createZoomLabel(controls, name));
+    hLayout->addWidget(createResetButton(controls, name));
+    hLayout->addWidget(createZoomOutButton(controls, name));
+    hLayout->addWidget(createZoomInButton(controls, name));
     controls->setLayout(hLayout);
 
     QWidget* mapWindow = new QWidget(dock);

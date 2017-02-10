@@ -14,20 +14,29 @@ MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), u
     ui->mapView->scale(1.0, 1.0);
 
     ui->mapView->setObjectName("DialogMapView");
+
+    if (parent != NULL) {
+        resize(parent->width() * 0.6, parent->height() * 0.6);
+    }
 }
 
-void MapDialog::scaleView(qreal scaleFactor) {
-    qreal factor = ui->mapView->transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.5 || factor > 25) return;
+void MapDialog::scaleView(qreal step) {
+    qreal scale = ui->mapView->transform().scale(1, 1).mapRect(QRectF(0, 0, 1, 1)).width();
+
+    if ((step < 0 && scale <= 0.5) || (step > 0 && scale >= 5)) return;
+
+    qreal scaleFactor = (scale + step) / (qreal)scale;
+
     ui->mapView->scale(scaleFactor, scaleFactor);
+    ui->zoomLabel->setText(QString::number(scale * scaleFactor) + "x");
 }
 
 void MapDialog::zoomIn() {
-    scaleView(pow((double)2, 1 / 2.4));
+    scaleView(0.5);
 }
 
 void MapDialog::zoomOut() {
-    scaleView(pow((double)2, -1 / 2.4));
+    scaleView(-0.5);
 }
 
 void MapDialog::populate() {

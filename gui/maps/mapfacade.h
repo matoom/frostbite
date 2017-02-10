@@ -40,6 +40,7 @@ private:
     QComboBox* mapSelect;
     QComboBox* levelSelect;
     QLabel* mapIdLabel;
+    QLabel* zoomLabel;
     MapWindow* mapView;
 
     MapData* mapData;
@@ -63,6 +64,7 @@ public slots:
     void selectNode(QString zoneId, int level, int nodeId);
     void updateMapWindow(QString hash);
     void showMapDialog();
+    void setZoom(QString zoomLevel);
 
 };
 

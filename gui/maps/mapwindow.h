@@ -21,7 +21,7 @@ private:
     void wheelEvent(QWheelEvent* zoomEvent);
     void contextMenuEvent(QContextMenuEvent* event);
 
-    void scaleView(qreal scaleFactor);        
+    void scaleView(qreal);
     void buildContextMenu();
 
     MapFacade* mapFacade;

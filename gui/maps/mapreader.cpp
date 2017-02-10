@@ -93,8 +93,7 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
             QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
             scene->setObjectName(zone->getId());
             scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
-                           QString::number(levels.size() - 1) + ")", labelsFont);
-
+                           QString::number(levels.size() - 1) + ")", labelsFont);                        
             QGraphicsEllipseItem* selected = scene->addEllipse(0, 0, 12, 12,  QColor("red"));
             selected->hide();
 

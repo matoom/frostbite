@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MapDialog</class>
  <widget class="QDialog" name="MapDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>407</width>
+    <height>357</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Maps</string>
   </property>
@@ -113,6 +121,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="zoomLabel">
+         <property name="text">
+          <string>1x</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="zoomOut">
