@@ -47,9 +47,13 @@ private:
 
     MapDialog* mapDialog;
 
+    GeneralSettings* settings;
+
     void moveSelected(QString zoneId, int nodeId, int level);
     void populateLevels(QString zoneId, int level = 0);
     void setSelected(QString zoneId, int level = 0);
+
+    void setNotFoundMessage();
 
 signals:    
     void nodeSelected(MapZone* zone, int nodeId);
@@ -65,7 +69,7 @@ public slots:
     void updateMapWindow(QString hash);
     void showMapDialog();
     void setZoom(QString zoomLevel);
-
+    void updateMapColors(QColor background);
 };
 
 #endif // MAPFACADE_H

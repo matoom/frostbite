@@ -4,6 +4,9 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     mapFacade = (MapFacade*)parent;
     initialized = false;
 
+    settings = new GeneralSettings();
+    background = settings->dockWindowBackground();
+
     QtConcurrent::run(this, &MapReader::init);
 
     mapData = new MapData(this);
@@ -13,6 +16,10 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     connect(this, SIGNAL(readyRead()), this, SLOT(initScenes()));
 
     labelsFont = QFont(DEFAULT_FONT, MAP_FONT_SIZE);
+
+    QHash<int, MapGraphics> empty;
+    empty.insert(0, {new QGraphicsScene(0, 0, 0, 0, this), NULL});
+    this->scenes.insert("", empty);
 }
 
 void MapReader::init() {    
@@ -27,6 +34,15 @@ void MapReader::init() {
     }
 
     emit readyRead();
+}
+
+QColor MapReader::getTextColor(QColor background) {
+    if(background == Qt::white) return QColor(Qt::black);
+    return QColor(background.rgba()^0xffffff);
+}
+
+QColor MapReader::getLineColor() {
+    return QColor(Qt::darkGray);
 }
 
 QDir MapReader::getDir() {
@@ -92,8 +108,11 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
     foreach(int level, levels) {
             QGraphicsScene* scene = new QGraphicsScene(0, 0, w, h, mapFacade);
             scene->setObjectName(zone->getId());
-            scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
-                           QString::number(levels.size() - 1) + ")", labelsFont);                        
+            QGraphicsTextItem* text = scene->addText(zone->getName() + " (" + QString::number(level) + "/" +
+                           QString::number(levels.size() - 1) + ")", labelsFont);
+            text->setDefaultTextColor(getTextColor(settings->dockWindowBackground()));
+            text->setData(Qt::UserRole, "text");
+
             QGraphicsEllipseItem* selected = scene->addEllipse(0, 0, 12, 12,  QColor("red"));
             selected->hide();
 
@@ -114,11 +133,12 @@ void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
             if(!dest->getHidden()) {
                 MapNode* destNode = zone->getNodes().value(dest->getDestId());
                 if(destNode != NULL) {
-                    scene->addLine(node->getPosition()->getX() + abs(zone->getXMin()) + 2,
+                    QGraphicsLineItem* line = scene->addLine(node->getPosition()->getX() + abs(zone->getXMin()) + 2,
                                    node->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
                                    destNode->getPosition()->getX() + abs(zone->getXMin()) + 2,
                                    destNode->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
-                                   QColor(Qt::darkGray));
+                                   getLineColor());
+                    line->setData(Qt::UserRole, "line");
                 }
             }
         }
@@ -131,6 +151,8 @@ void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
         QGraphicsTextItem* textItem = scene->addText(label->getText(), labelsFont);
         textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
                          label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
+        textItem->setDefaultTextColor(getTextColor(background));
+        textItem->setData(Qt::UserRole, "text");
     }
 }
 
@@ -148,8 +170,9 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
         MapRect* item = new MapRect(node->getPosition()->getX() + abs(zone->getXMin()),
                                     node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN,
                                     4, 4,
-                                    QColor(Qt::darkGray), color);
+                                    getLineColor(), color);
 
+        item->setData(Qt::UserRole, "rect");
         item->setZoneId(zone->getId());
         item->setNodeId(node->getId());
         item->setLevel(node->getPosition()->getZ());
@@ -305,4 +328,3 @@ void MapReader::roomToHash() {
 bool MapReader::isInRange(int n) {
     return n < 4000 && n > -4000;
 }
-

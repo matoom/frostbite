@@ -92,12 +92,10 @@ void MenuHandler::menuHovered(QAction* action) {
 
 void MenuHandler::profileTriggered(QAction* action) {
     if(action->isChecked()) {
-        clientSettings->setParameter("Profile/name", action->text());
+        mainWindow->updateProfileSettings(action->text());
     } else {
-        clientSettings->setParameter("Profile/name", "");
-    }
-    mainWindow->updateProfileSettings();
-
+        mainWindow->updateProfileSettings("");
+    }    
     this->loadProfilesMenu();
 }
 

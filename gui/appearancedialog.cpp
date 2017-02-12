@@ -128,7 +128,7 @@ void AppearanceDialog::reset() {
 
     windowFacade->setDockBackground(dockBackgroundValue);
     windowFacade->setDockFont(dockFontValue);
-    windowFacade->setDockFontColor(dockFontColorValue);
+    windowFacade->setDockFontColor(dockFontColorValue);        
 }
 
 void AppearanceDialog::selectMainBg() {

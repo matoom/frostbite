@@ -38,10 +38,12 @@ QString MapData::findPath(QString zoneId, int startId, int destId) {
 
     if(!nodes.contains(startId) && !nodes.contains(destId)) return "";
 
-    return this->getDirections(nodes, startId, destId).join(",");
+    QList<MapNode*> path = this->getShortestPath(nodes, startId, destId);
+
+    return this->getMoves(path).join(",");
 }
 
-QStringList MapData::getDirections(QHash<int, MapNode*>& nodes, int startId, int finishId) {
+QList<MapNode*> MapData::getShortestPath(QHash<int, MapNode*>& nodes, int startId, int finishId) {
     QList<int> ids = nodes.keys();
 
     QHash<int, bool> visited;
@@ -82,13 +84,14 @@ QStringList MapData::getDirections(QHash<int, MapNode*>& nodes, int startId, int
 
     MapNode* finish = nodes.value(finishId);
 
-    if(finish == NULL || currentNode != finish) return QStringList();
+    if(finish == NULL || currentNode != finish) return QList<MapNode*>();
 
     QList<MapNode*> path;
     for(MapNode* node = finish; node != NULL; node = prev.value(node)) {
         path.push_front(node);
     }
-    return this->getMoves(path);
+
+    return path;
 }
 
 QStringList MapData::getMoves(QList<MapNode*> path) {
@@ -109,5 +112,7 @@ QStringList MapData::getMoves(QList<MapNode*> path) {
 }
 
 RoomNode MapData::findRoomNode(QString hash) {
-    return mapReader->getRoomNodes().value(hash);
+    QList<RoomNode> nodes = mapReader->getRoomNodes().values(hash);
+    if(nodes.isEmpty()) return RoomNode();
+    return nodes.last();
 }

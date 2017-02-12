@@ -76,7 +76,7 @@ public:
     QColor getBackgroundColor();
     void toggleFullScreen();
     void toggleMaximized();
-    void updateProfileSettings();
+    void updateProfileSettings(QString);
     void openConnectDialog();
     void openConnection(QString host, QString port, QString key);
     void openAppearanceDialog();

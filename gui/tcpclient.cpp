@@ -6,6 +6,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
     settings = new ClientSettings();
+    api = false;
 
     debugLogger = new DebugLogger();
 

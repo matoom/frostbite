@@ -31,7 +31,7 @@ private:
     MapReader* mapReader;
     RoomNode roomNode;
 
-    QStringList getDirections(QHash<int, MapNode*>& nodes, int startId, int destId);
+    QList<MapNode*> getShortestPath(QHash<int, MapNode*>& nodes, int startId, int destId);
     QStringList getMoves(QList<MapNode*> path);
 
 signals:

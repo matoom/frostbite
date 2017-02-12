@@ -24,6 +24,8 @@ private:
     void scaleView(qreal);
     void buildContextMenu();
 
+    void setLoadingMessage();
+
     MapFacade* mapFacade;
     QGraphicsEllipseItem* selected;
 
@@ -31,6 +33,8 @@ private:
     int level;
 
     QMenu* menu;
+
+    GeneralSettings* settings;
 
 signals:
     void updateMapWindow(QString);

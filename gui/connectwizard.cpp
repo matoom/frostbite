@@ -188,11 +188,10 @@ void ConnectWizard::pageSelected(int id) {
             gamesLoaded = true;
         }
         break;
-    case Page::character:
-        selectedGame = ui->gameList->currentItem()->text();
+    case Page::character:        
+        selectedGame = ui->gameList->currentItem()->text();        
         emit gameSelected(gameList.value(selectedGame));
-
-        if(characterList.isEmpty()) {            
+        if(characterList.isEmpty()) {
             this->password = ui->passwordEdit->text();
             ui->errorLabel->setText("");
 
@@ -201,7 +200,7 @@ void ConnectWizard::pageSelected(int id) {
             this->button(QWizard::NextButton)->setEnabled(false);
         }
         break;
-    case Page::connect:        
+    case Page::connect:
         this->button(QWizard::BackButton)->setEnabled(false);
 
         selectedCharacter = ui->characterList->currentItem()->text();
@@ -259,7 +258,6 @@ void ConnectWizard::reject() {
     QDialog::reject();
 
     ui->errorLabel->setText("");
-    //this->password = "";
     emit resetConnection();
 }
 

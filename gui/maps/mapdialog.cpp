@@ -6,6 +6,11 @@ MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), u
 
     this->mapFacade = mapFacade;
 
+    settings = new GeneralSettings();
+
+    ui->mapView->setScene(new QGraphicsScene(0, 0, 0, 0, this));
+    this->setBackgroundBrush(QBrush(settings->dockWindowBackground()));
+
     connect(ui->mapSelect, SIGNAL(activated(int)), this, SLOT(mapSelected(int)));
     connect(ui->levelSelect, SIGNAL(activated(int)), this, SLOT(mapLevelSelected(int)));
     connect(ui->zoomIn, SIGNAL(pressed()), this, SLOT(zoomIn()));
@@ -18,6 +23,10 @@ MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), u
     if (parent != NULL) {
         resize(parent->width() * 0.6, parent->height() * 0.6);
     }
+}
+
+void MapDialog::setBackgroundBrush(QBrush brush) {
+    ui->mapView->setBackgroundBrush(brush);
 }
 
 void MapDialog::scaleView(qreal step) {

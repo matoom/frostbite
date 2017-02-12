@@ -4,6 +4,8 @@ MapFacade::MapFacade(MainWindow *parent) : QObject(parent) {
     mainWindow = parent;
     mapWindowFactory = new MapWindowFactory(this);
 
+    settings = new GeneralSettings();
+
     this->init();
 }
 
@@ -19,8 +21,7 @@ void MapFacade::init() {
     zoomLabel = mapWindow->findChild<QLabel*>(QString(DOCK_TITLE_MAP) + "ZoomLabel");
     mapView = mapWindow->findChild<MapWindow*>(QString(DOCK_TITLE_MAP)+ "View");    
 
-    connect(mapView, SIGNAL(updateMapWindow(QString)),
-            this, SLOT(updateMapWindow(QString)));
+    connect(mapView, SIGNAL(updateMapWindow(QString)), this, SLOT(updateMapWindow(QString)));
 
     mapReader = new MapReader(this);
     connect(mapReader, SIGNAL(ready()), this, SLOT(mapsReady()));
@@ -30,11 +31,10 @@ void MapFacade::init() {
 
 void MapFacade::mapsReady() {
     if(!mapReader->isInitialized()) {
-        QGraphicsScene* scene = new QGraphicsScene(0, 0, 0, 0, this);
-        scene->addText("No map files found in - \n" + mapReader->getDir().absolutePath());
-        mapView->setScene(scene);
+        this->setNotFoundMessage();
         return;
     }
+    mapView->scene()->clear();
 
     QMap<QString, MapZone*> zones = mapReader->getZones();
 
@@ -49,6 +49,13 @@ void MapFacade::mapsReady() {
     levelSelect->setDisabled(false);
 
     mapDialog->populate();
+}
+
+void MapFacade::setNotFoundMessage() {
+    QGraphicsScene* scene = new QGraphicsScene(0, 0, 0, 0, this);
+    QGraphicsTextItem* text = scene->addText("No map files found in - \n" + mapReader->getDir().absolutePath());
+    text->setDefaultTextColor(mapReader->getTextColor(settings->dockWindowBackground()));
+    mapView->setScene(scene);
 }
 
 MapData* MapFacade::getData() {
@@ -130,6 +137,33 @@ void MapFacade::selectNode(QWidget* widget, QString zoneId, int level, int nodeI
         MapNode* node = zone->getNodes().value(nodeId);
 
         mapDialog->setInfo(node);
+    }
+}
+
+void MapFacade::updateMapColors(QColor background) {
+    QColor text = mapReader->getTextColor(background);
+
+    mapView->setBackgroundBrush(QBrush(background));
+    mapDialog->setBackgroundBrush(QBrush(background));
+
+    QHashIterator<QString, QHash<int, MapGraphics>> zones(mapReader->getScenes());
+    while (zones.hasNext()) {
+        zones.next();
+        QHashIterator<int, MapGraphics> levels(zones.value());
+        while (levels.hasNext()) {
+            levels.next();
+            QGraphicsScene* scene = levels.value().scene;
+            QList<QGraphicsItem*> items = scene->items();
+            for(QGraphicsItem* item : items) {
+                QString data = item->data(Qt::UserRole).toString();
+                if(data != NULL) {
+                    if (data == "text") {
+                        QGraphicsTextItem* textItem = qgraphicsitem_cast<QGraphicsTextItem*>(item);
+                        textItem->setDefaultTextColor(text);
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -27,9 +27,9 @@ public:
     QList<HighlightSettingsEntry>* getTextHighlights();
     void setSettings(QString, QList<HighlightSettingsEntry>*);
 
+private:
     bool initSettings;
 
-private:
     void create();
 
 public slots:

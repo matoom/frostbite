@@ -15,7 +15,7 @@ Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
 Thread.new do
   while true
-    activate "khri", ["sagacity"]
+    activate "khri", ["sagacity", "prowess"]
     sleep 15
   end
 end

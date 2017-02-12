@@ -52,6 +52,9 @@ public:
 
     bool isInitialized();
 
+    QColor getTextColor(QColor background);
+    QColor getLineColor();
+
 private:
     MapZone* readZone(QString path, QString file);
 
@@ -91,6 +94,9 @@ private:
     QMultiHash<QString, RoomNode> roomNodes;
 
     QReadWriteLock lock;
+
+    GeneralSettings* settings;
+    QColor background;
 
 signals:
     void ready();

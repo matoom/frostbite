@@ -16,12 +16,18 @@ public:
     void addParameter(AlterSettingsEntry entry);
     QList<AlterSettingsEntry> getIgnores();
     void setSettings(QList<AlterSettingsEntry> entries);
+    void loadSettings(QString, QList<AlterSettingsEntry>&);
 
-private:
     void init();
 
+private:        
+    void create();
+
+    bool initSettings;
+    QList<AlterSettingsEntry> settingsCache;
+
     QSettings* settings;
-    ClientSettings* clientSettings;
+    ClientSettings* clientSettings;        
 };
 
 #endif // IGNORESETTINGS_H

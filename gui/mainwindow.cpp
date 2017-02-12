@@ -59,7 +59,9 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
-void MainWindow::updateProfileSettings() {       
+void MainWindow::updateProfileSettings(QString profile) {
+    settings->setParameter("Profile/name", profile);
+
     // highlights
     tcpClient->updateSettings();
     // general highlights/window coloring

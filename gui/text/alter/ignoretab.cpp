@@ -5,8 +5,7 @@ IgnoreTab::IgnoreTab(QObject *parent) : QObject(parent), AbstractTableTab() {
 
     ignoreTable = alterDialog->getIgnoreTable();
     addButton = alterDialog->getIgnoreAddButton();
-    removeButton = alterDialog->getIgnoreRemoveButton();
-
+    removeButton = alterDialog->getIgnoreRemoveButton();    
     settings = new IgnoreSettings();
 
     QStringList labels;
@@ -34,8 +33,7 @@ void IgnoreTab::print(QString text)  {
 }
 
 void IgnoreTab::updateSettings() {
-    delete settings;
-    settings = new IgnoreSettings();
+    settings->init();
     this->initIgnoreList();
 }
 

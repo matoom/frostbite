@@ -2,10 +2,17 @@
 
 IgnoreSettings::IgnoreSettings() {
     clientSettings = new ClientSettings();
-    this->init();
+
+    initSettings = true;
+    settingsCache = QList<AlterSettingsEntry>();
+    this->create();
 }
 
 void IgnoreSettings::init() {
+    initSettings = true;
+}
+
+void IgnoreSettings::create() {
     settings = new QSettings(clientSettings->profilePath() + "ignores.ini", QSettings::IniFormat);
 }
 
@@ -49,18 +56,26 @@ void IgnoreSettings::setParameter(AlterSettingsEntry entry) {
 }
 
 QList<AlterSettingsEntry> IgnoreSettings::getIgnores() {
-    int size = settings->beginReadArray("ignore");
+    if(initSettings) {
+        settings->deleteLater();
+        this->create();
+        settingsCache.clear();
+        this->loadSettings("ignore", settingsCache);
+        initSettings = false;
+    }
+    return settingsCache;
+}
 
-    QList<AlterSettingsEntry> entries;
+void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
+    int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
-        entries.append(AlterSettingsEntry((const int&)i,
+        settingsList.append(AlterSettingsEntry((const int&)i,
                 (const bool&)settings->value("enabled", "").toBool(),
                 (const QString&)settings->value("pattern", "").toString(),
                 (const QStringList&)settings->value("target", QStringList()).value<QStringList>()));
     }
     settings->endArray();
-    return entries;
 }
 
 IgnoreSettings::~IgnoreSettings() {

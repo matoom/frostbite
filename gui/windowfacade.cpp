@@ -29,7 +29,7 @@ void WindowFacade::reloadSettings() {
 
     delete generalSettings;
     generalSettings = new GeneralSettings();
-    this->updateWindowColors();    
+    this->updateWindowColors();
 }
 
 void WindowFacade::reloadHighlighterSettings() {
@@ -133,6 +133,8 @@ void WindowFacade::setDockBackground(QColor backgroundColor) {
         p.setColor(QPalette::Base, backgroundColor);
         ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
     }
+
+    mapFacade->updateMapColors(backgroundColor);
 }
 
 void WindowFacade::setDockFont(QFont font) {
@@ -228,7 +230,7 @@ void WindowFacade::loadWindows() {
     dockWindows << spellWindow;
     connect(spellWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(spellVisibility(bool)));
 
-    mapFacade = new MapFacade(mainWindow);
+    mapFacade = new MapFacade(mainWindow);   
 
     this->initWindowWriters();
     this->initLoggers();

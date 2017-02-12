@@ -187,7 +187,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         emit authError();
         tcpSocket->disconnectFromHost();
     } else {
-        if (buffer.size() == 33) {
+        if (buffer.size() == 33) {        
             QByteArray enc = qt_sge_encrypt_password(key, buffer);
             QString response = "A\t" + user.toUpper() + "\t" + enc + "\n";
             this->write(response.toLatin1());

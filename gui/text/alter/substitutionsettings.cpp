@@ -2,9 +2,17 @@
 
 SubstitutionSettings::SubstitutionSettings() {
     clientSettings = new ClientSettings();
-    this->init();
+
+    initSettings = true;
+    settingsCache = QList<AlterSettingsEntry>();
+    this->create();
 }
+
 void SubstitutionSettings::init() {
+    initSettings = true;
+}
+
+void SubstitutionSettings::create() {
     settings = new QSettings(clientSettings->profilePath() + "substitutes.ini", QSettings::IniFormat);
 }
 
@@ -51,19 +59,27 @@ void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
 }
 
 QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
-    int size = settings->beginReadArray("substitution");
+    if(initSettings) {
+        settings->deleteLater();
+        this->create();
+        settingsCache.clear();
+        this->loadSettings("substitution", settingsCache);
+        initSettings = false;
+    }
+    return settingsCache;
+}
 
-    QList<AlterSettingsEntry> entries;
+void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
+    int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
-        entries.append(AlterSettingsEntry((const int&)i,
+        settingsList.append(AlterSettingsEntry((const int&)i,
                 (const bool&)settings->value("enabled", "").toBool(),
                 (const QString&)settings->value("pattern", "").toString(),
                 (const QString&)settings->value("substitute", "").toString(),
                 (const QStringList&)settings->value("target", QStringList()).value<QStringList>()));
     }
     settings->endArray();
-    return entries;
 }
 
 SubstitutionSettings::~SubstitutionSettings() {

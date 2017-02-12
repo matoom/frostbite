@@ -30,8 +30,12 @@ private:
     QPushButton* createZoomInButton(QWidget* parent, QString name);
     QPushButton* createZoomOutButton(QWidget* parent, QString name);
 
+    QPalette palette();
+
     MapFacade* mapFacade;
     MapWindow* mapWindow;
+
+    GeneralSettings* settings;
 };
 
 #endif // MAPWINDOWFACTORY_H

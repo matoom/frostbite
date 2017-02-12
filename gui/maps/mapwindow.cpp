@@ -4,13 +4,24 @@ MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
     mapFacade = parent;
     selected = NULL;
 
+    settings = new GeneralSettings();
+    this->setBackgroundBrush(QBrush(settings->dockWindowBackground()));
+
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setDragMode(QGraphicsView::ScrollHandDrag);
 
     this->scale(1.0, 1.0);
 
-    this->buildContextMenu();        
+    this->buildContextMenu();
+    this->setLoadingMessage();
+}
+
+void MapWindow::setLoadingMessage() {
+    QGraphicsScene* scene = new QGraphicsScene(0, 0, 0, 0, this);
+    QGraphicsTextItem* text = scene->addText("Loading ..");
+    text->setDefaultTextColor(mapFacade->getMapReader()->getTextColor(settings->dockWindowBackground()));
+    this->setScene(scene);
 }
 
 void MapWindow::scaleView(qreal step) {

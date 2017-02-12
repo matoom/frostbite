@@ -14,9 +14,15 @@ public:
     void addParameter(AlterSettingsEntry entry);
     QList<AlterSettingsEntry> getSubstitutions();
     void setSettings(QList<AlterSettingsEntry> entries);
+    void loadSettings(QString, QList<AlterSettingsEntry>&);
+
+    void init();
 
 private:
-    void init();
+    void create();
+
+    bool initSettings;
+    QList<AlterSettingsEntry> settingsCache;
 
     QSettings* settings;
     ClientSettings* clientSettings;

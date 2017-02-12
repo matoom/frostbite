@@ -203,6 +203,10 @@ bool CommandLine::filterCommand(QString text) {
             this->clear();
             return true;
         }
+    } else if (text.startsWith("#profile")) {
+        mainWindow->updateProfileSettings(text.mid(8).trimmed());
+        this->clear();
+        return true;
     }
     return false;
 }

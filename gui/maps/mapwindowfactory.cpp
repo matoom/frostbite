@@ -3,6 +3,17 @@
 MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
     mapFacade = parent;
     mapWindow = new MapWindow(mapFacade);
+
+    settings = new GeneralSettings();
+}
+
+QPalette MapWindowFactory::palette() {
+    QPalette palette = QPalette();
+
+    QColor textBackground = settings->dockWindowBackground();
+    palette.setColor(QPalette::Base, textBackground);
+
+    return palette;
 }
 
 QPushButton* MapWindowFactory::createResetButton(QWidget* parent, QString name) {
@@ -19,7 +30,6 @@ QPushButton* MapWindowFactory::createResetButton(QWidget* parent, QString name) 
     connect(button, SIGNAL(pressed()), mapWindow, SLOT(reset()));
     return button;
 }
-
 
 QPushButton* MapWindowFactory::createZoomInButton(QWidget* parent, QString name) {
     QPushButton* button = new QPushButton(parent);
@@ -97,6 +107,8 @@ QDockWidget* MapWindowFactory::createWindow(const char* name) {
     QDockWidget* dock = new QDockWidget(QObject::tr(name), mapFacade->getMainWindow());
     dock->setObjectName(QObject::tr(name) + "Window");
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
+
+    dock->setPalette(this->palette());
 
     QWidget* controls = new QWidget(dock);
     QHBoxLayout *hLayout = new QHBoxLayout();

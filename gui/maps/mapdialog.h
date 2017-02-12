@@ -31,14 +31,17 @@ private:
 
     MapFacade* mapFacade;
 
+    GeneralSettings* settings;
+
     void scaleView(qreal scaleFactor);
 
 public slots:
+    void setBackgroundBrush(QBrush);
     void mapSelected(int index);
     void mapLevelSelected(int index);    
 
     void zoomIn();
-    void zoomOut();
+    void zoomOut();    
 };
 
 #endif // MAPDIALOG_H

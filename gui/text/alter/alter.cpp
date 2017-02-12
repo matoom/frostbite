@@ -6,10 +6,8 @@ Alter::Alter(QObject *parent) : QObject(parent) {
 }
 
 void Alter::reloadSettings() {
-    delete ignoreSettings;
-    ignoreSettings = new IgnoreSettings();
-    delete substituteSettings;
-    substituteSettings = new SubstitutionSettings();
+    ignoreSettings->init();
+    substituteSettings->init();
 }
 
 QString Alter::substitute(QString text, QString window) {
