@@ -16,6 +16,7 @@ class MapWindow : public QGraphicsView {
 
 public:
     explicit MapWindow(MapFacade* parent);
+    ~MapWindow();
 
 private:
     void wheelEvent(QWheelEvent* zoomEvent);

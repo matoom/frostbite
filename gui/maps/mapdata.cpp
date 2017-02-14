@@ -38,12 +38,12 @@ QString MapData::findPath(QString zoneId, int startId, int destId) {
 
     if(!nodes.contains(startId) && !nodes.contains(destId)) return "";
 
-    QList<MapNode*> path = this->getShortestPath(nodes, startId, destId);
+    QList<MapNode*> path = this->getShortestPathBFS(nodes, startId, destId);
 
     return this->getMoves(path).join(",");
 }
 
-QList<MapNode*> MapData::getShortestPath(QHash<int, MapNode*>& nodes, int startId, int finishId) {
+QList<MapNode*> MapData::getShortestPathBFS(QHash<int, MapNode*>& nodes, int startId, int finishId) {
     QList<int> ids = nodes.keys();
 
     QHash<int, bool> visited;

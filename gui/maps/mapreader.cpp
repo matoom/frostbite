@@ -128,15 +128,15 @@ QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
 
 void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapNode* node, zone->getNodes()) {
-        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ()).scene;
+        QGraphicsScene* scene = scenes.value(node->getPosition().getZ()).scene;
         foreach(MapDestination* dest, node->getDestinations()) {
             if(!dest->getHidden()) {
                 MapNode* destNode = zone->getNodes().value(dest->getDestId());
                 if(destNode != NULL) {
-                    QGraphicsLineItem* line = scene->addLine(node->getPosition()->getX() + abs(zone->getXMin()) + 2,
-                                   node->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
-                                   destNode->getPosition()->getX() + abs(zone->getXMin()) + 2,
-                                   destNode->getPosition()->getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
+                    QGraphicsLineItem* line = scene->addLine(node->getPosition().getX() + abs(zone->getXMin()) + 2,
+                                   node->getPosition().getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
+                                   destNode->getPosition().getX() + abs(zone->getXMin()) + 2,
+                                   destNode->getPosition().getY() + abs(zone->getYMin()) + 2 + MAP_TOP_MARGIN,
                                    getLineColor());
                     line->setData(Qt::UserRole, "line");
                 }
@@ -147,10 +147,10 @@ void MapReader::paintArcs(MapZone* zone, QHash<int, MapGraphics>& scenes) {
 
 void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapLabel* label, zone->getLabels()) {
-        QGraphicsScene* scene = scenes.value(label->getPosition()->getZ()).scene;
+        QGraphicsScene* scene = scenes.value(label->getPosition().getZ()).scene;
         QGraphicsTextItem* textItem = scene->addText(label->getText(), labelsFont);
-        textItem->setPos(label->getPosition()->getX() + abs(zone->getXMin()),
-                         label->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
+        textItem->setPos(label->getPosition().getX() + abs(zone->getXMin()),
+                         label->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
         textItem->setDefaultTextColor(getTextColor(background));
         textItem->setData(Qt::UserRole, "text");
     }
@@ -158,7 +158,7 @@ void MapReader::paintLabels(MapZone* zone, QHash<int, MapGraphics>& scenes) {
 
 void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
     foreach(MapNode* node, zone->getNodes()) {
-        QGraphicsScene* scene = scenes.value(node->getPosition()->getZ()).scene;
+        QGraphicsScene* scene = scenes.value(node->getPosition().getZ()).scene;
 
         QColor color;
         if(node->getColor() != NULL) {
@@ -167,15 +167,15 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
            color = Qt::lightGray;
         }
 
-        MapRect* item = new MapRect(node->getPosition()->getX() + abs(zone->getXMin()),
-                                    node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN,
+        MapRect* item = new MapRect(node->getPosition().getX() + abs(zone->getXMin()),
+                                    node->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN,
                                     4, 4,
                                     getLineColor(), color);
 
         item->setData(Qt::UserRole, "rect");
         item->setZoneId(zone->getId());
         item->setNodeId(node->getId());
-        item->setLevel(node->getPosition()->getZ());
+        item->setLevel(node->getPosition().getZ());
         item->setScene(scene);
 
         connect(item, SIGNAL(nodeSelected(QWidget*, QString, int, int)), mapFacade, SLOT(selectNode(QWidget*, QString, int, int)));
@@ -196,8 +196,8 @@ void MapReader::paintNodes(MapZone* zone, QHash<int, MapGraphics>& scenes) {
 }
 
 void MapReader::paintEndNode(MapZone* zone, MapNode* node, QGraphicsScene* scene) {
-    scene->addEllipse(node->getPosition()->getX() + abs(zone->getXMin()) -4,
-                      node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4,
+    scene->addEllipse(node->getPosition().getX() + abs(zone->getXMin()) -4,
+                      node->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4,
                       12, 12,  QColor(0, 170, 255, 255));
 }
 
@@ -232,12 +232,12 @@ MapZone* MapReader::readZone(QString path, QString file) {
 
                 mapNode = new MapNode(xml.attributes().value("id").toInt(), xml.attributes().value("name").toString(),
                                       notes, xml.attributes().value("color").toString());
-            } else {                                                
-                mapNode->setMapPosition(position);                
+            } else {
+                mapNode->setMapPosition(position);
                 mapZone->getNodes().insert(mapNode->getId(), mapNode);
 
                 foreach(QString note, mapNode->getNotes()) {
-                    locations.insert(note, RoomNode(mapZone->getId(), mapNode->getPosition()->getZ(), mapNode->getId()));
+                    locations.insert(note, RoomNode(mapZone->getId(), mapNode->getPosition().getZ(), mapNode->getId()));
                 }
 
                 this->roomToHash();
@@ -259,7 +259,7 @@ MapZone* MapReader::readZone(QString path, QString file) {
 
                 if(!mapZone->getLevels().contains(z)) mapZone->getLevels() << z;
 
-                position = new MapPosition(x, y, z);
+                position = MapPosition(x, y, z);
             }
         } else if(xml.name() == "arc" && xml.isStartElement()) {
             QXmlStreamAttributes attr = xml.attributes();
@@ -318,13 +318,33 @@ void MapReader::roomToHash() {
             qDebug() << hash;
         }*/
 
-        int level = mapNode->getPosition()->getZ();
+        int level = mapNode->getPosition().getZ();
         int nodeId = mapNode->getId();
 
         roomNodes.insert(hash, RoomNode(mapZone->getId(), level, nodeId));
     }
 }
 
+void MapReader::uninit() {
+    for(MapZone* zone : zones.values()) {
+        for(MapLabel* label : zone->getLabels()) {
+            delete label;
+        }
+        for(MapNode* node : zone->getNodes().values()) {
+            for(MapDestination* dest : node->getDestinations().values()) {
+                delete dest;
+            }
+            delete node;
+        }
+        delete zone;
+    }
+}
+
 bool MapReader::isInRange(int n) {
     return n < 4000 && n > -4000;
+}
+
+MapReader::~MapReader() {
+    this->uninit();
+    delete settings;
 }

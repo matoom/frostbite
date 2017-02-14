@@ -182,8 +182,8 @@ void MapFacade::moveSelected(QString zoneId, int nodeId, int level) {
     MapNode* node = zone->getNodes().value(nodeId);
 
     MapGraphics map = mapReader->getScenes().value(zoneId).value(level);
-    map.selected->setPos(node->getPosition()->getX() + abs(zone->getXMin()) -4,
-                         node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4);
+    map.selected->setPos(node->getPosition().getX() + abs(zone->getXMin()) -4,
+                         node->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN -4);
     map.selected->show();
 }
 
@@ -210,4 +210,7 @@ MainWindow* MapFacade::getMainWindow() {
     return this->mainWindow;
 }
 
+MapFacade::~MapFacade() {
+    delete settings;
+}
 

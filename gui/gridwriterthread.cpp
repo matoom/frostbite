@@ -56,4 +56,5 @@ GridWriterThread::~GridWriterThread() {
         this->wait();
     }
     delete highlighter;
+    delete alter;
 }

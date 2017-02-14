@@ -51,11 +51,11 @@ void MapNode::setColor(QString color) {
     this->color = color;
 }
 
-MapPosition* MapNode::getPosition() {
+MapPosition MapNode::getPosition() {
     return this->position;
 }
 
-void MapNode::setMapPosition(MapPosition* position) {
+void MapNode::setMapPosition(MapPosition position) {
     this->position = position;
 }
 

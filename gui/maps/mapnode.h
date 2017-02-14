@@ -28,8 +28,8 @@ public:
     QString getColor();
     void setColor(QString color);
 
-    MapPosition* getPosition();
-    void setMapPosition(MapPosition* position);
+    MapPosition getPosition();
+    void setMapPosition(MapPosition position);
     QMultiHash<int, MapDestination*>& getDestinations();
     void setDestinations(QMultiHash<int, MapDestination*> destinations);
 
@@ -40,7 +40,7 @@ private:
     QStringList notes;
     QString color;
 
-    MapPosition* position;
+    MapPosition position;
     QMultiHash<int, MapDestination* > destinations;
 
 };

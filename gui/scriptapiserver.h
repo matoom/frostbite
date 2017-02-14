@@ -28,6 +28,7 @@ class ScriptApiServer : public QObject {
 
 public:
     explicit ScriptApiServer(QObject *parent = 0);
+    ~ScriptApiServer();
 
     QTcpServer *tcpServer;
     QNetworkSession *networkSession;

@@ -16,11 +16,11 @@ void MapLabel::setText(QString text) {
     this->text = text;
 }
 
-MapPosition* MapLabel::getPosition() {
+MapPosition MapLabel::getPosition() {
     return this->position;
 }
 
-void MapLabel::setPosition(MapPosition* position) {
+void MapLabel::setPosition(MapPosition position) {
     this->position = position;
 }
 

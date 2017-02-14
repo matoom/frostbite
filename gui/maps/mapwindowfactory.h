@@ -17,6 +17,7 @@ class MapWindowFactory : public QObject {
 
 public:
     explicit MapWindowFactory(MapFacade* parent);
+    ~MapWindowFactory();
 
     QDockWidget* createWindow(const char* name);
 

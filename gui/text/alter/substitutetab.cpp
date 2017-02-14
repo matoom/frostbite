@@ -125,3 +125,6 @@ QList<QDockWidget*> SubstituteTab::getDockWindows() {
     return alterDialog->getDockWindows();
 }
 
+SubstituteTab::~SubstituteTab() {
+    delete settings;
+}

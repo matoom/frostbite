@@ -13,12 +13,12 @@ public:
 
     QString getText();
     void setText(QString text);
-    MapPosition* getPosition();
-    void setPosition(MapPosition* position);
+    MapPosition getPosition();
+    void setPosition(MapPosition position);
 
 private:
     QString text;
-    MapPosition* position;
+    MapPosition position;
 
 };
 

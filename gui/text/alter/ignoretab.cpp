@@ -117,3 +117,7 @@ QPushButton* IgnoreTab::getApplyButton() {
 QList<QDockWidget*> IgnoreTab::getDockWindows() {
     return alterDialog->getDockWindows();
 }
+
+IgnoreTab::~IgnoreTab() {
+    delete settings;
+}

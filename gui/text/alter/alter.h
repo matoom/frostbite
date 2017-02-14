@@ -14,6 +14,7 @@ class Alter : public QObject {
 
 public:
     explicit Alter(QObject *parent = 0);
+    ~Alter();
 
     QString substitute(QString text, QString window);
     bool ignore(QString text, QString window);

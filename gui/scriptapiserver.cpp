@@ -206,6 +206,9 @@ int ScriptApiServer::boolToInt(bool value) {
     }
 }
 
+ScriptApiServer::~ScriptApiServer() {
+    delete settings;
+}
 
 
 

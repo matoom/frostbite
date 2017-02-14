@@ -142,5 +142,6 @@ MenuHandler::~MenuHandler() {
     delete aboutDialog;
     delete scriptEditDialog;
     delete profileAddDialog;
+    delete profilesMenu;
 }
 

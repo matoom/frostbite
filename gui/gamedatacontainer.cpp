@@ -143,13 +143,13 @@ QMap<QString, int> GameDataContainer::getExp(QString name) {
         QMapIterator<QString, QMap<QString, int> > nearestValue(exp);
         while (nearestValue.hasNext()) {
             nearestValue.next();
-            size_t nameSize = strlen(name.toLocal8Bit().data());
-            const char* c = nearestValue.key().toLocal8Bit().data();
-            for(unsigned int j = 0; j < nameSize; j++) {
-                if(c[j] == 0 || c[j] != name[j]) {
+
+            QString value = nearestValue.key();
+            for(int i = 0; i < name.length(); i++) {
+                if(value.at(i) == 0 || value.at(i) != name.at(i)) {
                     break;
                 } else {
-                    if(j == nameSize - 1) {
+                    if(i == name.length() - 1) {
                         expValueMap = nearestValue.value();
                     }
                 }

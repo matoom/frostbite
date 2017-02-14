@@ -57,7 +57,8 @@ void MapWindow::reset() {
 
 void MapWindow::selectNode(MapZone* zone, int nodeId) {    
     MapNode* node = zone->getNodes().value(nodeId);
-    centerOn(node->getPosition()->getX() + abs(zone->getXMin()), node->getPosition()->getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
+    centerOn(node->getPosition().getX() + abs(zone->getXMin()),
+             node->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
 }
 
 void MapWindow::buildContextMenu() {
@@ -71,4 +72,8 @@ void MapWindow::buildContextMenu() {
 
 void MapWindow::contextMenuEvent(QContextMenuEvent* event) {
     menu->exec(event->globalPos());
+}
+
+MapWindow::~MapWindow() {
+    delete settings;
 }

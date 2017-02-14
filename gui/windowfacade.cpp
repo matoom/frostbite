@@ -17,6 +17,14 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     rxRemoveTags.setPattern("<[^>]*>");
 
     writePrompt = true;
+
+    thoughtsVisible = false;
+    deathsVisible = false;
+    arrivalsVisible = false;
+    conversationsVisible = false;
+    familiarVisible = false;
+    spellVisible = false;
+    writePrompt = false;
 }
 
 void WindowFacade::reloadSettings() {

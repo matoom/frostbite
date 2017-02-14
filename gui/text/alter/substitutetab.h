@@ -15,6 +15,7 @@ class SubstituteTab : public QObject, AbstractTableTab {
 
 public:
     explicit SubstituteTab(QObject *parent = 0);
+    ~SubstituteTab();
 
     void updateSettings();
     void saveChanges();

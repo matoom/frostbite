@@ -24,7 +24,8 @@ void MapRect::mousePressEvent(QGraphicsSceneMouseEvent* event) {
 void MapRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {    
     setCursor(QCursor(Qt::PointingHandCursor));
     if (scene != NULL) {
-        idTip = scene->addText("");
+        QGraphicsTextItem* tip = scene->addText("");
+        idTip.reset(tip);
         idTip->setHtml("<div style=\"background:black;color:white;font-weight:bold;\">" +
                        QString::number(this->nodeId) +
                        "</div>");
@@ -35,7 +36,7 @@ void MapRect::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
 
 void MapRect::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     setCursor(QCursor(Qt::PointingHandCursor));    
-    if (scene != NULL) scene->removeItem(idTip);
+    if (scene != NULL) scene->removeItem(idTip.data());
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
@@ -77,4 +78,7 @@ QGraphicsScene* MapRect::getScene() {
 
 void MapRect::setScene(QGraphicsScene* scene) {
     this->scene = scene;
+}
+
+MapRect::~MapRect() {
 }

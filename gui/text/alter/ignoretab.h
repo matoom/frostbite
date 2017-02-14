@@ -17,6 +17,7 @@ class IgnoreTab : public QObject, public AbstractTableTab {
 
 public:
     explicit IgnoreTab(QObject *parent = 0);
+    ~IgnoreTab();
 
     void updateSettings();
     void saveChanges();

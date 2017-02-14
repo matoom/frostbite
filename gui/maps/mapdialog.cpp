@@ -116,4 +116,5 @@ void MapDialog::setInfo(MapNode* node) {
 
 MapDialog::~MapDialog() {
     delete ui;
+    delete settings;
 }

@@ -148,4 +148,5 @@ GenericWindow::~GenericWindow() {
     delete clearAct;
     delete menu;
     delete settings;
+    delete snapshot;
 }

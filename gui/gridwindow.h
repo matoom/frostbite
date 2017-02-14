@@ -12,6 +12,7 @@ class GridWindow : public QTableWidget {
 
 public:
     explicit GridWindow(QWidget *parent = 0);
+    ~GridWindow();
 
     QColor getBgColor();
     QColor getTextColor();

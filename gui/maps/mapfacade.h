@@ -21,6 +21,7 @@ class MapFacade : public QObject {
 
 public:
     explicit MapFacade(MainWindow* parent);
+    ~MapFacade();
 
     void init();
 

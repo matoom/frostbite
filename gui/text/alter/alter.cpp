@@ -33,3 +33,8 @@ bool Alter::ignore(QString text, QString window) {
     }
     return false;
 }
+
+Alter::~Alter() {
+    delete ignoreSettings;
+    delete substituteSettings;
+}

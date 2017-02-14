@@ -115,3 +115,7 @@ void GridWindow::clearTracked() {
         track(w->objectName(), w);
     }
 }
+
+GridWindow::~GridWindow() {
+    delete settings;
+}

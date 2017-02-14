@@ -18,6 +18,7 @@ class MapRect : public QObject, public QGraphicsRectItem {
 
 public:
     MapRect(qreal x, qreal y, qreal w, qreal h, QPen p, QBrush b, QGraphicsItem *parent = 0);
+    ~MapRect();
 
     void setEndZone(QString endZoneId);
     QString getEndZone();
@@ -60,7 +61,7 @@ private:
     int h;
 
     QGraphicsScene* scene;
-    QGraphicsTextItem* idTip;
+    QSharedPointer<QGraphicsTextItem> idTip;
 };
 
 #endif // MAPRECT_H

@@ -88,4 +88,5 @@ WindowWriterThread::~WindowWriterThread() {
         this->wait();
     }
     delete highlighter;
+    delete alter;
 }

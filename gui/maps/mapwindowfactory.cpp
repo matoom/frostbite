@@ -134,3 +134,7 @@ QDockWidget* MapWindowFactory::createWindow(const char* name) {
 
     return dock;
 }
+
+MapWindowFactory::~MapWindowFactory() {
+    delete settings;
+}

@@ -38,6 +38,7 @@ class MapReader : public QObject {
 
 public:
     explicit MapReader(QObject *parent = 0);
+    ~MapReader();
 
     QMap<QString, MapZone*> getZones();
     QHash<QString, QHash<int, MapGraphics> > getScenes();
@@ -68,6 +69,8 @@ private:
 
     void setInitialized();
 
+    void uninit();
+
     QDir dir;
     QFont labelsFont;
 
@@ -82,7 +85,7 @@ private:
     MapZone* mapZone;
     MapNode* mapNode;
     MapLabel* mapLabel;
-    MapPosition* position;
+    MapPosition position;
 
     QMap<QString, MapZone*> zones;
     QHash<QString, QHash<int, MapGraphics> > scenes;
