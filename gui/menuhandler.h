@@ -25,6 +25,8 @@ class AboutDialog;
 class ScriptEditDialog;
 class ProfileAddDialog;
 
+#define USER_GUIDE_URL "http://matoom.github.com/frostbite"
+
 class MenuHandler : public QObject {
     Q_OBJECT
 

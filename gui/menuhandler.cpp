@@ -63,8 +63,7 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionCreate_new_profile") {
         profileAddDialog->show();
     } else if(action->objectName() == "actionReference_Manual") {
-        QDesktopServices::openUrl(QUrl("file:///" +
-            QApplication::applicationDirPath()  + "/docs/index.html", QUrl::TolerantMode));
+        QDesktopServices::openUrl(QUrl(USER_GUIDE_URL));
     } else if(action->objectName() == "actionLogMain") {
         clientSettings->setParameter("Logging/main", action->isChecked());
     } else if(action->objectName() == "actionLogThoughts") {
@@ -104,7 +103,7 @@ void MenuHandler::loadProfilesMenu() {
 
     QStringList dirList = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs, QDir::Name);
 
-    profilesMenu = new QMenu();    
+    profilesMenu = new QMenu(mainWindow);
 
     QString currentProfile = clientSettings->getParameter("Profile/name", "").toString();
 
