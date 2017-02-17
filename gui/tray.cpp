@@ -15,10 +15,16 @@ Tray::Tray(QObject *parent) : QObject(parent) {
     trayIcon->show();
 }
 
-void Tray::createTrayIcon() {
-    this->createActions();
+void Tray::createTrayIcon() {    
+    trayIcon = new QSystemTrayIcon(mainWindow);
 
     trayIconMenu = new QMenu(mainWindow);
+    trayIcon->setContextMenu(trayIconMenu);
+
+    trayIcon->setIcon(QIcon(":/window/images/shield.png"));
+
+    this->createActions();
+
     trayIconMenu->addAction(minimizeAction);
     trayIconMenu->addAction(maximizeAction);
     trayIconMenu->addAction(restoreAction);
@@ -26,27 +32,22 @@ void Tray::createTrayIcon() {
     trayIconMenu->addAction(conversationsAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(exitAction);
-
-    trayIcon = new QSystemTrayIcon(mainWindow);
-    trayIcon->setContextMenu(trayIconMenu);
-    QIcon icon = QIcon(":/window/images/shield.png");
-    trayIcon->setIcon(icon);    
 }
 
 void Tray::createActions() {
-     minimizeAction = new QAction(tr("Mi&nimize"), mainWindow);
+     minimizeAction = new QAction("Minimize", mainWindow);
      connect(minimizeAction, SIGNAL(triggered()), mainWindow, SLOT(hide()));
 
-     maximizeAction = new QAction(tr("Ma&ximize"), mainWindow);
+     maximizeAction = new QAction("Maximize", mainWindow);
      connect(maximizeAction, SIGNAL(triggered()), mainWindow, SLOT(showMaximized()));
 
-     restoreAction = new QAction(tr("&Restore"), mainWindow);
+     restoreAction = new QAction("Restore", mainWindow);
      connect(restoreAction, SIGNAL(triggered()), mainWindow, SLOT(showNormal()));
 
-     exitAction = new QAction(tr("&Exit"), mainWindow);
+     exitAction = new QAction("Exit", mainWindow);
      connect(exitAction, SIGNAL(triggered()), mainWindow, SLOT(close()));
 
-     conversationsAction = new QAction(tr("&Conversations"), mainWindow);
+     conversationsAction = new QAction("Conversations", mainWindow);
      conversationsAction->setCheckable(true);
      conversationsAction->setChecked(conversations);
      connect(conversationsAction, SIGNAL(changed()), this, SLOT(conversationsChanged()));
@@ -82,6 +83,4 @@ void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 
 Tray::~Tray() {
     delete settings;
-    delete trayIcon;
-    delete trayIconMenu;
 }
