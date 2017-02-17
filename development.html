@@ -93,7 +93,7 @@
         <p>The following steps are necessary to set up the project in Qt Creator IDE in Windows:</p>
             <ul class="list">
                 <li>Open <i>Frostbite.pro</i> in Qt Creator;</li>
-                <li>Load the environment settings -> No -> Select Desktop project;</li>
+                <li>Load the environment settings -> <span style="color: red">No</span> -> Select Desktop project;</li>
                 <li>In <i>environment.h</i> -> change project path for offline mock file - <i>#define MOCK_DATA_PATH "C:/Projects/FrostBite/support/mock.xml";</i></li>
                 <li>in <i>main.cpp</i> -> set MainWindow::DEBUG = true;</li>
                 <li>Build for debug target;</li>
@@ -102,8 +102,8 @@
             </ul>
         <br/>
         <h3>High level architecture</h3>
-        <p>The entry point for the Frostbite application is <i>main.cpp</i> which runs the <i>mainwindow.cpp</i> application.</p>
-        <p>The MainWindow class holds instances for some of the main purpose models like:</p>
+        <p>The entry point to the application is <i>main.cpp</i> which runs the <i>mainwindow.cpp</i> gui.</p>
+        <p>Everything starts from the MainWindow class and spreads out through the rest of the code:</p>
             <ul class="list">
                 <li>windowfacade.cpp - <span class="gray">everything related to game windows</span></li>
                 <li>toolbar.cpp - <span class="gray">handles items on the toolbar</span></li>
@@ -116,7 +116,7 @@
             </ul>
     </div>
     <footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
     </footer>
 
 </div>

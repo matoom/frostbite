@@ -14,7 +14,7 @@
     <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Introduction - installation</title>
+    <title>User interface - maps</title>
 
     <meta name="title" content="">
     <meta name="description" content="">
@@ -70,109 +70,84 @@
         </hgroup>
     </header>
 
-    <h2 class="contents_head" id="contents">1.1 Installation </h2>
+    <h2 class="contents_head" id="contents">2.2 Maps</h2>
     <div class="about">
-        <h3>Application software</h3>
         <p>
-            The binary package is a compressed archive and has to be extracted once it has been downloaded.
-        </p>
-
-        <br/>
-        <p>
-            Download here: <a href="https://github.com/matoom/frostbite/releases">https://github.com/matoom/frostbite/releases</a>
-        </p>
-
-        <br/>
-
-        Install instructions:
-        <ol>
-            <li>1. Download archive.</li>
-            <li>2. Extract the contents of the archive into your desired location.</li>
-            <li>3. Run FrostBite(.exe, .app).</li>
-        </ol>
-
-        <br/>
-        <br/>
-        <br/>
-
-        <h3>Ruby runtime installation (scripting only)</h3>
-        <p>
-            Ruby runtime installation is required for running scripts in the Frostbite frontend.
+            Frostbite frontend loosely follows the Genie Map <a href="xsd/map.xsd">schema</a> to process and display maps.
+            Map files have to be placed in the maps folder during application start up and any changes to map files require
+            a restart to take effect.
         </p>
         <p>
-            Frostbite scripting module has been verified to run with Ruby runtime versions 1.9.3 and 2.2.3.
-        </p>
-        <br/>
-        <h3>Windows</h3>
-        <p>
-            The recommended version of Ruby runtime 2.2.3 installation package for Windows can be downloaded from
-            <a href="http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3.exe">
-                http://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.2.3.exe</a>
+            Genie Map files are available to download at
+            <a target="_blank" href="https://sourceforge.net/p/geniemapsfordr/Genie3Maps/HEAD/tree/">
+                https://sourceforge.net/p/geniemapsfordr/Genie3Maps/HEAD/tree
+            </a>
+            -> Download Snapshot.
         </p>
 
         <br/>
 
-        Install instructions:
-        <ol>
-            <li>1. Download Ruby installer.</li>
-            <li>2. Run Ruby installer.</li>
-            <li class="alert-box">It is important to include Ruby executables in PATH.</li>
-            <li>Example:</li>
-            <li><img src="img/install-ruby.png" /></li>
-            <li>3. Verify installation.</li>
-        </ol>
-
-        <br/>
+        <h3>Map</h3>
         <p>
-            Ruby installation can be verified by running the <i>"Ruby --version"</i> command in Windows command prompt.
+            To open the map dialog window press right click on the map window and open view maps option.
         </p>
-        <pre>
-        C:\>ruby --version
-        ruby 2.2.4p230 (2015-12-16 revision 53155) [i386-mingw32]
-        </pre>
+        <img src="img/map.png" />
+        <br/>
+
+        <table class="info-table">
+            <tr><td colspan="4">Legend:</td></tr>
+            <tr>
+                <td><img src="img/map_location.png" />current/selected location</td>
+                <td><div class="small-rect aqua"></div>Homes</td>
+                <td><div class="small-rect lime"></div>Point of interest</td>
+                <td><div class="small-rect pink"></div>Resting area</td>
+            </tr>
+            <tr>
+                <td><img src="img/map_connect.png" />connecting node</td>
+                <td><div class="small-rect yellow"></div>Trainer</td>
+                <td><div class="small-rect blue"></div>Water</td>
+                <td><div class="small-rect orange"></div>Guild</td>
+            </tr>
+            <tr>
+                <td><img src="img/map_id.png" />node ID</td>
+                <td><div class="small-rect fuchsia"></div>Portal</td>
+                <td><div class="small-rect dark-blue"></div>Deep water</td>
+                <td><div class="small-rect red"></div>Shop</td>
+            </tr>
+            <tr>
+                <td><div class="small-rect light-blue"></div>Altar</td>
+                <td><div class="small-rect teal"></div>Lumber</td>
+                <td><div class="small-rect olive"></div>Mine</td>
+                <td></td>
+            </tr>
+        </table>
 
         <br/>
 
-        <h3>Linux Ubuntu</h3>
-        <ol>
-           <li>1. sudo apt-add-repository ppa:brightbox/ruby-ng</li>
-           <li>2. sudo apt-get update</li>
-           <li>3. sudo apt-get install ruby2.2.3</li>
-           <li>4. ruby -v</li>
-        </ol>
+        <h3>Map movement and functions</h3>
+        <p>
+            Map consists of nodes (rooms) and arcs (movement paths). Map nodes can be selected using the left mouse click.
+            The selected node (red circle) is used as a point of origin in all calculations involved.
+        </p>
+        <p>
+            Map window automatically tries to keep track of room locations by matching the room title, description
+            and movement paths but is not always able to find rooms due to having identical rooms or invalid room data.
+            Node destination IDs can be viewed by hovering mouse cursor over the map node and can be used to find paths
+            between originating node and destination node.
+        </p>
+        <p>
+            Maps can be viewed both in the map window and in the map dialog. To open the map dialog press right click on the
+            map window and open the map dialog from the menu. Map node descriptions are only available in map dialog
+            window.
+        </p>
+        <p>
+            Map data can be accessed through the scripting <a href="api/models/Map.html" title="Map (class)">API</a>.
+            It's only possible to find paths between two nodes that are located in the same map zone. The movement
+            paths are found using a simple breadth-first search algorithm and do not always correlate to best
+            paths to take in game and should be be used accordingly.
+        </p>
 
         <br/>
-
-        <h3>Mac OS X</h3>
-        Mac OS X already comes with a Ruby installation prepackaged. For OS X it is important to upgrade Ruby installation
-        if the version is older than 1.9.3. To find out which version of ruby is installed run the following
-        command in terminal:
-        <br/> <br/>
-
-        <pre>
-        ruby -version
-        </pre>
-
-        If it was necessary to upgrade Ruby then execute the following steps:
-        <br/><br/>
-        Register new ruby installation in the Frostbite frontend.
-        <ol>
-            <li>1. which ruby</li>
-            <li>for example => /Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby</li>
-        </ol>
-
-        <br/>
-        Navigate to the location where the application was extracted during installation.
-        <ol>
-            <li>1. cd FrostBite.app/Contents/MacOS</li>
-            <li>2. open/create file called client.ini</li>
-            <li>3. copy ruby path to client.ini:</li>
-        </ol>
-        <br/>
-        <pre>
-        [Ruby]
-        path=/Users/<*user*>/.rvm/rubies/ruby-1.9.3-p545/bin/ruby
-        </pre>
     </div>
 
     <footer>

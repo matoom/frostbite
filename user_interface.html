@@ -73,74 +73,89 @@
     <h2 class="contents_head" id="contents">2 User Interface</h2>
     <div class="about">
     <p>
-        The Frostbite application has a number of GUI elements such as the toolbar, different game windows,
+        The Frostbite application has a number of GUI elements such as the toolbar, movable game windows,
         navigation compass, round time display and the timer bar. This chapter describes Frostbite client
         GUI in more detail.
     </p>
     <p>
-        The user interface is best suited to run at resolutions 1366x768 and up however it is recommended to use it at
+        The user interface is suited to run at resolutions 1366x768 and up however it is recommended to use it at
         full hd resolution or higher (1920x1080).
     </p>
 
     <br/>
     <h3>Toolbar</h3>
     <p>
-        The toolbar includes several different panels to help display real time data about on-going game events and to
-        provide different control functions for the client. Toolbar can be placed on top or to the bottom of the
-        screen and it can be hidden from the right-click context menu on the main menubar.
+        The toolbar is located on the top of the main story window by default but can be moved to the bottom of the
+        screen and can be completely hidden from the right-click context menu. Toolbar gives a quick overview of the
+        character status and provides some control functions for the client.
     </p>
     <br/>
 
     <ul class="list">
         <li>
             <p>
-                Wield indicator allows quickly to see items that are being held in the left or the right hand.
+               Items held in left or right hand.
             </p>
             <img src="img/wield-left.png" /> <img src="img/wield-right.png" /><br/><br/>
         </li>
         <li>
             <p>
-                Spell icon indicates currently active spells but is only visible in a mouse cursor activated tooltip.
+                Prepared spells (only visible in a mouse cursor activated tooltip).
             </p>
             <img src="img/spell.png" /><br/><br/>
         </li>
         <li>
             <p>
-                Status indicator displays different forms of character conditions.
+                Spell timer of the lowest active spell on toolbar and is only fully visible as a list of
+                active spells when hovered over with the mouse cursor.
+            </p>
+            <img src="img/active_spells.png" /><br/><br/>
+        </li>
+        <li>
+            <p>
+                Status:
             </p>
 
-            <table>
+            <table class="small-table">
                 <tr>
                     <td rowspan="5"><img src="img/statusbar.png" /></td><td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td></td><td class="gray">invisible, webbed, grouped, hidden, bleeding, standing</td>
+                    <td class="gray">invisible, webbed, grouped, hidden, bleeding, standing</td>
                 </tr>
                 <tr>
-                    <td></td><td class="gray">stunned, kneeling</td>
+                    <td class="gray">stunned, kneeling</td>
                 </tr>
                 <tr>
-                    <td></td><td class="gray">dead, sitting</td>
+                    <td class="gray">dead, sitting</td>
                 </tr>
                 <tr>
-                    <td></td><td class="gray">prone</td>
+                    <td class="gray">prone</td>
                 </tr>
             </table>
             <br/>
         </li>
-        <li><p>
-                Quick-buttons allow to create pre-determined commands that can be invoked upon clicking. The settings dialog
-                for configuring quick button actions can be triggered by right-clicking on the buttons.
+        <li>
+            <p>
+                Configurable quick-buttons can be invoked by left mouse click and actions can be edited by right
+                clicking on the buttons.
             </p>
             <img src="img/quick-button.png" /><br/><br/>
         </li>
-        <li><p>
-                Vitals indicator shows the character vitality status.
+        <li>
+            <p>
+                Character vitals.
             </p>
-            <img src="img/health.png" /> - health <br/>
-            <img src="img/concentration.png" /> - concentration <br/>
-            <img src="img/fatigue.png" /> - fatigue <br/>
-            <img src="img/spirit.png" /> - spirit<br/><br/>
+            <table class="info-table">
+            <tr>
+                <td><img src="img/health.png" />health</td>
+                <td><img src="img/mana.png" />mana</td>
+                <td><img src="img/concentration.png" />concentration</td>
+                <td><img src="img/fatigue.png" />fatigue</td>
+                <td><img src="img/spirit.png" />spirit</td>
+            </tr>
+            </table>
+            <br/><br/>
         </li>
         <li>
             <p>
@@ -153,15 +168,15 @@
 
     <h3>Dock windows</h3>
     <p>
-        The dock windows are utilized for displaying continuous data for player experience, conversations, familiars and
-        current room descriptions. The information about thoughts, arrivals and deaths are only shown in the dock windows
-        and are not displayed anywhere else on the screen.
-        The data for dock windows is always being collected by the application regardless of the windows being opened
-        or closed and any previously collected data will be again visible once a dock window is reopened.
+        The detachable dock windows display continuous stream data separately from the main story window. They're utilized
+        to show real time data such as player experience, conversations, familiars, active spells, room descriptions etc.
+        The information about thoughts, arrivals and deaths are only shown in the dock windows and are not displayed
+        anywhere else on the screen. Data for dock windows is always being collected regardless of the windows being
+        open or closed and any previously collected data will be again visible once a dock window is reopened.
     </p>
     <p>
         The standard Qt GUI allows to stack dock windows on top of each
-        other and to place them adjacently to each side. In the main window area, the dock windows can be placed on top,
+        other and place them adjacently to each side. In the main window area, the dock windows can be placed on top,
         left or right of the screen.
     </p>
 
@@ -173,9 +188,8 @@
         the game. It can be found in the bottom right corner of the main story window.
     </p>
     <p>
-        The center area of the navigation compass is reserved for the auto-pilot indicator. It enables to show script
-        activation status. Active mode is indicated by red color -- meaning that a script is
-        activated and executing.
+        The center area of the navigation compass is reserved for the auto-pilot indicator. It shows script
+        status. Active mode is indicated by red color -- meaning that a script is activated and executing.
     </p>
     <img src="img/compass.png" /><br/><br/>
 
@@ -189,7 +203,7 @@
 
     </div>
     <footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
     </footer>
 
 </div>

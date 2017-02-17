@@ -74,19 +74,22 @@
     <div class="about">
     <p>
         The Frostbite frontend is still a work in progress and not all functions in the application can be configured. It
-        is currently possible to customize appearance of the game windows, set user macros, filter highlighted text and set
-        quick button actions.
+        is currently possible to customize appearance of the game windows, set user macros, filter highlighted text,
+        add text substitutions or ignores and set quick button actions.
     </p><p class="alert-box">
         Please note that some of the client settings are statically configured into the Frostbite application software and can only be changed
         in the source code. To make changes to the source code refer to the <a href="development.html">development</a> page.
     </p><br/>
+
     <h3>Appearance dialog</h3>
     <p>
-        Can be opened from the main menu (preferences for Max OS X). It allows users to change text color, font and background color of game windows.
-        Please not that the font selector allows to choose from a large selection of system fonts but the game text
+        Can be opened from the main menu (preferences for Max OS X). It allows users to change text color, font and
+        background color of game windows.
+        Please note that the font selector allows to choose from a large selection of system fonts but the game text
         formatting expects a monospace/fixed-width font to be used.
     </p>
-    <img src="img/appearance.png" /><br/><br/>
+    <img src="img/appearance.png" />
+    <br/><br/><br/>
 
     <h3>Highlight dialog</h3>
     <p>
@@ -104,7 +107,49 @@
     <p> Users can add new highlights by clicking on the add button. To change highlight text color click the right mouse
         button on the highlight item and choose "Change color" from the context menu.
     </p>
+    <br/><br/>
+
+    <h3>Text alterations</h3>
     <br/>
+    <p class="alert-box">
+        Some caution is advised when adding text alterations. As a result text can completely disappear from view or
+        cause malformed text to appear. It is important to note that text contains hidden HTML symbols and entities
+        such as &lt;, &gt;, &amp;quot; etc.
+    </p>
+    <br/>
+    <p>
+        Text alteration dialog is located in the main menu. Alterations can be used to make real time changes to
+        the text shown on screen.
+    </p>
+    <p>
+        To target alterations to specific windows or temporarily disable alterations press right click on the target
+        alteration item to open the menu.
+    </p>
+    <p>
+        Text substitutes replace text matched by the regular expression and text ignores can be used to ignore an
+        entire line if text match is found.
+    </p>
+
+    <br/>
+    <img src="img/alter.png" /><br/><br/>
+
+    <p>
+        Text matching in alterations is based on a Perl-compatible regular expression engine. All invalid regular
+        expressions are treated as void entries and displayed as red background on the input field.
+    </p>
+    <p>Common characters and abbreviations:</p>
+    <table style="font-size: x-small; margin: 0; padding: 0; width: 100%;">
+        <tr><td><b>c</b></td><td>Character represents itself unless it has a special regexp meaning.</td><td><b>\d</b></td><td>Matches a digit.</td></tr>
+        <tr><td><b>\c</b></td><td>A character that follows a backslash matches the character itself.</td><td><b>\D</b></td><td>Matches a non-digit.</td></tr>
+        <tr><td><b>\a</b></td><td>Matches the ASCII bell (BEL, 0x07).</td><td><b>\s</b></td><td>Matches a whitespace character.</td></tr>
+        <tr><td><b>\f</b></td><td>Matches the ASCII form feed (FF, 0x0C).</td><td><b>\S</b></td><td>Matches a non-whitespace character.</td></tr>
+        <tr><td><b>\n</b></td><td>Matches the ASCII line feed (LF, 0x0A, Unix newline).</td><td><b>\w</b></td><td>Matches a word character.</td></tr>
+        <tr><td><b>\r</b></td><td>Matches the ASCII carriage return (CR, 0x0D).</td><td><b>\W</b></td><td>Matches a non-word character.</td></tr>
+        <tr><td><b>\t</b></td><td>Matches the ASCII horizontal tab (HT, 0x09).</td><td><b>\n</b></td><td>The n-th backreference, e.g. \1, \2, etc.</td></tr>
+        <tr><td><b>.</b></td><td>(dot)	Matches any character (including newline).</td></tr>
+    </table>
+
+    <br/><br/>
 
     <h3>Macros/Sequences</h3>
     <p>
@@ -122,16 +167,18 @@
         $s - new sequence line (pauses for sequence time and then puts a new line)<br/>
         @  - caret position (only eligible with no trailing $n or $s commands)<br/>
     </p>
-    <img src="img/macros.png" /><br/><br/>
+    <img src="img/macros.png" />
+    <br/><br/><br/>
+
     <h3>Quick button actions</h3>
     <p>
-        Quick button actions can be changed by clicking the right mouse button on the specified quick button.
+        Quick button actions can be changed by clicking the right mouse button on the target button.
     </p>
     <img src="img/quick_button_edit.png" /><br/><br/>
 
     </div>
 	<footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
 	</footer>
 
 </div>

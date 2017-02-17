@@ -112,6 +112,40 @@
 
   
     <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sync_rt-class_method" title="sync_rt (class method)">+ (void) <strong>sync_rt</strong>(&amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Synchronize round times with main thread / pause for the duration of round
+time before calling the block.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
       Instance Method Summary
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -196,6 +230,88 @@
 
   
 
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="sync_rt-class_method">
+  
+    + (<tt>void</tt>) <strong>sync_rt</strong>(&amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p class="note returns_void">This method returns an undefined value.</p>
+<p>Synchronize round times with main thread / pause for the duration of round
+time before calling the block</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>synchronize round times</p>
+</div></p>
+      
+      <pre class="example code"><code><span class='const'>Observer</span><span class='op'>::</span><span class='id identifier rubyid_sync_rt'>sync_rt</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_echo'>echo</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ready</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>block</span>
+      
+      
+        <span class='type'>(<tt>hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>block reference</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+90
+91
+92
+93</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'observer.rb', line 90</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sync_rt'>sync_rt</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_pause_rt'>pause_rt</span>
+  <span class='id identifier rubyid_block'>block</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
 
@@ -262,20 +378,20 @@
       <pre class="lines">
 
 
+45
+46
+47
+48
+49
 50
-51
-52
-53
-54
-55
-56</pre>
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'observer.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'observer.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call_event'>call_event</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_t'>t</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_pause'>pause</span> <span class='float'>0.1</span> <span class='kw'>while</span> <span class='cvar'>@@interrupted</span>
+    <span class='id identifier rubyid_pause'>pause</span> <span class='float'>0.1</span> <span class='kw'>while</span> <span class='ivar'>@interrupted</span>
     <span class='id identifier rubyid_observer_event'>observer_event</span> <span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span>
   <span class='kw'>end</span>
   <span class='id identifier rubyid_t'>t</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span>
@@ -347,17 +463,17 @@
       <pre class="lines">
 
 
+63
+64
+65
+66
+67
 68
 69
-70
-71
-72
-73
-74
-75</pre>
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'observer.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'observer.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_register_event'>register_event</span> <span class='id identifier rubyid_event'>event</span>
   <span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span>
@@ -365,7 +481,7 @@
       <span class='id identifier rubyid_event'>event</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>|</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='rbrace'>}</span>
-  <span class='cvar'>@@events</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_event'>event</span>
+  <span class='ivar'>@events</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_event'>event</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -410,15 +526,15 @@
       <pre class="lines">
 
 
-83
-84
-85</pre>
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'observer.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'observer.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_terminate'>terminate</span>
-  <span class='cvar'>@@terminated</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='ivar'>@terminated</span> <span class='op'>=</span> <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -430,7 +546,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Oct 16 11:35:46 2016 by
+  Generated on Wed Feb 15 17:37:14 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>

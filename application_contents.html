@@ -70,7 +70,7 @@
         </hgroup>
     </header>
 
-    <h2 class="contents_head" id="contents">1.1 Application software</h2>
+    <h2 class="contents_head" id="contents">1.2 Application software</h2>
     <div class="about">
         <p>
             All necessary libraries used by the application are dynamically linked and are included in the software package.
@@ -79,9 +79,7 @@
             personal preference.
         </p>
         <p>
-            In addition to the application software package, the Frostbite frontend requires Ruby runtime to be
-            installed in the system (not included in the software package).
-
+            The software package does not include Ruby runtime files.
         <p>
             Ruby runtime installation is required to run scripts in the frontend however the client is still
             available to use without Ruby or the native scripting support.
@@ -95,7 +93,7 @@
         </p>
 
         <br/>
-        <h3>Application structure</h3>
+        <h3>Application structure and files</h3>
         <p>
             The application needs to have a pre-defined structure in order to facilitate its normal functions. It is important
             that all pre-packaged files and folders remain unchanged.
@@ -104,52 +102,52 @@
         <div class="folders">
             <ul>
                 <li>/..</li>
-                <li><img src="img/folder.png" /> docs
+                <li><img src="img/folder.png" /> logs
                     <ul>
-                        <li class="gray">User guide documents are placed in this folder.</li>
+                        <li class="x-small gray"><small>The client log folder.</small></li>
                     </ul>
                 </li>
-                 <li><img src="img/folder.png" /> logs
+                <li><img src="img/folder.png" /> maps
                     <ul>
-                        <li class="gray">The client log folder.</li>
+                        <li class="x-small gray"><small>Map files.</small></li>
                     </ul>
                 </li>
                 <li><img src="img/folder.png" /> profiles
                     <ul>
-                        <li class="gray">Contains client settings profiles.</li>
+                        <li class="x-small gray"><small>Contains client settings profiles.</small></li>
                     </ul>
                 </li>
                 <li><img src="img/folder.png" /> scripts
                     <ul>
-                        <li class="gray">The designated folder for the application scripts.</li>
+                        <li class="x-small gray"><small>The designated folder for the application scripts.</small></li>
                     </ul>
                 </li>
                 <li><img src="img/folder.png" /> snapshots
                     <ul>
-                        <li class="gray">Snapshots taken in client windows - "Save as HTML"</li>
+                        <li class="x-small gray"><small>Snapshots taken in client windows - "Save as HTML"</small></li>
                     </ul>
                 </li>
                 <li><img src="img/folder.png" /> sounds
                     <ul>
-                        <li class="gray">The designated folder for sound files used by highlights and alerts.</li>
+                        <li class="x-small gray"><small>The designated folder for sound files used by highlights and alerts.</small></li>
                     </ul>
                 </li>
                 <br/>
                 <ul>
-                    <li><img src="img/exe.png" /> FrostBite(.exe) - <span class="gray">application executable</span></li>
-                    <li><img src="img/ini.png" /> api.ini - <span class="gray">contains the api server port</span></li>
-                    <li><img src="img/ini.png" /> client.ini - <span class="gray">settings file for general client settings</span></li>
-                    <li><img src="img/ini.png" /> highlights.ini - <span class="gray">settings file for color highlights</span></li>
-                    <li><img src="img/ini.png" /> log.ini - <span class="gray">client logger settings - log4qt</span></li>
-                    <li><img src="img/ini.png" /> macros.ini - <span class="gray">settings file for macros</span></li>
-                    <li><img src="img/ini.png" /> general.ini - <span class="gray">general purpose settings file</span></li>
+                    <li><img src="img/exe.png" /> Frostbite(.exe) - <span class="x-small gray">application executable</span></li>
+                    <li><img src="img/ini.png" /> api.ini - <span class="x-small gray">contains the api server port</span></li>
+                    <li><img src="img/ini.png" /> client.ini - <span class="x-small gray">settings file for general client settings</span></li>
+                    <li><img src="img/ini.png" /> highlights.ini - <span class="x-small gray">settings file for color highlights</span></li>
+                    <li><img src="img/ini.png" /> log.ini - <span class="x-small gray">client logger settings - log4qt</span></li>
+                    <li><img src="img/ini.png" /> macros.ini - <span class="x-small gray">settings file for macros</span></li>
+                    <li><img src="img/ini.png" /> general.ini - <span class="x-small gray">general purpose settings file</span></li>
                 </ul>
             </ul>
         </div>
         <br />
     </div>
     <footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
     </footer>
 
 </div>

@@ -70,12 +70,14 @@
         </hgroup>
     </header>
 
-    <h2 class="contents_head" id="contents">2.2 Profiles</h2>
+    <h2 class="contents_head" id="contents">2.3 Profiles</h2>
     <div class="about">
         <p>
-            The Frostbite application includes support for client profiles. Each client profile is a set of properties that
-            contain application settings for macros, text highlights, quick buttons and window colors. The profiles enable to
-            continuously change how the application looks and operates.
+            The Frostbite application has support for client profiles. Each client profile is a set of settings that
+            contain application properties for macros, text highlights, text alterations, quick buttons and window colors.
+            It's important to note that not all settings take effect retrospectively when profile is changed. This mostly
+            applies to settings that affect the way game text is handled in real time such as text alterations and
+            highlights. Once text is substituted or ignored it's not possible to revert it by changing a profile.
         </p>
         <br/>
 
@@ -107,7 +109,7 @@
     </div>
 
     <footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
     </footer>
 
 </div>

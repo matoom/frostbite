@@ -116,6 +116,10 @@ pre {
    white-space: pre-wrap;
 }
 
+.x-small {
+    font-size: x-small;
+}
+
 .alert-box {
     background: #fff6bf url("../img/alert.png") no-repeat;
     background-position: 15px 12px;
@@ -123,4 +127,89 @@ pre {
     padding: 5px 20px 5px 45px;
     border-top: 2px solid #ffd324;
     border-bottom: 2px solid #ffd324;
+}
+
+.git-hub-logo {
+   vertical-align: middle; 
+   padding-right: 10px; 
+   width: 24px;"
+}
+
+ol, li, td img {
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.info-table {
+    font-size: x-small;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.small-table {
+    font-size: x-small;
+}
+
+.small-table td {
+    vertical-align: middle;
+}
+
+.small-rect {
+    width: 5px;
+    height: 5px;
+    background: blue;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    margin-right: 15px;
+    border: 1px solid darkgray;
+}
+
+.fuchsia {
+    background: fuchsia;
+}
+
+.aqua {
+    background: aqua;
+}
+
+.lime {
+    background: lime;
+}
+
+.red {
+    background: red;
+}
+
+.yellow {
+    background: yellow;
+}
+
+.blue {
+    background: blue;
+}
+
+.orange {
+    background: #FF8000
+}
+
+.light-blue {
+    background: #4080FF
+}
+
+.dark-blue {
+    background: #0000A0
+}
+
+.pink {
+    background: #FF80C0
+}
+
+.teal {
+    background: teal;
+}
+
+.olive {
+    background: olive;
 }

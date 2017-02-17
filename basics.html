@@ -112,13 +112,13 @@
         <h3>Reserved parameter descriptions</h3>
 
         <br/>
-        <h4>$args # array, global variable</h4>
+        <pre><code>$args # array, global variable</code></pre>
         <p>Contains the arguments passed on to the script in the command line.</p>
 
-        <h4>$rt_adjust = 0 # number, global scope variable</h4>
+        <pre><code>$rt_adjust = 0 # number, global scope variable</code></pre>
         <p>Enables to regulate the wait times and make the script run faster by tightening the value. </p>
 
-        <h4>:match_start and :match_end</h4>
+        <pre><code>:match_start and :match_end</code></pre>
         <p>
             These are the two reserved match pattern names which can be used to determine additional match start and
             end conditions.
@@ -238,8 +238,8 @@
     # callback method for first event
     def on_roundtime
         echo "Found roundtime!"
-        pause_for_roundtime # pauses for the duration of roundtime
-        put "look"          # if any
+        wait_for_roundtime        # pauses for the duration of roundtime
+        put "look"
     end
 
     # callback method for second event
@@ -313,7 +313,7 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
 
     </div>
 	<footer>
-        <p><small>Github: https://github.com/matoom/frostbite</small></p>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
 	</footer>
 </div>
 

@@ -352,18 +352,18 @@
       <pre class="lines">
 
 
+70
+71
+72
+73
 74
 75
 76
 77
-78
-79
-80
-81
-82</pre>
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_get'>match_get</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
@@ -413,7 +413,8 @@
 <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_match_get_m'>match_get_m</span> <span class='id identifier rubyid_match'>match</span>
 <span class='id identifier rubyid_result'>result</span> <span class='comment'>#=&gt;
 </span><span class='comment'>#{:vitals=&gt;[&quot;Your body feels very beat up.&quot;, &quot;Your spirit feels full of life.&quot;],
-</span><span class='comment'># :scars=&gt;[&quot;You have some tiny scratches to the neck.&quot;], :match_end=&gt;[&quot;&gt;&quot;]}</span></code></pre>
+</span><span class='comment'># :scars=&gt;[&quot;You have some tiny scratches to the neck.&quot;],
+</span><span class='comment'># :match_end=&gt;[&quot;&gt;&quot;]}</span></code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -462,17 +463,17 @@
       <pre class="lines">
 
 
+94
+95
+96
 97
 98
 99
 100
-101
-102
-103
-104</pre>
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_get_m'>match_get_m</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_validate_get_m'>validate_get_m</span> <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
@@ -569,16 +570,16 @@
       <pre class="lines">
 
 
+53
+54
+55
+56
 57
 58
-59
-60
-61
-62
-63</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_wait'>match_wait</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_validate_pattern'>validate_pattern</span> <span class='id identifier rubyid_pattern'>pattern</span>
@@ -674,15 +675,15 @@
       <pre class="lines">
 
 
+120
+121
+122
 123
 124
-125
-126
-127
-128</pre>
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_match_wait_goto'>match_wait_goto</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:match_wait_goto</span>
@@ -737,13 +738,13 @@
       <pre class="lines">
 
 
-139
-140
-141
-142</pre>
+136
+137
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait'>wait</span>
   <span class='comment'>#$_api_queue.clear
@@ -800,6 +801,8 @@
       <pre class="lines">
 
 
+25
+26
 27
 28
 29
@@ -812,14 +815,10 @@
 36
 37
 38
-39
-40
-41
-42
-43</pre>
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'text.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'text.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for'>wait_for</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
   <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:wait_for</span>
@@ -828,12 +827,10 @@
   <span class='kw'>end</span>
 
   <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_api_sync_read'>api_sync_read</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
-        <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:idle</span>
+    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='const'>API</span><span class='op'>::</span><span class='id identifier rubyid_sync_read'>sync_read</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span> <span class='kw'>and</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='id identifier rubyid_pattern'>pattern</span><span class='rparen'>)</span>
+        <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:none</span>
         <span class='kw'>return</span>
-      <span class='kw'>end</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.01</span>
   <span class='kw'>end</span>
@@ -894,9 +891,7 @@
 16
 17
 18
-19
-20
-21</pre>
+19</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'text.rb', line 8</span>
@@ -904,13 +899,11 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_wait_for_roundtime'>wait_for_roundtime</span>
   <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:wait_for_roundtime</span>
   <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1000000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='id identifier rubyid_api_sync_read'>api_sync_read</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span>
-      <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-        <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:idle</span>
-        <span class='id identifier rubyid_api_sleep'>api_sleep</span> <span class='id identifier rubyid_line'>line</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
+    <span class='id identifier rubyid_line'>line</span> <span class='op'>=</span> <span class='const'>API</span><span class='op'>::</span><span class='id identifier rubyid_sync_read'>sync_read</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_line'>line</span> <span class='kw'>and</span> <span class='id identifier rubyid_line'>line</span><span class='period'>.</span><span class='id identifier rubyid_match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>Roundtime</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+        <span class='gvar'>$_api_exec_state</span> <span class='op'>=</span> <span class='symbol'>:none</span>
+        <span class='const'>API</span><span class='op'>::</span><span class='id identifier rubyid_sleep_rt'>sleep_rt</span> <span class='id identifier rubyid_line'>line</span><span class='lbracket'>[</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d+</span><span class='regexp_end'>/</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>+</span> <span class='gvar'>$rt_adjust</span>
         <span class='kw'>return</span>
-      <span class='kw'>end</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.01</span>
   <span class='kw'>end</span>
@@ -925,7 +918,7 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Oct 16 11:36:10 2016 by
+  Generated on Wed Feb 15 17:37:35 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>
