@@ -8,7 +8,7 @@ if $args.empty?
 end
 
 def finally_do
-  pause_rt
+  pause_for_roundtime
   put "put my #{$args.first} in my backpack"
 end
 

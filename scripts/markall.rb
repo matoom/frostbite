@@ -272,7 +272,7 @@ def rank skill
   end
 end
 
-Observer.instance.register_event({ :item => /^You begin to carefully size up/ })
+Observer.instance.register_event({ :item => /^^You begin to carefully size up/ })
 Observer.instance.register_event({ :grab => /^Considering actually grabbing/ })
 Observer.instance.register_event({ :away => /^Regarding getting away/ })
 Observer.instance.register_event({ :conf => /^You (are|feel|have) (highly|somewhat|no idea).*(judgement|guesses)/ })

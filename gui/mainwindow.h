@@ -12,6 +12,7 @@
 #include <menuhandler.h>
 #include <scriptservice.h>
 #include <timerbar.h>
+#include <vitalsbar.h>
 #include <generalsettings.h>
 #include <tray.h>
 #include <scriptapiserver.h>
@@ -43,6 +44,7 @@ class CommandLine;
 class MenuHandler;
 class ScriptService;
 class TimerBar;
+class VitalsBar;
 class GeneralSettings;
 class Tray;
 class ScriptApiServer;
@@ -57,12 +59,14 @@ public:
     static bool DEBUG;
 
     void addDockWidgetMainWindow(Qt::DockWidgetArea, QDockWidget*);
+    void addWindowMenuAction(QAction* action);
     void addWidgetMainLayout(QWidget*);
     void addToolbarAction(QAction*);
     void addToolbarSeparator();
     void addToolbarSpacer(int);
-    void addToolbarWidget(QWidget*);
+    QAction* addToolbarWidget(QWidget*);
     void insertProfilesMenu(QMenu*);
+
     void setLogMain(bool);
     void setLogThoughts(bool);
     void setLogConversations(bool);
@@ -70,6 +74,15 @@ public:
     void setLogDeaths(bool);
     void setLogDebug(bool);
     void setLogAuth(bool);
+
+    void setMenuWieldLeftVisible(bool enabled);
+    void setMenuWieldRightVisible(bool enabled);
+    void setMenuSpellVisible(bool enabled);
+    void setMenuActiveSpellsVisible(bool enabled);
+    void setMenuStatusVisible(bool enabled);
+    void setMenuButtonsVisible(bool enabled);
+    void setMenuVitalsVisible(bool enabled);
+
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);
     void setBackgroundColor(QColor);
@@ -84,6 +97,7 @@ public:
 
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();
+    VitalsBar* getVitalsBar();
     TcpClient* getTcpClient();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
@@ -104,6 +118,8 @@ private:
 
     Tray* tray;
     TimerBar* timerBar;
+    VitalsBar* vitalsBar;
+
     QReadWriteLock lock;    
 
     void initSettings();

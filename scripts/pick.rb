@@ -13,7 +13,7 @@ end
 
 def finally_do
   if @finally_do
-    pause_rt
+    pause_for_roundtime
     stow_lockpick
   end
 end

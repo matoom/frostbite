@@ -55,6 +55,7 @@ private:
     QAction* action;
 
     void loadLoggingMenu();
+    void loadToolbarMenu();
 
 signals:
 

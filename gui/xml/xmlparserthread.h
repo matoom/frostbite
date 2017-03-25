@@ -17,6 +17,7 @@ class Toolbar;
 class CommandLine;
 class GameDataContainer;
 class Highlighter;
+class VitalsBar;
 
 typedef QList<QString> DirectionsList;
 
@@ -43,6 +44,7 @@ private:
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
     Toolbar* toolBar;
+    VitalsBar* vitalsBar;
     CommandLine* commandLine;
     GameDataContainer* gameDataContainer;
     Highlighter* highlighter;

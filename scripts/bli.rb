@@ -2,7 +2,7 @@ require "defines"
 require "helper"
 
 def finally_do
-  sleep Rt::value
+  pause_rt
   stow_pick
   stow_box
 end
@@ -69,7 +69,6 @@ get_pick
 
 catch (:done) do
   1000.times do
-    break if SYSTEM::finished
     put "pick my #{$args.join(" ")} blind"
     match = { :continue => [/\.\.\.wait|You are unable to|You discover another|soft click/],
               :get_pick => [/more appropriate tool/],

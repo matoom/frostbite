@@ -25,12 +25,10 @@ end
 
 def list_items
   put "look in my #{@wield_right}"
-  match = { :match => ["In the"] }
+  match = { :match => ["In the"], :empty => ["nothing in there"] }
   contents = match_get match
-
   items = contents[:match].split(/,|\band\b/).collect { |s| s.split.last.delete('.') }
-
-  if contents == ""
+  if contents == '' or contents.key?(:empty)
     dismantle
   else
     loot items

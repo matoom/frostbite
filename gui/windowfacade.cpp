@@ -602,6 +602,10 @@ void WindowFacade::updateFamiliarWindow(QString familiarText) {
     if(!familiarWriter->isRunning()) {
         familiarWriter->start();
     }
+
+    if(!familiarWindow->isVisible()) {
+        this->writeGameText(familiarText.trimmed().toLocal8Bit(), false);
+    }
 }
 
 void WindowFacade::updateSpellWindow(QString spellText) {
@@ -610,7 +614,7 @@ void WindowFacade::updateSpellWindow(QString spellText) {
     spellWriter->addText(spellText + "\n");
     if(!spellWriter->isRunning()) {
         spellWriter->start();
-    }
+    }   
 }
 
 void WindowFacade::updateRoomWindowTitle(QString title) {

@@ -9,6 +9,9 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     spellLabel->setObjectName("activeSpells");
     spellLabel->setAlignment(Qt::AlignCenter);
     spellLabel->setTextFormat(Qt::RichText);
+    spellLabel->setWordWrap(true);
+    spellLabel->setFixedWidth(120);
+    spellLabel->setFixedHeight(34);
     spellLabel->setStyleSheet("QLabel {border: 1px solid rgb(190, 190, 190);"
                              "background: #383533;"
                              "padding-right: 5px;"
@@ -31,12 +34,12 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     return spellLabel;
 }
 
-QWidget* ActiveSpellIndicator::create() {
+QWidget* ActiveSpellIndicator::create() {    
     QWidget *widget = new QWidget;
-    QHBoxLayout *hLayout = new QHBoxLayout(widget);
+    QHBoxLayout *hLayout = new QHBoxLayout(widget);        
     hLayout->setContentsMargins(0, 10, 20, 10);
 
-    hLayout->addWidget(this->createSpellLabel());
+    hLayout->addWidget(this->createSpellLabel());    
     widget->setLayout(hLayout);
 
     return widget;

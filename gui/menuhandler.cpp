@@ -16,6 +16,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
 
     this->loadLoggingMenu();
+    this->loadToolbarMenu();
 }
 
 void MenuHandler::openConnectDialog() {
@@ -80,6 +81,27 @@ void MenuHandler::menuTriggered(QAction* action) {
         clientSettings->setParameter("Logging/auth", action->isChecked());
     } else if(action->objectName() == "actionWindowSave") {
         mainWindow->saveWindow();
+    } else if(action->objectName() == "actionToolWieldLeft") {
+        clientSettings->setParameter("Toolbar/wieldLeft", action->isChecked());
+        mainWindow->getToolbar()->setWieldLeftVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolWieldRight") {
+        clientSettings->setParameter("Toolbar/wieldRight", action->isChecked());
+        mainWindow->getToolbar()->setWieldRightVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolSpell") {
+        clientSettings->setParameter("Toolbar/spell", action->isChecked());
+        mainWindow->getToolbar()->setSpellVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolActiveSpells") {
+        clientSettings->setParameter("Toolbar/activeSpells", action->isChecked());
+        mainWindow->getToolbar()->setActiveSpellsVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolStatus") {
+        clientSettings->setParameter("Toolbar/status", action->isChecked());
+        mainWindow->getToolbar()->setStatusVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolButtons") {
+        clientSettings->setParameter("Toolbar/buttons", action->isChecked());
+        mainWindow->getToolbar()->setButtonsVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolVitals") {
+        clientSettings->setParameter("Toolbar/vitals", action->isChecked());
+        mainWindow->getToolbar()->setVitalsVisible(action->isChecked());
     }
 }
 
@@ -130,6 +152,16 @@ void MenuHandler::loadLoggingMenu() {
     mainWindow->setLogDeaths(clientSettings->getParameter("Logging/deaths", false).toBool());
     mainWindow->setLogDebug(clientSettings->getParameter("Logging/debug", false).toBool());
     mainWindow->setLogAuth(clientSettings->getParameter("Logging/auth", false).toBool());
+}
+
+void MenuHandler::loadToolbarMenu() {
+    mainWindow->setMenuWieldLeftVisible(clientSettings->getParameter("Toolbar/wieldLeft", true).toBool());
+    mainWindow->setMenuWieldRightVisible(clientSettings->getParameter("Toolbar/wieldRight", true).toBool());
+    mainWindow->setMenuSpellVisible(clientSettings->getParameter("Toolbar/spell", true).toBool());
+    mainWindow->setMenuActiveSpellsVisible(clientSettings->getParameter("Toolbar/activeSpells", true).toBool());
+    mainWindow->setMenuStatusVisible(clientSettings->getParameter("Toolbar/status", true).toBool());
+    mainWindow->setMenuButtonsVisible(clientSettings->getParameter("Toolbar/buttons", true).toBool());
+    mainWindow->setMenuVitalsVisible(clientSettings->getParameter("Toolbar/vitals", true).toBool());
 }
 
 MenuHandler::~MenuHandler() {

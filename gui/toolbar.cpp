@@ -3,6 +3,7 @@
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
+    clientSettings = new ClientSettings();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -43,16 +44,39 @@ void Toolbar::loadToolbar() {
 
     QWidget* wieldLeftWidget = wieldLeft->create();
     wieldLeftWidget->setContentsMargins(QMargins(20, 0, 0, 0));
-    mainWindow->addToolbarWidget(wieldLeftWidget);
-    mainWindow->addToolbarWidget(wieldRight->create());
-    mainWindow->addToolbarWidget(spell->create());
-    mainWindow->addToolbarWidget(activeSpell->create());
+    bool wieldLeftVisible = clientSettings->getParameter("Toolbar/wieldLeft", true).toBool();
+    if(!wieldLeftVisible) wieldLeftWidget->setVisible(wieldLeftVisible);
+    wieldLeftAction = mainWindow->addToolbarWidget(wieldLeftWidget);
 
-    mainWindow->addToolbarWidget(statusIndicator->create());
+    QWidget* wieldRightWidget = wieldRight->create();
+    bool wieldRightVisible = clientSettings->getParameter("Toolbar/wieldRight", true).toBool();
+    if(!wieldRightVisible) wieldRightWidget->setVisible(wieldRightVisible);
+    wieldRightAction = mainWindow->addToolbarWidget(wieldRightWidget);
 
-    mainWindow->addToolbarWidget(quickButtonDisplay->create());
+    QWidget* spellWidget = spell->create();
+    bool spellVisible = clientSettings->getParameter("Toolbar/spell", true).toBool();
+    if(!spellVisible) spellWidget->setVisible(spellVisible);
+    spellAction = mainWindow->addToolbarWidget(spellWidget);
 
-    mainWindow->addToolbarWidget(vitalsIndicator->create());
+    QWidget* activeSpellsWidget = activeSpell->create();
+    bool activeSpellsVisible = clientSettings->getParameter("Toolbar/activeSpells", true).toBool();
+    if(!activeSpellsVisible) activeSpellsWidget->setVisible(activeSpellsVisible);
+    activeSpellAction = mainWindow->addToolbarWidget(activeSpellsWidget);
+
+    QWidget* statusWidget = statusIndicator->create();
+    bool statusVisible = clientSettings->getParameter("Toolbar/status", true).toBool();
+    if(!statusVisible) statusWidget->setVisible(statusVisible);
+    statusAction = mainWindow->addToolbarWidget(statusWidget);
+
+    QWidget* buttonsWidget = quickButtonDisplay->create();
+    bool buttonsVisible = clientSettings->getParameter("Toolbar/buttons", true).toBool();
+    if(!buttonsVisible) buttonsWidget->setVisible(buttonsVisible);
+    buttonsAction = mainWindow->addToolbarWidget(buttonsWidget);
+
+    QWidget* vitalsWidget = vitalsIndicator->create();
+    bool vitalsVisible = clientSettings->getParameter("Toolbar/vitals", true).toBool();
+    if(!vitalsVisible) vitalsWidget->setVisible(vitalsVisible);
+    vitalsAction = mainWindow->addToolbarWidget(vitalsWidget);
 
     this->addFullScreenButton();
 }
@@ -65,8 +89,8 @@ void Toolbar::updateWieldRight(QString value) {
     wieldRight->textLabel->setText(value);
 }
 
-void Toolbar::updateSpell(QString toolTip) {
-    spell->setToolTip("<table style='margin: 2px;'><tr><td>" + toolTip + "</td></tr></table>");
+void Toolbar::updateSpell(QString text) {
+    spell->setText(text);
 }
 
 QHash<QString, bool> Toolbar::getStatus() {
@@ -130,6 +154,34 @@ void Toolbar::quickButtonAction() {
     emit mainWindow->getCommandLine()->sendCommand();
 }
 
+void Toolbar::setWieldLeftVisible(bool visible) {
+    wieldLeftAction->setVisible(visible);
+}
+
+void Toolbar::setWieldRightVisible(bool visible) {
+    wieldRightAction->setVisible(visible);
+}
+
+void Toolbar::setSpellVisible(bool visible) {
+    spellAction->setVisible(visible);
+}
+
+void Toolbar::setActiveSpellsVisible(bool visible) {
+    activeSpellAction->setVisible(visible);
+}
+
+void Toolbar::setStatusVisible(bool visible) {
+    statusAction->setVisible(visible);
+}
+
+void Toolbar::setButtonsVisible(bool visible) {
+    buttonsAction->setVisible(visible);
+}
+
+void Toolbar::setVitalsVisible(bool visible) {
+    vitalsAction->setVisible(visible);
+}
+
 void Toolbar::updateActiveSpells(QStringList activeSpells) {
     activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells));
 
@@ -154,4 +206,5 @@ Toolbar::~Toolbar() {
     delete wieldLeft;
     delete wieldRight;
     delete activeSpell;
+    delete clientSettings;
 }

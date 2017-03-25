@@ -118,11 +118,20 @@ void MainWindow::loadClient() {
     timerBar = new TimerBar(this);
     timerBar->load();
 
+    vitalsBar = new VitalsBar(this);
+    vitalsBar->load();
+
+    // add menu items
+    this->addWindowMenuAction(ui->mainToolBar->toggleViewAction());
+    this->vitalsBar->addToMenu();
+    ui->menuWindow->addSeparator();
+
     windowFacade = new WindowFacade(this);
     windowFacade->loadWindows();
 
-    // add to layout after main window
+    // add to layout after main window    
     timerBar->add();
+    vitalsBar->add();
 
     cmdLine = new CommandLine(this);
     ui->mainLayout->addWidget(cmdLine);
@@ -146,6 +155,10 @@ WindowFacade* MainWindow::getWindowFacade() {
 
 Toolbar* MainWindow::getToolbar() {
     return toolBar;
+}
+
+VitalsBar* MainWindow::getVitalsBar() {
+    return vitalsBar;
 }
 
 TcpClient* MainWindow::getTcpClient() {
@@ -183,8 +196,12 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
     }
 }
 
-void MainWindow::addToolbarWidget(QWidget *widget) {
-    ui->mainToolBar->addWidget(widget);
+void MainWindow::addWindowMenuAction(QAction* action) {
+   ui->menuWindow->addAction(action);
+}
+
+QAction* MainWindow::addToolbarWidget(QWidget *widget) {
+    return ui->mainToolBar->addWidget(widget);
 }
 
 void MainWindow::addToolbarSpacer(int w) {
@@ -232,6 +249,34 @@ void MainWindow::setLogDebug(bool enabled) {
 
 void MainWindow::setLogAuth(bool enabled) {
     ui->actionLogAuth->setChecked(enabled);
+}
+
+void MainWindow::setMenuWieldLeftVisible(bool enabled) {
+    ui->actionToolWieldLeft->setChecked(enabled);
+}
+
+void MainWindow::setMenuWieldRightVisible(bool enabled) {
+    ui->actionToolWieldRight->setChecked(enabled);
+}
+
+void MainWindow::setMenuSpellVisible(bool enabled) {
+    ui->actionToolSpell->setChecked(enabled);
+}
+
+void MainWindow::setMenuActiveSpellsVisible(bool enabled) {
+    ui->actionToolActiveSpells->setChecked(enabled);
+}
+
+void MainWindow::setMenuStatusVisible(bool enabled) {
+    ui->actionToolStatus->setChecked(enabled);
+}
+
+void MainWindow::setMenuButtonsVisible(bool enabled) {
+    ui->actionToolButtons->setChecked(enabled);
+}
+
+void MainWindow::setMenuVitalsVisible(bool enabled) {
+    ui->actionToolVitals->setChecked(enabled);
 }
 
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {

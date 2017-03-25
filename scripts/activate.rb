@@ -1,38 +1,24 @@
-@recover = 30
-$recover_ts = -1
-
-def activate verb, spells
-  return if $recover_ts.to_i > -1 && Time.now - $recover_ts < @recover
-  spells.each do |spell|
-    unless Spell::active.any? { |s| /#{verb} #{spell}/i =~ s}
-      Observer.instance.call_event "activate_event", "#{verb} start #{spell}"
-    end
-  end
-end
-
-def activate_event e
-  Observer::sync_rt {
-    activate_sync e
+def active_spells_maintain(spells)
+  pause_rt
+  active = Spell::active
+  cmd = []
+  spells.split(' ').each { |spell|
+    cmd << spell unless active.any? { |s| /#{spell}/i =~ s }
   }
+  active_spells_start("khri #{cmd.join(' ')}") unless cmd.empty?
 end
 
-def activate_sync e
-  put "#{e}"
+def active_spells_start(cmd)
+  put cmd
   match = { :wait => [/\.\.wait/],
             :no_spell => ["rephrase that command"],
-            :recover => ["not recovered"],
-            :running => ["Roundtime", "already using the"] }
-  result = match_wait match
-
-  case result
+            :running => ["Roundtime", "already using the", "not recovered from"] }
+  case match_wait match
     when :wait
-      pause 0.5
-      activate_sync e
-    when :recover
-      $recover_ts = Time.now
+      pause Rt::value + 0.5
+      active_spells_start cmd
     when :no_spell
-      Thread.exit
+      Observer::instance.remove_timer(:active_spells_maintain)
   end
 end
-
 

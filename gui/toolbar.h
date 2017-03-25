@@ -52,6 +52,16 @@ private:
     SpellIndicator* spell;
     ActiveSpellIndicator* activeSpell;
 
+    ClientSettings* clientSettings;
+
+    QAction* wieldLeftAction;
+    QAction* wieldRightAction;
+    QAction* spellAction;
+    QAction* activeSpellAction;
+    QAction* statusAction;
+    QAction* buttonsAction;
+    QAction* vitalsAction;
+
     void addFullScreenButton();
 
 public slots:
@@ -65,6 +75,14 @@ public slots:
 
     void updateActiveSpells(QStringList);
     void clearActiveSpells();
+
+    void setWieldRightVisible(bool visible);
+    void setWieldLeftVisible(bool visible);
+    void setSpellVisible(bool visible);
+    void setActiveSpellsVisible(bool visible);
+    void setStatusVisible(bool visible);
+    void setButtonsVisible(bool visible);
+    void setVitalsVisible(bool visible);
 };
 
 #endif // TOOLBAR_H

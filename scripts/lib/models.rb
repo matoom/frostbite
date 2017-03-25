@@ -504,7 +504,7 @@ class Client
 
   # Track exp row in exp window
   #
-  # @param [String] name internal exp name
+  # @param [String] name internal exp name (see #Exp::names)
   def self.track_exp(name)
     $_api_socket.puts "CLIENT TRACK_EXP?#{name}\n"
     $_api_socket.gets('\0').chomp('\0').to_s

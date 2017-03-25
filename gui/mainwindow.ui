@@ -250,10 +250,23 @@ QTabBar {
     <addaction name="actionLogDebug"/>
     <addaction name="actionLogAuth"/>
    </widget>
+   <widget class="QMenu" name="menuToolbar">
+    <property name="title">
+     <string>Toolbar</string>
+    </property>
+    <addaction name="actionToolWieldLeft"/>
+    <addaction name="actionToolWieldRight"/>
+    <addaction name="actionToolSpell"/>
+    <addaction name="actionToolActiveSpells"/>
+    <addaction name="actionToolStatus"/>
+    <addaction name="actionToolButtons"/>
+    <addaction name="actionToolVitals"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuLogging"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuToolbar"/>
    <addaction name="menuScript"/>
    <addaction name="menuProfile"/>
    <addaction name="menuHelp"/>
@@ -446,6 +459,62 @@ QTabBar {
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
+   </property>
+  </action>
+  <action name="actionToolWieldLeft">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Wield left</string>
+   </property>
+  </action>
+  <action name="actionToolWieldRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Wield Right</string>
+   </property>
+  </action>
+  <action name="actionToolSpell">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Spell</string>
+   </property>
+  </action>
+  <action name="actionToolActiveSpells">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Active Spells</string>
+   </property>
+  </action>
+  <action name="actionToolStatus">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status</string>
+   </property>
+  </action>
+  <action name="actionToolVitals">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Vitals</string>
+   </property>
+  </action>
+  <action name="actionToolButtons">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Buttons</string>
    </property>
   </action>
  </widget>

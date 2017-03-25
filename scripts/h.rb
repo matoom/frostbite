@@ -29,9 +29,6 @@ def go_wait(label, back_label)
   if label == :wait
     pause 0.5
     goto back_label
-  elsif label == :pause
-    pause 3
-    goto back_label
   else
     goto label
   end
@@ -55,7 +52,6 @@ label(:hide) {
   put "stalk"
   match = { :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
             :stop_stalk => ["You're already stalking"],
-            :pause => ["You are still stunned"],
             :hide => ["ruining your hiding"],
             :wait => [/\.\.\.wait/] }
   res = match_wait match
@@ -64,6 +60,7 @@ label(:hide) {
 
 label(:stop_stalk) {
   put "stop stalk"
+  #pause Rt::value
   goto :feint
 }
 

@@ -26,6 +26,7 @@ $_api_queue = []
 $_api_observer_queue = []
 
 $_api_gets_mutex = Mutex.new
+$_api_exec_mutex = Mutex.new
 
 $_api_interrupt_time = -1
 $_api_exec_state = :none
@@ -97,6 +98,12 @@ module API
     end
   end
 
+  def self.sync_clear
+    $_api_gets_mutex.synchronize do
+      $_api_queue.clear
+    end
+  end
+
   def self.sleep_rt(rt)
     rt = sync_rt rt
     if rt > 0
@@ -149,8 +156,10 @@ end
 # @param [String] value command.
 # @return [void]
 def put(value)
-  $_api_queue.clear
-  puts "#{API::API_PUT_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
+  $_api_gets_mutex.synchronize do
+    $_api_queue.clear
+    puts "#{API::API_PUT_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
+  end
 end
 
 # Sends a message to client main window.
@@ -161,7 +170,9 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  puts "#{API::API_ECHO_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
+  $_api_gets_mutex.synchronize do
+    puts "#{API::API_ECHO_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
+  end
 end
 
 # Pauses for given time.
@@ -213,7 +224,6 @@ def pause_rt
     API::sleep_rt $_api_current_rt + $rt_adjust
   end
 end
-
 
 # @private
 def exit

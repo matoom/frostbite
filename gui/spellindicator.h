@@ -7,20 +7,25 @@
 #include <QHBoxLayout>
 
 #include <toolbardefines.h>
+#include <defaultvalues.h>
 
 class SpellIndicator : public QObject {
     Q_OBJECT
 
 public:
     explicit SpellIndicator(QObject *parent = 0);
+    ~SpellIndicator();
 
     QWidget* create();
     void setToolTip(QString text);
+    void setText(QString text);
 
     QLabel* imageLabel;
+    QLabel* textLabel;
 
 private:
-    QLabel* wieldImageLabel(const char*);
+    QLabel* spellImageLabel(const char*);
+    QLabel* spellTextLabel();
 
 signals:
 

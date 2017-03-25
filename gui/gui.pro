@@ -95,7 +95,8 @@ SOURCES += main.cpp\
     apisettings.cpp \
     authlogger.cpp \
     windowwriterthread.cpp \
-    gridwriterthread.cpp
+    gridwriterthread.cpp \
+    vitalsbar.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -161,7 +162,8 @@ HEADERS  += mainwindow.h \
     apisettings.h \
     authlogger.h \
     windowwriterthread.h \
-    gridwriterthread.h
+    gridwriterthread.h \
+    vitalsbar.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

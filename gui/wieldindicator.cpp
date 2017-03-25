@@ -13,7 +13,7 @@ QLabel *WieldIndicator::wieldTextLabel(const char* text) {
     textLabel->setAlignment(Qt::AlignCenter);
 
     textLabel->setStyleSheet("color: #d7d7d7;"
-                             "font: 10pt \"MS UI Gothic\";"
+                             "font: 10pt \"" TOOLBAR_FONT "\";"
                              "font-weight: normal;"
                              "background: #383533;"
                              "border: 1px solid rgb(190, 190, 190);"

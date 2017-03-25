@@ -4,6 +4,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
     toolBar = mainWindow->getToolbar();
+    vitalsBar = mainWindow->getVitalsBar();
     commandLine = mainWindow->getCommandLine();
     gameDataContainer = GameDataContainer::Instance();
     highlighter = new Highlighter(parent);
@@ -24,6 +25,8 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade, SLOT(updateSpellWindow(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
+    connect(this, SIGNAL(updateVitals(QString, QString)), vitalsBar, SLOT(updateVitals(QString, QString)));
+
     connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
     connect(this, SIGNAL(updateWieldLeft(QString)), toolBar, SLOT(updateWieldLeft(QString)));
     connect(this, SIGNAL(updateWieldRight(QString)), toolBar, SLOT(updateWieldRight(QString)));
@@ -378,10 +381,8 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 emit updateRoomWindow();
             }
         } else if(e.tagName() == "clearStream") {
-            if(e.attribute("id") == "percWindow") {
-                gameDataContainer->clearActiveSpells();
-                emit clearActiveSpells();
-                emit updateSpellWindow("");
+            if(e.attribute("id") == "percWindow") {               
+                scheduled.insert(e.attribute("id"), QStringList());
                 this->activeSpells.clear();
             } else {
                 if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
@@ -526,8 +527,7 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             activeSpells += root.text();
         }
-        QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);
-        gameDataContainer->setActiveSpells(list);
+        QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);        
         scheduled.insert(e.attribute("id"), list);
     } else if(e.attribute("id") == "group") {
         // ignored
@@ -645,8 +645,9 @@ void XmlParserThread::runScheduledEvents() {
 
 void XmlParserThread::runEvent(QString event, QVariant data) {
     if(event == "percWindow") {
+        gameDataContainer->setActiveSpells(data.toStringList());
         emit updateActiveSpells(data.toStringList());
-        emit updateSpellWindow(data.toStringList().join("\n"));
+        emit updateSpellWindow(data.toStringList().join("\n"));        
     } else {
         qDebug() << tr("Event \"%1\" not found").arg(event);
     }

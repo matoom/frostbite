@@ -13,12 +13,9 @@ require "activate"
 
 Target::auto "*** attack what? usage: .lx &lt;critter_name&gt; ***"
 
-Thread.new do
-  while true
-    activate "khri", ["sagacity", "prowess"]
-    sleep 15
-  end
-end
+Observer::instance.register_timer(15, :active_spells_maintain, 'sagacity prowess')
+
+pause 0.5
 
 def shoot
   put "aim"

@@ -28,7 +28,6 @@ def finally_do
 end
 
 100.times do
-  break if SYSTEM::finished
   put "collect " + $args.join(" ")
   wait_for_roundtime
   put "kick pile"

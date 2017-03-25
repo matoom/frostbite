@@ -17,7 +17,7 @@ QProgressBar* VitalsIndicator::vitalsProgress(const char* obName, const char* im
                        "background-repeat: no-repeat;"
                        "}");
     bar->setValue(value);
-    bar->setToolTip(QString::number(value) + "%");
+    bar->setToolTip(QString(obName) + " " + QString::number(value) + "%");
 
     return bar;
 }

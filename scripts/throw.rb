@@ -1,96 +1,78 @@
-@arrange_count = 5
-@weapon = $args.join(" ")
+require "defines"
+
+$throw_weapon = $args.join(" ")
+
+unless $throw_weapon
+  echo "Throw what?"
+  exit
+end
+
+if Wield::right_noun.eql? ""
+  echo "Hold melee weapon in right hand; throwing from left hand."
+  exit
+end
 
 def finally_do
   pause_rt
-  put "stow #{@weapon}"
+  stow_weapon
+  Client::track_exp_clear
+end
+
+def stow_weapon
+  put "stow #{$throw_weapon}"
+  match = { :wait => [/\.\.\.wait/],
+            :stunned => [/still stunned|entangled in a web/],
+            :continue => ["You stow", "You pick up", "You put your"] }
+  case match_wait match
+    when :wait
+      pause Rt::value
+      stow_weapon
+    when :stunned
+      pause 3
+      stow_weapon
+  end
 end
 
 def get_weapon
-  put "get #{@weapon}"
-end
-
-def arrange count
-  put "arrange"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
-            :quit => [/You are still stunned/],
-            :arrange => [/You begin to arrange|You continue arranging|complete arranging|You make a mistake/],
-            :loot => [/arrange what|cannot be skinned|corpse is worthless now/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      arrange count
-    when :arrange
-      if count < @arrange_count - 1
-        arrange count + 1
-      else
-        skin
-      end
-    when :loot
-      loot
+  unless Wield::left_noun.include? $throw_weapon
+    put "get #{$throw_weapon}"
+    match = { :wait => [/\.\.\.wait/],
+              :stunned => [/still stunned|entangled in a web/],
+              :continue => ["You get", "You pick up"] }
+    case match_wait match
+      when :wait
+        pause_rt
+        get_weapon
+      when :stunned
+        pause 3
+        get_weapon
+    end
   end
 end
 
-def skin
-  if Wield::left_noun != ""
-    put "stow left"
-  end
-  put "skin"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|still stunned/],
-            :quit => [/You are still stunned/],
-            :loot => [/Skin what|cannot be skinned|Roundtime/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      skin
-    when :loot
-      loot
-  end
-end
-
-def loot
-  put "loot"
-  match = { :wait => [/\.\.\.wait|while entangled in a web|you may only type ahead|Roundtime|still stunned/],
-            :quit => [/You are still stunned/],
-            :continue => [/could not find what|You search/] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-      loot
-  end
-end
-
-def lob target
-  put "lob #{target}"
+def throw
+  put "throw left"
   match = { :wait => [/\.\.\.wait|entangled in a web/],
             :stunned => [/still stunned/],
-            :skin => ["before collapsing", "deflate slightly", "stops all movement", "then grows still",
-                      "ceases all movement", "collapses into a massive heap","massive heap before",
-                      "sharp halt", "crumbles", "life force fades away"],
-            :wait_for => ["trying to lob"],
+            :skin => COMBAT::MATCH_DEAD,
+            :wait_for => ["trying to attack"],
             :continue => ["Roundtime"] }
 
   case match_wait match
     when :wait_for
       get_weapon
       echo "*** WAITING ***"
-      wait_for(/advance on you|melee range/)
+      wait_for(/begins to advance you|closes to melee range|at you\./)
     when :skin
+      stow_weapon
+      load "skin.rb"
       get_weapon
-      arrange 0
     when :continue
       get_weapon
   end
 end
 
 get_weapon
-
 1000.times do
-  lob @target
+  throw
 end

@@ -52,9 +52,9 @@ label(:start) {
 
 label(:hide) {
   pause Rt::value
-  put "stalk"
+  put "hide"
   match = { :wait_for => ["Stalk what?"],
-            :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background"],
+            :feint => ["your stalking went unobserved", "slip into hiding to prepare", "melt into the background", "But you're already hidden"],
             :stop_stalk => ["You're already stalking"],
             :hide => ["ruining your hiding"],
             :pause => ["You are still stunned"],
@@ -80,7 +80,6 @@ label(:feint) {
 
 label(:advance) {
   put "advance"
-  put "shiver"
   pause 3
   match = { :hide => ["begin to advance", "You are already", "begin to stealthily advance"],
             :wait => [/\.\.\.wait/]}

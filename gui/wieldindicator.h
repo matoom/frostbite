@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#include "defaultvalues.h"
+
 class WieldIndicator : public QObject {
     Q_OBJECT
 public:

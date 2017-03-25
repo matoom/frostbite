@@ -10,7 +10,6 @@
             :loot_gems => ["I could not find what"],
             :continue => ["You search"] }
   result = match_wait match
-
   case result
     when :wait
       pause 0.5
@@ -26,27 +25,10 @@ end
             :loot_boxes => ["Stow what?"],
             :continue => ["You search"] }
   result = match_wait match
-
   case result
     when :wait
       pause 0.5
     when :loot_boxes
-      break
-  end
-end
-
-100.times do
-  put "stow box"
-  match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
-            :loot_next => ["You pick up"],
-            :end => ["Stow what?"],
-            :continue => ["You search"] }
-  result = match_wait match
-
-  case result
-    when :wait
-      pause 0.5
-    when :end
       break
   end
 end
@@ -59,7 +41,6 @@ end
             :end => ["Stow what?"],
             :continue => ["You search"] }
   result = match_wait match
-
   case result
     when :wait
       pause 0.5
@@ -76,7 +57,37 @@ end
             :end => ["Stow what?"],
             :continue => ["You search"] }
   result = match_wait match
+  case result
+    when :wait
+      pause 0.5
+    when :end
+      break
+  end
+end
 
+100.times do
+  break if Room::count_objects("bolt") < 1
+  put "stow bolt"
+  match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
+            :loot_next => ["You pick up"],
+            :end => ["Stow what?"],
+            :continue => ["You search"] }
+  result = match_wait match
+  case result
+    when :wait
+      pause 0.5
+    when :end
+      break
+  end
+end
+
+100.times do
+  put "stow box"
+  match = { :wait => [/\.\.\.wait|you may only type ahead 1 command/],
+            :loot_next => ["You pick up"],
+            :end => ["Stow what?"],
+            :continue => ["You search"] }
+  result = match_wait match
   case result
     when :wait
       pause 0.5
