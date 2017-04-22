@@ -29,6 +29,7 @@ public:
     ~XmlParserThread();
 
     virtual void run();
+    boolean isCmgr();
 
     void process(QString);
 
@@ -67,13 +68,16 @@ private:
 
     QString streamCache;
 
-    int streamCount;
-    int outputCount;
+    boolean mono;
+    boolean cmgr;
 
-    void processGameData(QByteArray);
+    int streamCount;
+
+    void processGameData(QString);
+
+    QString processMonoOutput(QString line);
 
     void processPushStream(QString);
-    void processOutput(QString);    
     void processDynaStream(QString);
 
     void warnUnknownEntity(QString ref, QString xml);
@@ -85,7 +89,9 @@ private:
     QString toString(QDomElement element);
     QString fixInputXml(QString);
     QString stripTags(QString);
-    QString addTime(QString);    
+    QString addTime(QString);        
+    QString wrapRoot(QString data);
+    QString wrapCdata(QString data);
 
     void runScheduledEvents();
     void runEvent(QString event, QVariant data);

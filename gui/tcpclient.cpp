@@ -163,7 +163,8 @@ void TcpClient::writeSettings() {
 
 void TcpClient::socketReadyRead() {
     buffer.append(tcpSocket->readAll());
-    if(buffer.endsWith("\n")){
+
+    if(buffer.endsWith("\n") || xmlParser->isCmgr()){
         // process raw data
         emit addToQueue(buffer);
         if(!xmlParser->isRunning()) {

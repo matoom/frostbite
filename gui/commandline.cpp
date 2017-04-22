@@ -184,7 +184,9 @@ bool CommandLine::runMacro(QString cmd) {
 }
 
 void CommandLine::sendCommand() {
-    if (!this->text().isEmpty()){
+    if (this->text().isEmpty()){
+        this->writeCommand("");
+    } else {
         /* add command to history */
         this->addHistory();
         /* look for client commands */

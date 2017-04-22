@@ -1065,3 +1065,91 @@ EXP HELP for more information
 
 <clearStream id="moonWindow"/>
 <pushStream id="moonWindow"/> [k]+(0) [y]+(17) [x]+(129)<popStream/>
+
+<output class="mono"/>
+<pushBold/>    *************************IMPORTANT!*************************
+<popBold/>        Closing the StormFront front end does NOT necessarily
+       drop your character from the game!  Type QUIT or EXIT!
+<pushBold/>    *************************IMPORTANT!*************************
+<popBold/>     PvP has strict rules!  See NEWS 5 15, NEWS 5 24, NEWS 5 25!
+      Scripting is ok, but you must be responsive!  NEWS 5 17!
+           Vulgarity is not allowed in public!  NEWS 5 7!
+<pushBold/>    *************************IMPORTANT!*************************
+<popBold/>
+                  Enjoy DragonRealms?  Vote Today!
+                       <a href='http://www.topmudsites.com/vote-DragonRealms.html'>Visit Top Mud Sites!</a>
+
+<pushBold/>                        ESP 2.0 is now live!
+<popBold/>           Remember to turn your gweths back on if this is
+           your first time since the release!  See the ESP
+               command or the forums for more details.
+
+<pushBold/>                  Helpful Information and Resources
+<popBold/>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<pushBold/>Websites:
+<popBold/>     <a href='https://store.play.net/store/purchase/dr'>Simucoin Store</a>    <a href='http://forums.play.net/calendar?game=dragonrealms'>Events Calendar</a>     <a href='https://drwiki.play.net/mediawiki/index.php/Category:New_player_guides'>Starter Guides</a>
+       <a href='https://drwiki.play.net'>Elanthipedia</a>           <a href='http://www.olwydd.org'>Olwydd's</a>               <a href='https://drwiki.play.net/mediawiki/index.php/Ranik_Maps'>Maps</a>
+
+<pushBold/>Useful Verbs:
+<popBold/>  <d>SIMUCOINS</d>......Shows your current Simucoin balance and allows you to deliver purchased items.
+  <d>ADVICE</d>.........A collection of HELP articles to get you started.
+  <d>HELP</d>...........Covers a variety of starter (and advanced) topics for the game.
+  <d>CHATTER</d>........Allows global communication with Mentors and others to get assistance.
+  <d>NEWS</d>...........Covers game updates, policies, events and more!
+  <d>EMAIL</d>..........Contact info for various Simutronics departments.
+  <d>VERB</d>...........A comprehensive list of most of our verbs!
+  <d>DIR</d>............Get directions to guilds, stat training, the bank, and more!
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<output class=""/>
+
+
+<output class="mono" /><mode id="CMGR"/>
+The Human Clans                                                
+A Book By Zuebara Pulan                                        
+                                                               
+Humans are a great and diverse people, I have always known     
+that.  As a child, growing up with my particular family, me    
+being the son of a well-to-do but hard-working trader, I       
+traveled considerably, seeing the breadth of this entire       
+continent, meeting many of its incredible peoples and          
+learning of their ways.  Many researchers read their           
+withered, yellow books and try to grasp and understand of      
+the world outside their crumbling libraries -- but I, I        
+have seen it.  It was the experiences of my childhood that     
+shaped the course of my life.  My love of scholarly            
+pursuits -- for you see, I never did pick up the reigns of     
+our family business, and woe to me for that, warned my         
+father -- comes from all that I experienced in my youthful     
+travels.                                                       
+                                                               
+Which brings me back to the start.  Humans are a diverse       
+and great people.  I am a Human myself, I should point out     
+to those who don't know me.  But yet still I've met so many    
+Humans that are so unlike me, and it really is remarkable.     
+
+
+Reading: 
+===================
+How to Read a Book:
+===================
+Hit the ENTER key to move to the next page
+
+or Type...
+   PAGE # (moves to the page number specified)
+        # (moves to the page number specified)
+CHAPTER # (moves to that chapter)
+      C # (moves to that chapter)
+    TABLE (moves to the table of contents if there is one)
+    INDEX (moves to the book's index if it has one)
+    START (moves to the starting page)
+   q or Q (closes book and quits reading)
+     HELP (shows help specific to this book if it exists.)
+
+Some helpful commands...
+FIND <word> (finds first occurance of that word in the book)
+NEXT      (finds the next occurance of the word specified in FIND)
+
+
+
+Reading: <mode id="GAME"/><output class="" />
