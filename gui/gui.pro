@@ -4,6 +4,10 @@
 #
 #-------------------------------------------------
 
+RELEASE_VERSION = 1.6.3b
+
+DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
+
 !include(../common.pri) {
     error("Could not find the common.pri file!")
 }
@@ -27,12 +31,14 @@ include(maps/maps.pri)
 include(text/text.pri)
 include(xml/xml.pri)
 
+APP_NAME = Frostbite
+
 win32 {
-    TARGET = ../../Frostbite
+    TARGET = ../../$$APP_NAME
 }
 
 unix {
-    TARGET = ../Frostbite
+    TARGET = ../$$APP_NAME
 }
 
 TEMPLATE = app
@@ -200,7 +206,40 @@ ICON = images/shield.icns
 #QMAKE_CXXFLAGS_MT_DBG += -pg
 #QMAKE_LFLAGS_DEBUG += -pg
 
+# automated release packaging
+CONFIG(release, debug|release) {
+    DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy))
+    RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/$$APP_NAME-$$RELEASE_VERSION))
 
+    win32 {
+        PLUGINS_PATH = $$shell_quote($$shell_path($$RELEASE_PATH/plugins))
+        DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/windeployqt))
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/../$$APP_NAME.exe))
 
+        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &
+        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &
+        releasedata.commands += $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
+    }
 
+    macx {
+        DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/macdeployqt))
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME.app))
 
+        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &&
+        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &&
+        releasedata.commands += $$DEPLOY_QT $$BIN --dmg
+    }
+
+    unix:!macx {
+        # no deployer for linux; copy libs/plugins manually
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME))
+
+        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH ;
+        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH
+    }
+
+    first.depends = $(first) releasedata
+    export(first.depends)
+    export(releasedata.commands)
+    QMAKE_EXTRA_TARGETS += first releasedata
+}

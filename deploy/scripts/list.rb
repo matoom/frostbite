@@ -1,0 +1,1 @@
+echo Dir.entries("#{File.dirname(__FILE__)}").select{ |e| e.end_with? ".rb" }

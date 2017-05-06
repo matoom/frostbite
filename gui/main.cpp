@@ -12,7 +12,7 @@
 #include <unistd.h>
 #endif
 
-bool MainWindow::DEBUG = false;
+bool MainWindow::DEBUG = true;
 
 #ifdef __linux__
 void handler(int sig) {
@@ -30,6 +30,7 @@ void handler(int sig) {
 #endif
 
 int main(int argc, char *argv[]) {
+    QCoreApplication::setApplicationVersion(QString(RELEASE_VERSION));
 
     #ifdef __linux__
     signal(SIGSEGV, handler);
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]) {
 
     Log4Qt::PropertyConfigurator::configure(QApplication::applicationDirPath()  + "/log.ini");
 
-    QApplication::addLibraryPath(QApplication::applicationDirPath());
+    QApplication::addLibraryPath(QApplication::applicationDirPath());    
 
     MainWindow w;
     w.show();

@@ -1,6 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += gui #\
-           #shared
-
-
+SUBDIRS += gui

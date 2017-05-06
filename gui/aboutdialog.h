@@ -17,6 +17,8 @@ public:
 private:
     Ui::AboutDialog *ui;
 
+    void addVersion();
+
 private slots:
     void close();
 };
