@@ -208,38 +208,48 @@ ICON = images/shield.icns
 
 # automated release packaging
 CONFIG(release, debug|release) {
-    DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy))
-    RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/$$APP_NAME-$$RELEASE_VERSION))
 
     win32 {
-        PLUGINS_PATH = $$shell_quote($$shell_path($$RELEASE_PATH/plugins))
+        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy))
+        RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION))
+        PLUGINS_PATH = $$shell_quote($$shell_path($$RELEASE_PATH/plugins))        
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.exe))
         DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/windeployqt))
-        BIN = $$shell_quote($$shell_path($$OUT_PWD/../$$APP_NAME.exe))
 
-        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &
-        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &
-        releasedata.commands += $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
+        postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &
+        postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &
+        postbuild.commands += $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
     }
 
     macx {
+        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/))
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.app))
+        DMG = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.dmg))
+        RELEASE_FILE = $$shell_quote($$shell_path($$OUT_PWD/../frostbite-osx.dmg))
+        DEPLOY_PATH = $$shell_quote($$shell_path($$BIN/Contents/MacOS))
         DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/macdeployqt))
-        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME.app))
 
-        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &&
-        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &&
-        releasedata.commands += $$DEPLOY_QT $$BIN --dmg
+        prebuild.commands = rm -rf $$DEPLOY_PATH
+
+        postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$DEPLOY_PATH &&
+        postbuild.commands += $$DEPLOY_QT $$BIN -dmg &&
+        postbuild.commands += $(COPY_FILE) $$DMG $$RELEASE_FILE
     }
 
     unix:!macx {
         # no deployer for linux; copy libs/plugins manually
-        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME))
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME))        
+        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy))
+        RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION))
 
-        releasedata.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH ;
-        releasedata.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH
+        postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH ;
+        postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH
     }
 
-    first.depends = $(first) releasedata
-    export(first.depends)
-    export(releasedata.commands)
-    QMAKE_EXTRA_TARGETS += first releasedata
+    prebuild.target = cleandeploy
+    QMAKE_EXTRA_TARGETS += prebuild
+    PRE_TARGETDEPS = cleandeploy
+
+    first.depends = $(first) postbuild
+    QMAKE_EXTRA_TARGETS += first postbuild
 }

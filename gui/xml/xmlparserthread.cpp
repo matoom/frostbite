@@ -79,7 +79,7 @@ void XmlParserThread::run() {
     }
 }
 
-boolean XmlParserThread::isCmgr() {
+bool XmlParserThread::isCmgr() {
     QMutexLocker ml(&mMutex);
     return cmgr;
 }

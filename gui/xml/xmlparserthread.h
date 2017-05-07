@@ -29,7 +29,7 @@ public:
     ~XmlParserThread();
 
     virtual void run();
-    boolean isCmgr();
+    bool isCmgr();
 
     void process(QString);
 
@@ -68,8 +68,8 @@ private:
 
     QString streamCache;
 
-    boolean mono;
-    boolean cmgr;
+    bool mono;
+    bool cmgr;
 
     int streamCount;
 
