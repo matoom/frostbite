@@ -240,8 +240,9 @@ CONFIG(release, debug|release) {
         # no deployer for linux; copy libs/plugins
         BIN = $$shell_quote($$shell_path($$OUT_PWD/../$$APP_NAME))
         DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/.))
-        RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION))
-        QT_CONFIG_FILE = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION/qt.conf))
+        RELEASE_DIR = Frostbite-$$RELEASE_VERSION
+        RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/$$RELEASE_DIR))
+        QT_CONFIG_FILE = $$shell_quote($$shell_path($$OUT_PWD/../release/$$RELEASE_DIR/qt.conf))
         RELEASE_LIBRARIES = libQt5Core.so.5 libQt5Gui.so.5 libQt5Multimedia.so.5 libQt5Network.so.5 libQt5Widgets.so.5 \
                             libQt5Xml.so.5 libQt5DBus.so.5 libQt5XcbQpa.so.5 libicudata.so.56 libicuuc.so.56 libicui18n.so.56
 
@@ -262,7 +263,7 @@ CONFIG(release, debug|release) {
         postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/platforms/ ;
         postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/platforms/libqxcb.so $$RELEASE_PATH/plugins/platforms/ ;
         #compress package
-        postbuild.commands += "tar -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_PATH"
+        postbuild.commands += "tar -C $$RELEASE_PATH/../ -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_DIR"
     }
 
     prebuild.target = cleandeploy
