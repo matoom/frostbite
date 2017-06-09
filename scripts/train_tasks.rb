@@ -2,7 +2,7 @@ require "defines"
 require "helper"
 require "armor"
 
-module WarkSchedule
+module ThrownSchedule
   def self.set_up
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
     put_wait 'khri start strike flight focus prowess guile hasten', /already using|lose concentration|Roundtime/
@@ -216,7 +216,7 @@ module TrainUtils
   def self.reset
     pause_rt
     until Status::standing
-      put_wait 'stand', /You stand|already standing/
+      put "stand"
       pause
     end
   end

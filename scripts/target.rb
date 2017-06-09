@@ -1,6 +1,6 @@
 class Target
   @auto = false
-  @filter = ["leopard", "owl"]
+  @filter = ["leopard", "owl", "guard"]
 
   def self.auto usage_msg
     unless $args.first
@@ -15,7 +15,8 @@ class Target
 
   def self.find
     monsters = Room::monsters_bold
-    return nil if Room::count_objects("trying to remain hidden") >= monsters.size
+    room = Room::objects
+    return nil if room.scan("trying to remain hidden").length + room.scan("dead").length >= monsters.size
     monsters.each do |m|
       return m.split(' ').last unless @filter.all? { |e| m.include?(e) }
     end

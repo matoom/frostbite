@@ -75,8 +75,9 @@ case result
     move "w"
 end
 
-put "w"
-move "nw"
+put "nw"
+wait_for "Birds chitter in the branches"
+
 move "n"
 move "nw"
 move "n"

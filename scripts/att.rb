@@ -1,6 +1,13 @@
 require "defines"
 require "hunt"
 
+def finally_do
+  time = Time.now - $att_start
+  echo "time: #{time / 60}m"
+  echo "kills: #{$att_kills}"
+  echo "k/m: #{$att_kills / (time / 60)}"
+end
+
 def attack
   put "attack"
   match = { :wait => [/\.\.\.wait/],
@@ -14,6 +21,7 @@ def attack
     when :wait
       pause 0.4
     when :skin
+      $att_kills += 1
       load "skin.rb"
     when :wait_for
       echo "*** WAITING ***"
@@ -25,6 +33,9 @@ def attack
       pause 3
   end
 end
+
+$att_kills = 0
+$att_start = Time.now
 
 10000.times do
   hunt

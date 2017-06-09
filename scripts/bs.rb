@@ -5,11 +5,17 @@
 require "target"
 require "defines"
 
-@rt_adjust = 0
+@kills = 0
+@start = Time.now
 
 Target::auto "*** backstab what? usage: .bs &lt;critter_name&gt; ***"
 
-@kills = 0
+def finally_do
+  time = Time.now - @start
+  echo "time: #{time / 60}m"
+  echo "kills: #{@kills}"
+  echo "k/m: #{@kills / (time / 60)}"
+end
 
 def go_wait(label, back_label)
   if label == :wait
@@ -23,29 +29,14 @@ def go_wait(label, back_label)
   end
 end
 
-Thread.new do
-  while true
-    activate "khri", ["guile"]
-    sleep 15
-  end
-end
-
-def finally_do
-  time = Time.now - @start
-  echo "time: #{time / 60}m"
-  echo "kills: #{@kills}"
-  echo "k/m: #{@kills / (time / 60)}"
-end
-
-@start = Time.now
-
 labels_start
 
 label(:start) {
   put "face #{$args.first}"
   match = { :wait_for => ["Face what?"],
             :hide => ["You are already facing", "You turn to face", "You are too closely engaged"],
-            :pause => ["You are still stunned", "the point in facing"],
+            :pause => ["You are still stunned"],
+            :next => ["the point in facing"],
             :wait => [/\.\.\.wait/] }
   go_wait(match_wait(match), :start)
 }
@@ -91,6 +82,16 @@ label(:dead) {
   @kills += 1
   load "skin.rb"
   goto :start
+}
+
+label(:next) {
+  put "face next"
+  match = { :wait_for => ["Face what?", "facing a dead", "nothing else to face"],
+            :hide => ["You are already facing", "You turn to face", "You are too closely engaged"],
+            :pause => ["You are still stunned"],
+            :next => ["the point in facing"],
+            :wait => [/\.\.\.wait/]}
+  go_wait(match_wait(match), :next)
 }
 
 label(:wait_for) {

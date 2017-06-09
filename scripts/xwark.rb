@@ -1,3 +1,13 @@
+unless Wield::right_noun.empty?
+  put "stow right"
+  wait
+end
+
+unless Wield::left_noun.empty?
+  put "stow left"
+  wait
+end
+
 move "go bridge"
 move "n"
 move "n"
@@ -6,7 +16,17 @@ move "e"
 move "e"
 move "climb rope"
 move "climb ladder"
-move "climb creeper"
+
+put "climb creeper"
+match = { :next => ["up and over"],
+          :stand => [/SPLAT!/] }
+case match_wait match
+  when :stand
+    put "stand"
+    wait
+    move "cli creeper"
+end
+
 move "e"
 move "down"
 move "climb trail"
