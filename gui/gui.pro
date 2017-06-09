@@ -237,13 +237,32 @@ CONFIG(release, debug|release) {
     }
 
     unix:!macx {
-        # no deployer for linux; copy libs/plugins manually
-        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_NAME))        
-        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy))
+        # no deployer for linux; copy libs/plugins
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/../$$APP_NAME))
+        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/.))
         RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION))
+        QT_CONFIG_FILE = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION/qt.conf))
+        RELEASE_LIBRARIES = libQt5Core.so.5 libQt5Gui.so.5 libQt5Multimedia.so.5 libQt5Network.so.5 libQt5Widgets.so.5 \
+                            libQt5Xml.so.5 libQt5DBus.so.5 libQt5XcbQpa.so.5 libicudata.so.56 libicuuc.so.56 libicui18n.so.56
 
-        postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH ;
-        postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH
+        # make release directory
+        postbuild.commands = $$QMAKE_MKDIR $$RELEASE_PATH ;
+        # copy deploy files
+        postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH ;
+        # copy compiled binary
+        postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH ;
+        # qt.conf
+        postbuild.commands += "echo '[Paths]\nPrefix=./\nLibraries=lib\nPlugins=plugins' > $$QT_CONFIG_FILE" ;
+        # copy libraries
+        postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/lib/ ;
+        for(var, RELEASE_LIBRARIES) {
+            postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../lib/$$var $$RELEASE_PATH/lib/ ;
+        }
+        # copy plugins
+        postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/platforms/ ;
+        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/platforms/libqxcb.so $$RELEASE_PATH/plugins/platforms/ ;
+        #compress package
+        postbuild.commands += "tar -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_PATH"
     }
 
     prebuild.target = cleandeploy
