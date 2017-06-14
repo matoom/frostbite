@@ -25,7 +25,7 @@ loop {
     elsif line.start_with? "P"
       client.puts "P	DR	1495	DR.EC	250	DR.P	2500"
     elsif line.start_with? "C"
-      client.puts "C	1	1	0	0	W_TEST_001	Test"
+      client.puts "C	3	16	1	1	W_ACCTNAME_000	Char1	W_ACCTNAME_002	Char2	W_ACCTNAME_003	Char3"
     elsif line.start_with? "L"
       client.puts "L	OK	UPPORT=5535	GAME=STORM	GAMECODE=DR	FULLGAMENAME=StormFront	GAMEFILE=STORMFRONT.EXE	GAMEHOST=127.0.0.1	GAMEPORT=7900	KEY=830aeadfdc81a8e4cb629994880db3f3"
     elsif line.start_with? "<c>/FE:STORMFRONT"

@@ -159,18 +159,22 @@ void EAuthService::negotiateSession(QByteArray buffer) {
     } else if(buffer.startsWith("P\t")) {
         this->write("C\n");
     } else if(buffer.startsWith("C\t")) {
-        QRegExp rx("\\\t(\\w{2,})");
+        QRegularExpression numeric("^\\d+$");
+        QRegExp rx("\\t(\\w+)");
+
         int pos = 0;
         QStringList list;
-
         while ((pos = rx.indexIn(buffer, pos)) != -1) {
-            list << rx.cap(1);
+            // filter out numbers only
+            if(!numeric.match(rx.cap(1)).hasMatch()) {
+                list << rx.cap(1);
+            }
             pos += rx.matchedLength();
         }
 
-        for(int i = 0; i < list.length(); i = i+2) {
+        for(int i = 0; i < list.length(); i = i + 2) {
             QString id = list[i];
-            QString name = list[i+1];
+            QString name = list[i + 1];
 
             emit addCharacter(id, name);
         }
