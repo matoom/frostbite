@@ -262,6 +262,13 @@ CONFIG(release, debug|release) {
         # copy plugins
         postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/platforms/ ;
         postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/platforms/libqxcb.so $$RELEASE_PATH/plugins/platforms/ ;
+
+        postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/imageformats/ ;
+        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/imageformats/*.so $$RELEASE_PATH/plugins/imageformats/ ;
+
+        postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/audio/ ;
+        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/audio/*.so $$RELEASE_PATH/plugins/audio/ ;
+
         #compress package
         postbuild.commands += "tar -C $$RELEASE_PATH/../ -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_DIR"
     }
