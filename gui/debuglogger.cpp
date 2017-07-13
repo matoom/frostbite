@@ -18,5 +18,10 @@ void DebugLogger::run() {
     }
 }
 
-DebugLogger::~DebugLogger() {
+DebugLogger::~DebugLogger() {   
+    if(!this->wait(1000)) {
+        qWarning("Thread deadlock detected, terminating thread.");
+        this->terminate();
+        this->wait();
+    }
 }

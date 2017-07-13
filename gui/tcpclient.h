@@ -30,6 +30,7 @@ public:
 
     void writeCommand(QString);
     void showError(QString);
+    void log(QByteArray buffer);
     void updateSettings();
     void disconnectFromServer();
 

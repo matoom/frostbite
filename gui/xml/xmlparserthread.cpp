@@ -204,9 +204,8 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
             cmgr = false;
         }
     } if(e.tagName() == "settingsInfo") {
-        emit writeSettings();
-    } else if(e.tagName() == "settings") {
         emit writeModeSettings();
+        emit writeSettings();
     } else if(e.tagName() == "style" && e.attribute("id") == "roomName") {
         QString roomName = root.text().trimmed();
         TextUtils::plainToHtml(roomName);

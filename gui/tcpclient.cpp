@@ -126,8 +126,8 @@ void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
     tcpSocket->waitForConnected();
 
-    tcpSocket->write("<c>" + sessionKey.toLocal8Bit() + "\n" +
-                     "<c>/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML\n");
+    this->writeCommand(sessionKey);
+    this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML");
 }
 
 void TcpClient::disconnectedFromHost() {
@@ -161,31 +161,28 @@ void TcpClient::writeSettings() {
     this->writeCommand("_swclose sooc");
 }
 
-void TcpClient::socketReadyRead() {
-    buffer.append(tcpSocket->readAll());
+void TcpClient::socketReadyRead() {    
+    QByteArray data = tcpSocket->readAll();
+
+    // log raw data
+    this->log(data);
+
+    buffer.append(data);
 
     if(buffer.endsWith("\n") || xmlParser->isCmgr()){
         // process raw data
         emit addToQueue(buffer);
         if(!xmlParser->isRunning()) {
             xmlParser->start();
-        }
-
-        // log raw data
-        if(settings->getParameter("Logging/debug", false).toBool()) {
-            debugLogger->addText(buffer);
-            if(!debugLogger->isRunning()) {
-                debugLogger->start();
-            }
-        }
-
+        }                
         buffer.clear();
     }
 }
 
-void TcpClient::writeCommand(QString cmd) {
-    //qDebug() << QTime::currentTime().toString("hh:mm:ss.zzz");
-    tcpSocket->write("<c>" + cmd.append("\n").toLocal8Bit());
+void TcpClient::writeCommand(QString cmd) {    
+    QByteArray sendCmd = "<c>" + cmd.append("\n").toUtf8();
+    this->log(sendCmd);
+    tcpSocket->write(sendCmd);
     tcpSocket->flush();
 }
 
@@ -211,6 +208,15 @@ void TcpClient::showError(QString message) {
         "* " + message.toLocal8Bit() + "<br>"
         "*<br>"
         "<br><br>");
+}
+
+void TcpClient::log(QByteArray buffer) {
+    if(settings->getParameter("Logging/debug", false).toBool()) {
+        debugLogger->addText(buffer);
+        if(!debugLogger->isRunning()) {
+            debugLogger->start();
+        }
+    }
 }
 
 void TcpClient::disconnectFromServer() {

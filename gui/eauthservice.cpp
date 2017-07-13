@@ -181,9 +181,14 @@ void EAuthService::negotiateSession(QByteArray buffer) {
     } else if(buffer.startsWith("L\t")) {
         QList<QByteArray> lResponse = buffer.split('\t');
 
-        emit sessionRetrieved(this->extractValue("GAMEHOST", lResponse),
-                              this->extractValue("GAMEPORT", lResponse),
-                              this->extractValue("KEY", lResponse));
+        QString gamehost = this->extractValue("GAMEHOST", lResponse);
+        QString gamePort = this->extractValue("GAMEPORT", lResponse);
+        QString key = this->extractValue("KEY", lResponse);
+
+        this->log(QString("Session retrieved for " + gamehost + ":"
+                          + gamePort + " with key \"" + key + "\"").toLocal8Bit());
+
+        emit sessionRetrieved(gamehost, gamePort, key);
 
         tcpSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
