@@ -22,6 +22,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
     connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
     connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
+    connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), this, SLOT(writeDefaultSettings(QString)));
 
     if(MainWindow::DEBUG) {
         this->loadMockData();
@@ -126,10 +127,8 @@ void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
     tcpSocket->waitForConnected();
 
-    QString releaseVersion = QCoreApplication::applicationVersion();
-
     this->writeCommand(sessionKey);
-    this->writeCommand("/FE:FROSTBITE /VERSION:" + releaseVersion + " /P:XPLAT /XML");
+    this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_UNKNOWN /XML");
 }
 
 void TcpClient::disconnectedFromHost() {
@@ -163,6 +162,10 @@ void TcpClient::writeSettings() {
     this->writeCommand("_swclose sooc");
 }
 
+void TcpClient::writeDefaultSettings(QString settings) {
+    this->writeCommand("<db>" + settings);
+}
+
 void TcpClient::socketReadyRead() {    
     QByteArray data = tcpSocket->readAll();
 
@@ -176,7 +179,7 @@ void TcpClient::socketReadyRead() {
         emit addToQueue(buffer);
         if(!xmlParser->isRunning()) {
             xmlParser->start();
-        }                
+        }
         buffer.clear();
     }
 }

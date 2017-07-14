@@ -163,7 +163,12 @@ void XmlParserThread::processGameData(QString data) {
     data = processMonoOutput(data);
 
     QDomDocument doc("gameData");
-    if(!doc.setContent(this->wrapRoot(data))) {
+    if(!doc.setContent(this->wrapRoot(data))) {                
+        // never loged into stormfront; send initial settings
+        if(data.contains("space not found")) {
+            emit writeDefaultSettings(stormfrontSettings);
+            return;
+        }
         TextUtils::plainToHtml(data);
         if(!doc.setContent(this->wrapRoot(this->wrapCdata(data)))) {
             this->warnInvalidXml("game-data-doc", data);
@@ -194,9 +199,11 @@ void XmlParserThread::processGameData(QString data) {
 bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     QDomElement e = n.toElement();
 
-    /* Process game text with start tag only */
+    /* Process game text with start tag only */        
     if(e.tagName() == "mode") {
-        if(e.attribute("id") == "CMGR") {
+        if(e.attribute("id") == "GAME") {
+            stormfrontSettings = toString(n.nextSiblingElement()).trimmed();
+        } else if(e.attribute("id") == "CMGR") {
             cmgr = true;
             gameDataContainer->setRoomDesc("");
             emit updateRoomWindow();

@@ -166,7 +166,7 @@ void EAuthService::negotiateSession(QByteArray buffer) {
             QString id = accounts[i];
             QString name = accounts[i + 1];
 
-            emit addCharacter(id, name);
+            emit addCharacter(id, name.trimmed());
         }
     } else if(buffer.startsWith("L\t")) {
         QList<QByteArray> lResponse = buffer.split('\t');

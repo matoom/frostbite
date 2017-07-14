@@ -58,6 +58,8 @@ private:
 
     QString activeSpells;
 
+    QString stormfrontSettings;
+
     QHash<QString, QVariant> scheduled;
 
     bool exit;
@@ -130,10 +132,11 @@ signals:
     void writeText(QByteArray, bool);
     void writeSettings();
     void writeModeSettings();
+    void writeDefaultSettings(QString);
 
     void registerStreamWindow(QString, QString);
     void writeStreamWindow(QString, QString);
-    void clearStreamWindow(QString);
+    void clearStreamWindow(QString);    
 
 public slots:
     void addData(QByteArray);
