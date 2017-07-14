@@ -113,8 +113,8 @@ void XmlParserThread::cache(QByteArray data) {
     }
 }
 
-void XmlParserThread::process(QString data) {
-    QString str = fixInputXml(data);
+void XmlParserThread::process(QString data) {    
+    QString str = fixInputXml(TextUtils::rstrip(data));
 
     QList<QString> lines = str.split("\r\n");
 
