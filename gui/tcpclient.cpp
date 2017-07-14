@@ -126,8 +126,10 @@ void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
     tcpSocket->waitForConnected();
 
+    QString releaseVersion = QCoreApplication::applicationVersion();
+
     this->writeCommand(sessionKey);
-    this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_XP /XML");
+    this->writeCommand("/FE:FROSTBITE /VERSION:" + releaseVersion + " /P:XPLAT /XML");
 }
 
 void TcpClient::disconnectedFromHost() {

@@ -158,23 +158,13 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         this->write("P\t" + this->gameId.toLocal8Bit() + "\n");
     } else if(buffer.startsWith("P\t")) {
         this->write("C\n");
-    } else if(buffer.startsWith("C\t")) {
-        QRegularExpression numeric("^\\d+$");
-        QRegExp rx("\\t(\\w+)");
+    } else if(buffer.startsWith("C\t")) {        
+        QList<QByteArray> list = buffer.split('\t');
+        QList<QByteArray> accounts = list.mid(5);
 
-        int pos = 0;
-        QStringList list;
-        while ((pos = rx.indexIn(buffer, pos)) != -1) {
-            // filter out numbers only
-            if(!numeric.match(rx.cap(1)).hasMatch()) {
-                list << rx.cap(1);
-            }
-            pos += rx.matchedLength();
-        }
-
-        for(int i = 0; i < list.length(); i = i + 2) {
-            QString id = list[i];
-            QString name = list[i + 1];
+        for(int i = 0; i < accounts.length(); i = i + 2) {
+            QString id = accounts[i];
+            QString name = accounts[i + 1];
 
             emit addCharacter(id, name);
         }
