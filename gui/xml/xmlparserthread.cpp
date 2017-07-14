@@ -114,7 +114,7 @@ void XmlParserThread::cache(QByteArray data) {
 }
 
 void XmlParserThread::process(QString data) {
-    QString str = fixInputXml(data.trimmed());
+    QString str = fixInputXml(data);
 
     QList<QString> lines = str.split("\r\n");
 
@@ -164,7 +164,7 @@ void XmlParserThread::processGameData(QString data) {
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                
-        // never loged into stormfront; send initial settings
+        // never loged into stormfront; send default settings
         if(data.contains("space not found")) {
             emit writeDefaultSettings(stormfrontSettings);
             return;
@@ -202,6 +202,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     /* Process game text with start tag only */        
     if(e.tagName() == "mode") {
         if(e.attribute("id") == "GAME") {
+            cmgr = false;
             stormfrontSettings = toString(n.nextSiblingElement()).trimmed();
         } else if(e.attribute("id") == "CMGR") {
             cmgr = true;
