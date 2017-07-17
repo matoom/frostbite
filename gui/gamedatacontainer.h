@@ -18,6 +18,9 @@ class GameDataContainer : public QObject {
 public:
     static GameDataContainer* Instance();
 
+    void setCharName(QString);
+    QString getCharName();
+
     bool isExpGained(QString name);
 
     void setExpField(bool brief, QString name, QString exp);
@@ -141,6 +144,8 @@ private:
 
     QStringList extractExp(QString, bool brief);
     QReadWriteLock lock;
+
+    QString charName;
 
     QString roomName;
     QString roomDesc;

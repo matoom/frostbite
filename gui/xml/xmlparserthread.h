@@ -56,6 +56,8 @@ private:
     QDateTime roundTime;
     QDateTime castTime;
 
+    QString charName;
+
     QString activeSpells;
 
     QString stormfrontSettings;
@@ -73,7 +75,7 @@ private:
     bool mono;
     bool cmgr;
 
-    int streamCount;
+    int streamCount;        
 
     void processGameData(QString);
 

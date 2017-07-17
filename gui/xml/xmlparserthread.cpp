@@ -51,6 +51,8 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     initCastTime = false;
     prompt = false;
 
+    charName = "";
+
     streamCount = 0;
 
     mono = false;
@@ -214,6 +216,9 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     } if(e.tagName() == "settingsInfo") {
         emit writeModeSettings();
         emit writeSettings();
+    } if(e.tagName() == "app") {
+        this->charName = e.attribute("char");
+        emit setMainTitle(" - " + this->charName);
     } else if(e.tagName() == "style" && e.attribute("id") == "roomName") {
         QString roomName = root.text().trimmed();
         TextUtils::plainToHtml(roomName);
@@ -356,9 +361,9 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             emit updateSpell(e.text());
         } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
             /* filter main window title */
-            QString title = e.attribute("subtitle");
+            QString title = e.attribute("subtitle");                       
             gameDataContainer->setRoomName(title.mid(3));
-            emit setMainTitle(title);
+            //emit setMainTitle(" - " + this->charName + title);
             //emit updateRoomWindowTitle(title);
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");

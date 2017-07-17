@@ -50,7 +50,9 @@ void ScriptApiServer::readyRead() {
         QString line = QString::fromUtf8(socket->readLine()).trimmed();
         if(line.startsWith("GET")) {
             ApiRequest request = parseRequest(line.mid(3).trimmed());
-            if(request.name == "EXP_RANK") {
+            if(request.name == "CHAR_NAME") {
+                this->write(socket, tr("%1\\0").arg(data->getCharName()));
+            } else if(request.name == "EXP_RANK") {
                 this->write(socket, tr("%1\\0").arg(data->getExp(request.args.at(0)).value("rank")));
             } else if(request.name == "EXP_STATE") {
                 this->write(socket, tr("%1\\0").arg(data->getExp(request.args.at(0)).value("state")));

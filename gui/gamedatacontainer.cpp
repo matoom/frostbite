@@ -100,6 +100,16 @@ void GameDataContainer::setExpFieldBrief(QString name, QString exp) {
     this->exp.insert(name, exp);
 }
 
+void GameDataContainer::setCharName(QString charName) {
+    QWriteLocker locker(&lock);
+    this->charName = charName;
+}
+
+QString GameDataContainer::getCharName() {
+    QReadLocker locker(&lock);
+    return this->charName;
+}
+
 void GameDataContainer::setContainer(QStringList container) {
     QWriteLocker locker(&lock);
     container.removeFirst();
