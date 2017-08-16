@@ -1,12 +1,28 @@
 #include "generalsettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(GeneralSettingsInstance, uniqueInstance)
+
+GeneralSettings* GeneralSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new GeneralSettingsInstance();
+    }
+}
 
 GeneralSettings::GeneralSettings() {
-    clientSettings = new ClientSettings();
+    clientSettings = ClientSettings::getInstance();
     this->init();
 }
 
-void GeneralSettings::init() {
+void GeneralSettings::init() {    
     settings = new QSettings(clientSettings->profilePath() + "general.ini", QSettings::IniFormat);
+}
+
+void GeneralSettings::reInit() {
+    delete settings;
+    this->init();
 }
 
 void GeneralSettings::setParameter(QString name, QVariant value) {
@@ -47,7 +63,6 @@ QColor GeneralSettings::dockWindowBackground(){
         DEFAULT_DOCK_BACKGROUND).value<QColor>();
 }
 
-GeneralSettings::~GeneralSettings() {
-    delete clientSettings;
+GeneralSettings::~GeneralSettings() {    
     delete settings;
 }

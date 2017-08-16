@@ -2,7 +2,7 @@
 
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    highlightSettings = new HighlightSettings();
+    highlightSettings = HighlightSettings::getInstance();
     audioPlayer = AudioPlayer::Instance();
 
     healthAlert = true;
@@ -12,7 +12,7 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
 }
 
 void Highlighter::reloadSettings() {
-    highlightSettings->init();
+    highlightSettings = HighlightSettings::getInstance();
 }
 
 QString Highlighter::highlight(QString text) {  
@@ -134,5 +134,4 @@ Qt::CaseSensitivity Highlighter::matchCase(bool value) {
 }
 
 Highlighter::~Highlighter() {
-    delete highlightSettings;
 }

@@ -10,9 +10,10 @@
 #include <clientsettings.h>
 
 class HighlightSettings {
+    friend class HighlightSettingsInstance;
 
 public:
-    HighlightSettings();
+    static HighlightSettings* getInstance();
     ~HighlightSettings();
 
     void setSingleParameter(QString name, QVariant value);
@@ -20,7 +21,7 @@ public:
 
     QList<HighlightSettingsEntry>* settingsCache;
 
-    void init();
+    void reInit();
 
     void setParameter(QString, HighlightSettingsEntry entry);
     void addParameter(QString, HighlightSettingsEntry entry);
@@ -28,7 +29,7 @@ public:
     void setSettings(QString, QList<HighlightSettingsEntry>*);
 
 private:
-    bool initSettings;
+    explicit HighlightSettings();
 
     void create();
 
@@ -39,6 +40,12 @@ private:
     ClientSettings* clientSettings;
     QSettings* settings;
 
+    QReadWriteLock lock;
+
 };
+
+class HighlightSettingsInstance : public HighlightSettings {
+};
+
 
 #endif // HIGHLIGHTSETTINGS_H

@@ -28,7 +28,7 @@ loop {
       client.puts "C	3	16	1	1	W_ACCTNAME_000	Char1	W_ACCTNAME-002	Char2	W_ACCTNAME_003	-Char3-"
     elsif line.start_with? "L"
       client.puts "L	OK	UPPORT=5535	GAME=STORM	GAMECODE=DR	FULLGAMENAME=StormFront	GAMEFILE=STORMFRONT.EXE	GAMEHOST=127.0.0.1	GAMEPORT=7900	KEY=830aeadfdc81a8e4cb629994880db3f3"
-    elsif line.start_with? "<c>/FE:FROSTBITE"
+    elsif line.start_with? "<c>/FE:STORMFRONT"
       i, chunk = 0, ''
       File.open(file_path).read.each_line do |row|
         if row.include? "<prompt"

@@ -2,8 +2,8 @@
 
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
-    settings = new HighlightSettings();
-    generalSettings = new GeneralSettings();
+    settings = HighlightSettings::getInstance();
+    generalSettings = GeneralSettings::getInstance();
     audioPlayer = AudioPlayer::Instance();
 
     listWidget = highlightDialog->getGeneralList();
@@ -36,11 +36,8 @@ void HighlightGeneralTab::setBackground() {
 }
 
 void HighlightGeneralTab::updateSettings() {
-    delete settings;
-    settings = new HighlightSettings();
-
-    delete generalSettings;
-    generalSettings = new GeneralSettings();
+    settings = HighlightSettings::getInstance();
+    generalSettings = GeneralSettings::getInstance();
 
     this->loadSettings();
     this->setBackground();

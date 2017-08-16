@@ -2,7 +2,7 @@
 
 VitalsBar::VitalsBar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    clientSettings = new ClientSettings();
+    clientSettings = ClientSettings::getInstance();
 }
 
 void VitalsBar::add() {

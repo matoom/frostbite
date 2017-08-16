@@ -7,7 +7,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     windowFacade = mainWindow->getWindowFacade();
     wordCompleter = new WordCompleter(this);
     keyboardFilter = new KeyboardFilter(this);
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     historyCounter = -1;
 
@@ -19,6 +19,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     connect(this, SIGNAL(returnPressed()), this, SLOT(sendCommand()));
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(resetCompleter(const QString&)));
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+    connect(mainWindow, SIGNAL(profileChanged()), keyboardFilter, SLOT(reloadSettings()));
 
     this->setAutoFillBackground(true);
     this->loadSettings();
@@ -27,8 +28,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
 }
 
 void CommandLine::reloadSettings() {
-    delete settings;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     this->loadSettings();
 }
 
@@ -46,10 +46,6 @@ void CommandLine::loadSettings() {
     p.setColor(QPalette::Base, textBackground);
 
     this->setPalette(p);
-}
-
-void CommandLine::updateMacroSettings() {
-    keyboardFilter->reloadSettings();
 }
 
 RoundTimeDisplay* CommandLine::getRoundtimeDisplay() {
@@ -206,7 +202,7 @@ bool CommandLine::filterCommand(QString text) {
             return true;
         }
     } else if (text.startsWith("#profile")) {
-        mainWindow->updateProfileSettings(text.mid(8).trimmed());
+        mainWindow->updateProfileSettings(text.mid(8).trimmed(), "L");
         this->clear();
         return true;
     }

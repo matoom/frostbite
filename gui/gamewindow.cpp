@@ -3,7 +3,7 @@
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
     windowFacade = mainWindow->getWindowFacade();
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     snapshot = new Snapshot(this);
 
     this->setObjectName(WINDOW_TITLE_MAIN);

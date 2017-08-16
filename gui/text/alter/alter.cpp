@@ -1,13 +1,13 @@
 #include "alter.h"
 
 Alter::Alter(QObject *parent) : QObject(parent) {
-    ignoreSettings = new IgnoreSettings();
-    substituteSettings = new SubstitutionSettings();
+    ignoreSettings = IgnoreSettings::getInstance();
+    substituteSettings = SubstitutionSettings::getInstance();
 }
 
 void Alter::reloadSettings() {
-    ignoreSettings->init();
-    substituteSettings->init();
+    ignoreSettings->reInit();
+    substituteSettings->reInit();
 }
 
 QString Alter::substitute(QString text, QString window) {
@@ -36,5 +36,4 @@ bool Alter::ignore(QString text, QString window) {
 
 Alter::~Alter() {
     delete ignoreSettings;
-    delete substituteSettings;
 }

@@ -2,7 +2,7 @@
 
 GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
     mainWindow = (MainWindow*)parent;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     wm = mainWindow->getWindowFacade();
 
     this->loadSettings();
@@ -15,7 +15,7 @@ GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
 
 void GridWindow::updateSettings() {
     delete settings;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 }
 
 void GridWindow::loadSettings() {

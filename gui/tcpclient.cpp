@@ -5,7 +5,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     eAuth = new EAuthService(this);
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
-    settings = new ClientSettings();
+    settings = ClientSettings::getInstance();
     api = false;
 
     debugLogger = new DebugLogger();
@@ -17,7 +17,9 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     }    
 
-    xmlParser = new XmlParserThread(parent);
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+
+    xmlParser = new XmlParserThread(parent);        
     connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
     connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
@@ -29,7 +31,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     }
 }
 
-void TcpClient::updateSettings() {
+void TcpClient::reloadSettings() {
     emit updateHighlighterSettings();
 }
 

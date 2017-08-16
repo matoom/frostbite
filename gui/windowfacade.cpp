@@ -10,9 +10,9 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     gridWindowFactory = new GridWindowFactory(parent);    
     navigationDisplay = new NavigationDisplay(parent);
     gameDataContainer = GameDataContainer::Instance();
-    clientSettings = new ClientSettings();
-    settings = new HighlightSettings();
-    generalSettings = new GeneralSettings();
+    clientSettings = ClientSettings::getInstance();
+    settings = HighlightSettings::getInstance();
+    generalSettings = GeneralSettings::getInstance();
 
     rxRemoveTags.setPattern("<[^>]*>");
 
@@ -25,18 +25,17 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     familiarVisible = false;
     spellVisible = false;
     writePrompt = false;
+
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
 }
 
 void WindowFacade::reloadSettings() {
     this->reloadHighlighterSettings();
 
-    delete settings;
-    settings = new HighlightSettings();
+    settings = HighlightSettings::getInstance();
+    generalSettings = GeneralSettings::getInstance();
 
     this->updateWindowStyle();
-
-    delete generalSettings;
-    generalSettings = new GeneralSettings();
     this->updateWindowColors();
 }
 
@@ -721,8 +720,6 @@ WindowFacade::~WindowFacade() {
     delete deathsLogger;
 
     delete settings;
-    delete generalSettings;
-    delete clientSettings;
 
     delete mapFacade->getMapWindow();
 }

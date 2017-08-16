@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QDir>
+#include <QStandardPaths>
 
 #include <clientsettings.h>
 
@@ -24,6 +25,7 @@ private:
     ClientSettings* clientSettings;
 
     void createProfile();
+    void populate();
 
 private slots:
     void okClicked();

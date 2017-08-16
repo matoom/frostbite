@@ -70,7 +70,6 @@ public:
     void setDockFont(QFont font);
     void copyDock();
     void saveArrivals();
-    void reloadSettings();
     void reloadHighlighterSettings();    
 
     QList<QDockWidget*> getDockWindows();
@@ -121,6 +120,8 @@ public slots:
     void registerStreamWindow(QString id, QString title);
     void writeStreamWindow(QString id, QString text);
     void clearStreamWindow(QString id);
+
+    void reloadSettings();
 
 private slots:
     void thoughtsVisibility(bool);    

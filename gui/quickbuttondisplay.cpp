@@ -2,17 +2,13 @@
 
 QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
     toolBar = (Toolbar*)parent;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     editDialog = new QuickButtonEditDialog();
 }
 
-void QuickButtonDisplay::updateSettings() {
-    editDialog->updateSettings();
-    delete settings;
-    settings = new GeneralSettings();
-}
-
 void QuickButtonDisplay::reloadSettings() {
+    settings = GeneralSettings::getInstance();
+
     sword->setText(settings->getParameter("QuickButton/sword", "").toString());
     bow->setText(settings->getParameter("QuickButton/bow", "").toString());
     shield->setText(settings->getParameter("QuickButton/shield", "").toString());
@@ -145,6 +141,5 @@ QuickButtonDisplay::~QuickButtonDisplay() {
     delete xshield;
     delete hLayout;
     delete buttonWidget;
-    delete settings;
     delete editDialog;
 }

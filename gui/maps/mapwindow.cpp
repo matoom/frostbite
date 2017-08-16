@@ -4,7 +4,7 @@ MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
     mapFacade = parent;
     selected = NULL;
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     this->setBackgroundBrush(QBrush(settings->dockWindowBackground()));
 
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -75,5 +75,4 @@ void MapWindow::contextMenuEvent(QContextMenuEvent* event) {
 }
 
 MapWindow::~MapWindow() {
-    delete settings;
 }

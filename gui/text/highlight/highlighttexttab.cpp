@@ -1,10 +1,10 @@
 #include "highlighttexttab.h"
 
-HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
-    highlightSettings = new HighlightSettings();
+HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {    
+    highlightSettings = HighlightSettings::getInstance();
     audioPlayer = AudioPlayer::Instance();
     highlightList = highlightSettings->getTextHighlights();
-    generalSettings = new GeneralSettings();
+    generalSettings = GeneralSettings::getInstance();
 
     highlightDialog = (HighlightDialog*)parent;
     addButton = highlightDialog->getTextAddButton();
@@ -136,11 +136,8 @@ void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
 }
 
 void HighlightTextTab::updateSettings() {
-    delete highlightSettings;
-    highlightSettings = new HighlightSettings();
-
-    delete generalSettings;
-    generalSettings = new GeneralSettings();
+    highlightSettings = HighlightSettings::getInstance();
+    generalSettings = GeneralSettings::getInstance();
 
     highlightEditDialog->updateSettings();
     highlightAddDialog->updateSettings();
@@ -149,9 +146,7 @@ void HighlightTextTab::updateSettings() {
 }
 
 void HighlightTextTab::populateHighlights() {
-    delete highlightSettings;
-    highlightSettings = new HighlightSettings();
-
+    highlightSettings = HighlightSettings::getInstance();
     highlightList = highlightSettings->getTextHighlights();
 }
 
@@ -466,6 +461,4 @@ void HighlightTextTab::showEditDialog() {
 }
 
 HighlightTextTab::~HighlightTextTab() {
-    delete highlightSettings;
-    delete generalSettings;
 }

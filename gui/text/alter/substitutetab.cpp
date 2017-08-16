@@ -7,7 +7,7 @@ SubstituteTab::SubstituteTab(QObject *parent) : QObject(parent), AbstractTableTa
     addButton = alterDialog->getSubstitutionAddButton();
     removeButton = alterDialog->getSubstitutionRemoveButton();
 
-    settings = new SubstitutionSettings();
+    settings = SubstitutionSettings::getInstance();
 
     QStringList labels;
     labels << "Pattern" << "Substitute";
@@ -34,8 +34,7 @@ void SubstituteTab::print(QString text) {
 }
 
 void SubstituteTab::updateSettings() {
-    delete settings;
-    settings = new SubstitutionSettings();
+    settings = SubstitutionSettings::getInstance();
     this->initSubstitutionList();
 }
 

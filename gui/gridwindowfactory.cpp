@@ -2,7 +2,7 @@
 
 GridWindowFactory::GridWindowFactory(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 }
 
 QPalette GridWindowFactory::palette() {

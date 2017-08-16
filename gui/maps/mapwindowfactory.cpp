@@ -4,7 +4,7 @@ MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
     mapFacade = parent;
     mapWindow = new MapWindow(mapFacade);
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 }
 
 QPalette MapWindowFactory::palette() {
@@ -136,5 +136,4 @@ QDockWidget* MapWindowFactory::createWindow(const char* name) {
 }
 
 MapWindowFactory::~MapWindowFactory() {
-    delete settings;
 }

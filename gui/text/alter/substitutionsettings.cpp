@@ -1,15 +1,25 @@
 #include "substitutionsettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(SubstitutionSettingsInstance, uniqueInstance)
+
+SubstitutionSettings* SubstitutionSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new SubstitutionSettingsInstance();
+    }
+}
 
 SubstitutionSettings::SubstitutionSettings() {
-    clientSettings = new ClientSettings();
-
-    initSettings = true;
-    settingsCache = QList<AlterSettingsEntry>();
+    clientSettings = ClientSettings::getInstance();
     this->create();
 }
 
-void SubstitutionSettings::init() {
-    initSettings = true;
+void SubstitutionSettings::reInit() {
+    QWriteLocker locker(&lock);
+    delete settings;
+    this->create();
 }
 
 void SubstitutionSettings::create() {
@@ -17,6 +27,7 @@ void SubstitutionSettings::create() {
 }
 
 void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
+    QWriteLocker locker(&lock);
     settings->remove("substitution");
     settings->beginWriteArray("substitution");
 
@@ -33,6 +44,7 @@ void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
 }
 
 void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int id = settings->value("substitution/size").toInt();
 
     settings->beginWriteArray("substitution");
@@ -45,6 +57,7 @@ void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
 }
 
 void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int size = settings->value("substitution/size").toInt();
 
     settings->beginWriteArray("substitution");
@@ -59,17 +72,13 @@ void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
 }
 
 QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
-    if(initSettings) {
-        settings->deleteLater();
-        this->create();
-        settingsCache.clear();
-        this->loadSettings("substitution", settingsCache);
-        initSettings = false;
-    }
+    QList<AlterSettingsEntry> settingsCache = QList<AlterSettingsEntry>();
+    this->loadSettings("substitution", settingsCache);
     return settingsCache;
 }
 
 void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
+    QReadLocker locker(&lock);
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
@@ -83,6 +92,5 @@ void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry>
 }
 
 SubstitutionSettings::~SubstitutionSettings() {
-    delete clientSettings;
     delete settings;
 }

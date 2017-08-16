@@ -17,14 +17,15 @@ public:
     explicit KeyboardFilter(QObject *parent = 0);
     ~KeyboardFilter();
 
-    void reloadSettings();
-
 protected:
     bool eventFilter(QObject *Object, QEvent *Event);
 
 private:
     CommandLine* commandLine;
     MacroSettings* macroSettings;
+
+public slots:
+    void reloadSettings();
 
 };
 

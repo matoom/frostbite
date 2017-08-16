@@ -1,15 +1,25 @@
 #include "highlightsettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(HighlightSettingsInstance, uniqueInstance)
+
+HighlightSettings* HighlightSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new HighlightSettingsInstance();
+    }
+}
 
 HighlightSettings::HighlightSettings() {
-    clientSettings = new ClientSettings();
-
-    initSettings = true;
-    settingsCache = new QList<HighlightSettingsEntry>();
+    clientSettings = ClientSettings::getInstance();
     this->create();
 }
 
-void HighlightSettings::init() {
-    initSettings = true;
+void HighlightSettings::reInit() {
+    QWriteLocker locker(&lock);
+    delete settings;
+    this->create();
 }
 
 void HighlightSettings::create() {
@@ -17,14 +27,17 @@ void HighlightSettings::create() {
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
+    QWriteLocker locker(&lock);
     settings->setValue(name, value);
 }
 
 QVariant HighlightSettings::getSingleParameter(QString name, QVariant defaultValue) {
+    QWriteLocker locker(&lock);
     return settings->value(name, defaultValue);
 }
 
 void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int id = settings->value(group + "/size").toInt();
 
     settings->beginWriteArray(group);
@@ -42,6 +55,7 @@ void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry
 }
 
 void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int size = settings->value(group + "/size").toInt();
 
     settings->beginWriteArray(group);
@@ -60,7 +74,15 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue(group + "/size", size);
 }
 
+// TODO: profile cache/remove?
+QList<HighlightSettingsEntry>* HighlightSettings::getTextHighlights() {
+    QList<HighlightSettingsEntry>* settingsCache = new QList<HighlightSettingsEntry>();
+    this->loadSettings("TextHighlight", settingsCache);
+    return settingsCache;
+}
+
 void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
+    QReadLocker locker(&lock);
     int size = settings->beginReadArray(group);
 
     for (int i = 0; i < size; i++) {
@@ -80,19 +102,8 @@ void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry
     settings->endArray();
 }
 
-// TODO: profile cache/remove?
-QList<HighlightSettingsEntry>* HighlightSettings::getTextHighlights() {
-    if(initSettings) {
-        settings->deleteLater();
-        this->create();
-        settingsCache->clear();
-        this->loadSettings("TextHighlight", settingsCache);
-        initSettings = false;
-    }
-    return settingsCache;
-}
-
 void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
+    QWriteLocker locker(&lock);
     settings->remove(group);
     settings->beginWriteArray(group);
 
@@ -116,5 +127,4 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 HighlightSettings::~HighlightSettings() {
     delete settings;
     delete settingsCache;
-    delete clientSettings;
 }

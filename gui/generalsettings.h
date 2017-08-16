@@ -9,13 +9,16 @@
 #include <clientsettings.h>
 #include <defaultvalues.h>
 
-class GeneralSettings {
+class GeneralSettings {    
+    friend class GeneralSettingsInstance;
 
 public:
-    GeneralSettings();
+    static GeneralSettings* getInstance();
+
     ~GeneralSettings();
 
-    void init();
+    void reInit();
+
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue);
 
@@ -28,10 +31,17 @@ public:
     QColor dockWindowBackground();
 
 private:
+    explicit GeneralSettings();
+
+    void init();
+
     QSettings* settings;
 
     ClientSettings* clientSettings;
 
+};
+
+class GeneralSettingsInstance : public GeneralSettings {
 };
 
 #endif // GENERALSETTINGS_H

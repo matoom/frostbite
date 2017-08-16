@@ -5,13 +5,15 @@
 #include <QApplication>
 #include <QDockWidget>
 #include <QDebug>
+#include <QStandardPaths>
 
 #include <QDir>
 
 class ClientSettings : QSettings {
+    friend class ClientSettingsInstance;
 
 public:
-    ClientSettings();
+    static ClientSettings* getInstance();
 
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue);
@@ -20,7 +22,11 @@ public:
     QString profilePath();
 
 private:
+    explicit ClientSettings();
 
+};
+
+class ClientSettingsInstance : public ClientSettings {
 };
 
 #endif // CLIENTSETTINGS_H

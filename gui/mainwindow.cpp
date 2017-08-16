@@ -32,7 +32,7 @@ void MainWindow::appSetup() {
     // load client window state
     // workaround:
     // https://bugreports.qt.io/browse/QTBUG-16252
-    settings = new ClientSettings();
+    settings = ClientSettings::getInstance();
 
     if(settings->hasValue("MainWindow/geometry")) {
         QVariant::Type t = settings->getParameter("MainWindow/geometry", "").type();
@@ -45,7 +45,7 @@ void MainWindow::appSetup() {
     restoreState(settings->getParameter("MainWindow/state", "").toByteArray());
 
     // load general settings
-    generalSettings = new GeneralSettings();
+    generalSettings = GeneralSettings::getInstance();
 
     // load tray
     tray = new Tray(this);
@@ -59,20 +59,16 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
-void MainWindow::updateProfileSettings(QString profile) {
-    settings->setParameter("Profile/name", profile);
+void MainWindow::updateProfileSettings(QString name, QString type) {
+    settings->setParameter("Profile/name", name);
+    settings->setParameter("Profile/type", type);
 
-    // highlights
-    tcpClient->updateSettings();
-    // general highlights/window coloring
-    windowFacade->reloadSettings();
-    // macros
-    cmdLine->updateMacroSettings();    
-    // quick buttons
-    toolBar->updateQuickButtonSettings();
-    // dialogs
-    menuHandler->updateDialogSettings();
-    // profile change event
+    GeneralSettings::getInstance()->reInit();
+    MacroSettings::getInstance()->reInit();
+    SubstitutionSettings::getInstance()->reInit();
+    IgnoreSettings::getInstance()->reInit();
+    HighlightSettings::getInstance()->reInit();
+
     emit profileChanged();
 }
 

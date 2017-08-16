@@ -4,7 +4,7 @@
 MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDialog) {
     ui->setupUi(this);
 
-    macroSettings = new MacroSettings();
+    macroSettings = MacroSettings::getInstance();
 
     saveTime = false;
 
@@ -41,9 +41,11 @@ MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDia
     ui->altTable->setFocus();
 }
 
-void MacroDialog::updateSettings() {
-    delete macroSettings;
-    macroSettings = new MacroSettings();
+void MacroDialog::reloadSettings() {
+    macroSettings = MacroSettings::getInstance();
+    this->clearMacros();
+    this->loadSettings();
+    this->loadSequenceTime();
 }
 
 void MacroDialog::clearMacros() {
@@ -207,6 +209,5 @@ void MacroDialog::cancelChanges() {
 }
 
 MacroDialog::~MacroDialog() {
-    delete macroSettings;
     delete ui;
 }

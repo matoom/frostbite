@@ -34,7 +34,6 @@ public:
     MenuHandler(QObject *parent = 0);
     ~MenuHandler();
 
-    void updateDialogSettings();
     void openConnectDialog();
     void openAppearanceDialog();
 
@@ -64,6 +63,7 @@ public slots:
     void menuHovered(QAction*);
     void profileTriggered(QAction* action);
     void loadProfilesMenu();    
+    void reloadSettings();
 };
 
 #endif // MENUHANDLER_H

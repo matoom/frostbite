@@ -2,14 +2,17 @@
 #define IGNORESETTINGS_H
 
 #include <QObject>
+#include <QReadWriteLock>
 
 #include <text/alter/altersettingsentry.h>
 #include <clientsettings.h>
 
+
 class IgnoreSettings {
+    friend class IgnoreSettingsInstance;
 
 public:
-    IgnoreSettings();
+    static IgnoreSettings* getInstance();
     ~IgnoreSettings();
 
     void setParameter(AlterSettingsEntry entry);
@@ -18,16 +21,22 @@ public:
     void setSettings(QList<AlterSettingsEntry> entries);
     void loadSettings(QString, QList<AlterSettingsEntry>&);
 
-    void init();
+    void reInit();
 
 private:        
+    explicit IgnoreSettings();
+
     void create();
 
-    bool initSettings;
-    QList<AlterSettingsEntry> settingsCache;
+    bool initSettings;    
 
     QSettings* settings;
-    ClientSettings* clientSettings;        
+    ClientSettings* clientSettings;
+
+    QReadWriteLock lock;
+};
+
+class IgnoreSettingsInstance : public IgnoreSettings {
 };
 
 #endif // IGNORESETTINGS_H

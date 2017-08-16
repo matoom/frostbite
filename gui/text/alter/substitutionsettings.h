@@ -1,14 +1,19 @@
 #ifndef SUBSTITUTIONSETTINGS_H
 #define SUBSTITUTIONSETTINGS_H
 
+#include <QReadWriteLock>
+
 #include <text/alter/altersettingsentry.h>
 #include <clientsettings.h>
 
 class SubstitutionSettings {
+    friend class SubstitutionSettingsInstance;
 
 public:
-    explicit SubstitutionSettings();
+    static SubstitutionSettings* getInstance();
     ~SubstitutionSettings();
+
+    void reInit();
 
     void setParameter(AlterSettingsEntry entry);
     void addParameter(AlterSettingsEntry entry);
@@ -16,21 +21,23 @@ public:
     void setSettings(QList<AlterSettingsEntry> entries);
     void loadSettings(QString, QList<AlterSettingsEntry>&);
 
-    void init();
-
 private:
-    void create();
+    explicit SubstitutionSettings();
 
-    bool initSettings;
-    QList<AlterSettingsEntry> settingsCache;
+    void create();
 
     QSettings* settings;
     ClientSettings* clientSettings;
+
+    QReadWriteLock lock;
 
 signals:
 
 public slots:
 
+};
+
+class SubstitutionSettingsInstance : public SubstitutionSettings {
 };
 
 #endif // SUBSTITUTIONSETTINGS_H

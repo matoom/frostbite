@@ -29,8 +29,6 @@ public:
 
     MainWindow* getMainWindow();
 
-    void updateQuickButtonSettings();
-
     void loadToolbar();
 
     int getHealthValue();
@@ -83,6 +81,8 @@ public slots:
     void setStatusVisible(bool visible);
     void setButtonsVisible(bool visible);
     void setVitalsVisible(bool visible);
+
+    void reloadSettings();
 };
 
 #endif // TOOLBAR_H

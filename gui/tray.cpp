@@ -3,7 +3,7 @@
 Tray::Tray(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 
-    settings = new ClientSettings();
+    settings = ClientSettings::getInstance();
     conversations = settings->getParameter("Tray/conversations", true).toBool();
 
     createTrayIcon();

@@ -7,7 +7,7 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     timer = new QTimer;
     timer->setInterval(RT_INTERVAL_MS);
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     rtColor = this->getRtColor();
     ctColor = this->getCtColor();
@@ -21,8 +21,7 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
 }
 
 void RoundTimeDisplay::reloadSettings() {
-    delete settings;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     rtColor = this->getRtColor();
     ctColor = this->getCtColor();

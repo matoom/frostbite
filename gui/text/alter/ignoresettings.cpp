@@ -1,15 +1,25 @@
 #include "ignoresettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(IgnoreSettingsInstance, uniqueInstance)
+
+IgnoreSettings* IgnoreSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new IgnoreSettingsInstance();
+    }
+}
 
 IgnoreSettings::IgnoreSettings() {
-    clientSettings = new ClientSettings();
-
-    initSettings = true;
-    settingsCache = QList<AlterSettingsEntry>();
+    clientSettings = ClientSettings::getInstance();
     this->create();
 }
 
-void IgnoreSettings::init() {
-    initSettings = true;
+void IgnoreSettings::reInit() {
+    QWriteLocker locker(&lock);
+    delete settings;
+    this->create();
 }
 
 void IgnoreSettings::create() {
@@ -17,6 +27,7 @@ void IgnoreSettings::create() {
 }
 
 void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
+    QWriteLocker locker(&lock);
     settings->remove("ignore");
     settings->beginWriteArray("ignore");
 
@@ -32,6 +43,7 @@ void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
 }
 
 void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int id = settings->value("ignore/size").toInt();
 
     settings->beginWriteArray("ignore");
@@ -43,6 +55,7 @@ void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
 }
 
 void IgnoreSettings::setParameter(AlterSettingsEntry entry) {
+    QWriteLocker locker(&lock);
     int size = settings->value("ignore/size").toInt();
 
     settings->beginWriteArray("ignore");
@@ -56,17 +69,13 @@ void IgnoreSettings::setParameter(AlterSettingsEntry entry) {
 }
 
 QList<AlterSettingsEntry> IgnoreSettings::getIgnores() {
-    if(initSettings) {
-        settings->deleteLater();
-        this->create();
-        settingsCache.clear();
-        this->loadSettings("ignore", settingsCache);
-        initSettings = false;
-    }
+    QList<AlterSettingsEntry> settingsCache; settingsCache = QList<AlterSettingsEntry>();
+    this->loadSettings("ignore", settingsCache);
     return settingsCache;
 }
 
 void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
+    QReadLocker locker(&lock);
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
@@ -79,6 +88,5 @@ void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &sett
 }
 
 IgnoreSettings::~IgnoreSettings() {
-    delete clientSettings;
     delete settings;
 }

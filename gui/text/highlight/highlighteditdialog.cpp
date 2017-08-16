@@ -7,7 +7,7 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
     ui->setupUi(this);
 
     parentDialog = (QDialog*)parent;
-    settings = new HighlightSettings();
+    settings = HighlightSettings::getInstance();
 
     this->textTab = textTab;
 
@@ -16,8 +16,7 @@ HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *par
 }
 
 void HighlightEditDialog::updateSettings() {    
-    delete settings;
-    settings = new HighlightSettings();
+    settings = HighlightSettings::getInstance();
 }
 
 void HighlightEditDialog::showEvent(QShowEvent * event) {

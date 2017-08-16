@@ -30,8 +30,7 @@ public:
 
     void writeCommand(QString);
     void showError(QString);
-    void log(QByteArray buffer);
-    void updateSettings();
+    void log(QByteArray buffer);    
     void disconnectFromServer();
 
     void connectApi(QString host, QString port, QString user, QString password, QString game, QString character);
@@ -83,6 +82,7 @@ public slots:
     void writeSettings();
     void writeDefaultSettings(QString);
     void writeModeSettings();
+    void reloadSettings();
 };
 
 

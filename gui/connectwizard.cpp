@@ -5,7 +5,7 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     ui->setupUi(this);
 
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
-    settings = new ClientSettings;
+    settings = ClientSettings::getInstance();
 
     movie = new QMovie(":/window/images/loading.gif");
 

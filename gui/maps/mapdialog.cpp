@@ -6,7 +6,7 @@ MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), u
 
     this->mapFacade = mapFacade;
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     ui->mapView->setScene(new QGraphicsScene(0, 0, 0, 0, this));
     this->setBackgroundBrush(QBrush(settings->dockWindowBackground()));
@@ -116,5 +116,4 @@ void MapDialog::setInfo(MapNode* node) {
 
 MapDialog::~MapDialog() {
     delete ui;
-    delete settings;
 }

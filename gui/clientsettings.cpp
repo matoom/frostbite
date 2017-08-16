@@ -1,4 +1,15 @@
 #include "clientsettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(ClientSettingsInstance, uniqueInstance)
+
+ClientSettings* ClientSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new ClientSettingsInstance();
+    }
+}
 
 ClientSettings::ClientSettings() : QSettings(QApplication::applicationDirPath() + "/client.ini", QSettings::IniFormat) {
 }
@@ -17,9 +28,15 @@ bool ClientSettings::hasValue(QString value) {
 
 QString ClientSettings::profilePath() {
     QString profile = value("Profile/name", "").toString();
+    QString type = value("Profile/type", "").toString();
 
-    if(!profile.isEmpty()) {
-        QDir dir(QApplication::applicationDirPath() + "/profiles/" + profile);
+    if(!profile.isEmpty()) {        
+        QDir dir;
+        if(type == "H") {
+            dir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles/" + profile);
+        } else {
+            dir = QDir(QApplication::applicationDirPath() + "/profiles/" + profile);
+        }
 
         if(dir.exists()) {
             return dir.absolutePath() + "/";

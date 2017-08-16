@@ -3,7 +3,7 @@
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();
-    clientSettings = new ClientSettings();
+    clientSettings = ClientSettings::getInstance();
 
     vitalsIndicator = new VitalsIndicator(this);
     statusIndicator = new StatusIndicator(this);
@@ -12,10 +12,11 @@ Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     wieldRight = new WieldIndicator(this, RHAND_ICO);
     spell = new SpellIndicator(this);            
     activeSpell = new ActiveSpellIndicator(this);
+
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
 }
 
-void Toolbar::updateQuickButtonSettings() {
-    quickButtonDisplay->updateSettings();
+void Toolbar::reloadSettings() {
     quickButtonDisplay->reloadSettings();
 }
 

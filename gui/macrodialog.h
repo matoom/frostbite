@@ -21,7 +21,6 @@ public:
     explicit MacroDialog(QWidget *parent = 0);
     ~MacroDialog();
 
-    void updateSettings();
     void clearMacros();
     void loadSettings();
     void loadSequenceTime();
@@ -42,6 +41,9 @@ private:
     void cancelSequenceTime();
 
     bool saveTime;
+
+public slots:
+    void reloadSettings();
 
 private slots:
     void altCommandChanged(QTableWidgetItem*, QTableWidgetItem*);

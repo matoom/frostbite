@@ -1,7 +1,23 @@
 #include "macrosettings.h"
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(MacroSettingsInstance, uniqueInstance)
+
+MacroSettings* MacroSettings::getInstance() {
+    if(uniqueInstance.exists()) {
+        return uniqueInstance;
+    } else {
+        return new MacroSettingsInstance();
+    }
+}
 
 MacroSettings::MacroSettings() {
-    clientSettings = new ClientSettings();
+    clientSettings = ClientSettings::getInstance();
+    this->init();
+}
+
+void MacroSettings::reInit() {
+    delete settings;
     this->init();
 }
 

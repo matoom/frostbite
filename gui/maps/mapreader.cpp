@@ -4,7 +4,7 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     mapFacade = (MapFacade*)parent;
     initialized = false;
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     background = settings->dockWindowBackground();
 
     QtConcurrent::run(this, &MapReader::init);
@@ -346,5 +346,4 @@ bool MapReader::isInRange(int n) {
 
 MapReader::~MapReader() {
     this->uninit();
-    delete settings;
 }

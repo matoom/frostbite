@@ -30,7 +30,6 @@ public:
     ~AppearanceDialog();
 
     void loadSettings();
-    void updateSettings();
     
 private:    
     Ui::AppearanceDialog *ui;
@@ -67,6 +66,9 @@ private:
     QLabel* label(QString);
     void setSelectBackground(QString, QToolButton*, QString);
     void setSelectFont(QString, QToolButton*, QFont);
+
+public slots:
+    void reloadSettings();
 
 private slots:
     void selectMainBg();

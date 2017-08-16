@@ -6,10 +6,13 @@
 #include <clientsettings.h>
 
 class MacroSettings {
+    friend class MacroSettingsInstance;
 
 public:
-    MacroSettings();
+    static MacroSettings* getInstance();
     ~MacroSettings();
+
+    void reInit();
 
     void init();
     void setParameter(QString name, QVariant value);
@@ -18,6 +21,7 @@ public:
     bool hasValue(QString);
 
 private:
+    explicit MacroSettings();
     ClientSettings* clientSettings;
     QSettings* settings;
 
@@ -25,6 +29,9 @@ signals:
     
 public slots:
     
+};
+
+class MacroSettingsInstance : public MacroSettings {
 };
 
 #endif // MACROSETTINGS_H

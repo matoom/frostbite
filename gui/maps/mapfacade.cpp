@@ -4,7 +4,7 @@ MapFacade::MapFacade(MainWindow *parent) : QObject(parent) {
     mainWindow = parent;
     mapWindowFactory = new MapWindowFactory(this);
 
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     this->init();
 }
@@ -211,6 +211,5 @@ MainWindow* MapFacade::getMainWindow() {
 }
 
 MapFacade::~MapFacade() {
-    delete settings;
 }
 

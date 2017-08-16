@@ -2,7 +2,7 @@
 
 MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    clientSettings = new ClientSettings();
+    clientSettings = ClientSettings::getInstance();
 
     connectWizard = new ConnectWizard(qobject_cast<QWidget *>(parent));
     highlightDialog = new HighlightDialog(qobject_cast<QWidget *>(parent));
@@ -14,6 +14,10 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     profileAddDialog = new ProfileAddDialog();
 
     connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
+
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+    connect(mainWindow, SIGNAL(profileChanged()), macroDialog, SLOT(reloadSettings()));
+    connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));
 
     this->loadLoggingMenu();
     this->loadToolbarMenu();
@@ -27,19 +31,13 @@ void MenuHandler::openAppearanceDialog() {
     appearanceDialog->show();
 }
 
-void MenuHandler::updateDialogSettings() {
+void MenuHandler::reloadSettings() {
     alterDialog->updateSettings();
 
     highlightDialog->updateSettings();
     highlightDialog->loadSettings();
 
-    appearanceDialog->updateSettings();
-    appearanceDialog->loadSettings();
-
-    macroDialog->updateSettings();
-    macroDialog->clearMacros();
-    macroDialog->loadSettings();
-    macroDialog->loadSequenceTime();
+    this->loadProfilesMenu();
 }
 
 void MenuHandler::menuTriggered(QAction* action) {
@@ -113,32 +111,44 @@ void MenuHandler::menuHovered(QAction* action) {
 
 void MenuHandler::profileTriggered(QAction* action) {
     if(action->isChecked()) {
-        mainWindow->updateProfileSettings(action->text());
+        QPair<QString, QString> profile = action->data().value<QPair<QString, QString>>();
+        mainWindow->updateProfileSettings(profile.second, profile.first);
     } else {
-        mainWindow->updateProfileSettings("");
+        mainWindow->updateProfileSettings("", "");
     }    
     this->loadProfilesMenu();
 }
 
 void MenuHandler::loadProfilesMenu() {
-    QDir dir(QApplication::applicationDirPath()  + "/profiles");
+    QList<QPair<QString, QStringList>> profiles;
 
-    QStringList dirList = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs, QDir::Name);
+    QDir dir(QApplication::applicationDirPath() + "/profiles");
+    profiles << qMakePair(QString("L"), dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs, QDir::Name));
+
+    QDir homeDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles");
+    profiles << qMakePair(QString("H"), homeDir.entryList(QDir::NoDotAndDotDot | QDir::Dirs, QDir::Name));
 
     profilesMenu = new QMenu(mainWindow);
 
-    QString currentProfile = clientSettings->getParameter("Profile/name", "").toString();
+    QString currentName = clientSettings->getParameter("Profile/name", "").toString();
+    QString currentType = clientSettings->getParameter("Profile/type", "").toString();
 
-    foreach(QString profile, dirList) {
-        action = new QAction(profile, profilesMenu);
-        action->setCheckable(true);
-        action->setData("profile");
+    QPair<QString, QStringList> profile;
+    foreach(profile, profiles) {
+        QString type = profile.first;
 
-        if(currentProfile == profile) {
-            action->setChecked(true);
+        foreach(QString name, profile.second) {
+            action = new QAction(name + " (" + type + ")", profilesMenu);
+            action->setCheckable(true);
+            action->setData(QVariant::fromValue(qMakePair(type, name)));
+
+            if(currentName == name && currentType == type) {
+                action->setChecked(true);
+            }
+            profilesMenu->addAction(action);
         }
-        profilesMenu->addAction(action);
     }
+
     mainWindow->insertProfilesMenu(profilesMenu);
 
     connect(profilesMenu, SIGNAL(triggered(QAction*)), this, SLOT(profileTriggered(QAction*)));

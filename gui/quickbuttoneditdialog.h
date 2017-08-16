@@ -23,7 +23,6 @@ public:
 
     void updateButton(QToolButton*);
     void updateLocation(const QPoint&);
-    void updateSettings();
 
 private:
     GeneralSettings* settings;

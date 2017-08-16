@@ -5,7 +5,7 @@ HighlightDialog::HighlightDialog(QWidget *parent) : QDialog(parent), ui(new Ui::
     ui->setupUi(this);
 
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
-    settings = new ClientSettings();
+    settings = ClientSettings::getInstance();
 
     generalTab = new HighlightGeneralTab(this);
     textTab = new HighlightTextTab(this);

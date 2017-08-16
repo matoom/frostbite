@@ -24,7 +24,6 @@ public:
 
     QWidget *create();
 
-    void updateSettings();
     void reloadSettings();
 
 private:

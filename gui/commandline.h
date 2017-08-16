@@ -41,7 +41,6 @@ public:
     bool runMacro(QString);
     void clearCommand();    
     void doCopy();
-    void updateMacroSettings();
 
     void loadSettings();
 

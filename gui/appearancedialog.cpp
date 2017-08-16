@@ -6,7 +6,7 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
 
     this->populateMainBox();
     this->populateDockBox();
@@ -17,12 +17,12 @@ AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 }
 
-void AppearanceDialog::updateSettings() {
-    delete settings;
-    settings = new GeneralSettings();
+void AppearanceDialog::reloadSettings() {
+    settings = GeneralSettings::getInstance();
+    this->loadSettings();
 }
 
-void AppearanceDialog::loadSettings() {
+void AppearanceDialog::loadSettings() {    
     mainFontValue = settings->gameWindowFont();
     this->setSelectFont("GameWindow/font", mainFontSelect, QFont(DEFAULT_MAIN_FONT, DEFAULT_MAIN_FONT_SIZE));
 
@@ -244,7 +244,6 @@ void AppearanceDialog::cancelPressed() {
 }
 
 AppearanceDialog::~AppearanceDialog() {
-    delete settings;
     delete mainBgSelect;
     delete mainFontSelect;
     delete mainFontColorSelect;

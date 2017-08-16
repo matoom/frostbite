@@ -2,7 +2,7 @@
 
 MacroService::MacroService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    macroSettings = new MacroSettings();
+    macroSettings = MacroSettings::getInstance();
 
     rxCmd.setPattern("\\$n|\\$s");
 
@@ -65,6 +65,5 @@ QHash<QString, QStringList> MacroService::processCommands(QString macroString) {
 }
 
 MacroService::~MacroService() {
-    delete macroSettings;
     delete macroThread;
 }

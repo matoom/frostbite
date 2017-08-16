@@ -2,7 +2,7 @@
 
 GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
-    settings = new GeneralSettings();
+    settings = GeneralSettings::getInstance();
     wm = mainWindow->getWindowFacade();
     snapshot = new Snapshot(this);
 
