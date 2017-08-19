@@ -33,18 +33,36 @@ void CommandLine::reloadSettings() {
 }
 
 void CommandLine::loadSettings() {
-    QFont font = settings->gameWindowFont();
+    QFont font = settings->cmdFont();
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 
     QPalette p = this->palette();
 
-    QColor fontColor = settings->gameWindowFontColor();
+    QColor fontColor = settings->cmdFontColor();
     p.setColor(QPalette::Text, fontColor);
 
-    QColor textBackground = settings->gameWindowBackground();
-    p.setColor(QPalette::Base, textBackground);
+    backgroundColor = settings->cmdBackground();
+    p.setColor(QPalette::Base, backgroundColor);
 
+    this->setPalette(p);
+}
+
+void CommandLine::setCmdFont(QFont font) {
+    font.setStyleStrategy(QFont::PreferAntialias);
+    this->setFont(font);
+}
+
+void CommandLine::setCmdFontColor(QColor color) {
+    QPalette p = this->palette();
+    p.setColor(QPalette::Text, color);
+    this->setPalette(p);
+}
+
+void CommandLine::setCmdBgColor(QColor color) {
+    this->backgroundColor = color;
+    QPalette p = this->palette();
+    p.setColor(QPalette::Base, color);
     this->setPalette(p);
 }
 
@@ -84,8 +102,8 @@ void CommandLine::focus() {
 }
 
 void CommandLine::clearRt() {
-    QPalette pal = mainWindow->getCommandLine()->palette();
-    pal.setBrush(QPalette::Base, settings->gameWindowBackground());
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Base, backgroundColor);
     this->setPalette(pal);
 }
 
@@ -93,7 +111,7 @@ void CommandLine::insertRt(QPixmap segmentDisplay, QPixmap numericDisplay) {
     QPalette pal = this->palette();
 
     QPixmap collage(this->width(), this->height());
-    collage.fill(Qt::transparent);
+    collage.fill(backgroundColor);
 
     QPainter painter(&collage);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);

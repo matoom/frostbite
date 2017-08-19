@@ -30,6 +30,13 @@ public:
     QFont dockWindowFont();
     QColor dockWindowBackground();
 
+    QColor cmdFontColor();
+    QFont cmdFont();
+    QColor cmdBackground();
+
+    QColor cmdRtColor();
+    QColor cmdCtColor();
+
 private:
     explicit GeneralSettings();
 

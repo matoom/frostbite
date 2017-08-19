@@ -63,6 +63,31 @@ QColor GeneralSettings::dockWindowBackground(){
         DEFAULT_DOCK_BACKGROUND).value<QColor>();
 }
 
+QColor GeneralSettings::cmdFontColor(){
+    return settings->value("Commandline/fontColor",
+        DEFAULT_CMD_FONT_COLOR).value<QColor>();
+}
+
+QFont GeneralSettings::cmdFont(){
+    return settings->value("Commandline/font",
+        QFont(DEFAULT_CMD_FONT, DEFAULT_CMD_FONT_SIZE)).value<QFont>();
+}
+
+QColor GeneralSettings::cmdBackground(){
+    return settings->value("Commandline/background",
+        DEFAULT_CMD_BACKGROUND).value<QColor>();
+}
+
+QColor GeneralSettings::cmdRtColor(){
+    return settings->value("Commandline/rtColor",
+        DEFAULT_CMD_RT_COLOR).value<QColor>();
+}
+
+QColor GeneralSettings::cmdCtColor(){
+    return settings->value("Commandline/ctColor",
+        DEFAULT_CMD_CT_COLOR).value<QColor>();
+}
+
 GeneralSettings::~GeneralSettings() {    
     delete settings;
 }

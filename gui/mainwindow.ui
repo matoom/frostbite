@@ -354,7 +354,7 @@ QTabBar {
      <normaloff>:/window/images/window.png</normaloff>:/window/images/window.png</iconset>
    </property>
    <property name="text">
-    <string>Appearance</string>
+    <string>Window appearance</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>

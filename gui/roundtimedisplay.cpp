@@ -3,14 +3,12 @@
 RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     data = GameDataContainer::Instance();
+    settings = GeneralSettings::getInstance();
 
     timer = new QTimer;
     timer->setInterval(RT_INTERVAL_MS);
 
-    settings = GeneralSettings::getInstance();
-
-    rtColor = this->getRtColor();
-    ctColor = this->getCtColor();
+    this->loadSettings();
 
     roundTime = 0;
     castTime = 0;
@@ -20,11 +18,14 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(callPaint(int, int)), this, SLOT(paint(int, int)));
 }
 
+void RoundTimeDisplay::loadSettings() {
+    rtColor = settings->cmdRtColor();
+    ctColor = settings->cmdCtColor();
+}
+
 void RoundTimeDisplay::reloadSettings() {
     settings = GeneralSettings::getInstance();
-
-    rtColor = this->getRtColor();
-    ctColor = this->getCtColor();
+    this->loadSettings();
 }
 
 void RoundTimeDisplay::initTimer() {
@@ -140,7 +141,7 @@ QPixmap RoundTimeDisplay::numericDisplay(int rt) {
 
         painter.setBrush(rtColor);
         painter.setPen(rtColor);
-        painter.setFont(settings->gameWindowFont());
+        painter.setFont(settings->cmdFont());
 
         QString text = QString::number(rt);
         painter.drawText(QRect(0, 0, 40, 40), Qt::AlignCenter, text);
@@ -152,12 +153,12 @@ int RoundTimeDisplay::toSeconds(int ms) {
     return ceil((double)ms / 1000);
 }
 
-QColor RoundTimeDisplay::getRtColor() {
-    return QColor(RT_COLOR_HEX);
+void RoundTimeDisplay::setRtColor(QColor color) {
+    this->rtColor = color;
 }
 
-QColor RoundTimeDisplay::getCtColor() {
-    return QColor(CT_COLOR_HEX);
+void RoundTimeDisplay::setCtColor(QColor color) {
+    this->ctColor = color;
 }
 
 RoundTimeDisplay::~RoundTimeDisplay() {

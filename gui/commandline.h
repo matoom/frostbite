@@ -44,6 +44,10 @@ public:
 
     void loadSettings();
 
+    void setCmdFont(QFont font);
+    void setCmdFontColor(QColor color);
+    void setCmdBgColor(QColor color);
+
     int historyCounter;
 
 private:
@@ -61,6 +65,8 @@ private:
 
     void addHistory();    
     QVector<QString> history;
+
+    QColor backgroundColor;
 
 signals:
 

@@ -17,6 +17,7 @@
 class MainWindow;
 class GeneralSettings;
 class WindowFacade;
+class RoundTimeDisplay;
 
 namespace Ui {
     class AppearanceDialog;
@@ -35,6 +36,7 @@ private:
     Ui::AppearanceDialog *ui;
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
+    CommandLine* commandLine;
     GeneralSettings* settings;
 
     QToolButton* mainBgSelect;
@@ -45,6 +47,13 @@ private:
     QToolButton* dockFontSelect;
     QToolButton* dockFontColorSelect;
 
+    QToolButton* cmdBgSelect;
+    QToolButton* cmdFontSelect;
+    QToolButton* cmdFontColorSelect;
+
+    QToolButton* cmdRtColorSelect;
+    QToolButton* cmdCtColorSelect;
+
     QFont mainFontValue;
     QColor mainFontColorValue;
     QColor mainBackgroundValue;
@@ -53,8 +62,16 @@ private:
     QColor dockFontColorValue;
     QColor dockBackgroundValue;
 
+    QFont cmdFontValue;
+    QColor cmdFontColorValue;
+    QColor cmdBackgroundValue;
+
+    QColor cmdRtColorValue;
+    QColor cmdCtColorValue;
+
     void populateMainBox();
     void populateDockBox();
+    void populateCmdBox();
 
     void reset();
 
@@ -67,6 +84,8 @@ private:
     void setSelectBackground(QString, QToolButton*, QString);
     void setSelectFont(QString, QToolButton*, QFont);
 
+    RoundTimeDisplay* roundTimeDisplay;
+
 public slots:
     void reloadSettings();
 
@@ -74,9 +93,17 @@ private slots:
     void selectMainBg();
     void selectMainFont();
     void selectMainFontColor();
+
     void selectDockBg();
     void selectDockFont();
     void selectDockFontColor();
+
+    void selectCmdBg();
+    void selectCmdFont();
+    void selectCmdFontColor();
+
+    void selectCmdRtColor();
+    void selectCmdCtColor();
 
     void okPressed();
     void applyPressed();

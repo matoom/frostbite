@@ -16,6 +16,9 @@ public:
     RoundTimeDisplay(QObject *parent);
     ~RoundTimeDisplay();
 
+    void setRtColor(QColor color);
+    void setCtColor(QColor color);
+
     void repaint();
     QTimer *timer;
 
@@ -32,9 +35,6 @@ private:
     QPixmap segmentDisplay(int rt, int ct);
     QPixmap numericDisplay(int seconds);
 
-    QColor getRtColor();
-    QColor getCtColor();
-
     GeneralSettings* settings;
 
     QColor rtColor;
@@ -42,6 +42,8 @@ private:
 
     void initTimer();
     int toSeconds(int ms);
+
+    void loadSettings();
 
 signals:
     void callPaint(int, int);
