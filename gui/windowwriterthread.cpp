@@ -8,8 +8,6 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
     highlighter = new Highlighter(parent);
     alter = new Alter();
 
-    this->exit = false;
-
     GenericWindow* genericWindow = dynamic_cast<GenericWindow*>(window);
     if(genericWindow != NULL) {
         connect(this, SIGNAL(writeStream(const QString&)), genericWindow, SLOT(appendHtmlStream(const QString&)));
@@ -31,7 +29,7 @@ void WindowWriterThread::addText(QString text) {
 }
 
 void WindowWriterThread::run() {
-    while(!this->exit) {
+    while(!this->isInterruptionRequested()) {
         while(!dataQueue.isEmpty()) {
             mMutex.lock();
             localData = dataQueue.dequeue();
@@ -80,8 +78,8 @@ void WindowWriterThread::setText(QString text) {
                    "</span>");
 }
 
-WindowWriterThread::~WindowWriterThread() {
-    this->exit = true;
+WindowWriterThread::~WindowWriterThread() {    
+    this->requestInterruption();
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");
         this->terminate();

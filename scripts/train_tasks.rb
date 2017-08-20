@@ -2,10 +2,12 @@ require "defines"
 require "helper"
 require "armor"
 
+# schedule settings
+
 module ThrownSchedule
   def self.set_up
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
-    put_wait 'khri start strike flight focus prowess guile hasten', /already using|lose concentration|Roundtime/
+    put_wait 'khri start strike flight focus prowess guile hasten plunder', /already using|lose concentration|Roundtime/
   end
 end
 
@@ -18,10 +20,13 @@ end
 
 module IntSchedule
   def self.set_up
+    GLOBAL::skin = false
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
     TrainUtils::khri_defensive
   end
 end
+
+# skill tasks
 
 module LocksmithTask
   def self.before
@@ -52,9 +57,10 @@ end
 
 module UtilityTask
   def self.before
+    put_wait 'gaze crystal', /You gaze/ unless Exp::state("arcana") > 25
     put_wait 'sit', /sit down|already sitting/ unless Status::sitting
     put_wait 'hide', /Roundtime/ unless Status::hidden
-    put_wait 'khri darken dampen steady shadowstep sagacity', /Roundtime|You're already using/
+    put_wait 'khri darken dampen steady shadowstep sagacity plunder', /Roundtime|You're already using/
   end
 
   def self.after
@@ -87,6 +93,7 @@ module CrossbowTask
     put_wait 'khri stop steady', /attempt to relax/
     put_wait 'wear crossbow', /You sling a/ unless Wield::right_noun.empty?
     TrainUtils::stow
+    TrainUtils::hunt_cleanup
     load('loot.rb')
   end
 
@@ -111,6 +118,7 @@ module BrawlingTask
   def self.after
     pause Rt::value
     TrainUtils::stow_left
+    TrainUtils::hunt_cleanup
     load('loot.rb')
   end
 
@@ -126,6 +134,10 @@ module LightThrownTask
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
   end
 
+  def self.after
+    TrainUtils::hunt_cleanup
+  end
+
   def self.run
     load('lt.rb')
   end
@@ -136,6 +148,10 @@ module HeavyThrownTask
     $args.clear
     TrainUtils::stow_left
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
+  end
+
+  def self.after
+    TrainUtils::hunt_cleanup
   end
 
   def self.run
@@ -152,6 +168,7 @@ module TacticsTask
 
   def self.after
     pause Rt::value
+    TrainUtils::hunt_cleanup
     load('loot.rb')
   end
 
@@ -177,6 +194,7 @@ module TwohandedTask
     put_wait 'swap', /You move/
     put_wait "put #{WEAPON} in my #{CONTAINER}", /You put/
     Client::track_exp_clear
+    TrainUtils::hunt_cleanup
     load('loot.rb')
   end
 
@@ -202,6 +220,7 @@ module PoleTask
     put_wait 'swap', /You move/
     put_wait "tie my #{WEAPON} to my #{CONTAINER}", /You attach/
     Client::track_exp_clear
+    TrainUtils::hunt_cleanup
     load('loot.rb')
   end
 
@@ -229,7 +248,7 @@ module TrainUtils
   end
 
   def self.khri_offensive
-    put_wait 'khri start strike flight focus prowess guile hasten', /already using|lose concentration|Roundtime/
+    put_wait 'khri start strike flight focus prowess guile hasten plunder', /already using|lose concentration|Roundtime/
   end
 
   def self.khri_defensive
@@ -249,5 +268,11 @@ module TrainUtils
 
   def self.stow_right
     put_wait 'stow right', /Stow what|You put your/ unless Wield::right_noun.empty?
+  end
+
+  def self.hunt_cleanup
+    Room::count_objects("dead").times do
+      put_wait 'loot', /You search the|could not find/
+    end
   end
 end

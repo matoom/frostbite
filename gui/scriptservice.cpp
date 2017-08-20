@@ -106,8 +106,7 @@ void ScriptService::processCommand(QByteArray msg) {
             if(line.startsWith("put#")) {
                 commandLine->writeCommand(line.mid(4).trimmed(), "script");
             } else if (line.startsWith("echo#")) {
-                windowFacade->writeGameWindow("<span class=\"echo\">" +
-                    line.mid(5).trimmed() + "</span>");
+                windowFacade->writeGameWindow("<span class=\"echo\">" + line.mid(5).trimmed() + "</span>");
             }
         }
     }

@@ -65,10 +65,12 @@ def loot
   end
 end
 
-if GLOBAL::ARRANGE_COUNT > 0
-  arrange GLOBAL::ARRANGE_COUNT
+if GLOBAL::arrange_count > 0
+  arrange GLOBAL::arrange_count
 elsif $args.first =~ /all/
   arrange 5
-elsif GLOBAL::SKIN
+elsif GLOBAL::skin
   skin
+else
+  loot
 end

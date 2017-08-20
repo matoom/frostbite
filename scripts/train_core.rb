@@ -61,14 +61,16 @@ module Train
   end
 
   def self.get_exp(task)
-    Exp::state(task.to_s.camelize(' '))
+    Exp::state(task.to_s.camelize(' ').gsub(/\d+/, ""))
   end
 
   def self.run_lifecycle(&block)
+    start = Time.now
     Object.send(:define_method, :finally_do) {}
     block.call
     Object.send(:finally_do)
     Object.send(:remove_method, :finally_do)
+    (Time.now - start) / 60
   end
 
   def self.get_threshold(obj, default)
@@ -76,6 +78,7 @@ module Train
   end
 
   def self.run(schedule)
+    total_times = []
     schedule.each do |task|
       obj = Object.const_get(task.to_s.to_task)
 
@@ -83,10 +86,12 @@ module Train
       next if get_exp(task) > threshold
 
       echo ":: #{task} ::"
-      Train::run_lifecycle {
+      time = Train::run_lifecycle {
         obj.send 'before' if obj.respond_to? 'before'
         call obj, monitor(task, threshold)
       }
+      total_times << {task => time}
+      echo "<br/>Time elapsed #{total_times} minutes.<br/>"
     end
   end
 end

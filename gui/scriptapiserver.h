@@ -42,6 +42,7 @@ private:
     ApiSettings* settings;
 
     MainWindow* mainWindow;
+    WindowFacade* windowFacade;
     MapData* mapData;
 
     TcpClient* tcpClient;
@@ -49,7 +50,13 @@ private:
 
 signals:
     void track(QString);
-    void clearTracked();
+    void clearTracked();       
+    QList<QString> windowNames();
+
+    void addWindow(QString, QString);
+    void removeWindow(QString);
+    void clearWindow(QString);
+    void writeWindow(QString, QString);
 
 public slots:
         void newConnection();

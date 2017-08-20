@@ -5,7 +5,7 @@ schedule_name = $args.first
 
 schedules = {
     :util => [:utility, :locksmith, :outdoor],
-    :int => [:stealth, :crossbow, :brawling],
+    :int => [:stealth, :crossbow, :brawling, :tactics],
     :thrown => [:light_thrown, :heavy_thrown],
     :juvie => [:twohanded, :pole, :tactics],
     :test => [:utility, :outdoor, :utility],

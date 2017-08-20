@@ -2,6 +2,8 @@
 
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
     mainWindow = (MainWindow*)parent;
+    windowFacade = mainWindow->getWindowFacade();
+
     mapData = mainWindow->getWindowFacade()->getMapFacade()->getData();
     tcpClient = mainWindow->getTcpClient();        
 
@@ -9,6 +11,12 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
 
     connect(this, SIGNAL(track(QString)), expWindow, SLOT(track(QString)));
     connect(this, SIGNAL(clearTracked()), expWindow, SLOT(clearTracked()));
+
+    connect(this, SIGNAL(windowNames()), windowFacade, SLOT(getStreamWindowNames()));
+    connect(this, SIGNAL(addWindow(QString, QString)), windowFacade, SLOT(registerStreamWindow(QString, QString)));
+    connect(this, SIGNAL(removeWindow(QString)), windowFacade, SLOT(removeStreamWindow(QString)));
+    connect(this, SIGNAL(clearWindow(QString)), windowFacade, SLOT(clearStreamWindow(QString)));
+    connect(this, SIGNAL(writeWindow(QString, QString)), windowFacade, SLOT(writeStreamWindow(QString, QString)));
 
     data = GameDataContainer::Instance();    
 
@@ -22,7 +30,7 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
     } else {
         sessionOpened();
     }
-    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));       
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
 
 void ScriptApiServer::sessionOpened() {
@@ -174,6 +182,41 @@ void ScriptApiServer::readyRead() {
             } else if(request.name == "TRACK_EXP_CLEAR") {
                 emit clearTracked();
                 this->write(socket, tr("\\0"));
+            } else if(request.name == "LIST_WINDOWS") {
+                QList<QString> list = emit windowNames();
+                this->write(socket, tr("%1\\0").arg(list.join("\n")));
+            } else if(request.name == "ADD_WINDOW") {
+                QStringList args = request.args;
+                if(args.size() == 2) {
+                    emit addWindow(args.at(0), args.at(1));
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    this->write(socket, tr("0\\0"));
+                }
+            } else if(request.name == "REMOVE_WINDOW") {
+                QStringList args = request.args;
+                if(args.size() == 1) {
+                    emit removeWindow(args.at(0));
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    this->write(socket, tr("0\\0"));
+                }
+            } else if(request.name == "CLEAR_WINDOW") {
+                QStringList args = request.args;
+                if(args.size() == 1) {
+                    emit clearWindow(args.at(0));
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    this->write(socket, tr("0\\0"));
+                }
+            } else if(request.name == "WRITE_WINDOW") {
+                QStringList args = request.args;
+                if(args.size() == 2) {
+                    emit writeWindow(args.at(0), args.at(1));
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    this->write(socket, tr("0\\0"));
+                }
             }
         } else {
             this->write(socket, tr("\\0"));
@@ -193,6 +236,9 @@ ApiRequest ScriptApiServer::parseRequest(QString reqString) {
     if(index > -1) {
         apiRequest.name = reqString.mid(0, index);
         apiRequest.args = reqString.mid(index + 1).split("&");
+        for(int i = 0; i < apiRequest.args.size(); i++) {
+           apiRequest.args[i] = QUrl::fromPercentEncoding(apiRequest.args[i].toLocal8Bit());
+        }
     } else {
         apiRequest.name = reqString;
         apiRequest.args = QStringList();

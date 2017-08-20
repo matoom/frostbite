@@ -129,6 +129,10 @@ end
 
 def reload
   pause 0.5
+  if Wield::left_noun != ""
+    put "stow left"
+    pause
+  end
   put "get #{@ammo}"
   put "load"
   wait_for_roundtime

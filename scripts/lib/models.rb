@@ -1,4 +1,5 @@
 require 'socket'
+require "erb"
 
 class Rt
   # Roundtime
@@ -108,7 +109,7 @@ class Exp
   #   echo Exp::rank
   #   => 222
   def self.rank(exp_string)
-    $_api_socket.puts "GET EXP_RANK?#{exp_string.to_s.downcase}\n"
+    $_api_socket.puts "GET EXP_RANK?#{ERB::Util.url_encode(exp_string.to_s.downcase)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
@@ -121,7 +122,7 @@ class Exp
   #     exit
   #   end
   def self.state(exp_string)
-    $_api_socket.puts "GET EXP_STATE?#{exp_string.to_s.downcase}\n"
+    $_api_socket.puts "GET EXP_STATE?#{ERB::Util.url_encode(exp_string.to_s.downcase)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
@@ -402,7 +403,7 @@ class Map
   #   echo Map::path 1, 1, 5
   #   => ["south", "south", "east"]
   def self.path(zone, from, to)
-    $_api_socket.puts "MAP_GET PATH?#{zone}&#{from}&#{to}\n"
+    $_api_socket.puts "MAP_GET PATH?#{ERB::Util.url_encode(zone)}&#{ERB::Util.url_encode(from)}&#{ERB::Util.url_encode(to)}\n"
     $_api_socket.gets('\0').chomp('\0').split(",")
   end
 
@@ -498,7 +499,7 @@ class Client
   # @param [String] user account user name
   # @param [String] pass account password
   def self.connect_host(host, port, game, name, user, pass)
-    $_api_socket.puts "CLIENT CONNECT?#{host}&#{port}&#{user}&#{pass}&#{game}&#{name}\n"
+    $_api_socket.puts "CLIENT CONNECT?#{ERB::Util.url_encode(host)}&#{ERB::Util.url_encode(port)}&#{ERB::Util.url_encode(user)}&#{ERB::Util.url_encode(pass)}&#{ERB::Util.url_encode(game)}&#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 
@@ -506,7 +507,7 @@ class Client
   #
   # @param [String] name internal exp name (see #Exp::names)
   def self.track_exp(name)
-    $_api_socket.puts "CLIENT TRACK_EXP?#{name}\n"
+    $_api_socket.puts "CLIENT TRACK_EXP?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 
@@ -515,4 +516,45 @@ class Client
     $_api_socket.puts "CLIENT TRACK_EXP_CLEAR\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
+
+  # List stream windows in client
+  def self.list_windows
+    $_api_socket.puts "CLIENT LIST_WINDOWS\n"
+    $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
+  end
+
+  # Add stream window to client
+  #
+  # @param [String] name unique window id (see #Client::list_windows)
+  # @param [String] title window title
+  def self.add_window(name, title)
+    $_api_socket.puts "CLIENT ADD_WINDOW?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(title)}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
+
+  # Remove stream window
+  #
+  # @param [String] name unique window id (see #Client::list_windows)
+  def self.remove_window(name)
+    $_api_socket.puts "CLIENT REMOVE_WINDOW?#{ERB::Util.url_encode(name)}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
+
+  # Clear stream window
+  #
+  # @param [String] name unique window id (see #Client::list_windows)
+  def self.clear_window(name)
+    $_api_socket.puts "CLIENT CLEAR_WINDOW?#{ERB::Util.url_encode(name)}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
+
+  # Write to stream window
+  #
+  # @param [String] name unique window id (see #Client::list_windows)
+  # @param [String] text html formatted text
+  def self.write_window(name, text)
+    $_api_socket.puts "CLIENT WRITE_WINDOW?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(text)}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
+
 end

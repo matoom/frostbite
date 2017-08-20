@@ -118,8 +118,10 @@ public slots:
     void logArrivalsText(QString);
 
     void registerStreamWindow(QString id, QString title);
+    void removeStreamWindow(QString id);
     void writeStreamWindow(QString id, QString text);
     void clearStreamWindow(QString id);
+    QList<QString> getStreamWindowNames();
 
     void reloadSettings();
 

@@ -670,6 +670,23 @@ void WindowFacade::registerStreamWindow(QString id, QString title) {
     streamWriters.insert(id, streamWriter);
 }
 
+void WindowFacade::removeStreamWindow(QString id) {
+    WindowWriterThread* writer = streamWriters.value(id);
+    writer->requestInterruption();
+    writer->wait();
+    delete writer;
+    streamWriters.remove(id);
+
+    QDockWidget* window = streamWindows.value(id);
+    mainWindow->removeDockWidgetMainWindow(window);
+    delete window;
+    streamWindows.remove(id);
+}
+
+QList<QString> WindowFacade::getStreamWindowNames() {
+    return streamWindows.keys();
+}
+
 void WindowFacade::writeStreamWindow(QString id, QString text) {
     WindowWriterThread* streamWriter = streamWriters.value(id);
     if(streamWriter == NULL) return;

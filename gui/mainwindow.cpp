@@ -188,8 +188,12 @@ void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *d
     ui->menuWindow->addAction(action);
 
     if(!restoreDockWidget(dock)) {
-        addDockWidget(area, dock);
+        this->addDockWidget(area, dock);
     }
+}
+
+void MainWindow::removeDockWidgetMainWindow(QDockWidget* dock) {
+    this->removeDockWidget(dock);
 }
 
 void MainWindow::addWindowMenuAction(QAction* action) {

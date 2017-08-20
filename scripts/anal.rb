@@ -12,15 +12,6 @@ def finally_do
   Client::track_exp_clear
 end
 
-=begin
-Thread.new do
-  while true
-    activate "khri", ["sagacity"]
-    sleep 15
-  end
-end
-=end
-
 Observer::instance.register_timer(15, :active_spells_maintain, 'sagacity prowess')
 
 def advance

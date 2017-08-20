@@ -1,6 +1,12 @@
 require "defines"
 require "hunt"
 
+Client::track_exp("Brawling")
+
+def finally_do
+  Client::track_exp_clear
+end
+
 def attack
   put "attack left"
   match = { :wait => [/\.\.\.wait/],

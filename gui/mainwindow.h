@@ -59,6 +59,7 @@ public:
     static bool DEBUG;
 
     void addDockWidgetMainWindow(Qt::DockWidgetArea, QDockWidget*);
+    void removeDockWidgetMainWindow(QDockWidget* dock);
     void addWindowMenuAction(QAction* action);
     void addWidgetMainLayout(QWidget*);
     void addToolbarAction(QAction*);
