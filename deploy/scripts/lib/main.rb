@@ -170,9 +170,7 @@ end
 #   echo "hello"
 #   echo 1
 def echo(value)
-  $_api_gets_mutex.synchronize do
-    puts "#{API::API_ECHO_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
-  end
+  puts "#{API::API_ECHO_PREFIX}#{value.to_s}#{API::API_CMD_SUFFIX}"
 end
 
 # Pauses for given time.

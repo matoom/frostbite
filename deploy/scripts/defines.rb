@@ -6,8 +6,11 @@ module SYSTEM
 end
 
 module GLOBAL
-  ARRANGE_COUNT = 0
-  SKIN = true
+  class << self
+    attr_accessor :arrange_count, :skin
+  end
+  self.arrange_count = 0
+  self.skin = true
 end
 
 module COMBAT
