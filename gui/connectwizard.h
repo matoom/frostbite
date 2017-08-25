@@ -41,7 +41,8 @@ private:
     QString selectedCharacter;
     QString selectedGame;
 
-    bool gamesLoaded;
+    bool gamesLoaded;    
+    bool isLichConfigured;
 
     void init();
     void initProxy();
@@ -67,12 +68,14 @@ private slots:
     void resetPassword();
     void enableGameSelect();
     void setGameList(QMap<QString, QString>);
+    void lichBoxChanged(int);
 
 signals:
     void initSession(QString, QString, QString, QString);
     void setProxy(bool, QString, QString);
     void gameSelected(QString);
     void retrieveSession(QString);
+    void connectToLich(QString, QString, QString);
     void connectToServer(QString, QString, QString);
     void resetConnection();
 };

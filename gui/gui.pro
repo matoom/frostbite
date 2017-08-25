@@ -30,6 +30,7 @@ greaterThan(QT_VERSION, 5){
 include(maps/maps.pri)
 include(text/text.pri)
 include(xml/xml.pri)
+include(lich/lich.pri)
 
 APP_NAME = Frostbite
 
@@ -102,7 +103,8 @@ SOURCES += main.cpp\
     authlogger.cpp \
     windowwriterthread.cpp \
     gridwriterthread.cpp \
-    vitalsbar.cpp
+    vitalsbar.cpp \
+    scriptsettingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -169,7 +171,8 @@ HEADERS  += mainwindow.h \
     authlogger.h \
     windowwriterthread.h \
     gridwriterthread.h \
-    vitalsbar.h
+    vitalsbar.h \
+    scriptsettingsdialog.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \
@@ -178,7 +181,8 @@ FORMS    += mainwindow.ui \
     aboutdialog.ui \
     connectwizard.ui \
     scripteditdialog.ui \
-    profileadddialog.ui
+    profileadddialog.ui \
+    scriptsettingsdialog.ui
 
 RESOURCES += \
     toolbar.qrc \

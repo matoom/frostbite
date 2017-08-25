@@ -136,6 +136,7 @@ signals:
 public slots:
     void setMainTitle(QString);
     void handleAppMessage(const QString&);
+    void updateScriptSettings();
 
 /*private slots:
     void menuTriggered(QAction*);*/

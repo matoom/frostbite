@@ -59,6 +59,10 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
+void MainWindow::updateScriptSettings() {
+    scriptApiServer->reloadSettings();
+}
+
 void MainWindow::updateProfileSettings(QString name, QString type) {
     settings->setParameter("Profile/name", name);
     settings->setParameter("Profile/type", type);

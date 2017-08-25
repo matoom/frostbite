@@ -76,4 +76,13 @@
 #define DOCK_TITLE_EXP "Experience"
 #define DOCK_TITLE_MAP "Map"
 
+#define SCRIPT_ENTRY QApplication::applicationDirPath() + "/scripts/lib/main.rb"
+#define SCRIPT_INTERPRETER "ruby"
+#define SCRIPT_FILE_EXTENSION ".rb"
+#define SCRIPT_PATH QApplication::applicationDirPath() + "/scripts/"
+
+#define SCRIPT_LICH_LOCATION ""
+#define SCRIPT_LICH_RUBY "ruby"
+#define SCRIPT_LICH_ARGS "--dragonrealms --frostbite -g $host:$port"
+
 #endif // DEFAULTVALUES_H

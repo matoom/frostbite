@@ -11,6 +11,7 @@
 #include <eauthservice.h>
 #include <xml/xmlparserthread.h>
 #include <debuglogger.h>
+#include <lich/lich.h>
 
 #include <environment.h>
 
@@ -20,6 +21,7 @@ class ClientSettings;
 class EAuthService;
 class XmlParserThread;
 class DebugLogger;
+class Lich;
 
 class TcpClient : public QObject {
     Q_OBJECT
@@ -46,6 +48,8 @@ private:
     XmlParserThread* xmlParser;
     DebugLogger* debugLogger;
 
+    Lich* lich;
+
     void loadMockData();
 
     QString game;
@@ -69,6 +73,7 @@ public slots:
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError);
     void connectToHost(QString, QString, QString);
+    void connectToLich(QString sessionHost, QString sessionPort, QString sessionKey);
     void disconnectedFromHost();
     void initEauthSession(QString, QString, QString, QString);
     void selectGame(QMap<QString, QString>);

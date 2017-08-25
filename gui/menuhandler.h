@@ -15,6 +15,7 @@
 #include <scripteditdialog.h>
 #include <profileadddialog.h>
 #include <clientsettings.h>
+#include <scriptsettingsdialog.h>
 
 class ConnectWizard;
 class MainWindow;
@@ -24,6 +25,7 @@ class AlterDialog;
 class AboutDialog;
 class ScriptEditDialog;
 class ProfileAddDialog;
+class ScriptSettingsDialog;
 
 #define USER_GUIDE_URL "http://matoom.github.com/frostbite"
 
@@ -46,6 +48,7 @@ private:
     MacroDialog* macroDialog;
     AlterDialog* alterDialog;
     AppearanceDialog* appearanceDialog;
+    ScriptSettingsDialog* scriptSettingsDialog;
     AboutDialog* aboutDialog;
     ScriptEditDialog* scriptEditDialog;
     ProfileAddDialog* profileAddDialog;

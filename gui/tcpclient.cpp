@@ -10,6 +10,8 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
 
     debugLogger = new DebugLogger();
 
+    lich = new Lich(mainWindow);
+
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
         connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
@@ -117,6 +119,15 @@ void TcpClient::connectApi(QString host, QString port, QString user, QString pas
     this->game = game;
     this->character = character;
     this->initEauthSession(host, port, user, password);
+}
+
+void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString sessionKey) {
+    if(lich->isRunning()) lich->killLich();
+    lich->run(sessionHost, sessionPort);
+    lich->waitUntilRunning();
+    sessionHost = "127.0.0.1";
+
+    this->connectToHost(sessionHost, sessionPort, sessionKey);
 }
 
 void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
@@ -242,5 +253,6 @@ TcpClient::~TcpClient() {
     delete debugLogger;
     delete tcpSocket;
     delete xmlParser;
-    delete eAuth;    
+    delete eAuth;
+    delete lich;
 }

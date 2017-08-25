@@ -8,6 +8,9 @@
 #include <QProcess>
 #include <QDebug>
 
+#include <clientsettings.h>
+#include <defaultvalues.h>
+
 namespace Ui {
     class ScriptEditDialog;
 }

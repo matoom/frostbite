@@ -21,22 +21,32 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
     data = GameDataContainer::Instance();    
 
     settings = new ApiSettings();
+    clientSettings = ClientSettings::getInstance();
 
+    this->initNetworkSession();
+}
+
+void ScriptApiServer::reloadSettings() {
+    clientSettings = ClientSettings::getInstance();
+    this->openSession();
+}
+
+void ScriptApiServer::initNetworkSession() {
+    tcpServer = new QTcpServer(this);
     QNetworkConfigurationManager manager;
     if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
         networkSession = new QNetworkSession(manager.defaultConfiguration(), this);
-        connect(networkSession, SIGNAL(opened()), this, SLOT(sessionOpened()));
+        connect(networkSession, SIGNAL(opened()), this, SLOT(openSession()));
         networkSession->open();
     } else {
-        sessionOpened();
+        openSession();
     }
     connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
 
-void ScriptApiServer::sessionOpened() {
-    tcpServer = new QTcpServer(this);
-
-    if (!tcpServer->listen(QHostAddress::LocalHost)) {
+void ScriptApiServer::openSession() {
+    if(tcpServer->isListening()) tcpServer->close();
+    if (!tcpServer->listen(QHostAddress::LocalHost, clientSettings->getParameter("Script/apiPort", 0).toInt())) {
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->
                 info("Unable to start server" + tcpServer->errorString());
         return;
@@ -237,7 +247,7 @@ ApiRequest ScriptApiServer::parseRequest(QString reqString) {
         apiRequest.name = reqString.mid(0, index);
         apiRequest.args = reqString.mid(index + 1).split("&");
         for(int i = 0; i < apiRequest.args.size(); i++) {
-           apiRequest.args[i] = QUrl::fromPercentEncoding(apiRequest.args[i].toLocal8Bit());
+            apiRequest.args[i] = QUrl::fromPercentEncoding(apiRequest.args[i].toLocal8Bit());
         }
     } else {
         apiRequest.name = reqString;

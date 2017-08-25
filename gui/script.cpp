@@ -8,16 +8,7 @@ Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this
     connect(script_proc, SIGNAL(readyReadStandardError()), this, SLOT(displayErrorMsg()));
     connect(script_proc, SIGNAL(started()), this, SLOT(start()));
     connect(script_proc, SIGNAL(finished(int)), this, SLOT(finish(int)));
-
-    #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
-        connect(script_proc, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
-    #else
-        connect(script_proc, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
-    #endif
-
-    path = QApplication::applicationDirPath() + "/scripts/lib/main.rb";
-
-    rubyPath = clientSettings->getParameter("Ruby/path", "ruby").toString();
+    connect(script_proc, SIGNAL(errorOccurred(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
 
     running = false;
 }
@@ -32,7 +23,12 @@ QString Script::currentFileName() {
 }
 
 void Script::execute(QString fileName, QList<QString> userArgs) {   
-    QString file = QApplication::applicationDirPath() + "/scripts/" + fileName + ".rb";
+    path = clientSettings->getQStringNotBlank("Script/scriptEntry", SCRIPT_ENTRY);
+    rubyPath = clientSettings->getQStringNotBlank("Script/interpreterPath", SCRIPT_INTERPRETER);
+    ext = clientSettings->getQStringNotBlank("Script/fileExtension", SCRIPT_FILE_EXTENSION);
+    scriptPath = clientSettings->getQStringNotBlank("Script/scriptPath", SCRIPT_PATH);
+
+    QString file = scriptPath + fileName + ext;
     this->fileName = fileName;
 
     QStringList arguments;
@@ -49,9 +45,6 @@ void Script::killScript() {
 void Script::sendMessage(QByteArray message) {
     if(script_proc->isOpen() && script_proc->isWritable()) {
         script_proc->write(message);
-        #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        script_proc->waitForBytesWritten(-1);
-        #endif
     }
 }
 

@@ -7,7 +7,7 @@ ScriptEditDialog::ScriptEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui
     completer = new QCompleter(this);
     model = new QStringListModel();
 
-    scriptPath.setPath(QApplication::applicationDirPath() + "/scripts");
+    scriptPath.setPath(ClientSettings::getInstance()->getQStringNotBlank("Script/scriptPath", SCRIPT_PATH));
 
     #ifdef Q_OS_WIN
         notepadPath.setPath("notepad");
@@ -25,7 +25,7 @@ void ScriptEditDialog::showEvent(QShowEvent* event) {
     QDialog::showEvent(event);
 
     QStringList filter;
-    filter << "*.rb";
+    filter << "*" + ClientSettings::getInstance()->getQStringNotBlank("Script/fileExtension", SCRIPT_FILE_EXTENSION);
 
     QStringList fileList = scriptPath.entryList(filter, QDir::Files, QDir::Name);
 

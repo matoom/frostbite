@@ -18,6 +18,12 @@ void ClientSettings::setParameter(QString name, QVariant value) {
     setValue(name, value);
 }
 
+QString ClientSettings::getQStringNotBlank(QString name, QVariant defaultValue) {
+    QString param = value(name, defaultValue).toString().trimmed();
+    if(param.isEmpty()) return defaultValue.toString();
+    return param;
+}
+
 QVariant ClientSettings::getParameter(QString name, QVariant defaultValue) {
     return value(name, defaultValue);
 }

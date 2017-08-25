@@ -11,10 +11,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     this->registerFields();
 
-    //this->populateGameList();
-
     connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(pageSelected(int)));
 
+    connect(ui->lichBox, SIGNAL(stateChanged(int)), this, SLOT(lichBoxChanged(int)));
 
     connect(this, SIGNAL(gameSelected(QString)),
             mainWindow->getTcpClient(), SLOT(gameSelected(QString)));
@@ -37,6 +36,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     connect(this, SIGNAL(connectToServer(QString, QString, QString)),
             mainWindow->getTcpClient(), SLOT(connectToHost(QString, QString, QString)));
 
+    connect(this, SIGNAL(connectToLich(QString, QString, QString)),
+            mainWindow->getTcpClient(), SLOT(connectToLich(QString, QString, QString)));
+
     connect(this, SIGNAL(resetConnection()),
             mainWindow->getTcpClient(), SLOT(resetEauthSession()));
 
@@ -51,6 +53,10 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     connect(mainWindow->getTcpClient(), SIGNAL(setGameList(QMap<QString, QString>)),
             this, SLOT(setGameList(QMap<QString, QString>)));
+}
+
+void ConnectWizard::lichBoxChanged(int state) {
+    settings->setParameter("Login/lichEnabled", state == Qt::CheckState::Checked);
 }
 
 void ConnectWizard::showEvent(QShowEvent* event) {
@@ -97,7 +103,9 @@ void ConnectWizard::initProxy() {
     ui->proxyPortEdit->setText(settings->getParameter("Proxy/port", "").toString());
 }
 
-void ConnectWizard::init() {            
+void ConnectWizard::init() {
+    ui->lichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
+
     ui->authHostEdit->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());
     ui->authHostEdit->setModified(true);
 
@@ -169,15 +177,23 @@ void ConnectWizard::setGameListLoading(bool loading) {
 
 void ConnectWizard::pageSelected(int id) {
     switch (id) {
-    case Page::login:
+    case Page::login:                       
         gamesLoaded = false;
         ui->gameList->setEnabled(false);
+
+        isLichConfigured = !settings->getParameter("Script/lichLocation", "").toString().isEmpty();
+        if(isLichConfigured) {
+            ui->lichBox->setVisible(true);
+        } else {
+            ui->lichBox->setVisible(false);
+        }
 
         emit resetConnection();
         break;
     case Page::game:
         characterList.clear();
         ui->characterList->clear();
+
         if(!gamesLoaded) {
             this->saveSettings();
             this->setGameListLoading(true);
@@ -249,7 +265,12 @@ void ConnectWizard::setSession(QString host, QString port, QString sessionKey) {
 void ConnectWizard::accept() {
     QDialog::accept();
 
-    emit connectToServer(sessionHost, sessionPort, sessionKey);
+    if(ui->lichBox->isChecked() && isLichConfigured) {
+        emit connectToLich(sessionHost, sessionPort, sessionKey);
+    } else {
+        emit connectToServer(sessionHost, sessionPort, sessionKey);
+    }
+
     this->restart();
     this->init();
 }

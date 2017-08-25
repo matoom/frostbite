@@ -671,6 +671,8 @@ void WindowFacade::registerStreamWindow(QString id, QString title) {
 }
 
 void WindowFacade::removeStreamWindow(QString id) {
+    if(!streamWindows.contains(id)) return;
+
     WindowWriterThread* writer = streamWriters.value(id);
     writer->requestInterruption();
     writer->wait();

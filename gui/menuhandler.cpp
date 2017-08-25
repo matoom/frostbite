@@ -9,11 +9,14 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     macroDialog = new MacroDialog(qobject_cast<QWidget *>(parent));
     alterDialog = new AlterDialog(qobject_cast<QWidget *>(parent));
     appearanceDialog = new AppearanceDialog(qobject_cast<QWidget *>(parent));
+    scriptSettingsDialog = new ScriptSettingsDialog(qobject_cast<QWidget *>(parent));
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
     profileAddDialog = new ProfileAddDialog();
 
     connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
+
+    connect(scriptSettingsDialog, SIGNAL(settingsChanged()), mainWindow, SLOT(updateScriptSettings()));
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
     connect(mainWindow, SIGNAL(profileChanged()), macroDialog, SLOT(reloadSettings()));
@@ -57,8 +60,10 @@ void MenuHandler::menuTriggered(QAction* action) {
         mainWindow->close();
     } else if(action->objectName() == "actionAbout") {
         aboutDialog->show();
-    } else if(action->objectName() == "actionEdit") {
+    } else if(action->objectName() == "actionScriptEdit") {
         scriptEditDialog->show();        
+    } else if(action->objectName() == "actionScriptSettings") {
+        scriptSettingsDialog->show();
     } else if(action->objectName() == "actionCreate_new_profile") {
         profileAddDialog->show();
     } else if(action->objectName() == "actionReference_Manual") {

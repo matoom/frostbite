@@ -6,6 +6,8 @@ AlterDialog::AlterDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AlterDia
 
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
 
+    ui->applyButton->setEnabled(false);
+
     connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyPressed()));
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(okPressed()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));

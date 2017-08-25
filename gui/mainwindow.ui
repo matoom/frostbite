@@ -228,7 +228,8 @@ QTabBar {
     <property name="title">
      <string>Script</string>
     </property>
-    <addaction name="actionEdit"/>
+    <addaction name="actionScriptSettings"/>
+    <addaction name="actionScriptEdit"/>
    </widget>
    <widget class="QMenu" name="menuProfile">
     <property name="title">
@@ -373,7 +374,7 @@ QTabBar {
     <string>User Guide</string>
    </property>
   </action>
-  <action name="actionEdit">
+  <action name="actionScriptEdit">
    <property name="text">
     <string>Edit/Create</string>
    </property>
@@ -515,6 +516,11 @@ QTabBar {
    </property>
    <property name="text">
     <string>Buttons</string>
+   </property>
+  </action>
+  <action name="actionScriptSettings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

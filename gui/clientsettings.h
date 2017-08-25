@@ -16,6 +16,7 @@ public:
     static ClientSettings* getInstance();
 
     void setParameter(QString name, QVariant value);
+    QString getQStringNotBlank(QString name, QVariant defaultValue);
     QVariant getParameter(QString name, QVariant defaultValue);
 
     bool hasValue(QString);

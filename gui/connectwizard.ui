@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>230</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -79,7 +79,7 @@
        <attribute name="title">
         <string>Connect</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
@@ -176,6 +176,13 @@
                 </property>
                 <property name="echoMode">
                  <enum>QLineEdit::Password</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QCheckBox" name="lichBox">
+                <property name="text">
+                 <string>Connect to Lich</string>
                 </property>
                </widget>
               </item>
@@ -486,13 +493,26 @@
    </layout>
   </widget>
   <widget class="WizardPage" name="wizardPage4">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="finishLabel">
       <property name="text">
        <string/>
       </property>
      </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

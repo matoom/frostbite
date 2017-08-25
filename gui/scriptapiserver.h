@@ -37,9 +37,11 @@ private:
     ApiRequest parseRequest(QString reqString);
     void write(QTcpSocket *socket, QString value);
     int boolToInt(bool value);
+    void initNetworkSession();
 
     GameDataContainer* data;
     ApiSettings* settings;
+    ClientSettings* clientSettings;
 
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
@@ -59,8 +61,9 @@ signals:
     void writeWindow(QString, QString);
 
 public slots:
+        void reloadSettings();
         void newConnection();
-        void sessionOpened();
+        void openSession();
         void readyRead();
 };
 

@@ -8,6 +8,7 @@
 
 #include <scriptservice.h>
 #include <clientsettings.h>
+#include <defaultvalues.h>
 
 class ScriptService;
 
@@ -31,7 +32,9 @@ private:
 
     QString path;
     QString rubyPath;
-    QString fileName;
+    QString scriptPath;
+    QString ext;
+    QString fileName;    
 
     bool running;
 
