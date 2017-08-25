@@ -518,41 +518,41 @@ class Client
   end
 
   # List stream windows in client
-  def self.list_windows
+  def self.window_list
     $_api_socket.puts "CLIENT LIST_WINDOWS\n"
     $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
   end
 
   # Add stream window to client
   #
-  # @param [String] name unique window id (see #Client::list_windows)
+  # @param [String] name unique window id (see #Client::window_list)
   # @param [String] title window title
-  def self.add_window(name, title)
+  def self.window_add(name, title)
     $_api_socket.puts "CLIENT ADD_WINDOW?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(title)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Remove stream window
   #
-  # @param [String] name unique window id (see #Client::list_windows)
-  def self.remove_window(name)
+  # @param [String] name unique window id (see #Client::window_list)
+  def self.window_remove(name)
     $_api_socket.puts "CLIENT REMOVE_WINDOW?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Clear stream window
   #
-  # @param [String] name unique window id (see #Client::list_windows)
-  def self.clear_window(name)
+  # @param [String] name unique window id (see #Client::window_list)
+  def self.window_clear(name)
     $_api_socket.puts "CLIENT CLEAR_WINDOW?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
   # Write to stream window
   #
-  # @param [String] name unique window id (see #Client::list_windows)
+  # @param [String] name unique window id (see #Client::window_list)
   # @param [String] text html formatted text
-  def self.write_window(name, text)
+  def self.window_write(name, text)
     $_api_socket.puts "CLIENT WRITE_WINDOW?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(text)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end

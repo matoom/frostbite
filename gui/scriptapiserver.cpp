@@ -192,10 +192,10 @@ void ScriptApiServer::readyRead() {
             } else if(request.name == "TRACK_EXP_CLEAR") {
                 emit clearTracked();
                 this->write(socket, tr("\\0"));
-            } else if(request.name == "LIST_WINDOWS") {
+            } else if(request.name == "WINDOW_LIST") {
                 QList<QString> list = emit windowNames();
                 this->write(socket, tr("%1\\0").arg(list.join("\n")));
-            } else if(request.name == "ADD_WINDOW") {
+            } else if(request.name == "WINDOW_ADD") {
                 QStringList args = request.args;
                 if(args.size() == 2) {
                     emit addWindow(args.at(0), args.at(1));
@@ -203,7 +203,7 @@ void ScriptApiServer::readyRead() {
                 } else {
                     this->write(socket, tr("0\\0"));
                 }
-            } else if(request.name == "REMOVE_WINDOW") {
+            } else if(request.name == "WINDOW_REMOVE") {
                 QStringList args = request.args;
                 if(args.size() == 1) {
                     emit removeWindow(args.at(0));
@@ -211,7 +211,7 @@ void ScriptApiServer::readyRead() {
                 } else {
                     this->write(socket, tr("0\\0"));
                 }
-            } else if(request.name == "CLEAR_WINDOW") {
+            } else if(request.name == "WINDOW_CLEAR") {
                 QStringList args = request.args;
                 if(args.size() == 1) {
                     emit clearWindow(args.at(0));
@@ -219,7 +219,7 @@ void ScriptApiServer::readyRead() {
                 } else {
                     this->write(socket, tr("0\\0"));
                 }
-            } else if(request.name == "WRITE_WINDOW") {
+            } else if(request.name == "WINDOW_WRITE") {
                 QStringList args = request.args;
                 if(args.size() == 2) {
                     emit writeWindow(args.at(0), args.at(1));
