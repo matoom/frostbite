@@ -381,12 +381,12 @@ thread is stuck in round time.</p>
       <pre class="lines">
 
 
-163
-164
-165</pre>
+172
+173
+174</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 163</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 172</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_echo'>echo</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_ECHO_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -441,12 +441,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-196
-197
-198</pre>
+205
+206
+207</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 196</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 205</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_get_match_rt'>get_match_rt</span>
   <span class='gvar'>$_api_current_rt</span>
@@ -515,12 +515,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-179
-180
-181</pre>
+188
+189
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 179</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 188</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span> <span class='id identifier rubyid_name'>name</span>
@@ -590,13 +590,6 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-127
-128
-129
-130
-131
-132
-133
 134
 135
 136
@@ -608,10 +601,17 @@ thread is stuck in round time</p>
 142
 143
 144
-145</pre>
+145
+146
+147
+148
+149
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 134</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_move'>move</span><span class='lparen'>(</span><span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_dir'>dir</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -698,12 +698,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-171
-172
-173</pre>
+180
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause'>pause</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='int'>1</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_value'>value</span>
@@ -742,12 +742,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-204
-205
-206</pre>
+213
+214
+215</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 204</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 213</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause_for_roundtime'>pause_for_roundtime</span>
   <span class='id identifier rubyid_pause_rt'>pause_rt</span>
@@ -783,14 +783,14 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-211
-212
-213
-214
-215</pre>
+220
+221
+222
+223
+224</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 211</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_pause_rt'>pause_rt</span>
   <span class='kw'>if</span> <span class='gvar'>$_api_current_rt</span> <span class='op'>&gt;</span> <span class='int'>0</span>
@@ -848,17 +848,21 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-151
-152
-153
-154</pre>
+158
+159
+160
+161
+162
+163</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
-  <span class='gvar'>$_api_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='gvar'>$_api_gets_mutex</span><span class='period'>.</span><span class='id identifier rubyid_synchronize'>synchronize</span> <span class='kw'>do</span>
+    <span class='gvar'>$_api_queue</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_PUT_PREFIX</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'>API</span><span class='op'>::</span><span class='const'>API_CMD_SUFFIX</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -924,12 +928,12 @@ thread is stuck in round time</p>
       <pre class="lines">
 
 
-188
-189
-190</pre>
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'main.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'main.rb', line 197</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_require'>require</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='const'>Kernel</span><span class='period'>.</span><span class='id identifier rubyid_require'>require</span> <span class='id identifier rubyid_name'>name</span>
@@ -944,7 +948,7 @@ thread is stuck in round time</p>
 </div>
 
     <div id="footer">
-  Generated on Wed Feb 15 17:36:04 2017 by
+  Generated on Sat Aug 26 17:47:56 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.0).
 </div>
