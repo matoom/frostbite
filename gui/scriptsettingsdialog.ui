@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Script settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="window.qrc">
+    <normaloff>:/window/images/alter.png</normaloff>:/window/images/alter.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
@@ -334,6 +338,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="window.qrc"/>
+ </resources>
  <connections/>
 </ui>

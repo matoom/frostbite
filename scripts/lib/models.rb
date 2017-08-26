@@ -2,7 +2,7 @@ require 'socket'
 require "erb"
 
 class Rt
-  # Roundtime
+  # Round time
   #
   # @return [int] roundtime value
   # @example Using round time in script.
@@ -10,6 +10,19 @@ class Rt
   #   => 5
   def self.value
     $_api_socket.puts "GET RT\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
+end
+
+class Ct
+  # Cast time
+  #
+  # @return [int] cast time value
+  # @example Using cast time in script.
+  #   echo Ct::value
+  #   => 5
+  def self.value
+    $_api_socket.puts "GET CT\n"
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 end
@@ -444,11 +457,20 @@ class Map
 end
 
 class Client
+  # Character name
+  #
+  # @return [String] current character name
+  def self.char_name
+    $_api_socket.puts "MAP CHAR_NAME\n"
+    eval($_api_socket.gets('\0').chomp('\0').to_s)
+  end
+
   # Connect prime
   #
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect_prime(name, user, pass)
     Client.connect(API::AUTH_GAMES[:prime], name, user, pass)
   end
@@ -458,6 +480,7 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect_test(name, user, pass)
     Client.connect(API::AUTH_GAMES[:test], name, user, pass)
   end
@@ -467,6 +490,7 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect_fallen(name, user, pass)
     Client.connect(API::AUTH_GAMES[:fallen], name, user, pass)
   end
@@ -476,6 +500,7 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect_plat(name, user, pass)
     Client.connect(API::AUTH_GAMES[:plat], name, user, pass)
   end
@@ -486,6 +511,7 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect(game, name, user, pass)
     Client.connect_host(API::AUTH_HOST, API::AUTH_PORT, game, name, user, pass)
   end
@@ -498,6 +524,7 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
   def self.connect_host(host, port, game, name, user, pass)
     $_api_socket.puts "CLIENT CONNECT?#{ERB::Util.url_encode(host)}&#{ERB::Util.url_encode(port)}&#{ERB::Util.url_encode(user)}&#{ERB::Util.url_encode(pass)}&#{ERB::Util.url_encode(game)}&#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
@@ -506,18 +533,23 @@ class Client
   # Track exp row in exp window
   #
   # @param [String] name internal exp name (see #Exp::names)
+  # @return [int] 1 on success; 0 on fail
   def self.track_exp(name)
     $_api_socket.puts "CLIENT TRACK_EXP?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Clear all tracked exp in exp window
+  #
+  # @return [int] 1 on success; 0 on fail
   def self.track_exp_clear
     $_api_socket.puts "CLIENT TRACK_EXP_CLEAR\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # List stream windows in client
+  #
+  # @return [Array] unique window names
   def self.window_list
     $_api_socket.puts "CLIENT WINDOW_LIST\n"
     $_api_socket.gets('\0').chomp('\0').to_s.split("\n")
@@ -527,6 +559,7 @@ class Client
   #
   # @param [String] name unique window id (see #Client::window_list)
   # @param [String] title window title
+  # @return [int] 1 on success; 0 on fail
   def self.window_add(name, title)
     $_api_socket.puts "CLIENT WINDOW_ADD?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(title)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
@@ -535,6 +568,7 @@ class Client
   # Remove stream window
   #
   # @param [String] name unique window id (see #Client::window_list)
+  # @return [int] 1 on success; 0 on fail
   def self.window_remove(name)
     $_api_socket.puts "CLIENT WINDOW_REMOVE?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
@@ -543,6 +577,7 @@ class Client
   # Clear stream window
   #
   # @param [String] name unique window id (see #Client::window_list)
+  # @return [int] 1 on success; 0 on fail
   def self.window_clear(name)
     $_api_socket.puts "CLIENT WINDOW_CLEAR?#{ERB::Util.url_encode(name)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i
@@ -552,6 +587,7 @@ class Client
   #
   # @param [String] name unique window id (see #Client::window_list)
   # @param [String] text html formatted text
+  # @return [int] 1 on success; 0 on fail
   def self.window_write(name, text)
     $_api_socket.puts "CLIENT WINDOW_WRITE?#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(text)}\n"
     $_api_socket.gets('\0').chomp('\0').to_i

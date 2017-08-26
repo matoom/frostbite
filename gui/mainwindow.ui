@@ -323,10 +323,6 @@ QTabBar {
    </property>
   </action>
   <action name="actionText_Highlight">
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/highlight.png</normaloff>:/window/images/highlight.png</iconset>
-   </property>
    <property name="text">
     <string>Highlight text</string>
    </property>
@@ -335,10 +331,6 @@ QTabBar {
    </property>
   </action>
   <action name="actionMacros">
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/keyboard.png</normaloff>:/window/images/keyboard.png</iconset>
-   </property>
    <property name="text">
     <string>Keyboard macros</string>
    </property>
@@ -349,10 +341,6 @@ QTabBar {
   <action name="actionAppearance">
    <property name="enabled">
     <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/window.png</normaloff>:/window/images/window.png</iconset>
    </property>
    <property name="text">
     <string>Window appearance</string>
@@ -451,10 +439,6 @@ QTabBar {
    </property>
   </action>
   <action name="actionSubstitute">
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/alter.png</normaloff>:/window/images/alter.png</iconset>
-   </property>
    <property name="text">
     <string>Alter text</string>
    </property>
@@ -520,7 +504,7 @@ QTabBar {
   </action>
   <action name="actionScriptSettings">
    <property name="text">
-    <string>Settings</string>
+    <string>Script settings</string>
    </property>
   </action>
  </widget>

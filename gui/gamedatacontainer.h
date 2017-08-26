@@ -7,10 +7,8 @@
 #include <QTime>
 
 #include <textutils.h>
-//#include <shareddataservice.h>
 
 class TextUtils;
-//class SharedDataService;
 
 class GameDataContainer : public QObject {
     Q_OBJECT
@@ -112,6 +110,7 @@ public:
     int getRt();
 
     void setCt(int ct);
+    int getCt();
 
     QString getExpField(QString name);
     QHash<QString, QString> getExp();

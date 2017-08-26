@@ -130,6 +130,8 @@ void ScriptApiServer::readyRead() {
                 this->write(socket, tr("%1\\0").arg(data->getRoomExits()));
             } else if(request.name == "RT") {
                 this->write(socket, tr("%1\\0").arg(data->getRt()));
+            } else if(request.name == "CT") {
+                this->write(socket, tr("%1\\0").arg(data->getCt()));
             } else if(request.name == "EXP_NAMES") {
                 this->write(socket, tr("%1\\0").arg(data->getExp().keys().join("\n")));
             } else if(request.name == "ROOM_MONSTERS_BOLD") {

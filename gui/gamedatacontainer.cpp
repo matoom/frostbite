@@ -475,6 +475,11 @@ int GameDataContainer::getRt() {
     return this->rt;
 }
 
+int GameDataContainer::getCt() {
+    QReadLocker locker(&lock);
+    return this->ct;
+}
+
 void GameDataContainer::setActiveSpells(QStringList activeSpells) {
     QWriteLocker locker(&lock);
     this->activeSpells = activeSpells;
