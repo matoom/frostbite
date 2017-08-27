@@ -31,7 +31,6 @@ void Lich::waitUntilRunning() {
     if(!lich_proc->waitForStarted()) {
        windowFacade->writeGameWindow("Unable to run lich.");
     }
-    QThread::sleep(1);
 }
 
 bool Lich::isRunning() {

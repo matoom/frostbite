@@ -127,10 +127,10 @@ void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString 
     lich->waitUntilRunning();
     sessionHost = "127.0.0.1";
 
-    this->connectToHost(sessionHost, sessionPort, sessionKey);
+    QTimer::singleShot(2000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
 }
 
-void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
+bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
     this->api = false;
 
     windowFacade->writeGameWindow("Connecting ...");
@@ -138,10 +138,12 @@ void TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     mainWindow->connectEnabled(false);
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
-    tcpSocket->waitForConnected();
+    bool conntected = tcpSocket->waitForConnected();
 
     this->writeCommand(sessionKey);
     this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_UNKNOWN /XML");
+
+    return conntected;
 }
 
 void TcpClient::disconnectedFromHost() {
@@ -187,7 +189,7 @@ void TcpClient::socketReadyRead() {
 
     buffer.append(data);
 
-    if(buffer.endsWith("\n") || xmlParser->isCmgr()){
+    if(buffer.endsWith("\n") || xmlParser->isCmgr()) {
         // process raw data
         emit addToQueue(buffer);
         if(!xmlParser->isRunning()) {

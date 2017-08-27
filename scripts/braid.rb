@@ -44,7 +44,8 @@ label(:start){
 label(:forage) {
   pause 0.5
   put "forage #{$args.join(" ")}"
-  match = { :braid => [/You manage to find/] }
+  match = { :braid => [/You manage to find/],
+            :forage => [/Roundtime/]}
   match_wait_goto match
 }
 
