@@ -12,20 +12,14 @@ DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
     error("Could not find the common.pri file!")
 }
 
-greaterThan(QT_VERSION, 5){
-    QT       += widgets core gui network xml multimedia concurrent
-} else {
-    QT       += core gui network xml
-}
+QT       += widgets core gui network xml multimedia concurrent
 
 include(../log4qt/src/log4qt/log4qt.pri)
 
 #https://github.com/qtproject/qt-solutions
 include(../singleapp/qtsingleapplication.pri)
 
-greaterThan(QT_VERSION, 5){
-   include(../cleanlooks/cleanlooks.pri)
-}
+include(../cleanlooks/cleanlooks.pri)
 
 include(maps/maps.pri)
 include(text/text.pri)

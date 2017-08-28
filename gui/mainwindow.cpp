@@ -20,11 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::appSetup() {
     // set cleanlooks as base style
-    #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        QApplication::setStyle(new QCleanlooksStyle());
-    #else
-        QApplication::setStyle("cleanlooks");
-    #endif
+    QApplication::setStyle(new QCleanlooksStyle());
 
     // does not open on correct screen in 4.8
     // https://bugreports.qt-project.org/browse/QTBUG-21371
