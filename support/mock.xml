@@ -672,6 +672,8 @@ Obvious paths: <d>east</d>, <d>west</d>.
 The Dwarven driver says, "I'm leaving shortly, returning to the ferry to Riverhaven.  If you would<popStream/><pushStream id="atmospherics"/> like to accompany me for a safe trip there, just join me."  The Dwarven driver smiles.
 <popStream/><pushStream id="atmospherics"/>[JOIN MULE-DRAWN WAGON before it leaves if you would like to go to the ferry to Riverhaven.]
 <popStream/>
+<pushStream id="atmospherics" />Mozart continues to struggle as he hums a halting bolero.
+<popStream id="atmospherics" /><prompt time="1504391576">&gt;</prompt>
 <pushStream id="thoughts"/><preset id='thought'>[Frodo] </preset>"Is a Trader available to come sell a few pouches for me?"
 <popStream/><prompt time="1349974644">&gt;</prompt>
     <right exist="162134941" noun="sharks">fuzzy sharks</right><clearStream id='inv' ifClosed=''/><pushStream id='inv'/>Your worn items are:

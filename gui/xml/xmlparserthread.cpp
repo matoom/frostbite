@@ -106,7 +106,8 @@ void XmlParserThread::cache(QByteArray data) {
     QString cache = QString::fromLocal8Bit(data);
 
     if(cache.contains("<pushStream")) pushStream = true;
-    if(cache.contains("<popStream/><prompt") || cache.contains(QRegularExpression("<popStream[^>]*\\/>\r\n"))) pushStream = false;
+    if(cache.contains(QRegularExpression("<popStream[^>]*\\/><prompt")) ||
+            cache.contains(QRegularExpression("<popStream[^>]*\\/>\r\n"))) pushStream = false;
 
     streamCache.append(cache);
     if(!pushStream) {
