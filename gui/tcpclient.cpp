@@ -128,7 +128,7 @@ void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString 
     lich->waitUntilRunning();
     sessionHost = "127.0.0.1";
 
-    QTimer::singleShot(2000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
+    QTimer::singleShot(3000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
 }
 
 bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
