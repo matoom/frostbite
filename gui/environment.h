@@ -3,6 +3,7 @@
 
 #ifdef Q_OS_WIN
 #define MOCK_DATA_PATH "C:/Projects/FrostBite/support/mock.xml"
+//#define MOCK_DATA_PATH "C:/Projects/FrostBite/support/mock_stream_bug.xml"
 //#define MOCK_DATA_PATH "C:/Projects/FrostBite/support/mock_init.xml"
 //#define MOCK_DATA_PATH "C:/Users/ooparah/Desktop/open_source/frostbite/support/mock.xml"
 #else

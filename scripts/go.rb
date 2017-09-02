@@ -25,20 +25,35 @@ def search_and_move m
   end
 end
 
+def map_action e
+  if e =~ /^(west|south|north|east|go|out|climb|down|up)/i
+    move e
+  else
+    put e
+    case match_wait({ :ok => [/Roundtime/, />/], :wait => [/\.\.\.wait/] })
+      when :wait
+        pause 0.5
+        map_event m
+    end
+  end
+end
+
 room = Map::current_room
 echo room
 
 moves = Map::path room[:zone], room[:id], $args.first.to_i
 echo moves
 
-moves.each do |m|
-  if m.start_with? "script "
-    script m[7, m.length]
-  elsif m.start_with? "rt "
-    move m[3, m.length]
-  elsif m.start_with? "search "
-    search_and_move m[7, m.length]
-  else
-    move m
+moves.each do |move|
+  move.split(';').each do |m|
+      if m.start_with? "script "
+        script m[7, m.length]
+      elsif m.start_with? "search "
+        search_and_move m[7, m.length]
+      elsif m.start_with? "rt "
+        map_action m[3, m.length]
+      else
+        map_action m
+      end
   end
 end

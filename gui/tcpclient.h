@@ -32,7 +32,7 @@ public:
 
     void writeCommand(QString);
     void showError(QString);
-    void log(QByteArray buffer);    
+    void logDebug(QByteArray buffer);
     void disconnectFromServer();
 
     void connectApi(QString host, QString port, QString user, QString password, QString game, QString character);
@@ -63,6 +63,7 @@ signals:
     void sessionRetrieved(QString, QString, QString);
     void eAuthError(QString);
     void addToQueue(QByteArray);
+    void diconnected();
     void updateHighlighterSettings();
     void resetPassword();
     void enableGameSelect();

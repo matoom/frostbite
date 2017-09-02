@@ -285,6 +285,7 @@ void WindowFacade::initWindowWriters() {
     connect(this, SIGNAL(updateConversationsSettings()), conversationsWriter, SLOT(updateSettings()));
     writers << conversationsWriter;
 
+    ((GenericWindow*)familiarWindow->widget())->setStream(true);
     familiarWriter = new WindowWriterThread(mainWindow, (GenericWindow*)familiarWindow->widget());
     connect(this, SIGNAL(updateFamiliarSettings()), familiarWriter, SLOT(updateSettings()));
     writers << familiarWriter;
@@ -596,7 +597,7 @@ void WindowFacade::updateRoomWindow() {
 void WindowFacade::updateFamiliarWindow(QString familiarText) {
     setVisibilityIndicator(familiarWindow, familiarVisible, DOCK_TITLE_FAMILIAR);
 
-    familiarWriter->addText(familiarText.trimmed());
+    familiarWriter->addText(familiarText);
 
     if(!familiarWriter->isRunning()) {
         familiarWriter->start();
@@ -608,8 +609,6 @@ void WindowFacade::updateFamiliarWindow(QString familiarText) {
 }
 
 void WindowFacade::updateSpellWindow(QString spellText) {
-    setVisibilityIndicator(spellWindow, spellVisible, DOCK_TITLE_SPELL);
-
     spellWriter->addText(spellText + "\n");
     if(!spellWriter->isRunning()) {
         spellWriter->start();

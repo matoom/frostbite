@@ -828,6 +828,7 @@ Roundtime: 2 sec.
 <prompt time="1361967186">&gt;</prompt>
 <pushStream id="ooc"/><b>TWEET:  </b>The Shard South Bridge Street Faire is now opening!  Please join us! #Shard #drprime
 <popStream/><prompt time="1361967186">&gt;</prompt>
+
 <output class="mono"/>
 
 Shops in this Plaza:
@@ -1149,7 +1150,6 @@ CHAPTER # (moves to that chapter)
 Some helpful commands...
 FIND <word> (finds first occurance of that word in the book)
 NEXT      (finds the next occurance of the word specified in FIND)
-
 
 
 Reading: <mode id="GAME"/><output class="" />

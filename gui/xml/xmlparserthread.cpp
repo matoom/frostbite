@@ -53,10 +53,10 @@ XmlParserThread::XmlParserThread(QObject *parent) {
 
     charName = "";
 
-    streamCount = 0;
-
     mono = false;
     cmgr = false;
+
+    pushStream = false;
 }
 
 void XmlParserThread::updateHighlighterSettings() {
@@ -96,20 +96,20 @@ QString XmlParserThread::fixInputXml(QString data) {
     return data;
 }
 
-/* lich stream caching when data pushed in segmented packets */
+void XmlParserThread::flushStream() {
+    pushStream = false;
+    streamCache.clear();
+}
+
+/* cache streams */
 void XmlParserThread::cache(QByteArray data) {
     QString cache = QString::fromLocal8Bit(data);
 
-    streamCount += cache.count("<pushStream") - cache.count("<popStream");
-
-    if(streamCache.size() > 20240) {
-        qDebug() << "Stream limit exceeded!";
-        streamCount = 0;
-    }
+    if(cache.contains("<pushStream")) pushStream = true;
+    if(cache.contains("<popStream")) pushStream = false;
 
     streamCache.append(cache);
-    if((streamCount <= 0)) {
-        streamCount = 0;
+    if(!pushStream) {
         this->process(streamCache);
         streamCache.clear();
     }
@@ -135,7 +135,7 @@ void XmlParserThread::process(QString data) {
                 if(count <= 0) break;
                 pushStream += lines.at(++i) + "\n";
             }
-            processPushStream(pushStream);
+            this->processPushStream(pushStream);
         } else if(lines.at(i).startsWith("<dynaStream")) {
             int count = 0;
             QString dynaStream = lines.at(i) + "\n";
@@ -439,13 +439,24 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
     return gameText == "";
 }
 
-void XmlParserThread::processPushStream(QString data) {    
+QString XmlParserThread::fixUnclosedStreamTags(QString data) {
+    int tagCount = data.count("<pushStream") - data.count("</pushStream>");
+    int index = data.indexOf("</pushStream>");
+    for(int i = 0; i < tagCount; i++) {
+        data.insert(index, "</pushStream>");
+    }
+    return data;
+}
+
+void XmlParserThread::processPushStream(QString data) {
     data = this->wrapRoot(data);
 
     QDomDocument doc("pushStream");
     if(!doc.setContent(data)) {
-        this->warnInvalidXml("push-stream-doc", data);
-        return;
+        if(!doc.setContent(this->fixUnclosedStreamTags(data))) {
+            this->warnInvalidXml("push-stream-doc", data);
+            return;
+        }
     }
 
     QDomElement root = doc.documentElement();
@@ -519,10 +530,10 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "familiar") {
         QDomElement element = e.firstChild().toElement();
         QString id = element.attribute("id");
-        if(id == "talk") {
+        if(id == "talk") {                                    
             QDomElement first = element.firstChild().toElement();
             if(first.attribute("id") == "speech" || first.attribute("id") == "whisper" || first.tagName() == "b") {
-                QString elementText = first.nextSibling().toText().data().trimmed();
+                QString elementText = first.nextSibling().toText().data();
                 TextUtils::plainToHtml(elementText);
                 QString text = tr("%1%2").arg(this->parseTalk(first), elementText);
                 emit updateFamiliarWindow(text);
@@ -530,7 +541,7 @@ void XmlParserThread::processPushStream(QString data) {
                 this->warnUnknownEntity("familiar-talk", data);
             }
         } else if(id == "speech" || id == "whisper") {
-            QString elementText = element.nextSibling().toText().data().trimmed();
+            QString elementText = element.nextSibling().toText().data();
             TextUtils::plainToHtml(elementText);
             QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
             emit updateFamiliarWindow(text);
@@ -538,7 +549,24 @@ void XmlParserThread::processPushStream(QString data) {
             QDomElement element = e.firstChild().toElement();
             emit updateFamiliarWindow(element.text().replace("\r\n", "\n"));
         } else {
-            emit updateFamiliarWindow(e.text().replace("\r\n", "\n"));
+            QDomElement next = e.firstChild().nextSibling().toElement();
+            if(next.tagName() == "pushStream") {
+                if(next.attribute("id") == "talk") {
+                    QDomElement first = next.firstChild().toElement();
+                    if(first.attribute("id") == "speech" || first.attribute("id") == "whisper" || first.tagName() == "b") {
+                        QString elementText = first.nextSibling().toText().data();
+                        TextUtils::plainToHtml(elementText);
+                        QString text = tr("%1%2").arg(this->parseTalk(first), elementText);
+                        emit updateFamiliarWindow(text);
+                    } else {
+                        this->warnUnknownEntity("familiar-talk", data);
+                    }
+                } else {
+                    emit updateFamiliarWindow(e.text());
+                }
+            } else {
+                emit updateFamiliarWindow(e.text());
+            }
         }
     } else if(e.attribute("id") == "ooc") {
         QDomElement element = e.firstChild().toElement();

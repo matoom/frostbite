@@ -23,6 +23,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
 
     xmlParser = new XmlParserThread(parent);        
     connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
+    connect(this, SIGNAL(diconnected()), xmlParser, SLOT(flushStream()));
     connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
     connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
     connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
@@ -185,7 +186,7 @@ void TcpClient::socketReadyRead() {
     QByteArray data = tcpSocket->readAll();
 
     // log raw data
-    this->log(data);
+    this->logDebug(data);
 
     buffer.append(data);
 
@@ -201,7 +202,7 @@ void TcpClient::socketReadyRead() {
 
 void TcpClient::writeCommand(QString cmd) {    
     QByteArray sendCmd = "<c>" + cmd.append("\n").toUtf8();
-    this->log(sendCmd);
+    this->logDebug(sendCmd);
     tcpSocket->write(sendCmd);
     tcpSocket->flush();
 }
@@ -230,7 +231,7 @@ void TcpClient::showError(QString message) {
         "<br><br>");
 }
 
-void TcpClient::log(QByteArray buffer) {
+void TcpClient::logDebug(QByteArray buffer) {
     if(settings->getParameter("Logging/debug", false).toBool()) {
         debugLogger->addText(buffer);
         if(!debugLogger->isRunning()) {
@@ -246,6 +247,7 @@ void TcpClient::disconnectFromServer() {
     }
     tcpSocket->disconnectFromHost();
     mainWindow->connectEnabled(true);
+    emit diconnected();
 }
 
 TcpClient::~TcpClient() {

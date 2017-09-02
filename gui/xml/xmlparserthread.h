@@ -37,7 +37,7 @@ private:
     QQueue<QByteArray> dataQueue;
     QMutex mMutex;
 
-    void cache(QByteArray data);
+    void cache(QByteArray data);    
 
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
@@ -75,7 +75,7 @@ private:
     bool mono;
     bool cmgr;
 
-    int streamCount;        
+    bool pushStream;
 
     void processGameData(QString);
 
@@ -83,6 +83,8 @@ private:
 
     void processPushStream(QString);
     void processDynaStream(QString);
+
+    QString fixUnclosedStreamTags(QString data);
 
     void warnUnknownEntity(QString ref, QString xml);
     void warnInvalidXml(QString ref, QString xml);
@@ -142,6 +144,7 @@ signals:
 
 public slots:
     void addData(QByteArray);
+    void flushStream();
     void updateHighlighterSettings();
 };
 

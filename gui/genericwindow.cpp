@@ -125,9 +125,8 @@ void GenericWindow::appendHtmlStream(const QString &html) {
     text_cursor.beginEditBlock();
 
     text_cursor.movePosition(QTextCursor::End);
-
     QStringList string_list = html.split("\n");
-    for (int i = 0; i < string_list.size(); i++){
+    for (int i = 0; i < string_list.size(); i++) {
         text_cursor.insertHtml("<span class=\"body\" style=\"white-space: pre-wrap;\">" +
                                string_list.at(i) +
                                "</span>");

@@ -1,0 +1,6 @@
+You sense that your familiar has caught up with Defol and you concentrate on its vision...
+<pushStream id="familiar" /><pushStream id="familiar" ifClosedStyle="watching"/><resource picture="0"/><style id="roomName" />[The Crossing, Ustial Road]
+<style id=""/><preset id='roomDesc'>The two-story dwellings on the north side of the street are sequestered by high town walls.  Shade trees from the inner yards of the houses hang over into the street.  Surrounding one well-kept gate, a colorful wall mural relieves the dun-colored monotony of the protective ramparts.  To the south, the equally humdrum back wall of a warehouse looms.</preset>  You also see a towering limestone building with stained glass windows.
+Also here: Looter Defol.
+Obvious paths: <d>east</d>, <d>west</d>.
+<compass><dir value="e"/><dir value="w"/></compass><popStream/><prompt time="1504117334">&gt;</prompt>
