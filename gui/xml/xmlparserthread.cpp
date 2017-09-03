@@ -105,9 +105,11 @@ void XmlParserThread::flushStream() {
 void XmlParserThread::cache(QByteArray data) {
     QString cache = QString::fromLocal8Bit(data);
 
-    if(cache.contains("<pushStream")) pushStream = true;
-    if(cache.contains(QRegularExpression("<popStream[^>]*\\/><prompt")) ||
-            cache.contains(QRegularExpression("<popStream[^>]*\\/>\r\n"))) pushStream = false;
+    int lastPush = cache.lastIndexOf("<pushStream");
+    int lastPop = cache.lastIndexOf("<popStream");
+
+    if(lastPush != -1) pushStream = true;
+    if(lastPop > lastPush) pushStream = false;
 
     streamCache.append(cache);
     if(!pushStream) {

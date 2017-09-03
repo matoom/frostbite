@@ -92,9 +92,9 @@ void GridWindow::track(QString skillName, QWidget* widget) {
         }
     } else {
         if(widget->property("tracked") == 1) {
-            this->invertColors(widget);
             widget->setProperty("tracked", 0);
-        }
+            this->invertColors(widget);
+        }        
     }
 }
 

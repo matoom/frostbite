@@ -14,6 +14,7 @@ class ClientSettings : QSettings {
 
 public:
     static ClientSettings* getInstance();
+    ~ClientSettings();
 
     void setParameter(QString name, QVariant value);
     QString getQStringNotBlank(QString name, QVariant defaultValue);

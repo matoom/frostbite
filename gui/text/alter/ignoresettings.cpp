@@ -89,4 +89,5 @@ void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &sett
 
 IgnoreSettings::~IgnoreSettings() {
     delete settings;
+    delete uniqueInstance;
 }

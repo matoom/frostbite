@@ -40,4 +40,5 @@ bool MacroSettings::hasValue(QString value) {
 MacroSettings::~MacroSettings() {
     delete settings;
     delete clientSettings;
+    delete uniqueInstance;
 }

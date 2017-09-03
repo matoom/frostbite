@@ -50,3 +50,7 @@ QString ClientSettings::profilePath() {
     }
     return "";
 }
+
+ClientSettings::~ClientSettings() {
+    delete uniqueInstance;
+}

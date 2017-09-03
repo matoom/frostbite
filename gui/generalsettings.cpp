@@ -90,4 +90,5 @@ QColor GeneralSettings::cmdCtColor(){
 
 GeneralSettings::~GeneralSettings() {    
     delete settings;
+    delete uniqueInstance;
 }

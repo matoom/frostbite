@@ -127,4 +127,5 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 HighlightSettings::~HighlightSettings() {
     delete settings;
     delete settingsCache;
+    delete uniqueInstance;
 }
