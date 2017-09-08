@@ -47,5 +47,4 @@ QDockWidget* GridWindowFactory::createWindow(const char* name) {
 }
 
 GridWindowFactory::~GridWindowFactory() {
-    delete settings;
 }

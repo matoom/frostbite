@@ -120,5 +120,4 @@ QList<QDockWidget*> IgnoreTab::getDockWindows() {
 }
 
 IgnoreTab::~IgnoreTab() {
-    delete settings;
 }

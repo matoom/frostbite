@@ -5,22 +5,23 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     highlightSettings = HighlightSettings::getInstance();
     audioPlayer = AudioPlayer::Instance();
 
+    highlightList = highlightSettings->getTextHighlights();
+
     healthAlert = true;
 
     connect(this, SIGNAL(playAudio(QString)), audioPlayer, SLOT(play(QString)));
-    connect(this, SIGNAL(setTimer(int)), mainWindow->getTimerBar(), SLOT(setTimer(int)));
+    connect(this, SIGNAL(setTimer(int)), mainWindow->getTimerBar(), SLOT(setTimer(int)));    
 }
 
 void Highlighter::reloadSettings() {
     highlightSettings = HighlightSettings::getInstance();
+    highlightList = highlightSettings->getTextHighlights();
 }
 
-QString Highlighter::highlight(QString text) {  
+QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
-        highlightList = highlightSettings->getTextHighlights();
-
-        for(int i = 0; i < highlightList->size(); ++i) {
-            HighlightSettingsEntry highlightEntry = highlightList->at(i);
+        for(int i = 0; i < highlightList.size(); ++i) {
+            HighlightSettingsEntry highlightEntry = highlightList.at(i);
             TextUtils::plainToHtml(highlightEntry.value);
 
             // match whole or partial words
@@ -46,9 +47,7 @@ QString Highlighter::highlight(QString text) {
     return text;
 }
 
-void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text,
-                                int indexStart, QStringList capturedTexts) {
-
+void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QStringList capturedTexts) {
     QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
     QString endTag = "</span>";
 

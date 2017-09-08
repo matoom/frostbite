@@ -21,6 +21,9 @@ public:
 
     void reloadSettings();
 
+    QList<AlterSettingsEntry> subsList;
+    QList<AlterSettingsEntry> ignoreList;
+
 private:
      IgnoreSettings* ignoreSettings;
      SubstitutionSettings* substituteSettings;

@@ -67,7 +67,7 @@ private:
     QString group;
     QList<QString> timerActionNames;
 
-    QList<HighlightSettingsEntry>* highlightList;
+    QList<HighlightSettingsEntry> highlightList;
     QList<int> changeList;
 
     QAction *colorAct;

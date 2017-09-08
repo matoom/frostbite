@@ -39,5 +39,4 @@ void QuickButtonEditDialog::cancelPressed() {
 
 QuickButtonEditDialog::~QuickButtonEditDialog() {
     delete ui;
-    delete settings;
 }

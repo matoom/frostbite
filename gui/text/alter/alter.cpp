@@ -2,18 +2,21 @@
 
 Alter::Alter(QObject *parent) : QObject(parent) {
     ignoreSettings = IgnoreSettings::getInstance();
+    ignoreList = ignoreSettings->getIgnores();
     substituteSettings = SubstitutionSettings::getInstance();
+    subsList = substituteSettings->getSubstitutions();
 }
 
 void Alter::reloadSettings() {
     ignoreSettings->reInit();
+    ignoreList = ignoreSettings->getIgnores();
     substituteSettings->reInit();
+    subsList = substituteSettings->getSubstitutions();
 }
 
 QString Alter::substitute(QString text, QString window) {
-    if(!text.isEmpty()) {
-        QList<AlterSettingsEntry> alterList = substituteSettings->getSubstitutions();
-        for(AlterSettingsEntry entry : alterList) {
+    if(!text.isEmpty()) {        
+        for(AlterSettingsEntry entry : subsList) {
             if(!entry.enabled || entry.pattern.isEmpty()) continue;
             if(!entry.targetList.empty() && !entry.targetList.contains(window)) continue;
             text.replace(QRegularExpression(entry.pattern + "(?=[^>]*(<|$))"), entry.substitute);
@@ -22,8 +25,7 @@ QString Alter::substitute(QString text, QString window) {
     return text;
 }
 
-bool Alter::ignore(QString text, QString window) {
-    QList<AlterSettingsEntry> ignoreList = ignoreSettings->getIgnores();
+bool Alter::ignore(QString text, QString window) {    
     for(AlterSettingsEntry entry : ignoreList) {
         if(!entry.enabled || entry.pattern.isEmpty()) continue;
         if(!entry.targetList.empty() && !entry.targetList.contains(window)) continue;
@@ -35,5 +37,4 @@ bool Alter::ignore(QString text, QString window) {
 }
 
 Alter::~Alter() {
-    delete ignoreSettings;
 }

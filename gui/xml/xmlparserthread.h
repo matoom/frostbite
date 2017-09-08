@@ -99,6 +99,8 @@ private:
     QString wrapRoot(QString data);
     QString wrapCdata(QString data);
 
+    QString traverseXmlNode(QDomElement element, QString text);
+
     void runScheduledEvents();
     void runEvent(QString event, QVariant data);
 

@@ -313,8 +313,6 @@ void MainWindow::closeEvent(QCloseEvent*) {
 
 MainWindow::~MainWindow() {
     delete tcpClient;
-    delete settings;
-    delete generalSettings;
     delete ui;
     delete toolBar;
     delete windowFacade;

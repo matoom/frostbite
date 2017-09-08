@@ -132,5 +132,4 @@ void VitalsBar::updateVitals(QString name, QString value) {
 }
 
 VitalsBar::~VitalsBar() {
-    delete clientSettings;
 }

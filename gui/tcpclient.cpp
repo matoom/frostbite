@@ -253,7 +253,6 @@ void TcpClient::disconnectFromServer() {
 TcpClient::~TcpClient() {
     this->disconnectFromServer();
 
-    delete settings;
     delete debugLogger;
     delete tcpSocket;
     delete xmlParser;

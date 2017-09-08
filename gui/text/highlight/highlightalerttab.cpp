@@ -217,5 +217,4 @@ void HighlightAlertTab::cancelChanges() {
 }
 
 HighlightAlertTab::~HighlightAlertTab() {
-    delete settings;
 }

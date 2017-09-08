@@ -17,7 +17,7 @@ public:
     QColor getBgColor();
     QColor getTextColor();
 
-    QLabel* gridValueLabel(QWidget* parent, GeneralSettings* settings, QString key);
+    QLabel* gridValueLabel(QWidget* parent);
 
     void track(QString skillName, QWidget* widget);  
 
@@ -27,9 +27,13 @@ private:
     WindowFacade* wm;
 
     QStringList tracked;
+    QFont font;
+    QColor textColor;
+    QColor backgroundColor;
 
     void loadSettings();    
     void invertColors(QWidget* widget);
+    void setItemColors(QWidget* widget, QColor text, QColor background);
 
 signals:
 

@@ -207,6 +207,5 @@ void HighlightDialog::applyPressed() {
 }
 
 HighlightDialog::~HighlightDialog() {
-    delete settings;
     delete ui;
 }

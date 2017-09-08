@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QReadLocker>
 #include <QTime>
+#include <QRegularExpression>
 
 #include <textutils.h>
 
@@ -31,11 +32,12 @@ public:
 
     void setRoomName(QString);
     void setRoomDesc(QString);
-    void setRoomObjs(QString);
+    void setRoomObjs(QString);    
     void setRoomObjsData(QString);
     void setRoomPlayers(QString);
     void setRoomExits(QString);
     void setRoomExtra(QString);
+    void setRoomMonstersBold(QString);
 
     QString getRoomName();
     QString getRoomDesc();
@@ -44,6 +46,7 @@ public:
     QString getRoomPlayers();
     QString getRoomExits();
     QString getRoomExtra();
+    QStringList getRoomMonstersBold();
 
     void setCompassDirections(QList<QString>);
     QList<QString> getCompassDirections();
@@ -152,7 +155,8 @@ private:
     QString roomObjsData;
     QString roomPlayers;
     QString roomExits;
-    QString roomExtra;
+    QString roomExtra;    
+    QStringList roomMonstersBold;
 
     QList<QString> compassDirections;
 

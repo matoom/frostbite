@@ -207,5 +207,4 @@ Toolbar::~Toolbar() {
     delete wieldLeft;
     delete wieldRight;
     delete activeSpell;
-    delete clientSettings;
 }

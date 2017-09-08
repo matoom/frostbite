@@ -125,5 +125,4 @@ QList<QDockWidget*> SubstituteTab::getDockWindows() {
 }
 
 SubstituteTab::~SubstituteTab() {
-    delete settings;
 }

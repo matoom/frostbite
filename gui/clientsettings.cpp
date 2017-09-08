@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(ClientSettingsInstance, uniqueInstance)
 
 ClientSettings* ClientSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new ClientSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 ClientSettings::ClientSettings() : QSettings(QApplication::applicationDirPath() + "/client.ini", QSettings::IniFormat) {
@@ -51,6 +47,5 @@ QString ClientSettings::profilePath() {
     return "";
 }
 
-ClientSettings::~ClientSettings() {
-    delete uniqueInstance;
+ClientSettings::~ClientSettings() {        
 }

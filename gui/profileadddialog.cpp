@@ -44,6 +44,5 @@ void ProfileAddDialog::cancelClicked() {
 }
 
 ProfileAddDialog::~ProfileAddDialog() {
-    delete clientSettings;
     delete ui;
 }

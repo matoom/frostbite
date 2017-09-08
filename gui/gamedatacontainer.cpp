@@ -197,6 +197,22 @@ QString GameDataContainer::getRoomDesc() {
     return this->roomDesc;
 }
 
+void GameDataContainer::setRoomMonstersBold(QString roomObjs) {
+    QRegularExpression re("<span class=\"bold\">(.*?)<\\/span>");
+    QRegularExpressionMatchIterator i = re.globalMatch(roomObjs);
+    QStringList found;
+    while(i.hasNext()) {
+        found << i.next().captured(1);
+    }
+    QWriteLocker locker(&lock);
+    roomMonstersBold = found;
+}
+
+QStringList GameDataContainer::getRoomMonstersBold() {
+    QReadLocker locker(&lock);
+    return this->roomMonstersBold;
+}
+
 void GameDataContainer::setRoomObjsData(QString objs) {
     QWriteLocker locker(&lock);
     this->roomObjsData = objs;

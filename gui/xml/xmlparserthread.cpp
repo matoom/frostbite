@@ -380,7 +380,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                         if(e.elementsByTagName("d").count() == 0) {
                             gameDataContainer->setExpField(false, id, text);                            
                         } else {
-                            gameDataContainer->setExpField(true, id, text);                            
+                            gameDataContainer->setExpField(true, id, text);
                         }
                         emit updateExpWindow(id, text);
                     } else {
@@ -390,15 +390,15 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 }
             } else if(e.attribute("id").startsWith("room")) {
                 QString id = e.attribute("id");
-                if(id.endsWith("desc")) {
+                if(id.endsWith("desc")) {                                                           
                     QString roomDesc = e.text();
                     TextUtils::plainToHtml(roomDesc);
                     gameDataContainer->setRoomDesc(roomDesc);
                 } else if (id.endsWith("objs")) {
-                    QString str;
-                    QTextStream stream(&str);
-                    e.save(stream, QDomNode::ElementNode);
-                    gameDataContainer->setRoomObjsData(str);
+                    QString text = this->traverseXmlNode(e, QString("")).trimmed();
+                    gameDataContainer->setRoomObjsData(text);
+                    gameDataContainer->setRoomMonstersBold(text);
+
                     QString roomObjs = e.text();
                     TextUtils::plainToHtml(roomObjs);
                     gameDataContainer->setRoomObjs(roomObjs);
@@ -468,28 +468,12 @@ void XmlParserThread::processPushStream(QString data) {
     QDomElement e = n.toElement();
 
     if(e.attribute("id") == "talk") {
+        QString text = this->traverseXmlNode(e, QString("")).trimmed();
         QDomElement element = e.firstChild().toElement();
-        if(element.tagName() == "preset") {
-            if(element.attribute("id") == "speech") {
-                QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::plainToHtml(elementText);
-                QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-                emit updateConversationsWindow(addTime(text));
-            } else if(element.attribute("id") == "thought") {
-                QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::plainToHtml(elementText);
-                QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-                emit updateThoughtsWindow(addTime(text));
-            } else {
-                this->warnUnknownEntity("talk-preset", data);
-            }
-        } else if(element.tagName() == "b") {
-            QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::plainToHtml(elementText);
-            QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-            emit updateConversationsWindow(addTime(text));
+        if(element.attribute("id") == "thought") {
+            emit updateThoughtsWindow(addTime(text));
         } else {
-            this->warnUnknownEntity("talk", data);
+            emit updateConversationsWindow(addTime(text));
         }
     } else if(e.attribute("id") == "logons") {
         emit updateArrivalsWindow(addTime(root.text().trimmed()));
@@ -505,87 +489,30 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "assess") {
         QString ass = root.text().trimmed();
         if(!ass.isEmpty()) this->writeTextLines(ass);
-    } else if(e.attribute("id") == "thoughts") {
-        QDomElement element = e.firstChild().toElement();
-        if(element.tagName() == "preset") {
-            QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::plainToHtml(elementText);
-            QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-            emit updateThoughtsWindow(addTime(text));
-        } else {            
-            emit updateThoughtsWindow(addTime(e.text().trimmed()));
-        }
+    } else if(e.attribute("id") == "thoughts") {                        
+        QString text = this->traverseXmlNode(e, QString("")).trimmed();
+        emit updateThoughtsWindow(addTime(text));
     } else if(e.attribute("id") == "death") {
         emit updateDeathsWindow(addTime(root.text().trimmed()));
     } else if(e.attribute("id") == "atmospherics") {
         QString atmo = root.text().trimmed();
         if(!atmo.isEmpty()) this->writeTextLines(atmo);
     } else if(e.attribute("id") == "whispers") {
-        QDomElement element = e.firstChild().toElement();
-        if(element.attribute("id") == "whisper") {
-            QString elementText = element.nextSibling().toText().data().trimmed();
-            TextUtils::plainToHtml(elementText);
-            QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-            emit updateConversationsWindow(addTime(text));
-        } else {
-            this->warnUnknownEntity("whispers", data);
-        }
+        emit updateConversationsWindow(this->traverseXmlNode(e, QString("")).trimmed());
     } else if(e.attribute("id") == "familiar") {
-        QDomElement element = e.firstChild().toElement();
-        QString id = element.attribute("id");
-        if(id == "talk") {                                    
-            QDomElement first = element.firstChild().toElement();
-            if(first.attribute("id") == "speech" || first.attribute("id") == "whisper" || first.tagName() == "b") {
-                QString elementText = first.nextSibling().toText().data();
-                TextUtils::plainToHtml(elementText);
-                QString text = tr("%1%2").arg(this->parseTalk(first), elementText);
-                emit updateFamiliarWindow(text);
-            } else {
-                this->warnUnknownEntity("familiar-talk", data);
-            }
-        } else if(id == "speech" || id == "whisper") {
-            QString elementText = element.nextSibling().toText().data();
-            TextUtils::plainToHtml(elementText);
-            QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-            emit updateFamiliarWindow(text);
-        } else if (id == "familiar") {
-            QDomElement element = e.firstChild().toElement();
-            emit updateFamiliarWindow(element.text().replace("\r\n", "\n"));
+        QDomElement next = e.firstChild().nextSibling().toElement();
+        if(next.tagName() == "pushStream") {
+            emit updateFamiliarWindow(this->traverseXmlNode(next, QString("")));
         } else {
-            QDomElement next = e.firstChild().nextSibling().toElement();
-            if(next.tagName() == "pushStream") {
-                if(next.attribute("id") == "talk") {
-                    QDomElement first = next.firstChild().toElement();
-                    if(first.attribute("id") == "speech" || first.attribute("id") == "whisper" || first.tagName() == "b") {
-                        QString elementText = first.nextSibling().toText().data();
-                        TextUtils::plainToHtml(elementText);
-                        QString text = tr("%1%2").arg(this->parseTalk(first), elementText);
-                        emit updateFamiliarWindow(text);
-                    } else {
-                        this->warnUnknownEntity("familiar-talk", data);
-                    }
-                } else {
-                    emit updateFamiliarWindow(e.text());
-                }
-            } else {
-                emit updateFamiliarWindow(e.text());
-            }
+            emit updateFamiliarWindow(this->traverseXmlNode(e, QString("")));
         }
-    } else if(e.attribute("id") == "ooc") {
+    } else if(e.attribute("id") == "ooc") {        
+        QString text = this->traverseXmlNode(e, QString("")).trimmed();
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {
-            if(element.attribute("id") == "whisper") {
-                QString elementText = element.nextSibling().toText().data().trimmed();
-                TextUtils::plainToHtml(elementText);
-                QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-                emit updateConversationsWindow(addTime(text));
-            } else {
-                this->warnUnknownEntity("ooc-preset", data);
-            }
-        } else {
-            QString ooc = root.text().trimmed();
-            TextUtils::plainToHtml(ooc);            
-            this->writeTextLines(ooc);
+            emit updateConversationsWindow(addTime(text));
+        } else {            
+            this->writeTextLines(text);
         }
     } else if(e.attribute("id") == "percWindow") {
         QDomElement element = e.firstChild().toElement();
@@ -599,25 +526,57 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "group") {
         // ignored
     } else if(e.attribute("id") == "chatter") {
-        QDomElement element = e.firstChild().toElement();
-        if(element.tagName() == "preset") {
-            if(element.attribute("id") == "thought") {
-                QString elementText = element.nextSibling().toText().data();
-                QString trimTrailing = elementText.remove(QRegularExpression("\n$"));
-                TextUtils::plainToHtml(trimTrailing);
-                QString text = tr("%1%2").arg(this->parseTalk(element), elementText);
-                emit updateThoughtsWindow(addTime(text));
-            } else {
-                this->warnUnknownEntity("chatter-preset", data);
-            }
-        } else {
-            this->warnUnknownEntity("chatter", data);
-        }
+        QString text = this->traverseXmlNode(e, QString("")).trimmed();
+        emit updateThoughtsWindow(addTime(text));
     } else if(e.tagName() == "pushStream") {
         emit writeStreamWindow(e.attribute("id"), e.text());
     } else {
         this->warnUnknownEntity("push-stream", data);
     }
+}
+
+QString XmlParserThread::traverseXmlNode(QDomElement element, QString text) {
+    for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling()) {
+        //qDebug() << node.nodeName();
+        if(node.isText()) {
+            QDomText t = node.toText();
+            if (!t.isNull()) {
+                QString plain = t.data();
+                TextUtils::plainToHtml(plain);
+                text += plain;
+            }
+        } else if (node.isElement()) {
+            QDomElement el = node.toElement();
+            if(el.tagName() == "style") {
+                if(el.attribute("id") == "roomName") {
+                    text += "<span class=\"room-name\">";
+                } else if (el.attribute("id") == "") {
+                    text += "</span>";
+                }
+            } else if(el.tagName() == "preset") {
+                if(el.attribute("id") == "speech") {
+                    text += "<span class=\"speech\">";
+                } else if(el.attribute("id") == "whisper") {
+                    text += "<span class=\"whisper\">";
+                } else if(el.attribute("id") == "thought") {
+                    text += "<span class=\"thinking\">";
+                }
+                text = this->traverseXmlNode(node.toElement(), text);
+                text += "</span>";
+            } else if(el.tagName() == "b") {
+                text += "<span class=\"speech\">";
+                text = this->traverseXmlNode(node.toElement(), text);
+                text += "</span>";
+            } else if(el.tagName() == "pushBold") {
+                text += "<span class=\"bold\">";
+            } else if(el.tagName() == "popBold") {
+                text += "</span>";
+            } else {
+                text = this->traverseXmlNode(node.toElement(), text);
+            }
+        }
+    }
+    return text;
 }
 
 void XmlParserThread::processDynaStream(QString data) {    

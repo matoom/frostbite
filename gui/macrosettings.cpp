@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(MacroSettingsInstance, uniqueInstance)
 
 MacroSettings* MacroSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new MacroSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 MacroSettings::MacroSettings() {
@@ -39,6 +35,4 @@ bool MacroSettings::hasValue(QString value) {
 
 MacroSettings::~MacroSettings() {
     delete settings;
-    delete clientSettings;
-    delete uniqueInstance;
 }

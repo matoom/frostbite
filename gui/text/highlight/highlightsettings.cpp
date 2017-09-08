@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(HighlightSettingsInstance, uniqueInstance)
 
 HighlightSettings* HighlightSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new HighlightSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 HighlightSettings::HighlightSettings() {
@@ -17,7 +13,7 @@ HighlightSettings::HighlightSettings() {
 }
 
 void HighlightSettings::reInit() {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     delete settings;
     this->create();
 }
@@ -27,17 +23,17 @@ void HighlightSettings::create() {
 }
 
 void HighlightSettings::setSingleParameter(QString name, QVariant value) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     settings->setValue(name, value);
 }
 
 QVariant HighlightSettings::getSingleParameter(QString name, QVariant defaultValue) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     return settings->value(name, defaultValue);
 }
 
 void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int id = settings->value(group + "/size").toInt();
 
     settings->beginWriteArray(group);
@@ -55,7 +51,7 @@ void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry
 }
 
 void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int size = settings->value(group + "/size").toInt();
 
     settings->beginWriteArray(group);
@@ -74,21 +70,17 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue(group + "/size", size);
 }
 
-// TODO: profile cache/remove?
-QList<HighlightSettingsEntry>* HighlightSettings::getTextHighlights() {
-    QList<HighlightSettingsEntry>* settingsCache = new QList<HighlightSettingsEntry>();
-    this->loadSettings("TextHighlight", settingsCache);
-    return settingsCache;
+QList<HighlightSettingsEntry> HighlightSettings::getTextHighlights() {
+    return this->loadSettings("TextHighlight");
 }
 
-void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
-    QReadLocker locker(&lock);
+QList<HighlightSettingsEntry> HighlightSettings::loadSettings(QString group) {
+    QMutexLocker locker(&m_mutex);
+    QList<HighlightSettingsEntry> settingsList = QList<HighlightSettingsEntry>();
     int size = settings->beginReadArray(group);
-
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
-
-        settingsList->append(HighlightSettingsEntry((const int&)i,
+        settingsList.append(HighlightSettingsEntry((const int&)i,
                 (const QString&)settings->value("value", "").toString(),
                 (const QString&)settings->value("group", "").toString(),
                 (const QColor&)settings->value("color", QColor()).value<QColor>(),
@@ -100,15 +92,16 @@ void HighlightSettings::loadSettings(QString group, QList<HighlightSettingsEntry
                 (const QBitArray&)settings->value("options", QBitArray(3)).value<QBitArray>()));
     }
     settings->endArray();
+    return settingsList;
 }
 
-void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>* settingsList) {
-    QWriteLocker locker(&lock);
+void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry> settingsList) {
+    QMutexLocker locker(&m_mutex);
     settings->remove(group);
     settings->beginWriteArray(group);
 
-    for (int i = 0; i < settingsList->size(); ++i) {
-        HighlightSettingsEntry entry = settingsList->at(i);
+    for (int i = 0; i < settingsList.size(); ++i) {
+        HighlightSettingsEntry entry = settingsList.at(i);
 
         settings->setArrayIndex(i);
         settings->setValue("value", entry.value);
@@ -126,6 +119,4 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
 
 HighlightSettings::~HighlightSettings() {
     delete settings;
-    delete settingsCache;
-    delete uniqueInstance;
 }

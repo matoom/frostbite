@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(IgnoreSettingsInstance, uniqueInstance)
 
 IgnoreSettings* IgnoreSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new IgnoreSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 IgnoreSettings::IgnoreSettings() {
@@ -17,7 +13,7 @@ IgnoreSettings::IgnoreSettings() {
 }
 
 void IgnoreSettings::reInit() {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     delete settings;
     this->create();
 }
@@ -27,7 +23,7 @@ void IgnoreSettings::create() {
 }
 
 void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     settings->remove("ignore");
     settings->beginWriteArray("ignore");
 
@@ -43,7 +39,7 @@ void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
 }
 
 void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int id = settings->value("ignore/size").toInt();
 
     settings->beginWriteArray("ignore");
@@ -55,7 +51,7 @@ void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
 }
 
 void IgnoreSettings::setParameter(AlterSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int size = settings->value("ignore/size").toInt();
 
     settings->beginWriteArray("ignore");
@@ -75,7 +71,7 @@ QList<AlterSettingsEntry> IgnoreSettings::getIgnores() {
 }
 
 void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
-    QReadLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
@@ -89,5 +85,4 @@ void IgnoreSettings::loadSettings(QString group, QList<AlterSettingsEntry> &sett
 
 IgnoreSettings::~IgnoreSettings() {
     delete settings;
-    delete uniqueInstance;
 }

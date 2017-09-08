@@ -29,7 +29,6 @@ private:
     AudioPlayer* audioPlayer;
     MainWindow* mainWindow;
     QRegExp rx;
-    QList<HighlightSettingsEntry>* highlightList;
 
     bool healthAlert;    
 
@@ -39,7 +38,7 @@ private:
 
     Qt::CaseSensitivity matchCase(bool);
 
-    QList<HighlightSettingsEntry> getHighlightSettings();
+    QList<HighlightSettingsEntry> highlightList;
 
 signals:
     void playAudio(QString);

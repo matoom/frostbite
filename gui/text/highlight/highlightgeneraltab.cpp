@@ -238,6 +238,4 @@ void HighlightGeneralTab::cancelChanges() {
 }
 
 HighlightGeneralTab::~HighlightGeneralTab() {
-    delete settings;
-    delete generalSettings;
 }

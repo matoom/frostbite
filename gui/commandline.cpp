@@ -238,5 +238,4 @@ void CommandLine::abortSequence() {
 CommandLine::~CommandLine() {
     delete roundtimeDisplay;
     delete keyboardFilter;
-    delete settings;
 }

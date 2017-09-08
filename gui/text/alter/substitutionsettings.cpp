@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(SubstitutionSettingsInstance, uniqueInstance)
 
 SubstitutionSettings* SubstitutionSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new SubstitutionSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 SubstitutionSettings::SubstitutionSettings() {
@@ -17,7 +13,7 @@ SubstitutionSettings::SubstitutionSettings() {
 }
 
 void SubstitutionSettings::reInit() {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     delete settings;
     this->create();
 }
@@ -27,7 +23,7 @@ void SubstitutionSettings::create() {
 }
 
 void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     settings->remove("substitution");
     settings->beginWriteArray("substitution");
 
@@ -44,7 +40,7 @@ void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
 }
 
 void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int id = settings->value("substitution/size").toInt();
 
     settings->beginWriteArray("substitution");
@@ -57,7 +53,7 @@ void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
 }
 
 void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
-    QWriteLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int size = settings->value("substitution/size").toInt();
 
     settings->beginWriteArray("substitution");
@@ -78,7 +74,7 @@ QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
 }
 
 void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
-    QReadLocker locker(&lock);
+    QMutexLocker locker(&m_mutex);
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);

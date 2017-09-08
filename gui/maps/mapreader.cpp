@@ -7,8 +7,6 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     settings = GeneralSettings::getInstance();
     background = settings->dockWindowBackground();
 
-    QtConcurrent::run(this, &MapReader::init);
-
     mapData = new MapData(this);
 
     dir = QDir(QApplication::applicationDirPath() + "/maps");
@@ -20,9 +18,11 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     QHash<int, MapGraphics> empty;
     empty.insert(0, {new QGraphicsScene(0, 0, 0, 0, this), NULL});
     this->scenes.insert("", empty);
+
+    QtConcurrent::run(this, &MapReader::init);
 }
 
-void MapReader::init() {    
+void MapReader::init() {
     QStringList filter;
     filter << "*.xml";
 
@@ -61,6 +61,7 @@ bool MapReader::isInitialized() {
 }
 
 void MapReader::initScenes() {
+    // TODO DEBUG
     this->paintScenes();
     emit ready();
 }

@@ -4,11 +4,7 @@
 Q_GLOBAL_STATIC(GeneralSettingsInstance, uniqueInstance)
 
 GeneralSettings* GeneralSettings::getInstance() {
-    if(uniqueInstance.exists()) {
-        return uniqueInstance;
-    } else {
-        return new GeneralSettingsInstance();
-    }
+    return uniqueInstance;
 }
 
 GeneralSettings::GeneralSettings() {
@@ -90,5 +86,4 @@ QColor GeneralSettings::cmdCtColor(){
 
 GeneralSettings::~GeneralSettings() {    
     delete settings;
-    delete uniqueInstance;
 }

@@ -1,7 +1,7 @@
 #ifndef SUBSTITUTIONSETTINGS_H
 #define SUBSTITUTIONSETTINGS_H
 
-#include <QReadWriteLock>
+#include <QMutex>
 
 #include <text/alter/altersettingsentry.h>
 #include <clientsettings.h>
@@ -29,7 +29,8 @@ private:
     QSettings* settings;
     ClientSettings* clientSettings;
 
-    QReadWriteLock lock;
+    //QReadWriteLock lock;
+    QMutex m_mutex;
 
 signals:
 

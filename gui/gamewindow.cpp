@@ -145,5 +145,4 @@ GameWindow::~GameWindow() {
     delete saveAct;
     delete menu;
     delete snapshot;
-    delete settings;
 }

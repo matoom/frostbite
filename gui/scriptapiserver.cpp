@@ -20,7 +20,7 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
 
     data = GameDataContainer::Instance();    
 
-    settings = new ApiSettings();
+    apiSettings = new ApiSettings();
     clientSettings = ClientSettings::getInstance();
 
     this->initNetworkSession();
@@ -51,7 +51,7 @@ void ScriptApiServer::openSession() {
                 info("Unable to start server" + tcpServer->errorString());
         return;
     }
-    settings->setParameter("ApiServer/port", tcpServer->serverPort());
+    apiSettings->setParameter("ApiServer/port", tcpServer->serverPort());
 }
 
 void ScriptApiServer::newConnection() {
@@ -135,13 +135,7 @@ void ScriptApiServer::readyRead() {
             } else if(request.name == "EXP_NAMES") {
                 this->write(socket, tr("%1\\0").arg(data->getExp().keys().join("\n")));
             } else if(request.name == "ROOM_MONSTERS_BOLD") {
-                QRegularExpression re("<pushBold\\/>(.*?)<popBold\\/>");
-                QRegularExpressionMatchIterator i = re.globalMatch(data->getRoomObjsData());
-                QList<QString> found;
-                while(i.hasNext()) {
-                    found << i.next().captured(1);
-                }
-                this->write(socket, tr("%1\\0").arg(found.join("\n")));
+                this->write(socket, tr("%1\\0").arg(data->getRoomMonstersBold().join("\n")));
             } else {
                 this->write(socket, tr("\\0"));
             }
@@ -267,7 +261,7 @@ int ScriptApiServer::boolToInt(bool value) {
 }
 
 ScriptApiServer::~ScriptApiServer() {
-    delete settings;
+    delete apiSettings;
 }
 
 

@@ -60,5 +60,4 @@ void HighlightEditDialog::cancelPressed() {
 
 HighlightEditDialog::~HighlightEditDialog() {
     delete ui;
-    delete settings;
 }

@@ -13,15 +13,18 @@ GridWindow::GridWindow(QWidget *parent) : QTableWidget(parent) {
     this->setFocusPolicy(Qt::NoFocus);
 }
 
-void GridWindow::updateSettings() {
-    delete settings;
+void GridWindow::updateSettings() {    
     settings = GeneralSettings::getInstance();
+    this->loadSettings();
+    this->clearTracked();
 }
 
-void GridWindow::loadSettings() {
-    QFont font = settings->dockWindowFont();
+void GridWindow::loadSettings() {    
+    font = settings->dockWindowFont();
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
+    textColor = settings->dockWindowFontColor();
+    backgroundColor = settings->dockWindowBackground();
 }
 
 void GridWindow::resize(int, int) {
@@ -38,14 +41,13 @@ QColor GridWindow::getTextColor() {
     return viewport()->palette().color(QPalette::Text);
 }
 
-QLabel* GridWindow::gridValueLabel(QWidget* parent, GeneralSettings* settings, QString key) {
-    QLabel* label = new QLabel(parent);
-    label->setObjectName(key);
-    label->setFont(settings->dockWindowFont());
+QLabel* GridWindow::gridValueLabel(QWidget* parent) {
+    QLabel* label = new QLabel(parent);    
+    label->setFont(font);
 
     QPalette p = label->palette();
-    p.setColor(QPalette::Text, settings->dockWindowFontColor());
-    p.setColor(QPalette::Base, settings->dockWindowBackground());
+    p.setColor(QPalette::Text, textColor);
+    p.setColor(QPalette::Base, backgroundColor);
     label->setPalette(p);
 
     label->setTextFormat(Qt::RichText);
@@ -65,10 +67,16 @@ void GridWindow::invertColors(QWidget* widget) {
     widget->setPalette(p);
 }
 
+void GridWindow::setItemColors(QWidget* widget, QColor text, QColor background) {
+    QPalette p = widget->palette();
+    p.setColor(QPalette::Text, text);
+    p.setColor(QPalette::Base, background);
+    widget->setPalette(p);
+}
+
 void GridWindow::track(QString skillName) {
-    if(!tracked.contains(skillName)) {
+    if(!tracked.contains(skillName))
         tracked << skillName;
-    }
 
     int rows = this->rowCount();
 
@@ -83,18 +91,17 @@ void GridWindow::track(QString skillName) {
     }
 }
 
-void GridWindow::track(QString skillName, QWidget* widget) {    
+void GridWindow::track(QString skillName, QWidget* widget) {
     if(tracked.contains(skillName)) {
-        if(widget->property("tracked") == QVariant::Invalid ||
-                widget->property("tracked") == 0) {
-            this->invertColors(widget);
+        if(widget->property("tracked") == 0) {
+            this->setItemColors(widget, backgroundColor, textColor);
             widget->setProperty("tracked", 1);
         }
     } else {
         if(widget->property("tracked") == 1) {
+            this->setItemColors(widget, textColor, backgroundColor);
             widget->setProperty("tracked", 0);
-            this->invertColors(widget);
-        }        
+        }
     }
 }
 
@@ -109,13 +116,13 @@ void GridWindow::addRemoveTracked(int row, int col) {
 }
 
 void GridWindow::clearTracked() {
-    tracked.clear();
+    tracked.clear();    
     for (int i = 0; i < this->rowCount(); ++i) {
         QWidget* w = this->cellWidget(i, 0);
-        track(w->objectName(), w);
+        this->setItemColors(w, textColor, backgroundColor);
+        w->setProperty("tracked", 0);
     }
 }
 
 GridWindow::~GridWindow() {
-    delete settings;
 }

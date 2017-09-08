@@ -229,7 +229,6 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
 
 EAuthService::~EAuthService() {
     tcpSocket->disconnectFromHost();
-    delete settings;
     delete tcpSocket;
     delete authLogger;
 }

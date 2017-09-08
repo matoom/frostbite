@@ -82,5 +82,4 @@ void Tray::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 }
 
 Tray::~Tray() {
-    delete settings;
 }

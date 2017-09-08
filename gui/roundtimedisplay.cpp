@@ -163,5 +163,4 @@ void RoundTimeDisplay::setCtColor(QColor color) {
 
 RoundTimeDisplay::~RoundTimeDisplay() {
     delete timer;
-    delete settings;
 }

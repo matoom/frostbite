@@ -88,6 +88,5 @@ void Script::handleError(QProcess::ProcessError error) {
 }
 
 Script::~Script() {
-    delete clientSettings;
     delete script_proc;
 }

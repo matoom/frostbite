@@ -289,7 +289,6 @@ void ConnectWizard::showError(QString errorMsg) {
 }
 
 ConnectWizard::~ConnectWizard() {
-    delete settings;
     delete movie;
     delete ui;
 }

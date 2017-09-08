@@ -40,7 +40,7 @@ private:
     void initNetworkSession();
 
     GameDataContainer* data;
-    ApiSettings* settings;
+    ApiSettings* apiSettings;
     ClientSettings* clientSettings;
 
     MainWindow* mainWindow;

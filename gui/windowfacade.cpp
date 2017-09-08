@@ -220,6 +220,7 @@ void WindowFacade::loadWindows() {
 
     expWindow = gridWindowFactory->createWindow(DOCK_TITLE_EXP);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, expWindow);
+    connect(this, SIGNAL(updateExpSettings()), (GridWindow*)expWindow->widget(), SLOT(updateSettings()));
     dockWindows << expWindow;
 
     conversationsWindow = genericWindowFactory->createWindow(DOCK_TITLE_CONVERSATIONS);
@@ -278,7 +279,7 @@ void WindowFacade::initWindowWriters() {
 
     expWriter = new GridWriterThread(mainWindow, (GridWindow*)expWindow->widget());
     connect(expWriter, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
-    connect(this, SIGNAL(updateExpSettings()), expWriter, SLOT(updateSettings()));
+    connect(this, SIGNAL(updateExpSettings()), expWriter, SLOT(updateSettings()));    
     gridWriters << expWriter;
 
     conversationsWriter = new WindowWriterThread(mainWindow, (GenericWindow*)conversationsWindow->widget());
@@ -444,33 +445,26 @@ void WindowFacade::writeExpWindow(GridItems items) {
     int size = items.size();
     table->setRowCount(size);
 
-    QString title = QStringLiteral(DOCK_TITLE_EXP) + " (" + QString::number(size) + ")";
-    expWindow->setWindowTitle(title);
+    expWindow->setWindowTitle(QStringLiteral(DOCK_TITLE_EXP) + " (" + QString::number(size) + ")");
 
     int i = 0;
     foreach(QString key, items.keys()) {        
-        QString text = "<html><head><meta name=\"qrichtext\" content=\"1\" /></head><body><span>";
-        text += "<span>";
+        QString text = "<span style=\"white-space:pre-wrap;\">";
         if(gameDataContainer->isExpGained(key)) {
             text += "(+)";
         } else {
             text += "&nbsp;&nbsp;&nbsp;";
         }
-        text += "</span>";
-        text += items.value(key) + "</span></body></html>";
+        text += items.value(key) + "</span>";
 
         QLabel* item = (QLabel*)table->cellWidget(i, 0);
-        if(item != NULL) {
-            item->setText(text);
-            item->setObjectName(key);
-            //item->setAlignment(Qt::AlignTop);
-            window->track(key, item);
-        } else {
-            QLabel* label = window->gridValueLabel(table, generalSettings, key);
-            label->setText(text);
-            table->setCellWidget(i++, 0, label);            
-            window->track(key, label);
+        if(item == NULL) {
+            item = window->gridValueLabel(table);
+            table->setCellWidget(i, 0, item);
         }
+        item->setText(text);
+        item->setObjectName(key);
+        window->track(key, item);
         i++;
     }    
 }
@@ -578,7 +572,7 @@ void WindowFacade::updateRoomWindow() {
     QString desc = gameDataContainer->getRoomDesc();
     roomText += desc.isEmpty() ? "" : desc + "\n";
 
-    QString objs = gameDataContainer->getRoomObjs();
+    QString objs = gameDataContainer->getRoomObjsData();
     roomText += objs.isEmpty() ? "" : objs + "\n";
 
     QString players = gameDataContainer->getRoomPlayers();
@@ -736,8 +730,6 @@ WindowFacade::~WindowFacade() {
     delete conversationsLogger;
     delete arrivalsLogger;
     delete deathsLogger;
-
-    delete settings;
 
     delete mapFacade->getMapWindow();
 }

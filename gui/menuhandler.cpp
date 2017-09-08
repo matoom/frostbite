@@ -180,7 +180,6 @@ void MenuHandler::loadToolbarMenu() {
 }
 
 MenuHandler::~MenuHandler() {
-    delete clientSettings;
     delete appearanceDialog;
     delete highlightDialog;
     delete macroDialog;
