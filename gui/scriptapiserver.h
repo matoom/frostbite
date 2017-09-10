@@ -22,6 +22,7 @@ struct ApiRequest {
 class MapData;
 class TcpClient;
 class GridWindow;
+class Tray;
 
 class ScriptApiServer : public QObject {
     Q_OBJECT
@@ -50,6 +51,8 @@ private:
     TcpClient* tcpClient;
     GridWindow* expWindow;
 
+    Tray* tray;
+
 signals:
     void track(QString);
     void clearTracked();       
@@ -59,6 +62,7 @@ signals:
     void removeWindow(QString);
     void clearWindow(QString);
     void writeWindow(QString, QString);
+    void writeTray(QString, QString);
 
 public slots:
         void reloadSettings();

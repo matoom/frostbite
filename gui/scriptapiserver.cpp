@@ -9,6 +9,8 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
 
     expWindow = ((GridWindow*)mainWindow->getWindowFacade()->getExpWindow()->widget());
 
+    tray = mainWindow->getTray();
+
     connect(this, SIGNAL(track(QString)), expWindow, SLOT(track(QString)));
     connect(this, SIGNAL(clearTracked()), expWindow, SLOT(clearTracked()));
 
@@ -17,6 +19,7 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
     connect(this, SIGNAL(removeWindow(QString)), windowFacade, SLOT(removeStreamWindow(QString)));
     connect(this, SIGNAL(clearWindow(QString)), windowFacade, SLOT(clearStreamWindow(QString)));
     connect(this, SIGNAL(writeWindow(QString, QString)), windowFacade, SLOT(writeStreamWindow(QString, QString)));
+    connect(this, SIGNAL(writeTray(QString, QString)), tray, SLOT(showMessage(QString, QString)));
 
     data = GameDataContainer::Instance();    
 
@@ -219,6 +222,14 @@ void ScriptApiServer::readyRead() {
                 QStringList args = request.args;
                 if(args.size() == 2) {
                     emit writeWindow(args.at(0), args.at(1));
+                    this->write(socket, tr("1\\0"));
+                } else {
+                    this->write(socket, tr("0\\0"));
+                }
+            } else if(request.name == "TRAY_WRITE") {
+                QStringList args = request.args;
+                if(args.size() == 1) {
+                    emit writeTray("Script", args.at(0));
                     this->write(socket, tr("1\\0"));
                 } else {
                     this->write(socket, tr("0\\0"));

@@ -593,4 +593,12 @@ class Client
     $_api_socket.gets('\0').chomp('\0').to_i
   end
 
+  # System tray notification message
+  #
+  # @param [String] msg html formatted text
+  # @return [int] 1 on success; 0 on fail
+  def self.notify(msg)
+    $_api_socket.puts "CLIENT TRAY_WRITE?#{ERB::Util.url_encode(msg)}\n"
+    $_api_socket.gets('\0').chomp('\0').to_i
+  end
 end

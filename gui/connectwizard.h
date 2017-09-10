@@ -44,6 +44,8 @@ private:
     bool gamesLoaded;    
     bool isLichConfigured;
 
+    bool directConnect;
+
     void init();
     void initProxy();
     void saveField(QString, QString);
@@ -54,9 +56,12 @@ private:
     void setCharacterListLoading(bool);
     void setGameListLoading(bool);
     void showEvent(QShowEvent*);
+    void _connect(QString, QString, QString);
 
     void accept();
     void reject();
+
+    bool validateCurrentPage();
 
     QMutex mutex;
 
@@ -69,6 +74,7 @@ private slots:
     void enableGameSelect();
     void setGameList(QMap<QString, QString>);
     void lichBoxChanged(int);
+    void tabChanged(int);
 
 signals:
     void initSession(QString, QString, QString, QString);

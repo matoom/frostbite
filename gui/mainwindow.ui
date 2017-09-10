@@ -175,9 +175,6 @@ QTabBar {
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
-    <property name="tearOffEnabled">
-     <bool>true</bool>
-    </property>
     <property name="title">
      <string>File</string>
     </property>
@@ -190,9 +187,6 @@ QTabBar {
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuConfiguration">
-    <property name="tearOffEnabled">
-     <bool>true</bool>
-    </property>
     <property name="title">
      <string>Settings</string>
     </property>
@@ -205,9 +199,6 @@ QTabBar {
     <addaction name="actionMacros"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
-    <property name="tearOffEnabled">
-     <bool>true</bool>
-    </property>
     <property name="title">
      <string>Window</string>
     </property>
@@ -222,9 +213,6 @@ QTabBar {
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuScript">
-    <property name="tearOffEnabled">
-     <bool>true</bool>
-    </property>
     <property name="title">
      <string>Script</string>
     </property>
