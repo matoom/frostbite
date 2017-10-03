@@ -11,7 +11,7 @@ require "text"
 
 $args = []
 ARGV.each do |arg|
-  $args << arg
+  $args << CGI.unescapeHTML(arg);
 end
 ARGV.clear
 

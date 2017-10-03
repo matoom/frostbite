@@ -22,6 +22,8 @@ bool ScriptService::isScriptActive() {
 }
 
 void ScriptService::runScript(QString input) {
+    TextUtils::plainToHtml(input);
+
     QList<QString> args = input.split(" ");
     QString fileName = args.takeFirst();
 

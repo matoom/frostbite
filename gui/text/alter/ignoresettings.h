@@ -28,12 +28,9 @@ private:
 
     void create();
 
-    bool initSettings;    
-
     QSettings* settings;
     ClientSettings* clientSettings;
 
-    //QReadWriteLock lock;
     QMutex m_mutex;
 };
 
