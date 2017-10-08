@@ -162,6 +162,25 @@ def put(value)
   end
 end
 
+# Put and match.
+#
+# @param [String] action put command
+# @param [String] match wait for match
+# @return [void]
+def put_wait(action, match)
+  put action
+  case match_wait({:pause => [/You are still stunned/],
+                   :wait => [/\.\.\.wait|you may only type ahead/],
+                   :match => [match] })
+    when :wait
+      pause 0.5 + Rt::value
+      put_wait action, match
+    when :pause
+      pause 3
+      put_wait action, match
+  end
+end
+
 # Sends a message to client main window.
 #
 # @param [#to_s] value message.

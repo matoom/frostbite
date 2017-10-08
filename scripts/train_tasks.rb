@@ -1,11 +1,17 @@
 require "defines"
-require "helper"
 require "armor"
 
 # schedule settings
 
+module UtilSchedule
+  def self.tear_down
+    Client::notify("Schedule finished.")
+  end
+end
+
 module ThrownSchedule
   def self.set_up
+    $left_handed = true
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
     put_wait 'khri start strike flight focus prowess guile hasten plunder', /already using|lose concentration|Roundtime/
   end
@@ -16,6 +22,10 @@ module JuvieSchedule
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
     TrainUtils::khri_offensive
   end
+
+  def self.tear_down
+    Client::notify("Schedule finished.")
+  end
 end
 
 module IntSchedule
@@ -23,6 +33,10 @@ module IntSchedule
     GLOBAL::skin = false
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
     TrainUtils::khri_defensive
+  end
+
+  def self.tear_down
+    Client::notify("Schedule finished.")
   end
 end
 
@@ -64,7 +78,7 @@ module UtilityTask
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
     TrainUtils::reset
     TrainUtils::reset_spell
   end
@@ -89,7 +103,7 @@ module CrossbowTask
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
     put_wait 'khri stop steady', /attempt to relax/
     put_wait 'wear crossbow', /You sling a/ unless Wield::right_noun.empty?
     TrainUtils::stow
@@ -116,7 +130,7 @@ module BrawlingTask
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
     TrainUtils::stow_left
     TrainUtils::hunt_cleanup
     load('loot.rb')
@@ -146,11 +160,13 @@ end
 module HeavyThrownTask
   def self.before
     $args.clear
-    TrainUtils::stow_left
-    put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
+    put_wait 'stance custom', /now set to use your custom stance/
+    TrainUtils::stow
   end
 
   def self.after
+    put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ if Wield::right_noun.empty?
+    put_wait 'stance evasion', /now set to use your/
     TrainUtils::hunt_cleanup
   end
 
@@ -163,11 +179,13 @@ module TacticsTask
   def self.before
     $args.clear
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/ unless Wield::right_noun.include? TrainUtils::DEFAULT_WEAPON
+    put_wait 'khri strike', /already using|lose concentration|Roundtime/
     TrainUtils::stow_left
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
+    put_wait 'khri stop strike', /attempt to relax/
     TrainUtils::hunt_cleanup
     load('loot.rb')
   end
@@ -189,7 +207,7 @@ module TwohandedTask
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/
     put_wait 'swap', /You move/
     put_wait "put #{WEAPON} in my #{CONTAINER}", /You put/
@@ -215,7 +233,7 @@ module PoleTask
   end
 
   def self.after
-    pause Rt::value
+    TrainUtils::pause_rt
     put_wait "get #{TrainUtils::DEFAULT_WEAPON}", /You get/
     put_wait 'swap', /You move/
     put_wait "tie my #{WEAPON} to my #{CONTAINER}", /You attach/
@@ -232,8 +250,14 @@ end
 module TrainUtils
   DEFAULT_WEAPON = 'telek'
 
+  def self.pause_rt
+    while Rt::value > 0
+      pause 1
+    end
+  end
+
   def self.reset
-    pause_rt
+    TrainUtils::pause_rt
     until Status::standing
       put "stand"
       pause
@@ -256,7 +280,7 @@ module TrainUtils
   end
 
   def self.stow
-    pause_rt
+    TrainUtils::pause_rt
     stow_left
     stow_right
     pause

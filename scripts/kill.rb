@@ -23,13 +23,6 @@ def go_wait(label, back_label)
   end
 end
 
-Thread.new do
-  while true
-    activate "khri", ["guile"]
-    sleep 15
-  end
-end
-
 def finally_do
   time = Time.now - @start
   echo "time: #{time / 60}m"

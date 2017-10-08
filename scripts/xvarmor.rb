@@ -1,5 +1,4 @@
 require "defines"
-require "helper"
 
 load "vault.rb"
 

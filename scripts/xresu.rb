@@ -1,7 +1,5 @@
 # To NE gate of Crossing from Snaer Hafwa
 
-put "go gate"
-wait
 move "go stair"
 move "up"
 move "up"

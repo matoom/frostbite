@@ -1,5 +1,4 @@
 require "defines"
-require "helper"
 
 def finally_do
   pause_rt

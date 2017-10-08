@@ -1,5 +1,4 @@
 require "defines"
-require "helper"
 
 # desc: collects piles of specified foraging items and cleans up after
 # requirements: ??

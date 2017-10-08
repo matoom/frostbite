@@ -8,7 +8,7 @@
 @khri = "khri darken sensing serenity sagacity plunder silence"
 @mark = false
 @debug_mode = false
-@name = "Defol"
+@name = Client::char_name
 @pawn_threshold = 1
 @go_arthe = false
 @go_leth = false
@@ -214,8 +214,7 @@ def move(value)
 end
 
 def drop name
-  put "drop my #{name}"
-  wait
+  put_wait "drop my #{name}", /You drop/
 end
 
 def stow_item name
@@ -517,8 +516,7 @@ end
 def tend wounds
   @body_parts.each do |area|
     if wounds.include? area
-      put "tend my #{area}"
-      wait_for_roundtime
+      put_wait "tend my #{area}", /You tend/
     end
   end
 end
@@ -593,21 +591,18 @@ def pawn_items
         next
       end
       pause 0.1
-      put "get #{item.at(0)} from my #{item.at(1)}"
-      wait
+      put_wait "get #{item.at(0)} from my #{item.at(1)}", /You get/
       put "sell my #{item.at(0)}"
       match = { :continue => ["referring to"],
                 :sell => ["he hands you"],
                 :redo => ["only type ahead 1 command", "...wait"],
                 :no_sell => ["isn't worth my time", "can't pawn"] }
-
       case match_wait match
         when :redo
           redo
         when :no_sell
           skip = item.at(0)
-          put "put my #{item.at(0)} in my #{item.at(1)}"
-          wait
+          put_wait "put my #{item.at(0)} in my #{item.at(1)}", /You put/
         when :sell
           @stolen_items[i][1] = :pawned
           skip = ""
@@ -624,16 +619,8 @@ def bin_items
   @stolen_items.each do |item|
     if item.at(1) != :pawned
       pause 0.1
-      put "get #{item.at(0)} from my #{item.at(1)}"
-      wait
-      put "put my #{item.at(0)} in bin"
-      match = { :continue => ["#{@name}", "were you referring"],
-                :redo => ["only type ahead 1 command"] }
-
-      case match_wait match
-        when :redo
-          redo
-      end
+      put_wait "get #{item.at(0)} from my #{item.at(1)}", /You get/
+      put_wait "put my #{item.at(0)} in bin", /#{@name}|were you referring/
     end
   end
 end

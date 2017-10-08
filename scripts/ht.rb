@@ -1,5 +1,5 @@
-$args.clear << "hammer"
+$args.clear << "spear"
 
 Client::track_exp "Heavy Thrown"
 
-load "throw.rb"
+load "lob.rb"

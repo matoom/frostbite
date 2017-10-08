@@ -1,25 +1,13 @@
 @item = $args.join(" ")
 
-def stow_item
-  pause 0.2
+unless Wield::right_noun.empty?
+  put "stow right"
+  wait
+end
 
-  stow = false
-  if !Wield::right_noun.empty?
-    stow = true
-    put "stow right"
-    wait
-  end
-
-  if !Wield::left_noun.empty?
-    stow = true
-    put "stow left"
-    wait
-  end
-
-  if !stow
-    echo "*** ERROR! ***"
-    exit
-  end
+unless Wield::left_noun.empty?
+  put "stow left"
+  wait
 end
 
 25.times do 
@@ -27,16 +15,12 @@ end
   match = { :price => [/\d+/] }
   result = match_get match
 
-  echo result
-
   price = result[:match].scan(/\d+/).first
-
-  echo price
 
   if price
     put "offer #{price}"
     wait
-    stow_item
+    put "stow #{@item.split.last}"
   else
     echo "*** Can't buy item! ***"
     exit

@@ -28,7 +28,7 @@ def shoot
 
   case result
     when :wait
-      pause 0.5
+      pause Rt::value
       shoot
     when :pause
       pause 3
