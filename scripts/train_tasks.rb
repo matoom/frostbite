@@ -259,7 +259,7 @@ module TrainUtils
   def self.reset
     TrainUtils::pause_rt
     until Status::standing
-      put "stand"
+      put_wait "stand", /stand back up/
       pause
     end
   end

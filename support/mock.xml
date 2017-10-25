@@ -1106,6 +1106,17 @@ EXP HELP for more information
 
 <output class=""/>
 
+<pushBold/>
+********************
+SEND[Test] Multi line send
+********************
+<pushStream id="talk"/>
+********************
+SEND[Test] Multi line send
+********************
+<popStream/><popBold/>
+<pushStream id="talk"/>
+<popStream/>
 
 <output class="mono" /><mode id="CMGR"/>
 The Human Clans                                                

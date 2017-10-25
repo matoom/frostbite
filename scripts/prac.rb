@@ -3,24 +3,18 @@
 # run: climbing available
 
 @ordinal_numbers = %w(first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth)
-@song_type = "rondo"
+@song_type = "aria"
 @obj = $args.join(" ")
 
 def finally_do
   put "stop climb"
-  wait
   pause 1
   put "stop play"
-  wait
-  put "put my bones in my shroud"
-  wait
+  pause 1
 end
 
-put "get bones"
-pause 1
-
 100.times do
-  put "play #{@song_type} on my bones"
+  put "play #{@song_type} on my zills"
   wait
   put "climb practice #{@ordinal_numbers[Room::count_objects(@obj)]} #{@obj}"
   wait

@@ -11,7 +11,7 @@ end
 def active_spells_start(cmd)
   put cmd
   match = { :wait => [/\.\.wait/],
-            :no_spell => ["rephrase that command"],
+            :no_spell => ["rephrase that command", "not trained"],
             :running => ["Roundtime", "already using the", "not recovered from"] }
   case match_wait match
     when :wait

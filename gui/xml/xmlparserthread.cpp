@@ -169,7 +169,7 @@ void XmlParserThread::processGameData(QString data) {
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                
-        // never loged into stormfront; send default settings
+        // never logged into stormfront; send default settings
         if(data.contains("space not found")) {
             emit writeDefaultSettings(stormfrontSettings);
             return;
@@ -469,11 +469,13 @@ void XmlParserThread::processPushStream(QString data) {
 
     if(e.attribute("id") == "talk") {
         QString text = this->traverseXmlNode(e, QString("")).trimmed();
-        QDomElement element = e.firstChild().toElement();
-        if(element.attribute("id") == "thought") {
-            emit updateThoughtsWindow(addTime(text));
-        } else {
-            emit updateConversationsWindow(addTime(text));
+        if(!text.isEmpty()) {
+            QDomElement element = e.firstChild().toElement();
+            if(element.attribute("id") == "thought") {
+                emit updateThoughtsWindow(addTime(text));
+            } else {
+                emit updateConversationsWindow(addTime(text));
+            }
         }
     } else if(e.attribute("id") == "logons") {
         emit updateArrivalsWindow(addTime(root.text().trimmed()));
