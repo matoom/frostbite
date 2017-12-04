@@ -56,6 +56,8 @@ private:
     QMenu* profilesMenu;
     QAction* action;
 
+    boolean menuReady;
+
     void loadLoggingMenu();
     void loadToolbarMenu();
 
@@ -64,6 +66,7 @@ signals:
 public slots:
     void menuTriggered(QAction*);
     void menuHovered(QAction*);
+    void setMenuReady();
     void profileTriggered(QAction* action);
     void loadProfilesMenu();    
     void reloadSettings();

@@ -142,7 +142,7 @@ void MainWindow::loadClient() {
     scriptApiServer = new ScriptApiServer(this);
 
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
-    connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
+    connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {

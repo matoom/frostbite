@@ -24,6 +24,8 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
 
     this->loadLoggingMenu();
     this->loadToolbarMenu();
+
+    menuReady = true;
 }
 
 void MenuHandler::openConnectDialog() {
@@ -110,8 +112,16 @@ void MenuHandler::menuTriggered(QAction* action) {
 
 void MenuHandler::menuHovered(QAction* action) {
     if(action->objectName() == "actionLoad_profile") {
-        this->loadProfilesMenu();
+        if(menuReady) {
+            QTimer::singleShot(5000, this, SLOT(setMenuReady()));
+            this->loadProfilesMenu();
+            menuReady = false;
+        }
     }
+}
+
+void MenuHandler::setMenuReady() {
+    menuReady = true;
 }
 
 void MenuHandler::profileTriggered(QAction* action) {
