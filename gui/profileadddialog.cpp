@@ -15,8 +15,8 @@ ProfileAddDialog::ProfileAddDialog(QWidget *parent) : QDialog(parent), ui(new Ui
 void ProfileAddDialog::populate() {
     ui->locationSelect->addItem("User Home", 0);    
     ui->locationSelect->addItem("Local", 1);
-    ui->locationSelect->setToolTip(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "\n" +
-                                   QApplication::applicationDirPath());
+    ui->locationSelect->setToolTip("User Home: " + QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "\n" +
+                                   "Local: " + QApplication::applicationDirPath());
 }
 
 void ProfileAddDialog::createProfile() {
