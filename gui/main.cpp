@@ -31,6 +31,7 @@ void handler(int sig) {
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setApplicationVersion(QString(RELEASE_VERSION));
+    QCoreApplication::setApplicationName("Frostbite");
 
     #ifdef __linux__
     signal(SIGSEGV, handler);
