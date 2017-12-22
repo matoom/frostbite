@@ -60,6 +60,7 @@ private:
 
     void loadLoggingMenu();
     void loadToolbarMenu();
+    void loadWindowMenu();
 
 signals:
 
@@ -70,6 +71,7 @@ public slots:
     void profileTriggered(QAction* action);
     void loadProfilesMenu();    
     void reloadSettings();
+    void lockWindows(QAction* action);
 };
 
 #endif // MENUHANDLER_H

@@ -252,7 +252,11 @@ void WindowFacade::loadWindows() {
         mainWindow->tabifyDockWidget(conversationsWindow, mapFacade->getMapWindow());
     }
 
-    this->updateWindowStyle();    
+    this->updateWindowStyle();
+
+    if(clientSettings->getParameter("Window/lock", false).toBool()) {
+        this->lockWindows();
+    }
 }
 
 void WindowFacade::initWindowWriters() {
@@ -694,6 +698,20 @@ void WindowFacade::writeStreamWindow(QString id, QString text) {
 
 void WindowFacade::clearStreamWindow(QString id) {
     this->writeStreamWindow(id, "{clear}");
+}
+
+void WindowFacade::lockWindows() {
+    foreach(QDockWidget* dock, dockWindows) {
+        dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    }
+    mapFacade->getMapWindow()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+}
+
+void WindowFacade::unlockWindows() {
+    foreach(QDockWidget* dock, dockWindows) {
+        dock->setFeatures(QDockWidget::AllDockWidgetFeatures);
+    }
+    mapFacade->getMapWindow()->setFeatures(QDockWidget::AllDockWidgetFeatures);
 }
 
 WindowFacade::~WindowFacade() {

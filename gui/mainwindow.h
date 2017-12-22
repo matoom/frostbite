@@ -74,6 +74,8 @@ public:
     void setLogDebug(bool);
     void setLogAuth(bool);
 
+    void setWindowLocked(bool enabled);
+
     void setMenuWieldLeftVisible(bool enabled);
     void setMenuWieldRightVisible(bool enabled);
     void setMenuSpellVisible(bool enabled);

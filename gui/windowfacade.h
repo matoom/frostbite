@@ -125,6 +125,9 @@ public slots:
 
     void reloadSettings();
 
+    void lockWindows();
+    void unlockWindows();
+
 private slots:
     void thoughtsVisibility(bool);    
     void deathsVisibility(bool);

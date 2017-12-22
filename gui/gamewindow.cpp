@@ -22,7 +22,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
-    setViewportMargins(0, 0, 0, -6);
+    setViewportMargins(0, 0, 0, -6);    
 }
 
 void GameWindow::setAppend(bool append) {

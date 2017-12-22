@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // load client settings
     this->initSettings();
 
-    ui->statusBar->hide();    
+    ui->statusBar->hide();
 }
 
 void MainWindow::appSetup() {
@@ -249,6 +249,10 @@ void MainWindow::setLogDebug(bool enabled) {
 
 void MainWindow::setLogAuth(bool enabled) {
     ui->actionLogAuth->setChecked(enabled);
+}
+
+void MainWindow::setWindowLocked(bool enabled) {
+    ui->actionLockWindows->setChecked(enabled);
 }
 
 void MainWindow::setMenuWieldLeftVisible(bool enabled) {

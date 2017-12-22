@@ -24,6 +24,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
 
     this->loadLoggingMenu();
     this->loadToolbarMenu();
+    this->loadWindowMenu();
 
     menuReady = true;
 }
@@ -85,7 +86,9 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionLogAuth") {
         clientSettings->setParameter("Logging/auth", action->isChecked());
     } else if(action->objectName() == "actionWindowSave") {
-        mainWindow->saveWindow();
+        mainWindow->saveWindow();        
+    } else if(action->objectName() == "actionLockWindows") {
+        this->lockWindows(action);
     } else if(action->objectName() == "actionToolWieldLeft") {
         clientSettings->setParameter("Toolbar/wieldLeft", action->isChecked());
         mainWindow->getToolbar()->setWieldLeftVisible(action->isChecked());
@@ -132,6 +135,15 @@ void MenuHandler::profileTriggered(QAction* action) {
         mainWindow->updateProfileSettings("", "");
     }    
     this->loadProfilesMenu();
+}
+
+void MenuHandler::lockWindows(QAction* action) {
+    if(action->isChecked()) {
+        mainWindow->getWindowFacade()->lockWindows();
+    } else {
+        mainWindow->getWindowFacade()->unlockWindows();
+    }
+    clientSettings->setParameter("Window/lock", action->isChecked());
 }
 
 void MenuHandler::loadProfilesMenu() {
@@ -187,6 +199,10 @@ void MenuHandler::loadToolbarMenu() {
     mainWindow->setMenuStatusVisible(clientSettings->getParameter("Toolbar/status", true).toBool());
     mainWindow->setMenuButtonsVisible(clientSettings->getParameter("Toolbar/buttons", true).toBool());
     mainWindow->setMenuVitalsVisible(clientSettings->getParameter("Toolbar/vitals", true).toBool());
+}
+
+void MenuHandler::loadWindowMenu() {
+   mainWindow->setWindowLocked(clientSettings->getParameter("Window/lock", true).toBool());
 }
 
 MenuHandler::~MenuHandler() {

@@ -204,6 +204,8 @@ QTabBar {
     </property>
     <addaction name="actionWindowSave"/>
     <addaction name="separator"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -493,6 +495,14 @@ QTabBar {
   <action name="actionScriptSettings">
    <property name="text">
     <string>Script settings</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock windows</string>
    </property>
   </action>
  </widget>
