@@ -253,11 +253,19 @@ QTabBar {
     <addaction name="actionToolButtons"/>
     <addaction name="actionToolVitals"/>
    </widget>
+   <widget class="QMenu" name="menuMap">
+    <property name="title">
+     <string>Map</string>
+    </property>
+    <addaction name="actionMapReload"/>
+    <addaction name="actionMapShow"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuLogging"/>
    <addaction name="menuWindow"/>
    <addaction name="menuToolbar"/>
+   <addaction name="menuMap"/>
    <addaction name="menuScript"/>
    <addaction name="menuProfile"/>
    <addaction name="menuHelp"/>
@@ -503,6 +511,16 @@ QTabBar {
    </property>
    <property name="text">
     <string>Lock windows</string>
+   </property>
+  </action>
+  <action name="actionMapReload">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionMapShow">
+   <property name="text">
+    <string>Show</string>
    </property>
   </action>
  </widget>

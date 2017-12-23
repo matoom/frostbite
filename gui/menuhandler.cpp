@@ -110,6 +110,10 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionToolVitals") {
         clientSettings->setParameter("Toolbar/vitals", action->isChecked());
         mainWindow->getToolbar()->setVitalsVisible(action->isChecked());
+    } else if(action->objectName() == "actionMapReload") {
+        mainWindow->reloadMaps();
+    } else if(action->objectName() == "actionMapShow") {
+        mainWindow->showMaps();
     }
 }
 

@@ -70,7 +70,10 @@ public slots:
     void updateMapWindow(QString hash);
     void showMapDialog();
     void setZoom(QString zoomLevel);
-    void updateMapColors(QColor background);
+    void updateMapColors(QColor background);    
+    void lockControls();
+    void unlockControls();
+
 };
 
 #endif // MAPFACADE_H

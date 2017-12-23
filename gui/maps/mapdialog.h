@@ -41,7 +41,10 @@ public slots:
     void mapLevelSelected(int index);    
 
     void zoomIn();
-    void zoomOut();    
+    void zoomOut();
+
+    void lockControls();
+    void unlockControls();
 };
 
 #endif // MAPDIALOG_H

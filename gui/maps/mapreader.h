@@ -49,7 +49,7 @@ public:
 
     QDir getDir();
 
-    void init();
+    void init();    
 
     bool isInitialized();
 
@@ -70,6 +70,7 @@ private:
     void setInitialized();
 
     void uninit();
+    void clear();
 
     QDir dir;
     QFont labelsFont;
@@ -101,12 +102,16 @@ private:
     GeneralSettings* settings;
     QColor background;
 
+    QFutureWatcher<void> reloadWatcher;
+
 signals:
     void ready();
     void readyRead();
 
 public slots:
     void initScenes();
+    void reload();
+    void concurrentInit();
 };
 
 #endif // MAPREADER_H

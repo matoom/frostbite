@@ -49,7 +49,10 @@ void MapDialog::zoomOut() {
 }
 
 void MapDialog::populate() {
-    ui->mapSelect->addItem("");
+    ui->levelSelect->setCurrentIndex(-1);
+    ui->mapSelect->setCurrentIndex(-1);
+    ui->mapSelect->clear();
+    ui->mapSelect->addItem("");    
 
     QMap<QString, MapZone*> zones = mapFacade->getMapReader()->getZones();
 
@@ -112,6 +115,16 @@ void MapDialog::setInfo(MapNode* node) {
         info += "[" + values.at(i)->getMove() + " -> " + QString::number(values.at(i)->getDestId()) + "]; ";
     }
     ui->nodeInfo->setText(info);
+}
+
+void MapDialog::lockControls() {
+    ui->mapSelect->setDisabled(true);
+    ui->levelSelect->setDisabled(true);
+}
+
+void MapDialog::unlockControls() {
+    ui->mapSelect->setDisabled(false);
+    ui->levelSelect->setDisabled(false);
 }
 
 MapDialog::~MapDialog() {

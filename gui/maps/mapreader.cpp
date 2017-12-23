@@ -19,6 +19,18 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
     empty.insert(0, {new QGraphicsScene(0, 0, 0, 0, this), NULL});
     this->scenes.insert("", empty);
 
+    this->concurrentInit();
+}
+
+void MapReader::reload() {
+    mapFacade->lockControls();
+    connect(&reloadWatcher, SIGNAL(finished()), this, SLOT(concurrentInit()));
+    QFuture<void> future = QtConcurrent::run(this, &MapReader::uninit);
+    reloadWatcher.setFuture(future);
+}
+
+void MapReader::concurrentInit() {
+    disconnect(&reloadWatcher, SIGNAL(finished()), this, SLOT(concurrentInit()));
     QtConcurrent::run(this, &MapReader::init);
 }
 
@@ -327,7 +339,12 @@ void MapReader::roomToHash() {
 }
 
 void MapReader::uninit() {
+    QWriteLocker locker(&lock);
     for(MapZone* zone : zones.values()) {
+        QHash<int, MapGraphics> graphics = this->scenes.value(zone->getId());
+        for(MapGraphics graphic : graphics.values()) {
+            graphic.scene->deleteLater();
+        }
         for(MapLabel* label : zone->getLabels()) {
             delete label;
         }
@@ -339,6 +356,16 @@ void MapReader::uninit() {
         }
         delete zone;
     }
+    this->clear();
+}
+
+void MapReader::clear() {
+    zones.clear();
+    scenes.clear();
+    connections.clear();
+    locations.clear();
+    roomNodes.clear();
+    ids.clear();
 }
 
 bool MapReader::isInRange(int n) {

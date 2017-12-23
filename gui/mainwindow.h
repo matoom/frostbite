@@ -96,6 +96,11 @@ public:
     void openAppearanceDialog();
     void saveWindow();
 
+    void reloadMaps();
+    void showMaps();
+
+    void enableMapsMenu(boolean enabled);
+
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();
     VitalsBar* getVitalsBar();

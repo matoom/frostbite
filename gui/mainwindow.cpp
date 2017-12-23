@@ -287,6 +287,19 @@ void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {
     ui->mainToolBar->setAllowedAreas(areas);
 }
 
+void MainWindow::reloadMaps() {
+    this->windowFacade->getMapFacade()->getMapReader()->reload();
+}
+
+void MainWindow::enableMapsMenu(boolean enabled) {
+    QMenu* menu = ui->menuBar->findChild<QMenu*>("menuMap");
+    if(menu != NULL)menu->setEnabled(enabled);
+}
+
+void MainWindow::showMaps() {
+    this->windowFacade->getMapFacade()->showMapDialog();
+}
+
 void MainWindow::setMainTitle(QString roomName) {
     setWindowTitle("The Frostbite Client" + roomName);
 }

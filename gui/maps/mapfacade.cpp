@@ -33,20 +33,22 @@ void MapFacade::mapsReady() {
     if(!mapReader->isInitialized()) {
         this->setNotFoundMessage();
         return;
-    }
-    mapView->scene()->clear();
+    }    
+    if(mapView->scene() != NULL) mapView->scene()->clear();
 
     QMap<QString, MapZone*> zones = mapReader->getZones();
 
-    mapSelect->addItem("");
+    levelSelect->setCurrentIndex(-1);
+    mapSelect->setCurrentIndex(-1);
+    mapSelect->clear();
+    mapSelect->addItem("");    
 
     QMap<QString, MapZone*>::iterator i;
     for (i = zones.begin(); i != zones.end(); ++i) {
         mapSelect->addItem(i.key() + ": " + i.value()->getName(), i.key());
     }
 
-    mapSelect->setDisabled(false);
-    levelSelect->setDisabled(false);
+    this->unlockControls();
 
     mapDialog->populate();
 }
@@ -208,6 +210,20 @@ QDockWidget* MapFacade::getMapWindow() {
 
 MainWindow* MapFacade::getMainWindow() {
     return this->mainWindow;
+}
+
+void MapFacade::lockControls() {
+    mapSelect->setDisabled(true);
+    levelSelect->setDisabled(true);
+    mapDialog->lockControls();
+    mainWindow->enableMapsMenu(false);
+}
+
+void MapFacade::unlockControls() {
+    mapSelect->setDisabled(false);
+    levelSelect->setDisabled(false);
+    mapDialog->unlockControls();
+    mainWindow->enableMapsMenu(true);
 }
 
 MapFacade::~MapFacade() {
