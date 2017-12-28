@@ -23,6 +23,7 @@ MapReader::MapReader(QObject* parent) : QObject(parent) {
 }
 
 void MapReader::reload() {
+    this->setInitialized(false);
     mapFacade->lockControls();
     connect(&reloadWatcher, SIGNAL(finished()), this, SLOT(concurrentInit()));
     QFuture<void> future = QtConcurrent::run(this, &MapReader::uninit);
@@ -62,9 +63,9 @@ QDir MapReader::getDir() {
     return this->dir;
 }
 
-void MapReader::setInitialized() {
+void MapReader::setInitialized(boolean initialized) {
     QWriteLocker locker(&lock);
-    this->initialized = true;
+    this->initialized = initialized;
 }
 
 bool MapReader::isInitialized() {
@@ -108,7 +109,7 @@ void MapReader::paintScenes() {
     for (i = zones.begin(); i != zones.end(); ++i) {   
         this->scenes.insert(i.key(), paintScene(i.value()));
     }
-    if (!zones.isEmpty()) this->setInitialized();
+    if (!zones.isEmpty()) this->setInitialized(true);
 }
 
 QHash<int, MapGraphics> MapReader::paintScene(MapZone* zone) {
