@@ -5,7 +5,7 @@ QStringList WindowFacade::staticWindows = QStringList() << "inv" << "familiar" <
     << "group" << "atmospherics" << "ooc" << "room" << "percWindow" << "chatter";
 
 WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
-    mainWindow = (MainWindow*)parent;
+    mainWindow = (MainWindow*)parent;    
     genericWindowFactory = new GenericWindowFactory(parent);
     gridWindowFactory = new GridWindowFactory(parent);    
     navigationDisplay = new NavigationDisplay(parent);
@@ -60,7 +60,7 @@ void WindowFacade::updateWindowColors() {
     // game window
     this->setGameWindowFontColor(generalSettings->gameWindowFontColor());
     this->setGameWindowFont(generalSettings->gameWindowFont());
-    mainWindow->setBackgroundColor(generalSettings->gameWindowBackground());
+    this->setGameWindowBackground(generalSettings->gameWindowBackground());
 
     // text window
     this->setDockBackground(generalSettings->dockWindowBackground());
@@ -80,8 +80,13 @@ void WindowFacade::setGameWindowFont(QFont font) {
 void WindowFacade::setGameWindowFontColor(QColor color) {
     QPalette p = gameWindow->viewport()->palette();
     p.setColor(QPalette::Text, color);
-
     gameWindow->viewport()->setPalette(p);    
+}
+
+void WindowFacade::setGameWindowBackground(QColor color) {
+    QPalette p = gameWindow->viewport()->palette();
+    p.setColor(QPalette::Base, color);
+    gameWindow->viewport()->setPalette(p);
 }
 
 void WindowFacade::setDockFontColor(QColor fontColor) {
@@ -238,7 +243,10 @@ void WindowFacade::loadWindows() {
     dockWindows << spellWindow;
     connect(spellWindow, SIGNAL(visibilityChanged(bool)), this, SLOT(spellVisibility(bool)));
 
-    mapFacade = new MapFacade(mainWindow);   
+    mapFacade = new MapFacade(mainWindow);
+
+    compass = new CompassView(mainWindow);
+    compass->paint(navigationDisplay);
 
     this->initWindowWriters();
     this->initLoggers();
@@ -397,6 +405,10 @@ MapFacade* WindowFacade::getMapFacade() {
     return this->mapFacade;
 }
 
+CompassView* WindowFacade::getCompassView() {
+    return this->compass;
+}
+
 void WindowFacade::copyDock() {
     foreach(QDockWidget* dock, dockWindows) {
         if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
@@ -411,35 +423,20 @@ void WindowFacade::copyDock() {
 
 void WindowFacade::updateNavigationDisplay(DirectionsList directions) {
     navigationDisplay->updateState(directions);
-    this->paintNavigationDisplay();
+    this->paintCompass();
 }
 
 void WindowFacade::scriptRunning(bool state) {
     navigationDisplay->setAutoPilot(state);
-    this->paintNavigationDisplay();
+    this->paintCompass();
 }
 
-/* paints a full screen image to background */
-void WindowFacade::paintNavigationDisplay() {    
-    QPixmap image = navigationDisplay->paint();
+void WindowFacade::paintCompass() {
+    compass->paint(navigationDisplay);
+}
 
-    QPixmap collage(gameWindow->width(), gameWindow->height());
-    collage.fill(Qt::transparent);
-
-    QPainter painter(&collage);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-
-    int x = gameWindow->width() - image.width() - 25;
-    int y = gameWindow->height() - image.height() - 5;
-
-    painter.drawPixmap(QRectF(x, y, image.width(), image.height()), image,
-                       QRectF(0, 0, image.width(), image.height()));
-
-
-    QPalette palette = gameWindow->viewport()->palette();
-    palette.setBrush(QPalette::Base, QBrush(collage));
-
-    gameWindow->viewport()->setPalette(palette);
+void WindowFacade::gameWindowResizeEvent(GameWindow* gameWindow) {
+    compass->gameWindowResizeEvent(gameWindow);
 }
 
 void WindowFacade::writeExpWindow(GridItems items) {

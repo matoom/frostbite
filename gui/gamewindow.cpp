@@ -50,15 +50,14 @@ void GameWindow::loadSettings() {
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 
-    QColor fontColor = settings->gameWindowFontColor();
     QPalette p = this->viewport()->palette();
-    p.setColor(QPalette::Text, fontColor);
-
+    p.setColor(QPalette::Text, settings->gameWindowFontColor());
+    p.setColor(QPalette::Base, settings->gameWindowBackground());
     this->setPalette(p);
 }
 
 QColor GameWindow::getBgColor() {
-    return mainWindow->getBackgroundColor();
+    return viewport()->palette().color(QPalette::Base);
 }
 
 QColor GameWindow::getTextColor() {
@@ -120,8 +119,8 @@ void GameWindow::contextMenuEvent(QContextMenuEvent *event) {
     menu->exec(event->globalPos());
 }
 
-void GameWindow::resizeEvent(QResizeEvent *event) {    
-    windowFacade->paintNavigationDisplay();
+void GameWindow::resizeEvent(QResizeEvent *event) {
+    windowFacade->gameWindowResizeEvent(this);
     QPlainTextEdit::resizeEvent(event);
 }
 

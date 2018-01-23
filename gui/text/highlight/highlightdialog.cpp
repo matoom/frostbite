@@ -66,6 +66,14 @@ QComboBox* HighlightDialog::getTextHighlightGroup() {
     return ui->tGroup;
 }
 
+QComboBox* HighlightDialog::getTextHighlightSortBy() {
+    return ui->tSortBy;
+}
+
+QLineEdit* HighlightDialog::getTextHighlightFilter() {
+    return ui->tFilterEdit;
+}
+
 QComboBox* HighlightDialog::getTextFileSelect() {
     return ui->tFileSelect;
 }

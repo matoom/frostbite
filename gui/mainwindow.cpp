@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->initSettings();
 
     ui->statusBar->hide();
+
+    //this->addDockWidget(Qt::NoDockWidgetArea, new CompassWindow());
 }
 
 void MainWindow::appSetup() {
@@ -85,26 +87,8 @@ void MainWindow::openAppearanceDialog() {
 }
 
 void MainWindow::initSettings() {
-    QColor color = generalSettings->gameWindowBackground();
-
-    /* set centralWidget background color to black */
-    /* background for gamewindow is transparent on navi collage */
-    QPalette palette = ui->centralWidget->palette();
-    palette.setColor(QPalette::Window, color);
-    ui->centralWidget->setPalette(palette);
-
     /* set focus to command line at startup */
     cmdLine->setFocus();
-}
-
-void MainWindow::setBackgroundColor(QColor color) {
-    QPalette palette = ui->centralWidget->palette();
-    palette.setColor(QPalette::Window, color);
-    ui->centralWidget->setPalette(palette);
-}
-
-QColor MainWindow::getBackgroundColor() {
-    return ui->centralWidget->palette().color(QPalette::Window);
 }
 
 void MainWindow::loadClient() {
@@ -291,6 +275,18 @@ void MainWindow::reloadMaps() {
     this->windowFacade->getMapFacade()->getMapReader()->reload();
 }
 
+void MainWindow::setCompassLocked(bool checked) {
+    ui->actionLockCompass->setChecked(checked);
+}
+
+void MainWindow::setCompassAnchored(bool checked) {
+    ui->actionCompassBottomRight->setChecked(checked);
+}
+
+void MainWindow::setCompassVisible(bool checked) {
+    ui->actionCompassVisible->setChecked(checked);
+}
+
 void MainWindow::enableMapsMenu(boolean enabled) {
     QMenu* menu = ui->menuBar->findChild<QMenu*>("menuMap");
     if(menu != NULL)menu->setEnabled(enabled);
@@ -318,6 +314,7 @@ void MainWindow::handleAppMessage(const QString& msg) {
 void MainWindow::saveWindow() {
     settings->setParameter("MainWindow/state", saveState());
     settings->setParameter("MainWindow/geometry", QVariant(geometry()));
+    settings->setParameter("Compass/geometry", QVariant(windowFacade->getCompassView()->geometry()));
 }
 
 void MainWindow::closeEvent(QCloseEvent*) {

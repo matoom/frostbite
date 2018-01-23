@@ -182,8 +182,8 @@ void AppearanceDialog::populateCmdBox() {
     ui->cmdVLayout->addLayout(hLayout);
 }
 
-void AppearanceDialog::reset() {
-    mainWindow->setBackgroundColor(mainBackgroundValue);
+void AppearanceDialog::reset() {    
+    windowFacade->setGameWindowBackground(mainBackgroundValue);
     windowFacade->setGameWindowFont(mainFontValue);
     windowFacade->setGameWindowFontColor(mainFontColorValue);
 
@@ -204,7 +204,7 @@ void AppearanceDialog::selectMainBg() {
     if(selectedColor.isValid()) {
         mainBgSelect->setStyleSheet(QString("QToolButton { background: %1;"
                                       "border: 1px solid #C0C0C0; }").arg(selectedColor.name()));
-        mainWindow->setBackgroundColor(selectedColor);
+        windowFacade->setGameWindowBackground(selectedColor);
         mainBackgroundValue = selectedColor;
 
         ui->applyButton->setEnabled(true);

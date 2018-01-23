@@ -20,6 +20,8 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     timerValueLine = highlightDialog->getTextTimerValue();
     listWidget = highlightDialog->getTextList();
     groupSelect = highlightDialog->getTextHighlightGroup();
+    sortBySelect = highlightDialog->getTextHighlightSortBy();
+    filterEdit = highlightDialog->getTextHighlightFilter();
 
     playButton = highlightDialog->getTextPlayButton();
 
@@ -34,6 +36,10 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 
     timerActionNames << "Restart" << "Ignore";
 
+    listWidget->setProperty("sortingMode", QVariant::fromValue(SortBy::id));
+    listWidget->setSortingEnabled(true);
+
+    this->initSortBy();
     this->initGroupSelect();
     this->initTimerActionSelect();
     this->loadHighlightList();
@@ -64,6 +70,12 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 
     connect(groupSelect, SIGNAL(activated(const QString&)),
             this, SLOT(groupSelected(const QString&)));
+
+    connect(sortBySelect, SIGNAL(activated(int)),
+            this, SLOT(sortBySelected(int)));
+
+    connect(filterEdit, SIGNAL(textChanged(const QString&)),
+            this, SLOT(filterList(const QString&)));
 
     connect(listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
             this, SLOT(listWidgetMenuRequested(const QPoint &)));
@@ -118,10 +130,12 @@ void HighlightTextTab::enableMenuItems() {
 
 void HighlightTextTab::updateIcon(QListWidgetItem *current, QListWidgetItem *previous) {
     if(current) {
+        listWidget->setSortingEnabled(false);
         if(previous) {
             previous->setIcon(QIcon(":/window/images/icon_ph.png"));
         }
         current->setIcon(QIcon(":/window/images/arrow_right.png"));
+        listWidget->setSortingEnabled(true);
     }
 }
 
@@ -155,6 +169,9 @@ void HighlightTextTab::loadHighlightList() {
 
     for(int i = 0; i < highlightList.size(); i++) {
         HighlightSettingsEntry entry = highlightList.at(i);
+
+        if(!filterText.isEmpty() && !entry.value.contains(filterText, Qt::CaseInsensitive)) continue;
+
         if(group == groupNames.at(0)) {
             this->createListItem(entry.id, entry.value, entry.color);
         } else {
@@ -163,10 +180,11 @@ void HighlightTextTab::loadHighlightList() {
             }
         }
     }
+    listWidget->sortItems(Qt::AscendingOrder);
 }
 
 void HighlightTextTab::createListItem(int id, QString value, QColor color) {
-    QListWidgetItem *newItem = new QListWidgetItem(QIcon(":/window/images/icon_ph.png"), value, listWidget);
+    SortableListWidgetItem *newItem = new SortableListWidgetItem(QIcon(":/window/images/icon_ph.png"), value, listWidget);
     newItem->setData(Qt::UserRole, id);
     newItem->setTextColor(color);
     newItem->setFont(QFont(DEFAULT_FONT, 12));
@@ -208,6 +226,15 @@ void HighlightTextTab::registerChange() {
             }
         }
     }
+}
+
+void HighlightTextTab::sortBySelected(int index) {
+    this->sort(sortBySelect->itemData(index).value<SortBy>());
+}
+
+void HighlightTextTab::filterList(const QString &text) {
+    this->filterText = text;
+    this->reloadHighlightList();
 }
 
 void HighlightTextTab::groupSelected(const QString& group) {
@@ -397,6 +424,12 @@ void HighlightTextTab::updateTimerControl(bool timer, int timerValue, QString ac
     }
 }
 
+void HighlightTextTab::initSortBy() {
+    sortBySelect->addItem("", QVariant::fromValue(SortBy::id));
+    sortBySelect->addItem("Alphanumeric", QVariant::fromValue(SortBy::alphanumeric));
+    sortBySelect->addItem("Color", QVariant::fromValue(SortBy::color));
+}
+
 void HighlightTextTab::initGroupSelect() {
     for(int i = 0; i < groupNames.size(); i++) {
         if(i != 0) {
@@ -449,6 +482,11 @@ void HighlightTextTab::cancelChanges() {
 
 void HighlightTextTab::showAddDialog() {
     highlightAddDialog->show();
+}
+
+void HighlightTextTab::sort(SortBy sortBy) {
+    listWidget->setProperty("sortingMode", QVariant::fromValue(sortBy));
+    listWidget->sortItems(Qt::AscendingOrder);
 }
 
 void HighlightTextTab::showEditDialog() {

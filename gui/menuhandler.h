@@ -52,6 +52,7 @@ private:
     AboutDialog* aboutDialog;
     ScriptEditDialog* scriptEditDialog;
     ProfileAddDialog* profileAddDialog;
+    WindowFacade* windowFacade;
 
     QMenu* profilesMenu;
     QAction* action;
@@ -61,8 +62,13 @@ private:
     void loadLoggingMenu();
     void loadToolbarMenu();
     void loadWindowMenu();
+    void loadCompassMenu();
 
 signals:
+    void compassLocked(bool);
+    void compassVisible(bool);
+    void compassAnchored(bool);
+    void resetCompass();
 
 public slots:
     void menuTriggered(QAction*);

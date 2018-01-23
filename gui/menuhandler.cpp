@@ -13,6 +13,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
     profileAddDialog = new ProfileAddDialog();
+    windowFacade = mainWindow->getWindowFacade();
 
     connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
 
@@ -22,9 +23,15 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     connect(mainWindow, SIGNAL(profileChanged()), macroDialog, SLOT(reloadSettings()));
     connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));
 
+    connect(this, SIGNAL(compassLocked(bool)), windowFacade->getCompassView(), SLOT(setCompassLocked(bool)));
+    connect(this, SIGNAL(compassVisible(bool)), windowFacade->getCompassView(), SLOT(setCompassVisible(bool)));
+    connect(this, SIGNAL(compassAnchored(bool)), windowFacade->getCompassView(), SLOT(setCompassAnchored(bool)));
+    connect(this, SIGNAL(resetCompass()), windowFacade->getCompassView(), SLOT(resetCompass()));
+
     this->loadLoggingMenu();
     this->loadToolbarMenu();
     this->loadWindowMenu();
+    this->loadCompassMenu();
 
     menuReady = true;
 }
@@ -114,6 +121,17 @@ void MenuHandler::menuTriggered(QAction* action) {
         mainWindow->reloadMaps();
     } else if(action->objectName() == "actionMapShow") {
         mainWindow->showMaps();
+    } else if(action->objectName() == "actionCompassVisible") {
+        clientSettings->setParameter("Compass/visible", action->isChecked());
+        emit compassVisible(action->isChecked());
+    } else if(action->objectName() == "actionLockCompass") {
+        clientSettings->setParameter("Compass/locked", action->isChecked());
+        emit compassLocked(action->isChecked());
+    } else if(action->objectName() == "actionCompassBottomRight") {
+        clientSettings->setParameter("Compass/anchor", action->isChecked() ? "bottomRight" : "");
+        emit compassAnchored(action->isChecked());
+    } else if(action->objectName() == "actionCompassResetPosition") {
+        emit resetCompass();
     }
 }
 
@@ -206,7 +224,13 @@ void MenuHandler::loadToolbarMenu() {
 }
 
 void MenuHandler::loadWindowMenu() {
-   mainWindow->setWindowLocked(clientSettings->getParameter("Window/lock", true).toBool());
+   mainWindow->setWindowLocked(clientSettings->getParameter("Window/lock", false).toBool());
+}
+
+void MenuHandler::loadCompassMenu() {
+    mainWindow->setCompassLocked(clientSettings->getParameter("Compass/locked", true).toBool());
+    mainWindow->setCompassAnchored(clientSettings->getParameter("Compass/anchor", "bottomRight").toString() != "");
+    mainWindow->setCompassVisible(clientSettings->getParameter("Compass/visible", true).toBool());
 }
 
 MenuHandler::~MenuHandler() {

@@ -193,8 +193,8 @@ QTabBar {
     <property name="separatorsCollapsible">
      <bool>false</bool>
     </property>
-    <addaction name="actionAppearance"/>
     <addaction name="actionText_Highlight"/>
+    <addaction name="actionAppearance"/>
     <addaction name="actionSubstitute"/>
     <addaction name="actionMacros"/>
    </widget>
@@ -257,14 +257,32 @@ QTabBar {
     <property name="title">
      <string>Map</string>
     </property>
-    <addaction name="actionMapReload"/>
     <addaction name="actionMapShow"/>
+    <addaction name="separator"/>
+    <addaction name="actionMapReload"/>
+   </widget>
+   <widget class="QMenu" name="menuCompass">
+    <property name="title">
+     <string>Compass</string>
+    </property>
+    <widget class="QMenu" name="menuAnchor">
+     <property name="title">
+      <string>Anchor</string>
+     </property>
+     <addaction name="actionCompassBottomRight"/>
+    </widget>
+    <addaction name="actionCompassVisible"/>
+    <addaction name="actionLockCompass"/>
+    <addaction name="menuAnchor"/>
+    <addaction name="separator"/>
+    <addaction name="actionCompassResetPosition"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuLogging"/>
    <addaction name="menuWindow"/>
    <addaction name="menuToolbar"/>
+   <addaction name="menuCompass"/>
    <addaction name="menuMap"/>
    <addaction name="menuScript"/>
    <addaction name="menuProfile"/>
@@ -322,7 +340,7 @@ QTabBar {
   </action>
   <action name="actionText_Highlight">
    <property name="text">
-    <string>Highlight text</string>
+    <string>Highlight Text</string>
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
@@ -330,7 +348,7 @@ QTabBar {
   </action>
   <action name="actionMacros">
    <property name="text">
-    <string>Keyboard macros</string>
+    <string>Keyboard Macros</string>
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
@@ -341,7 +359,7 @@ QTabBar {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Window appearance</string>
+    <string>Window Appearance</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
@@ -367,12 +385,12 @@ QTabBar {
   </action>
   <action name="actionCreate_new_profile">
    <property name="text">
-    <string>Create new profile</string>
+    <string>Create Profile</string>
    </property>
   </action>
   <action name="actionLoad_profile">
    <property name="text">
-    <string>Load profile</string>
+    <string>Load Profile</string>
    </property>
   </action>
   <action name="actionLogMain">
@@ -425,7 +443,7 @@ QTabBar {
   </action>
   <action name="actionWindowSave">
    <property name="text">
-    <string>Save layout</string>
+    <string>Save Layout</string>
    </property>
   </action>
   <action name="actionLogAuth">
@@ -438,7 +456,7 @@ QTabBar {
   </action>
   <action name="actionSubstitute">
    <property name="text">
-    <string>Alter text</string>
+    <string>Alter Text</string>
    </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
@@ -449,7 +467,7 @@ QTabBar {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Wield left</string>
+    <string>Wield Left</string>
    </property>
   </action>
   <action name="actionToolWieldRight">
@@ -502,7 +520,7 @@ QTabBar {
   </action>
   <action name="actionScriptSettings">
    <property name="text">
-    <string>Script settings</string>
+    <string>Script Settings</string>
    </property>
   </action>
   <action name="actionLockWindows">
@@ -510,7 +528,7 @@ QTabBar {
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Lock windows</string>
+    <string>Lock Windows</string>
    </property>
   </action>
   <action name="actionMapReload">
@@ -521,6 +539,35 @@ QTabBar {
   <action name="actionMapShow">
    <property name="text">
     <string>Show</string>
+   </property>
+  </action>
+  <action name="actionLockCompass">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Compass</string>
+   </property>
+  </action>
+  <action name="actionCompassBottomRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Bottom Right</string>
+   </property>
+  </action>
+  <action name="actionCompassResetPosition">
+   <property name="text">
+    <string>Reset Position</string>
+   </property>
+  </action>
+  <action name="actionCompassVisible">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Visible</string>
    </property>
   </action>
  </widget>

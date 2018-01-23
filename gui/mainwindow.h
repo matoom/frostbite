@@ -85,9 +85,7 @@ public:
     void setMenuVitalsVisible(bool enabled);
 
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
-    void connectEnabled(bool);
-    void setBackgroundColor(QColor);
-    QColor getBackgroundColor();
+    void connectEnabled(bool);    
     void toggleFullScreen();
     void toggleMaximized();
     void updateProfileSettings(QString, QString);
@@ -95,6 +93,10 @@ public:
     void openConnection(QString host, QString port, QString key);
     void openAppearanceDialog();
     void saveWindow();
+
+    void setCompassLocked(bool);
+    void setCompassAnchored(bool);
+    void setCompassVisible(bool);
 
     void reloadMaps();
     void showMaps();

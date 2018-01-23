@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-RELEASE_VERSION = 1.7.1b
+RELEASE_VERSION = 1.8.0b
 
 DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
 
@@ -25,6 +25,7 @@ include(maps/maps.pri)
 include(text/text.pri)
 include(xml/xml.pri)
 include(lich/lich.pri)
+include(compass/compass.pri)
 
 APP_NAME = Frostbite
 

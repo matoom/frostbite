@@ -19,6 +19,7 @@
 #include <conversationslogger.h>
 #include <deathslogger.h>
 #include <arrivalslogger.h>
+#include <compass/compassview.h>
 
 #include <gridwindow.h>
 
@@ -43,6 +44,7 @@ class ConversationsLogger;
 class DeathsLogger;
 class ArrivalsLogger;
 class MapFacade;
+class CompassView;
 
 typedef QList<QString> DirectionsList;
 typedef QMap<QString, QString> GridItems;
@@ -56,7 +58,8 @@ public:
 
     void loadWindows();
     QPlainTextEdit* getGameWindow();
-    void paintNavigationDisplay();
+    void paintCompass();
+    void gameWindowResizeEvent(GameWindow*);
     void scriptRunning(bool);
     void updateWindowStyle();
     QString getStyle();
@@ -65,6 +68,7 @@ public:
     void updateWindowColors();
     void setGameWindowFont(QFont);
     void setGameWindowFontColor(QColor);    
+    void setGameWindowBackground(QColor color);
     void setDockFontColor(QColor);
     void setDockBackground(QColor);
     void setDockFont(QFont font);
@@ -84,7 +88,8 @@ public:
 
     QStringList getWindowNames();
 
-    MapFacade* getMapFacade();
+    MapFacade* getMapFacade();    
+    CompassView* getCompassView();
 
     bool thoughtsVisible;
     bool deathsVisible;
@@ -160,6 +165,8 @@ private:
     QDockWidget* spellWindow;
     QList<QDockWidget*> dockWindows;
     QHash<QString, QDockWidget*> streamWindows;
+
+    CompassView* compass;
 
     MapFacade* mapFacade;
 

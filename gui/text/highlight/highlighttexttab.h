@@ -9,6 +9,7 @@
 #include <text/highlight/highlighteditdialog.h>
 #include <text/highlight/highlightsettings.h>
 #include <text/highlight/highlightsettingsentry.h>
+#include <text/highlight/sortablelistwidgetitem.h>
 #include <audioplayer.h>
 #include <generalsettings.h>
 
@@ -58,6 +59,8 @@ private:
     QCheckBox *partialMatchCheck;
     QCheckBox *startingWithCheck;
     QComboBox *groupSelect;
+    QComboBox *sortBySelect;
+    QLineEdit *filterEdit;
 
     QListWidget *listWidget;
     QDialog *addDialog;
@@ -65,6 +68,7 @@ private:
     QComboBox *editGroupSelect;
     QList<QString> groupNames;
     QString group;
+    QString filterText;
     QList<QString> timerActionNames;
 
     QList<HighlightSettingsEntry> highlightList;
@@ -74,6 +78,7 @@ private:
     QAction *editAct;
     QMenu *menu;
 
+    void initSortBy();
     void initGroupSelect();
     void initTimerActionSelect();
     void initContextMenu();
@@ -94,6 +99,7 @@ signals:
 
 private slots:
     void showAddDialog();
+    void sort(SortBy);
     void showEditDialog();
     void removeHighlightItem();
     void itemSelected(QListWidgetItem*, QListWidgetItem*);
@@ -109,6 +115,8 @@ private slots:
     void listWidgetMenuRequested(const QPoint&);
     void colorDialog();
     void playSound();
+    void sortBySelected(int index);
+    void filterList(const QString&);
 
 public slots:
 

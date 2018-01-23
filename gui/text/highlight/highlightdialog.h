@@ -49,6 +49,8 @@ public:
     QCheckBox* getTextPartialMatch();
     QCheckBox* getTextStartingWith();
     QComboBox* getTextHighlightGroup();
+    QComboBox* getTextHighlightSortBy();
+    QLineEdit* getTextHighlightFilter();
 
     /* alert tab items */
     QGroupBox* getBleedingGroup();

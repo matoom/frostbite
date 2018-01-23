@@ -7,7 +7,8 @@ HEADERS += \
     $$PWD/highlightgeneraltab.h \
     $$PWD/highlightsettings.h \
     $$PWD/highlightsettingsentry.h \
-    $$PWD/highlighttexttab.h 
+    $$PWD/highlighttexttab.h \ 
+    $$PWD/sortablelistwidgetitem.h
 
 SOURCES += \
     $$PWD/highlightadddialog.cpp \
@@ -18,7 +19,8 @@ SOURCES += \
     $$PWD/highlightgeneraltab.cpp \
     $$PWD/highlightsettings.cpp \
     $$PWD/highlightsettingsentry.cpp \
-    $$PWD/highlighttexttab.cpp 
+    $$PWD/highlighttexttab.cpp \ 
+    $$PWD/sortablelistwidgetitem.cpp
 
 FORMS += \
     $$PWD/highlightadddialog.ui \
