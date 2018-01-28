@@ -8,7 +8,7 @@
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
 #include <QLabel>
-#include <navigationdisplay.h>
+#include <compass.h>
 #include <mainwindow.h>
 #include <gamewindow.h>
 
@@ -21,7 +21,7 @@ public:
     CompassView(QWidget *parent = 0);
     ~CompassView();
 
-    void paint(NavigationDisplay*);
+    void paint(Compass*);
     void gameWindowResizeEvent(GameWindow*);
 
 private:
@@ -35,8 +35,8 @@ private:
     QPixmap compass;
 
 protected:
-    void mousePressEvent(QMouseEvent *evt);
-    void mouseMoveEvent(QMouseEvent *evt);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
 
 public slots:
     void setCompassLocked(bool locked);

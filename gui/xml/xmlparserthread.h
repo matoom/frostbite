@@ -121,6 +121,7 @@ signals:
     void updateArrivalsWindow(QString);
     void updateFamiliarWindow(QString);
     void updateSpellWindow(QString);
+    void updateAtmosphericsWindow(QString);
 
     void updateVitals(QString, QString);
     void updateStatus(QString, QString);

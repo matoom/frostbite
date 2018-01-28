@@ -7,7 +7,7 @@ ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSess
     mapData = mainWindow->getWindowFacade()->getMapFacade()->getData();
     tcpClient = mainWindow->getTcpClient();        
 
-    expWindow = ((GridWindow*)mainWindow->getWindowFacade()->getExpWindow()->widget());
+    expWindow = ((GridWindow*)mainWindow->getWindowFacade()->getExpWindow()->getDockWidget()->widget());
 
     tray = mainWindow->getTray();
 

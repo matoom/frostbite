@@ -33,7 +33,7 @@ QDockWidget* GenericWindowFactory::createWindow(const char* name) {
     QDockWidget *dock = new QDockWidget(QObject::tr(name), mainWindow);        
     dock->setObjectName(QObject::tr(name));
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
-    dock->setWidget(this->textBox(name));    
+    dock->setWidget(this->textBox(name));
     return dock;
 }
 

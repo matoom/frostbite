@@ -11,18 +11,18 @@ XmlParserThread::XmlParserThread(QObject *parent) {
 
     rxDmg.setPattern("\\bat you\\..*\\blands\\b");
 
-    connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade, SLOT(updateConversationsWindow(QString)));
     connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
-    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowFacade, SLOT(updateRoomWindowTitle(QString)));
-
-    connect(this, SIGNAL(updateRoomWindow()), windowFacade, SLOT(updateRoomWindow()));
+    connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade->getConversationsWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateRoomWindow()), windowFacade->getRoomWindow(), SLOT(write()));
+    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowFacade->getRoomWindow(), SLOT(setTitle(QString)));
     connect(this, SIGNAL(updateMapWindow(QString)), windowFacade, SLOT(updateMapWindow(QString)));
-    connect(this, SIGNAL(updateExpWindow(QString, QString)), windowFacade, SLOT(updateExpWindow(QString, QString)));
-    connect(this, SIGNAL(updateDeathsWindow(QString)), windowFacade, SLOT(updateDeathsWindow(QString)));
-    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade, SLOT(updateThoughtsWindow(QString)));
-    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade, SLOT(updateArrivalsWindow(QString)));
-    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade, SLOT(updateFamiliarWindow(QString)));
-    connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade, SLOT(updateSpellWindow(QString)));
+    connect(this, SIGNAL(updateExpWindow(QString, QString)), windowFacade->getExpWindow(), SLOT(write(QString, QString)));
+    connect(this, SIGNAL(updateDeathsWindow(QString)), windowFacade->getDeathsWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade->getThoughtsWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade->getArrivalsWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade->getFamiliarWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade->getSpellWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateAtmosphericsWindow(QString)), windowFacade->getAtmosphericsWindow(), SLOT(write(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateVitals(QString, QString)), vitalsBar, SLOT(updateVitals(QString, QString)));
@@ -498,7 +498,7 @@ void XmlParserThread::processPushStream(QString data) {
         emit updateDeathsWindow(addTime(root.text().trimmed()));
     } else if(e.attribute("id") == "atmospherics") {
         QString atmo = root.text().trimmed();
-        if(!atmo.isEmpty()) this->writeTextLines(atmo);
+        if(!atmo.isEmpty()) emit updateAtmosphericsWindow(atmo);
     } else if(e.attribute("id") == "whispers") {
         emit updateConversationsWindow(this->traverseXmlNode(e, QString("")).trimmed());
     } else if(e.attribute("id") == "familiar") {

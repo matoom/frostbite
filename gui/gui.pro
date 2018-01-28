@@ -26,6 +26,7 @@ include(text/text.pri)
 include(xml/xml.pri)
 include(lich/lich.pri)
 include(compass/compass.pri)
+include(window/window.pri)
 
 APP_NAME = Frostbite
 
@@ -43,7 +44,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     clientsettings.cpp \
     toolbar.cpp \
-    navigationdisplay.cpp \
     roundtimedisplay.cpp \
     gamewindow.cpp \
     vitalsindicator.cpp \
@@ -99,13 +99,13 @@ SOURCES += main.cpp\
     windowwriterthread.cpp \
     gridwriterthread.cpp \
     vitalsbar.cpp \
-    scriptsettingsdialog.cpp
+    scriptsettingsdialog.cpp \
+    compass.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
     toolbar.h \
     toolbardefines.h \
-    navigationdisplay.h \
     navigationdefines.h \
     roundtimedisplay.h \
     gamewindow.h \
@@ -167,7 +167,8 @@ HEADERS  += mainwindow.h \
     windowwriterthread.h \
     gridwriterthread.h \
     vitalsbar.h \
-    scriptsettingsdialog.h
+    scriptsettingsdialog.h \
+    compass.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

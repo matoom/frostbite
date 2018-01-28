@@ -1,6 +1,6 @@
-#include "navigationdisplay.h"
+#include "compass.h"
 
-NavigationDisplay::NavigationDisplay(QObject *parent) : QObject(parent) {
+Compass::Compass(QObject *parent) : QObject(parent) {
     images = new QHash<bool, QList<QPixmap> >;
 
     /* preload images to memory */
@@ -10,7 +10,7 @@ NavigationDisplay::NavigationDisplay(QObject *parent) : QObject(parent) {
     state << false << false << false << false << false << false << false << false << false << false << false << false;
 }
 
-void NavigationDisplay::updateState(QList<QString> directions) {
+void Compass::updateState(QList<QString> directions) {
     for(int i = 0; i < state.size(); i++) {
         /* dont update auto pilot (mid circle) */
         if(i != 6) {
@@ -23,11 +23,11 @@ void NavigationDisplay::updateState(QList<QString> directions) {
     }
 }
 
-void NavigationDisplay::setAutoPilot(bool enable) {
+void Compass::setAutoPilot(bool enable) {
     state[6] = enable;
 }
 
-void NavigationDisplay::loadImages() {
+void Compass::loadImages() {
     active << QPixmap(A_UP) << QPixmap(A_NW) << QPixmap(A_N) << QPixmap(A_NE)
            << QPixmap(A_OUT) << QPixmap(A_W) << QPixmap(A_C) << QPixmap(A_E)
            << QPixmap(A_DOWN) << QPixmap(A_SW) << QPixmap(A_S) << QPixmap(A_SE);
@@ -41,7 +41,7 @@ void NavigationDisplay::loadImages() {
     images->insert(false, inactive);
 }
 
-QPixmap NavigationDisplay::paint() {
+QPixmap Compass::paint() {
     QPixmap collage(94, 69);
     collage.fill(Qt::transparent);
 
@@ -65,7 +65,7 @@ QPixmap NavigationDisplay::paint() {
     return collage;
 }
 
-void NavigationDisplay::paint(QWidget* widget, QRect rect) {
+void Compass::paint(QWidget* widget, QRect rect) {
     QPainter painter(widget);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
@@ -87,6 +87,6 @@ void NavigationDisplay::paint(QWidget* widget, QRect rect) {
 }
 
 
-NavigationDisplay::~NavigationDisplay(){
+Compass::~Compass(){
     delete images;
 }

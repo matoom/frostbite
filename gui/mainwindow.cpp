@@ -16,8 +16,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->initSettings();
 
     ui->statusBar->hide();
-
-    //this->addDockWidget(Qt::NoDockWidgetArea, new CompassWindow());
 }
 
 void MainWindow::appSetup() {
@@ -207,7 +205,7 @@ void MainWindow::insertProfilesMenu(QMenu* menu) {
     ui->actionLoad_profile->setMenu(menu);    
 }
 
-void MainWindow::setLogMain(bool enabled) {
+void MainWindow::setLogMain(bool enabled) {    
     ui->actionLogMain->setChecked(enabled);
 }
 

@@ -1,9 +1,9 @@
 #include "compassview.h"
 
-CompassView::CompassView(QWidget *parent) : QWidget(parent, Qt::FramelessWindowHint) {
+CompassView::CompassView(QWidget *parent) : QWidget(((MainWindow*)parent)->getWindowFacade()->getGameWindow(), Qt::FramelessWindowHint) {
     mainWindow = (MainWindow*)parent;
 
-    this->setFixedWidth(110);
+    this->setFixedWidth(120);
     this->setFixedHeight(90);
 
     settings = ClientSettings::getInstance();
@@ -40,34 +40,36 @@ void CompassView::setCompassVisible(bool visible) {
 }
 
 void CompassView::resetCompass() {
-    this->move(mainWindow->width() / 2, mainWindow->height() / 2);
+    QPlainTextEdit* gameWindow = mainWindow->getWindowFacade()->getGameWindow();
+    this->move(gameWindow->width() / 2, gameWindow->height() / 2);
+    this->raise();
 }
 
-void CompassView::paint(NavigationDisplay* navigationDisplay) {
-    compass = navigationDisplay->paint();
+void CompassView::paint(Compass* comp) {
+    compass = comp->paint();
     imageLabel->setPixmap(compass);
-    imageLabel->show();
 }
 
-void CompassView::mousePressEvent(QMouseEvent *evt) {
-    oldPos = evt->globalPos();
+void CompassView::mousePressEvent(QMouseEvent* event) {
+    oldPos = event->globalPos();
 }
 
-void CompassView::mouseMoveEvent(QMouseEvent *evt) {
-    const QPoint delta = evt->globalPos() - oldPos;
+void CompassView::mouseMoveEvent(QMouseEvent* event) {
+    const QPoint delta = event->globalPos() - oldPos;
     if (!locked) {
         this->move(x() + delta.x(), y() + delta.y());
-        oldPos = evt->globalPos();
+        oldPos = event->globalPos();
     }
 }
 
 void CompassView::gameWindowResizeEvent(GameWindow* gameWindow) {
     if(anchored) {
         QRect rect = gameWindow->geometry();
-        QPoint adjust(width() + 15, 0);
+        QPoint adjust(width() + 5, height() - 10);
         this->move(rect.bottomRight() - adjust);
     }
 }
 
 CompassView::~CompassView()  {
+    delete imageLabel;
 }

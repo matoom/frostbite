@@ -16,6 +16,7 @@
 #include <generalsettings.h>
 #include <tray.h>
 #include <scriptapiserver.h>
+//#include <compass/compassview.h>
 
 #include "cleanlooks/qcleanlooksstyle.h"
 
@@ -46,6 +47,7 @@ class VitalsBar;
 class GeneralSettings;
 class Tray;
 class ScriptApiServer;
+//class CompassView;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -128,7 +130,7 @@ private:
     TimerBar* timerBar;
     VitalsBar* vitalsBar;
 
-    QReadWriteLock lock;    
+    QReadWriteLock lock;
 
     void initSettings();
     void loadClient();

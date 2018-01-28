@@ -7,7 +7,7 @@
 #include <genericwindowfactory.h>
 #include <gridwindowfactory.h>
 #include <gamewindow.h>
-#include <navigationdisplay.h>
+#include <compass.h>
 #include <gamedatacontainer.h>
 #include <defaultvalues.h>
 #include <text/highlight/highlighter.h>
@@ -25,26 +25,40 @@
 
 #include <maps/mapfacade.h>
 
+#include <window/roomwindow.h>
+#include <window/arrivalswindow.h>
+#include <window/deathswindow.h>
+#include <window/thoughtswindow.h>
+#include <window/expwindow.h>
+#include <window/conversationswindow.h>
+#include <window/familiarwindow.h>
+#include <window/spellwindow.h>
+#include <window/atmosphericswindow.h>
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsProxyWidget>
 
 class MainWindow;
 class GameWindow;
-class GridWindowFactory;
 class GenericWindowFactory;
 class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
 class Highlighter;
-class WindowWriterThread;
-class GridWriterThread;
 class MainLogger;
-class ThoughtsLogger;
-class ConversationsLogger;
-class DeathsLogger;
-class ArrivalsLogger;
 class MapFacade;
 class CompassView;
+
+class RoomWindow;
+class ArrivalsWindow;
+class DeathsWindow;
+class ThoughtsWindow;
+class ExpWindow;
+class ConversationsWindow;
+class FamiliarWindow;
+class SpellWindow;
+class AtmosphericsWindow;
+
 
 typedef QList<QString> DirectionsList;
 typedef QMap<QString, QString> GridItems;
@@ -77,50 +91,32 @@ public:
     void reloadHighlighterSettings();    
 
     QList<QDockWidget*> getDockWindows();
-    QDockWidget* getRoomWindow();
-    QDockWidget* getArrivalsWindow();
-    QDockWidget* getThoughtsWindow();
-    QDockWidget* getExpWindow();
-    QDockWidget* getDeathsWindow();
-    QDockWidget* getConversationsWindow();
-    QDockWidget* getFamiliarWindow();
-    QDockWidget* getSpellWindow();
+    RoomWindow* getRoomWindow();
+    ArrivalsWindow* getArrivalsWindow();
+    ThoughtsWindow* getThoughtsWindow();
+    ExpWindow* getExpWindow();
+    DeathsWindow* getDeathsWindow();
+    ConversationsWindow* getConversationsWindow();
+    FamiliarWindow* getFamiliarWindow();
+    SpellWindow* getSpellWindow();
+    AtmosphericsWindow* getAtmosphericsWindow();
 
     QStringList getWindowNames();
 
     MapFacade* getMapFacade();    
     CompassView* getCompassView();
 
-    bool thoughtsVisible;
-    bool deathsVisible;
-    bool arrivalsVisible;
-    bool conversationsVisible;
-    bool familiarVisible;
-    bool spellVisible;
     bool writePrompt;
 
     static QStringList staticWindows;
 
 public slots:
-    void updateConversationsWindow(QString);
-    void writeGameText(QByteArray, bool);    
-    void writeGameWindow(QByteArray);    
-    void updateNavigationDisplay(DirectionsList);
-    void updateRoomWindowTitle(QString);
-    void updateExpWindow(QString name, QString text);
-    void updateMapWindow(QString hash);
-    void updateRoomWindow();
-    void updateDeathsWindow(QString);
-    void updateThoughtsWindow(QString);    
-    void updateArrivalsWindow(QString);
-    void updateFamiliarWindow(QString);
-    void updateSpellWindow(QString);
-
-    void logThoughtsText(QString);
-    void logConversationsText(QString);
+    void writeGameText(QByteArray, bool);
+    void writeGameWindow(QByteArray);
     void logGameText(QByteArray, char type = '\0');
-    void logDeathsText(QString);
-    void logArrivalsText(QString);
+
+    void updateNavigationDisplay(DirectionsList);
+    void updateMapWindow(QString hash);
 
     void registerStreamWindow(QString id, QString title);
     void removeStreamWindow(QString id);
@@ -134,62 +130,42 @@ public slots:
     void unlockWindows();
 
 private slots:
-    void thoughtsVisibility(bool);    
-    void deathsVisibility(bool);
-    void arrivalsVisibility(bool);
-    void conversationsVisibility(bool);
-    void familiarVisibility(bool);
-    void spellVisibility(bool);
-    void writeExpWindow(GridItems);
 
 private:
-    GridWindowFactory* gridWindowFactory;
     GenericWindowFactory* genericWindowFactory;
 
     MainWindow* mainWindow;
     QPlainTextEdit* gameWindow;
-    NavigationDisplay* navigationDisplay;
+    Compass* compass;
     GameDataContainer* gameDataContainer;
     ClientSettings* clientSettings;
     Highlighter* highlighter;
     HighlightSettings* settings;
     GeneralSettings* generalSettings;
 
-    QDockWidget* roomWindow;
-    QDockWidget* arrivalsWindow;
-    QDockWidget* thoughtsWindow;
-    QDockWidget* expWindow;
-    QDockWidget* deathsWindow;
-    QDockWidget* conversationsWindow;
-    QDockWidget* familiarWindow;
-    QDockWidget* spellWindow;
+    RoomWindow* roomWindow;
+    ArrivalsWindow* arrivalsWindow;
+    DeathsWindow* deathsWindow;
+    ThoughtsWindow* thoughtsWindow;
+    ExpWindow* expWindow;
+    ConversationsWindow* conversationsWindow;
+    FamiliarWindow* familiarWindow;
+    SpellWindow* spellWindow;
+    AtmosphericsWindow* atmosphericsWindow;
+
     QList<QDockWidget*> dockWindows;
     QHash<QString, QDockWidget*> streamWindows;
 
-    CompassView* compass;
+    CompassView* compassView;
 
     MapFacade* mapFacade;
 
     QRegExp rxRemoveTags;
 
     WindowWriterThread* mainWriter;
-    WindowWriterThread* roomWriter;
-    GridWriterThread* expWriter;
-    WindowWriterThread* arrivalsWriter;
-    WindowWriterThread* thoughtsWriter;
-    WindowWriterThread* deathsWriter;
-    WindowWriterThread* conversationsWriter;
-    WindowWriterThread* familiarWriter;
-    WindowWriterThread* spellWriter;
-    QList<WindowWriterThread*> writers;    
-    QList<GridWriterThread*> gridWriters;
     QHash<QString, WindowWriterThread*> streamWriters;
 
     MainLogger* mainLogger;
-    ThoughtsLogger* thoughtsLogger;
-    ConversationsLogger* conversationsLogger;
-    DeathsLogger* deathsLogger;
-    ArrivalsLogger* arrivalsLogger;
 
     QString style;
 
@@ -197,17 +173,7 @@ private:
     void setVisibilityIndicator(QDockWidget*, bool, QString);
 
 signals:
-    void updateGameWindowSettings();
-    void updateRoomSettings();
-    void updateExpSettings();    
-    void updateArrivalsSettings();
-    void updateThoughtsSettings();
-    void updateDeathsSettings();
-    void updateConversationsSettings();
-    void updateFamiliarSettings();
-    void updateSpellSettings();
-    void updateStreamWindowSettings();
-
+    void updateWindowSettings();
 };
 
 #endif // WindowFacade_H

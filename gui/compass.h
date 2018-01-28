@@ -1,5 +1,5 @@
-#ifndef NAVIGATIONDISPLAY_H
-#define NAVIGATIONDISPLAY_H
+#ifndef COMPASS_H
+#define COMPASS_H
 
 #include <windowfacade.h>
 
@@ -7,12 +7,12 @@
 
 class WindowFacade;
 
-class NavigationDisplay : public QObject {
+class Compass : public QObject {
     Q_OBJECT
 
 public:
-    NavigationDisplay(QObject *parent = 0);
-    ~NavigationDisplay();
+    Compass(QObject *parent = 0);
+    ~Compass();
 
     QPixmap paint();
     void paint(QWidget* widget, QRect);
@@ -33,4 +33,4 @@ private:
     void loadImages();
 };
 
-#endif // NAVIGATIONDISPLAY_H
+#endif // COMPASS_H
