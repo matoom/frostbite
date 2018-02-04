@@ -67,7 +67,7 @@ private:
     bool isInRange(int n);
     void roomToHash();
 
-    void setInitialized(boolean initialized);
+    void setInitialized(bool initialized);
 
     void uninit();
     void clear();

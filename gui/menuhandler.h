@@ -57,7 +57,7 @@ private:
     QMenu* profilesMenu;
     QAction* action;
 
-    boolean menuReady;
+    bool menuReady;
 
     void loadLoggingMenu();
     void loadToolbarMenu();

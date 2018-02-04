@@ -285,7 +285,7 @@ void MainWindow::setCompassVisible(bool checked) {
     ui->actionCompassVisible->setChecked(checked);
 }
 
-void MainWindow::enableMapsMenu(boolean enabled) {
+void MainWindow::enableMapsMenu(bool enabled) {
     QMenu* menu = ui->menuBar->findChild<QMenu*>("menuMap");
     if(menu != NULL)menu->setEnabled(enabled);
 }

@@ -103,7 +103,7 @@ public:
     void reloadMaps();
     void showMaps();
 
-    void enableMapsMenu(boolean enabled);
+    void enableMapsMenu(bool enabled);
 
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();

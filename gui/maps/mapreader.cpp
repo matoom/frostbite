@@ -63,7 +63,7 @@ QDir MapReader::getDir() {
     return this->dir;
 }
 
-void MapReader::setInitialized(boolean initialized) {
+void MapReader::setInitialized(bool initialized) {
     QWriteLocker locker(&lock);
     this->initialized = initialized;
 }
