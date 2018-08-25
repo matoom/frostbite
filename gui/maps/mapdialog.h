@@ -42,6 +42,7 @@ public slots:
 
     void zoomIn();
     void zoomOut();
+    void reset();
 
     void lockControls();
     void unlockControls();

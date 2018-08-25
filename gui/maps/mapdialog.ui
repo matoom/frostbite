@@ -130,6 +130,19 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="reset">
+         <property name="maximumSize">
+          <size>
+           <width>15</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>R</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="zoomOut">
          <property name="maximumSize">
           <size>

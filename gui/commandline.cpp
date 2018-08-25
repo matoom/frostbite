@@ -159,8 +159,9 @@ void CommandLine::doCopy() {
 }
 
 void CommandLine::writeCommand(QString text, QString style) {
-    mainWindow->getTcpClient()->writeCommand(text);
+    if(this->filterCommand(text)) return;
 
+    mainWindow->getTcpClient()->writeCommand(text);
     QTextCursor cursor(windowFacade->getGameWindow()->textCursor());
     cursor.movePosition(QTextCursor::End);
     cursor.movePosition(QTextCursor::PreviousCharacter);
@@ -176,7 +177,7 @@ void CommandLine::writeCommand(QString text, QString style) {
         windowFacade->getGameWindow()->appendHtml(html);
     }
 
-    windowFacade->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);
+    windowFacade->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);        
 }
 
 void CommandLine::completeCommand() {
@@ -202,13 +203,10 @@ void CommandLine::sendCommand() {
         this->writeCommand("");
     } else {
         /* add command to history */
-        this->addHistory();
-        /* look for client commands */
-        if(!this->filterCommand(this->text())) {
-            /* write command to tcp socket and game window */
-            this->writeCommand(this->text());
-            this->clear();
-        }
+        this->addHistory();       
+        /* write command to tcp socket and game window */
+        this->writeCommand(this->text());
+        this->clear();
     }
 }
 
@@ -219,9 +217,14 @@ bool CommandLine::filterCommand(QString text) {
             this->clear();
             return true;
         }
-    } else if (text.startsWith("#profile")) {
-        mainWindow->updateProfileSettings(text.mid(8).trimmed(), "L");
-        this->clear();
+    } else if(text.startsWith("#")) {
+        if(text.startsWith("#profile")) {
+            mainWindow->updateProfileSettings(text.mid(8).trimmed(), "L");
+            this->clear();
+        } else if(text.startsWith("#showMap")) {
+            mainWindow->getWindowFacade()->getMapFacade()->showMapDialog();
+            this->clear();
+        }
         return true;
     }
     return false;

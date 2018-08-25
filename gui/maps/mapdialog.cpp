@@ -15,6 +15,7 @@ MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), u
     connect(ui->levelSelect, SIGNAL(activated(int)), this, SLOT(mapLevelSelected(int)));
     connect(ui->zoomIn, SIGNAL(pressed()), this, SLOT(zoomIn()));
     connect(ui->zoomOut, SIGNAL(pressed()), this, SLOT(zoomOut()));
+    connect(ui->reset, SIGNAL(pressed()), this, SLOT(reset()));
 
     ui->mapView->scale(1.0, 1.0);
 
@@ -46,6 +47,10 @@ void MapDialog::zoomIn() {
 
 void MapDialog::zoomOut() {
     scaleView(-0.5);
+}
+
+void MapDialog::reset() {
+    mapFacade->showMapDialog();
 }
 
 void MapDialog::populate() {

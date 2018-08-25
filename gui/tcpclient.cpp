@@ -173,8 +173,6 @@ void TcpClient::writeModeSettings() {
 // TODO: does this have any effect?
 void TcpClient::writeSettings() {
     this->writeCommand("");
-    this->writeCommand("_swclose sassess");
-    this->writeCommand("_swclose satmospherics");
     this->writeCommand("_swclose sooc");
 }
 

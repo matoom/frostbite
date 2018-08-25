@@ -408,7 +408,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                     gameDataContainer->setRoomPlayers(roomPlayers);
                 } else if (id.endsWith("exits")) {
                     QString roomExits = e.text();
-                    TextUtils::plainToHtml(roomExits);
+                    TextUtils::plainToHtml(roomExits);                                                            
                     gameDataContainer->setRoomExits(roomExits);
                 } else if (id.endsWith("extra")) {
                     QString roomExtra = e.text();
