@@ -50,7 +50,14 @@ void MapDialog::zoomOut() {
 }
 
 void MapDialog::reset() {
-    mapFacade->showMapDialog();
+    RoomNode roomNode = mapFacade->getData()->getRoom();
+    QString currentZoneId = roomNode.getZoneId();
+    if(!currentZoneId.isEmpty()) {
+        setSelected(currentZoneId, roomNode.getLevel());
+        showMap(currentZoneId, roomNode.getLevel());
+        center(roomNode);
+        mapFacade->selectNode(roomNode.getZoneId(), roomNode.getLevel(), roomNode.getNodeId());
+    }
 }
 
 void MapDialog::populate() {
@@ -101,6 +108,15 @@ void MapDialog::mapLevelSelected(int index) {
 void MapDialog::showMap(QString zoneId, int level) {
     ui->nodeInfo->clear();
     ui->mapView->setScene(mapFacade->getMapReader()->getScenes().value(zoneId).value(level).scene);
+}
+
+void MapDialog::center(RoomNode roomNode) {
+    MapZone* zone = mapFacade->getMapReader()->getZones().value(roomNode.getZoneId());
+    MapNode* node = zone->getNodes().value(roomNode.getNodeId());
+    if(zone != NULL && node != NULL) {
+        ui->mapView->centerOn(node->getPosition().getX() + abs(zone->getXMin()),
+                              node->getPosition().getY() + abs(zone->getYMin()) + MAP_TOP_MARGIN);
+    }
 }
 
 void MapDialog::setInfo(MapNode* node) {

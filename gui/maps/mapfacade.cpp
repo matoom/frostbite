@@ -138,7 +138,7 @@ void MapFacade::selectNode(QWidget* widget, QString zoneId, int level, int nodeI
         MapZone* zone = mapReader->getZones().value(zoneId);
         MapNode* node = zone->getNodes().value(nodeId);
 
-        mapDialog->setInfo(node);
+        mapDialog->setInfo(node);               
     }
 }
 
@@ -192,12 +192,18 @@ void MapFacade::moveSelected(QString zoneId, int nodeId, int level) {
 void MapFacade::showMapDialog() {
     if(!mapReader->isInitialized()) return;
 
-    QString currentZoneId = mapSelect->currentData().toString();
+    RoomNode roomNode = getData()->getRoom();
+    QString currentZoneId = roomNode.getZoneId();
     if(!currentZoneId.isEmpty()) {
-        mapDialog->setSelected(currentZoneId, levelSelect->currentData().toInt());
-        mapDialog->showMap(currentZoneId, levelSelect->currentData().toInt());
+        mapDialog->setSelected(currentZoneId, roomNode.getLevel());
+        mapDialog->showMap(currentZoneId, roomNode.getLevel());
+        mapDialog->center(roomNode);
     }
     mapDialog->show();
+}
+
+void MapFacade::hideMapDialog() {
+   mapDialog->hide();
 }
 
 MapReader* MapFacade::getMapReader() {

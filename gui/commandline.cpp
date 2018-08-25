@@ -220,11 +220,12 @@ bool CommandLine::filterCommand(QString text) {
     } else if(text.startsWith("#")) {
         if(text.startsWith("#profile")) {
             mainWindow->updateProfileSettings(text.mid(8).trimmed(), "L");
-            this->clear();
         } else if(text.startsWith("#showMap")) {
             mainWindow->getWindowFacade()->getMapFacade()->showMapDialog();
-            this->clear();
+        } else if(text.startsWith("#hideMap")) {
+            mainWindow->getWindowFacade()->getMapFacade()->hideMapDialog();
         }
+        this->clear();
         return true;
     }
     return false;

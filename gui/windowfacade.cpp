@@ -428,6 +428,9 @@ WindowFacade::~WindowFacade() {
         delete writer;
     }
 
+    mainWriter->terminate();
+    delete mainWriter;
+
     foreach(QDockWidget* dock, streamWindows) {
         delete dock;
     }

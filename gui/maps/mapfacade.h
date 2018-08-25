@@ -69,6 +69,7 @@ public slots:
     void selectNode(QString zoneId, int level, int nodeId);
     void updateMapWindow(QString hash);
     void showMapDialog();
+    void hideMapDialog();
     void setZoom(QString zoomLevel);
     void updateMapColors(QColor background);    
     void lockControls();

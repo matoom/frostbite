@@ -6,6 +6,7 @@
 #include <maps/mapzone.h>
 #include <maps/mapfacade.h>
 #include <maps/mapreader.h>
+#include <maps/roomnode.h>
 
 class MapReader;
 
@@ -25,6 +26,8 @@ public:
     void showMap(QString zoneId, int level = 0);
     void populateLevels(QString zoneId, int level = 0);
     void setSelected(QString zoneId, int level = 0);
+
+    void center(RoomNode roomNode);
 
 private:
     Ui::MapDialog *ui;
