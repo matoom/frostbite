@@ -28,6 +28,7 @@ public:
     static QString toBrief(QString direction);
     static QString stripMapSpecial(QString text);
     static QString rstrip(const QString& str);
+    static bool toBool(QString value);
 
 private:
     static void populateExpStates();

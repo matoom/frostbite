@@ -7,6 +7,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     windowFacade = mainWindow->getWindowFacade();
     settings = ClientSettings::getInstance();
     api = false;
+    apiLich = false;
 
     debugLogger = new DebugLogger();
 
@@ -98,7 +99,11 @@ void TcpClient::retrieveEauthSession(QString id) {
 
 void TcpClient::eAuthSessionRetrieved(QString host, QString port, QString sessionKey) {
     if(api) {
-        this->connectToHost(host, port, sessionKey);
+        if(apiLich) {
+            this->connectToLich(host, port, sessionKey);
+        } else {
+            this->connectToHost(host, port, sessionKey);
+        }
     } else {
         emit sessionRetrieved(host, port, sessionKey);
     }
@@ -115,10 +120,12 @@ void TcpClient::authError() {
     emit resetPassword();    
 }
 
-void TcpClient::connectApi(QString host, QString port, QString user, QString password, QString game, QString character) {
+void TcpClient::connectApi(QString host, QString port, QString user, QString password,
+        QString game, QString character, bool apiLich) {
     this->api = true;
     this->game = game;
     this->character = character;
+    this->apiLich = apiLich;
     this->initEauthSession(host, port, user, password);
 }
 

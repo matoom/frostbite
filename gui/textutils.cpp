@@ -105,6 +105,10 @@ QString TextUtils::rstrip(const QString& str) {
     return "";
 }
 
+bool TextUtils::toBool(QString value) {
+    return value.toLower() == "true" || value == "1";
+}
+
 TextUtils::~TextUtils() {
 }
 

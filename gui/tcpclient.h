@@ -35,7 +35,8 @@ public:
     void logDebug(QByteArray buffer);
     void disconnectFromServer();
 
-    void connectApi(QString host, QString port, QString user, QString password, QString game, QString character);
+    void connectApi(QString host, QString port, QString user, QString password,
+                    QString game, QString character, bool apiLich);
 
 private:
     MainWindow *mainWindow;
@@ -55,6 +56,7 @@ private:
     QString game;
     QString character;
     bool api;
+    bool apiLich;
 
 signals:
     void characterFound(QString, QString);

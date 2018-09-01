@@ -172,12 +172,13 @@ void ScriptApiServer::readyRead() {
             }
         } else if(line.startsWith("CLIENT")) {
             ApiRequest request = parseRequest(line.mid(6).trimmed());
-            if(request.name == "CONNECT") {
+            if(request.name == "CONNECT") {                
                 QStringList args = request.args;
-                if(args.size() < 6) {
+                if(args.size() < 7) {
                     this->write(socket, tr("1\\0"));
                 } else {
-                    tcpClient->connectApi(args.at(0), args.at(1), args.at(2), args.at(3), args.at(4), args.at(5));
+                    tcpClient->connectApi(args.at(0), args.at(1), args.at(2), args.at(3),
+                        args.at(4), args.at(5), TextUtils::toBool(args.at(6)));
                     this->write(socket, tr("0\\0"));
                 }
             } else if(request.name == "TRACK_EXP") {
