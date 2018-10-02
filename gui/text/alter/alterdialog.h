@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QListWidget>
 #include <QTableWidget>
+#include <QCheckBox>
 
 #include <mainwindow.h>
 #include <text/alter/substitutetab.h>
@@ -32,6 +33,7 @@ public:
     QPushButton* getIgnoreAddButton();
     QPushButton* getIgnoreRemoveButton();
     QTableWidget* getIgnoreTable();
+    QCheckBox* getIgnoreEnabled();
 
     QList<QDockWidget*> getDockWindows();
 
@@ -48,6 +50,7 @@ public slots:
     void applyPressed();
     void okPressed();
     void cancelPressed();
+    void reloadSettings();
 };
 
 #endif // ALTERDIALOG_H

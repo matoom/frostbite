@@ -19,10 +19,11 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     writePrompt = true;
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+    connect(this, SIGNAL(updateWindowSettings()), mainLogger, SLOT(updateSettings()));
 }
 
 void WindowFacade::reloadSettings() {
-    this->reloadHighlighterSettings();
+    this->reloadWindowSettings();
 
     settings = HighlightSettings::getInstance();
     generalSettings = GeneralSettings::getInstance();
@@ -31,9 +32,10 @@ void WindowFacade::reloadSettings() {
     this->updateWindowColors();
 }
 
-void WindowFacade::reloadHighlighterSettings() {
+void WindowFacade::reloadWindowSettings() {
     emit updateWindowSettings();
 }
+
 
 QPlainTextEdit* WindowFacade::getGameWindow() {
     return this->gameWindow;
@@ -323,7 +325,7 @@ void WindowFacade::updateMapWindow(QString hash) {
     mapFacade->updateMapWindow(hash);
 }
 
-void WindowFacade::writeGameText(QByteArray text, bool prompt) {   
+void WindowFacade::writeGameText(QByteArray text, bool prompt) {
     if(prompt && writePrompt) {
         mainWindow->getScriptService()->writeScriptText(text);
         mainWriter->addText(text);

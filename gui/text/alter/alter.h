@@ -27,6 +27,7 @@ public:
 private:
      IgnoreSettings* ignoreSettings;
      SubstitutionSettings* substituteSettings;
+     bool ignoreEnabled;
 
 signals:
 

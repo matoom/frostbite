@@ -53,15 +53,25 @@ QTableWidget* AlterDialog::getIgnoreTable() {
     return ui->ignoreTable;
 }
 
+QCheckBox* AlterDialog::getIgnoreEnabled() {
+    return ui->ignoreEnabled;
+}
+
+void AlterDialog::reloadSettings() {
+    mainWindow->getWindowFacade()->reloadWindowSettings();
+}
+
 void AlterDialog::applyPressed() {
     substituteTab->saveChanges();
     ignoreTab->saveChanges();
+    this->reloadSettings();
     ui->applyButton->setEnabled(false);
 }
 
 void AlterDialog::okPressed() {
     substituteTab->saveChanges();
     ignoreTab->saveChanges();
+    this->reloadSettings();
     ui->applyButton->setEnabled(false);
     this->accept();
 }

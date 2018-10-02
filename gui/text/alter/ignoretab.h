@@ -35,6 +35,7 @@ private:
     QTableWidget* ignoreTable;
     QPushButton* addButton;
     QPushButton* removeButton;
+    QCheckBox* ignoreEnabled;
 
     IgnoreSettings* settings;
 
@@ -48,6 +49,7 @@ public slots:
     void removeTableRow();
     void displayMenu(QPoint);
     void updateEntry(QTableWidgetItem* item);
+    void enabledChanged(int);
 };
 
 #endif // IGNORETAB_H

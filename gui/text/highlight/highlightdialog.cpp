@@ -183,7 +183,7 @@ void HighlightDialog::reloadWindowStyles() {
 }
 
 void HighlightDialog::reloadHighlighterSettings() {
-    mainWindow->getWindowFacade()->reloadHighlighterSettings();
+    mainWindow->getWindowFacade()->reloadWindowSettings();
 }
 
 void HighlightDialog::okPressed() {

@@ -10,7 +10,9 @@
 
 #include <log4qt/logger.h>
 
+#include <defaultvalues.h>
 #include <textutils.h>
+#include <text/alter/alter.h>
 
 class MainLogger : public QThread {
     Q_OBJECT
@@ -35,6 +37,7 @@ private:
     QMutex mMutex;
     QRegExp rxRemoveTags;
     LogEntry localData;
+    Alter* alter;
 
     void log(LogEntry);
 
@@ -44,6 +47,7 @@ signals:
     
 public slots:
     void addText(QString, char type = '\0');
+    void updateSettings();
 
 };
 

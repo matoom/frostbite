@@ -88,7 +88,7 @@ public:
     void setDockFont(QFont font);
     void copyDock();
     void saveArrivals();
-    void reloadHighlighterSettings();    
+    void reloadWindowSettings();
 
     QList<QDockWidget*> getDockWindows();
     RoomWindow* getRoomWindow();

@@ -5,7 +5,8 @@ IgnoreTab::IgnoreTab(QObject *parent) : QObject(parent), AbstractTableTab() {
 
     ignoreTable = alterDialog->getIgnoreTable();
     addButton = alterDialog->getIgnoreAddButton();
-    removeButton = alterDialog->getIgnoreRemoveButton();    
+    removeButton = alterDialog->getIgnoreRemoveButton();
+    ignoreEnabled = alterDialog->getIgnoreEnabled();
 
     settings = IgnoreSettings::getInstance();
 
@@ -20,11 +21,14 @@ IgnoreTab::IgnoreTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     ignoreTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ignoreTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    ignoreEnabled->setChecked(settings->getEnabled());
+
     connect(addButton, SIGNAL(clicked()), this, SLOT(addNewTableRow()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(removeTableRow()));
 
     connect(ignoreTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(displayMenu(QPoint)));
     connect(ignoreTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateEntry(QTableWidgetItem*)));
+    connect(ignoreEnabled, SIGNAL(stateChanged(int)), this, SLOT(enabledChanged(int)));
 
     this->initIgnoreList();
 }
@@ -44,6 +48,11 @@ void IgnoreTab::addNewTableRow() {
 
 void IgnoreTab::removeTableRow() {
     AbstractTableTab::removeTableRow();
+}
+
+void IgnoreTab::enabledChanged(int state)  {
+    settings->setEnabled(state == Qt::Checked);
+    alterDialog->reloadSettings();
 }
 
 void IgnoreTab::updateEntry(QTableWidgetItem* item) {

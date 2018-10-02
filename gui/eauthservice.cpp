@@ -148,7 +148,8 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         emit selectGame(gameList);
     } else if(buffer.startsWith("F\t")) {
         QList<QByteArray> fResponse = buffer.split('\t');
-        if(fResponse.takeLast().trimmed() == "NEW_TO_GAME") {
+        QByteArray msg = fResponse.takeLast().trimmed();
+        if(msg == "NEW_TO_GAME" || msg == "NEED_BILL") {
             emit connectionError("Account error; character not found;");
             tcpSocket->disconnectFromHost();
             return;

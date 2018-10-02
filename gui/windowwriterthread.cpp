@@ -17,7 +17,7 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
     connect(this, SIGNAL(clearText()), this->textEdit, SLOT(clear()));
 }
 
-void WindowWriterThread::updateSettings() {
+void WindowWriterThread::updateSettings() {   
     highlighter->reloadSettings();
     alter->reloadSettings();
 }

@@ -5,6 +5,7 @@ Alter::Alter(QObject *parent) : QObject(parent) {
     ignoreList = ignoreSettings->getIgnores();
     substituteSettings = SubstitutionSettings::getInstance();
     subsList = substituteSettings->getSubstitutions();
+    ignoreEnabled = ignoreSettings->getEnabled();
 }
 
 void Alter::reloadSettings() {
@@ -12,6 +13,7 @@ void Alter::reloadSettings() {
     ignoreList = ignoreSettings->getIgnores();
     substituteSettings->reInit();
     subsList = substituteSettings->getSubstitutions();
+    ignoreEnabled = ignoreSettings->getEnabled();
 }
 
 QString Alter::substitute(QString text, QString window) {
@@ -25,7 +27,8 @@ QString Alter::substitute(QString text, QString window) {
     return text;
 }
 
-bool Alter::ignore(QString text, QString window) {    
+bool Alter::ignore(QString text, QString window) {
+    if(!ignoreEnabled) return false;
     for(AlterSettingsEntry entry : ignoreList) {
         if(!entry.enabled || entry.pattern.isEmpty()) continue;
         if(!entry.targetList.empty() && !entry.targetList.contains(window)) continue;

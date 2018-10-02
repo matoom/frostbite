@@ -38,6 +38,16 @@ void IgnoreSettings::setSettings(QList<AlterSettingsEntry> entries) {
     settings->endArray();
 }
 
+void IgnoreSettings::setEnabled(bool enabled) {
+    QMutexLocker locker(&m_mutex);
+    settings->setValue("settings/enabled", enabled);
+}
+
+bool IgnoreSettings::getEnabled() {
+    QMutexLocker locker(&m_mutex);
+    return settings->value("settings/enabled", true).toBool();
+}
+
 void IgnoreSettings::addParameter(AlterSettingsEntry entry) {
     QMutexLocker locker(&m_mutex);
     int id = settings->value("ignore/size").toInt();
