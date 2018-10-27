@@ -134,21 +134,25 @@ void WindowFacade::setDockBackground(QColor backgroundColor) {
 
 void WindowFacade::setDockFont(QFont font) {
     foreach(QDockWidget* dock, dockWindows) {
+        QVariant windowFont = dock->widget()->property(WINDOW_FONT_ID);
         if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
-            ((QPlainTextEdit*)dock->widget())->setFont(font);
+            ((QPlainTextEdit*)dock->widget())->setFont(windowFont.isNull() ? font : windowFont.value<QFont>());
         } else if(qobject_cast<QTableWidget*>(dock->widget()) != NULL) {
-            QTableWidget* tableWidget = (QTableWidget*)dock->widget();
-            for(int i = 0; i < tableWidget->rowCount(); i++) {
-                QWidget* widget = tableWidget->cellWidget(i, 0);
-                if(widget != NULL) {
-                    ((QLabel*)widget)->setFont(font);
+            if(windowFont.isNull()) {
+                QTableWidget* tableWidget = (QTableWidget*)dock->widget();
+                for(int i = 0; i < tableWidget->rowCount(); i++) {
+                    QWidget* widget = tableWidget->cellWidget(i, 0);
+                    if(widget != NULL) {
+                        ((QLabel*)widget)->setFont(windowFont.isNull() ? font : windowFont.value<QFont>());
+                    }
                 }
             }
         }
     }
 
-    foreach(QDockWidget* dock, streamWindows) {
-        ((QPlainTextEdit*)dock->widget())->setFont(font);
+    foreach(QDockWidget* dock, streamWindows) {                
+        QVariant windowFont = dock->widget()->property(WINDOW_FONT_ID);
+        ((QPlainTextEdit*)dock->widget())->setFont(windowFont.isNull() ? font : windowFont.value<QFont>());
     }
 }
 

@@ -20,7 +20,7 @@ class GenericWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT
 
 public:
-    explicit GenericWindow(QWidget *parent = 0);
+    explicit GenericWindow(QString title, QWidget *parent = 0);
     ~GenericWindow();
 
     QColor getBgColor();
@@ -37,12 +37,13 @@ public:
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
-    void buildContextMenu();
+    void buildContextMenu();    
     void loadSettings();
 
     MainWindow* mainWindow;
     GeneralSettings* settings;
     WindowFacade* wm;
+    QString windowId;
 
     Snapshot* snapshot;
 
@@ -51,6 +52,8 @@ private:
     QAction* selectAct;
     QAction* saveAct;
     QAction* clearAct;
+    QAction* fontAct;
+    QAction* clearFontAct;
     QMenu* menu;
 
     bool _append;
@@ -63,6 +66,9 @@ private slots:
     void enableCopy(bool);
     void saveAsHtml();
     void changeAppearance();
+    void selectFont();
+    void clearFont();    
+    void updateSettings();
     
 public slots:
     void appendHtmlStream(const QString&);

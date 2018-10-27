@@ -1,10 +1,12 @@
 #include "genericwindow.h"
 
-GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
+GenericWindow::GenericWindow(QString title, QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
     settings = GeneralSettings::getInstance();
     wm = mainWindow->getWindowFacade();
     snapshot = new Snapshot(this);
+
+    this->windowId = title.simplified().remove(' ') + "Window";
 
     this->buildContextMenu();
     this->loadSettings();
@@ -18,6 +20,7 @@ GenericWindow::GenericWindow(QWidget *parent) : QPlainTextEdit(parent) {
     _stream = false;
 
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
+    connect(mainWindow->getWindowFacade(), SIGNAL(updateWindowSettings()), this, SLOT(updateSettings()));
 }
 
 void GenericWindow::setAppend(bool append) {
@@ -36,8 +39,23 @@ bool GenericWindow::stream() {
     return this->_stream;
 }
 
+void GenericWindow::updateSettings() {
+    settings = GeneralSettings::getInstance();
+    this->loadSettings();
+}
+
 void GenericWindow::loadSettings() {
-    QFont font = settings->dockWindowFont();
+    QVariant fontValue = settings->getParameter(windowId + "/font", QVariant());
+    QFont font;
+    if(!fontValue.isNull()) {
+       font = fontValue.value<QFont>();
+       this->setProperty(WINDOW_FONT_ID, font);
+       fontAct->setText(font.family() + " " + QString::number(font.pointSize()));
+    } else {
+       font = settings->dockWindowFont();
+       this->setProperty(WINDOW_FONT_ID, QVariant());
+       fontAct->setText(WINDOW_FONT_SET);
+    }
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 }
@@ -71,6 +89,22 @@ void GenericWindow::buildContextMenu() {
 
     menu->addSeparator();
 
+    fontAct = new QAction(tr("&" WINDOW_FONT_SET "\t"), this);
+    QVariant fontValue = settings->getParameter(windowId + "/font", QVariant());
+    if(!fontValue.isNull()) {
+        QFont font = fontValue.value<QFont>();
+        fontAct->setText(font.family() + " " + QString::number(font.pointSize()));
+    }
+
+    menu->addAction(fontAct);
+    connect(fontAct, SIGNAL(triggered()), this, SLOT(selectFont()));
+
+    clearFontAct = new QAction(tr("&" WINDOW_FONT_CLEAR "\t"), this);
+    menu->addAction(clearFontAct);
+    connect(clearFontAct, SIGNAL(triggered()), this, SLOT(clearFont()));
+
+    menu->addSeparator();
+
     copyAct = new QAction(tr("&Copy\t"), this);
     menu->addAction(copyAct);
     copyAct->setEnabled(false);
@@ -91,6 +125,26 @@ void GenericWindow::buildContextMenu() {
     clearAct = new QAction(tr("&Clear\t"), this);
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
+}
+
+void GenericWindow::selectFont() {
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok, this->font(), this);
+    if(ok) {
+        fontAct->setText(font.family() + " " + QString::number(font.pointSize()));
+        settings->setParameter(windowId + "/font", font);
+        this->setProperty(WINDOW_FONT_ID, font);
+        this->setFont(font);
+    }
+}
+
+void GenericWindow::clearFont() {
+    QFont font = settings->getParameter("DockWindow/font",
+        QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
+    this->setFont(font);
+    fontAct->setText(WINDOW_FONT_SET);
+    settings->setParameter(windowId + "/font", QVariant());
+    this->setProperty(WINDOW_FONT_ID, QVariant());
 }
 
 void GenericWindow::changeAppearance() {
@@ -145,6 +199,8 @@ GenericWindow::~GenericWindow() {
     delete copyAct;
     delete selectAct;
     delete clearAct;
+    delete fontAct;
+    delete clearFontAct;
     delete menu;
-    delete snapshot;
+    delete snapshot;    
 }

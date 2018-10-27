@@ -18,11 +18,7 @@ QPalette GenericWindowFactory::palette() {
 }
 
 QPlainTextEdit* GenericWindowFactory::textBox(QString name) {
-    QFont font = settings->getParameter("DockWindow/font",
-        QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
-
-    GenericWindow* genericWindow = new GenericWindow(mainWindow);
-    ((QPlainTextEdit*)genericWindow)->setFont(font);
+    GenericWindow* genericWindow = new GenericWindow(name, mainWindow);
     ((QPlainTextEdit*)genericWindow)->setObjectName(name);
     ((QPlainTextEdit*)genericWindow)->setPalette(this->palette());
 

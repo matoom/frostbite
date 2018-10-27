@@ -12,7 +12,6 @@ ExpWindow::ExpWindow(QObject *parent) : QObject(parent) {
 
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, dock);
 
-    connect(windowFacade, SIGNAL(updateWindowSettings()), window, SLOT(updateSettings()));
     connect(windowFacade, SIGNAL(updateWindowSettings()), writer, SLOT(updateSettings()));
     connect(writer, SIGNAL(writeGrid(GridItems)), this, SLOT(writeExpWindow(GridItems)));
 }

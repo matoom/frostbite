@@ -21,7 +21,7 @@ QTableWidget* GridWindowFactory::tableBox(QString name) {
     QFont font = settings->getParameter("DockWindow/font",
         QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
 
-    GridWindow* gridWindow = new GridWindow(mainWindow);
+    GridWindow* gridWindow = new GridWindow(name, mainWindow);
     gridWindow->setFont(font);
     gridWindow->setObjectName(name);
     gridWindow->setPalette(this->palette());
