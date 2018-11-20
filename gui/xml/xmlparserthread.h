@@ -80,6 +80,7 @@ private:
     void processGameData(QString);
 
     QString processMonoOutput(QString line);
+    QString processCommands(QString line);
 
     void processPushStream(QString);
     void processDynaStream(QString);

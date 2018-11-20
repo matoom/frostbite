@@ -157,15 +157,20 @@ void XmlParserThread::process(QString data) {
 QString XmlParserThread::processMonoOutput(QString line) {
     if(mono) {
         line.replace("preset id=\"thought\"", "preset id=\"penalty\"");
-        line.replace("preset id=\"speech\"", "preset id=\"bonus\"");
-        line.replace(QRegularExpression("<d cmd=\"(.*)\">(.*)</d>(.*)"), "\\2 \\3 <![CDATA[<span class=\"bold\">[\\1]</span>]]>");
+        line.replace("preset id=\"speech\"", "preset id=\"bonus\"");        
         line.replace(QRegularExpression("(?<=>|^)(\\s{1,})(?=<)"), "<![CDATA[\\1]]>"); // preserve whitespaces in mono output
     }
     return line;
 }
 
+QString XmlParserThread::processCommands(QString line) {
+    line.replace(QRegularExpression("<d cmd=\"(.*)\">(.*)</d>(.*)"), "\\2 \\3 <![CDATA[<span class=\"bold\">[\\1]</span>]]>");
+    return line;
+}
+
 void XmlParserThread::processGameData(QString data) {
     data = processMonoOutput(data);
+    data = processCommands(data);
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                
@@ -452,6 +457,7 @@ QString XmlParserThread::fixUnclosedStreamTags(QString data) {
 }
 
 void XmlParserThread::processPushStream(QString data) {
+    data = processCommands(data);
     data = this->wrapRoot(data);
 
     QDomDocument doc("pushStream");
@@ -525,6 +531,8 @@ void XmlParserThread::processPushStream(QString data) {
         }
         QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);        
         scheduled.insert(e.attribute("id"), list);
+    } else if(e.attribute("id") == "shopWindow") {
+        this->writeTextLines(toString(e));
     } else if(e.attribute("id") == "group") {
         // ignored
     } else if(e.attribute("id") == "chatter") {
@@ -583,6 +591,7 @@ QString XmlParserThread::traverseXmlNode(QDomElement element, QString text) {
 
 void XmlParserThread::processDynaStream(QString data) {    
     data = this->processMonoOutput(data);
+    data = this->processCommands(data);
     data = this->wrapRoot(data);
 
     QDomDocument doc("dynaStream");

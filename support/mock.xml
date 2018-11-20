@@ -1118,6 +1118,21 @@ SEND[Test] Multi line send
 <pushStream id="talk"/>
 <popStream/>
 
+<pushStream id="shopWindow" />
+On the <d cmd='shop'>pine counter</d>, you see:
+
+  <d cmd='shop #31396 on   #31388'>a narrow-headed spear for 250 copper Kronars</d>
+  <d cmd='shop #31395 on   #31388'>some cougar-claw arrows for 75 copper Kronars</d>
+  <d cmd='shop #31394 on   #31388'>some boar-tusk arrows for 62 copper Kronars</d>
+  <d cmd='shop #31393 on   #31388'>a leather-gripped yew shortbow for 162 copper Kronars</d>
+  <d cmd='shop #31392 on   #31388'>a leather-gripped yew longbow for 562 copper Kronars</d>
+  <d cmd='shop #31391 on   #31388'>a lever-drawn light crossbow for 650 copper Kronars</d>
+  <d cmd='shop #31390 on   #31388'>some crossbow bolts for 112 copper Kronars</d>
+  <d cmd='shop #31389 on   #31388'>a triple-weighted bola for 250 copper Kronars</d>
+
+[Type SHOP [GOOD] to see some details about it.]
+<popStream id="shopWindow" /><prompt time="1542649930">&gt;</prompt>
+
 <output class="mono" /><mode id="CMGR"/>
 The Human Clans                                                
 A Book By Zuebara Pulan                                        
