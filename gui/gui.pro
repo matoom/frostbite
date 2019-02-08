@@ -224,9 +224,10 @@ CONFIG(release, debug|release) {
     }
 
     macx {
-        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/common))
-        DEPLOY_FILES_MAC = $$shell_quote($$shell_path($$PWD/../deploy/mac))
-        BIN = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.app))
+        APP_PATH = ../Frostbite.app
+        DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/common/))
+        DEPLOY_FILES_MAC = $$shell_quote($$shell_path($$PWD/../deploy/mac/))
+        BIN = $$shell_quote($$shell_path($$OUT_PWD/$$APP_PATH))
         DMG = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.dmg))
         RELEASE_FILE = $$shell_quote($$shell_path($$OUT_PWD/../frostbite-osx.dmg))
         DEPLOY_PATH = $$shell_quote($$shell_path($$BIN/Contents/MacOS))
@@ -236,7 +237,7 @@ CONFIG(release, debug|release) {
 
         postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$DEPLOY_PATH &&
         postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES_MAC $$DEPLOY_PATH &&
-        postbuild.commands += $$DEPLOY_QT $$BIN -dmg &&
+        postbuild.commands += $$DEPLOY_QT $$APP_PATH -dmg &&
         postbuild.commands += $(COPY_FILE) $$DMG $$RELEASE_FILE
     }
 
