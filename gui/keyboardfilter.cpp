@@ -15,7 +15,6 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
 
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = (QKeyEvent*)event;
-
         if(keyEvent->modifiers().testFlag(Qt::KeypadModifier)) {
             #ifdef Q_OS_MAC
             switch(keyEvent->key()) {

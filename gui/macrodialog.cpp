@@ -73,8 +73,7 @@ void MacroDialog::loadSequenceTime() {
 
 void MacroDialog::buildKeys(QString tabName, Qt::KeyboardModifiers modifers, int start, int end) {
     QList<QKeyEvent> keyList;
-    for(int keyCode = start; keyCode <= end; keyCode++) {        
-        // mac include modifier in sequence? QT::ALT
+    for(int keyCode = start; keyCode <= end; keyCode++) {                
         keyList << QKeyEvent(QEvent::User, keyCode, modifers, QKeySequence(keyCode).toString());
     }
     keys[tabName] << keyList;
@@ -97,10 +96,10 @@ void MacroDialog::loadKeys(QString tabName, QTableWidget* table) {
 
 void MacroDialog::buildKeypadKeys(Qt::KeyboardModifiers modifers) {
     #ifdef Q_OS_MAC
-    this->buildKeypadKeys(modifers, 0x2a, 0x2b);
+    this->buildKeypadKeys(modifers, 0x2a, 0x2c);
     this->buildKeypadKeys(modifers, 0x2d, 0x2d);
     this->buildKeypadKeys(modifers, 0x2f, 0x2f);
-    this->buildKeypadKeys(modifers, 0x31, 0x39);
+    this->buildKeypadKeys(modifers, 0x30, 0x39);
     this->buildKeypadKeys(modifers, 0x1000005, 0x1000005);
     #else
     this->buildKeypadKeys(modifers, 0x2a, 0x2b);

@@ -23,7 +23,6 @@ protected:
 private:
     CommandLine* commandLine;
     MacroSettings* macroSettings;
-
 public slots:
     void reloadSettings();
 
