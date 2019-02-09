@@ -96,8 +96,6 @@ void AbstractTableTab::removeTableRow() {
 }
 
 void AbstractTableTab::displayMenu(QPoint pos) {
-    pos.rx()--; pos.ry()--; // move menu under mouse pointer
-
     QMenu menu(getTable());
 
     QList<QDockWidget*> dockWindows = this->getDockWindows();
@@ -130,6 +128,7 @@ void AbstractTableTab::displayMenu(QPoint pos) {
         enabled->setCheckable(true);
         enabled->setChecked(entry.enabled);
 
+        pos.rx()--; pos.ry()--;
         QAction *a = menu.exec(getTable()->viewport()->mapToGlobal(pos));
         if(a != NULL) {
             if(a->text() == "Enabled") {
