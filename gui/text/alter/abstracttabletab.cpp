@@ -96,6 +96,8 @@ void AbstractTableTab::removeTableRow() {
 }
 
 void AbstractTableTab::displayMenu(QPoint pos) {
+    pos.rx()--; pos.ry()--; // move menu under mouse pointer
+
     QMenu menu(getTable());
 
     QList<QDockWidget*> dockWindows = this->getDockWindows();
