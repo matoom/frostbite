@@ -6,6 +6,7 @@
 #include <QLabel>
 
 #include <mainwindow.h>
+#include <custom/contextmenu.h>
 
 class GridWindow : public QTableWidget {
     Q_OBJECT
@@ -45,7 +46,7 @@ private:
     QAction* appearanceAct;
     QAction* fontAct;
     QAction* clearFontAct;
-    QMenu* menu;
+    ContextMenu* menu;
 
 signals:
 

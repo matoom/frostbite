@@ -10,6 +10,7 @@
 #include <windowinterface.h>
 #include <snapshot.h>
 #include <QScrollBar>
+#include <custom/contextmenu.h>
 
 class MainWindow;
 class WindowFacade;
@@ -54,7 +55,7 @@ private:
     QAction* clearAct;
     QAction* fontAct;
     QAction* clearFontAct;
-    QMenu* menu;
+    ContextMenu* menu;
 
     bool _append;
     bool _stream;

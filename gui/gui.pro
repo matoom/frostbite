@@ -27,6 +27,7 @@ include(xml/xml.pri)
 include(lich/lich.pri)
 include(compass/compass.pri)
 include(window/window.pri)
+include(custom/custom.pri)
 
 APP_NAME = Frostbite
 

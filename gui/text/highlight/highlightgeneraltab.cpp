@@ -58,7 +58,7 @@ void HighlightGeneralTab::loadSettings() {
 }
 
 void HighlightGeneralTab::initContextMenu() {
-    menu = new QMenu(listWidget);
+    menu = new ContextMenu(listWidget);
     colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
@@ -83,6 +83,7 @@ void HighlightGeneralTab::colorDialog() {
 
 void HighlightGeneralTab::listWidgetMenuRequested(const QPoint &point) {
     QPoint globalPos = listWidget->mapToGlobal(point);
+    globalPos.rx()--; globalPos.ry()--;
     menu->exec(globalPos);
 }
 

@@ -84,14 +84,14 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 }
 
 void HighlightTextTab::initContextMenu() {
-    menu = new QMenu(listWidget);
+    menu = new ContextMenu(listWidget);
     colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
     colorAct->setEnabled(false);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
-    editAct->setEnabled(false);
+    editAct->setEnabled(false);    
     menu->addAction(editAct);
     connect(editAct, SIGNAL(triggered()), this, SLOT(showEditDialog()));
 }
@@ -103,6 +103,7 @@ void HighlightTextTab::setBackground() {
 
 void HighlightTextTab::listWidgetMenuRequested(const QPoint &point) {
     QPoint globalPos = listWidget->mapToGlobal(point);
+    globalPos.rx()--; globalPos.ry()--;
     menu->exec(globalPos);
 }
 

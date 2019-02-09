@@ -33,7 +33,7 @@ private:
     QString zoneId;
     int level;
 
-    QMenu* menu;
+    ContextMenu* menu;
 
     GeneralSettings* settings;
 

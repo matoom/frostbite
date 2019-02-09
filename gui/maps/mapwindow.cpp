@@ -62,8 +62,7 @@ void MapWindow::selectNode(MapZone* zone, int nodeId) {
 }
 
 void MapWindow::buildContextMenu() {
-    menu = new QMenu(this);
-
+    menu = new ContextMenu(this);
     QAction* mapsAction = new QAction(tr("&View maps\t"), this);
     menu->addAction(mapsAction);
 
@@ -71,7 +70,9 @@ void MapWindow::buildContextMenu() {
 }
 
 void MapWindow::contextMenuEvent(QContextMenuEvent* event) {
-    menu->exec(event->globalPos());
+    QPoint point = event->globalPos();
+    point.rx()--; point.ry()--;
+    menu->exec(point);
 }
 
 MapWindow::~MapWindow() {

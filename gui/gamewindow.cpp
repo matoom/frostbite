@@ -77,8 +77,7 @@ QPlainTextEdit* GameWindow::getMainWindow() {
 }
 
 void GameWindow::buildContextMenu() {
-    menu = new QMenu(this);
-
+    menu = new ContextMenu(this);
     appearanceAct = new QAction(tr("&Appearance\t"), this);
     menu->addAction(appearanceAct);
     connect(appearanceAct, SIGNAL(triggered()), this, SLOT(changeAppearance()));
@@ -116,7 +115,9 @@ void GameWindow::saveAsHtml() {
 }
 
 void GameWindow::contextMenuEvent(QContextMenuEvent *event) {
-    menu->exec(event->globalPos());
+    QPoint point = event->globalPos();
+    point.rx()--; point.ry()--;
+    menu->exec(point);
 }
 
 void GameWindow::resizeEvent(QResizeEvent *event) {

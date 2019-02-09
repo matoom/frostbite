@@ -11,6 +11,7 @@
 #include <defaultvalues.h>
 #include <windowinterface.h>
 #include <snapshot.h>
+#include <custom/contextmenu.h>
 
 class MainWindow;
 class WindowFacade;
@@ -56,7 +57,7 @@ private:
     QAction* selectAct;
     QAction* clearAct;
     QAction* saveAct;
-    QMenu* menu;
+    ContextMenu* menu;
 
     bool _append;
     bool _stream;

@@ -13,6 +13,7 @@
 #include <audioplayer.h>
 #include <defaultvalues.h>
 #include <generalsettings.h>
+#include <custom/contextmenu.h>
 
 class HighlightDialog;
 class HighlightSettings;
@@ -50,7 +51,7 @@ private:
 
     QAction *colorAct;
     QAction *editAct;
-    QMenu *menu;
+    ContextMenu *menu;
 
     void initContextMenu();
     void setBackground();
