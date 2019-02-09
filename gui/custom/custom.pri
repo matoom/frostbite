@@ -1,6 +1,4 @@
-HEADERS +=  \
-SOURCES += \
-FORMS += \
+HEADERS += \
     $$PWD/contextmenu.h
 
 SOURCES += \
