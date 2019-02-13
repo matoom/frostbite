@@ -46,4 +46,5 @@ void ConversationsWindow::log(QString text) {
 
 ConversationsWindow::~ConversationsWindow() {
     delete writer;
+    delete conversationsLogger;
 }
