@@ -10,7 +10,7 @@
 
 #include <text/highlight/highlightdialog.h>
 #include <text/highlight/highlightsettings.h>
-#include <audioplayer.h>
+#include <audio/audioplayer.h>
 #include <defaultvalues.h>
 #include <generalsettings.h>
 #include <custom/contextmenu.h>

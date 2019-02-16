@@ -11,8 +11,10 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     appearanceDialog = new AppearanceDialog(qobject_cast<QWidget *>(parent));
     scriptSettingsDialog = new ScriptSettingsDialog(qobject_cast<QWidget *>(parent));
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
-    scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));
+    scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));    
+    volumeControlDialog = new VolumeControlDialog(qobject_cast<QWidget *>(parent));
     profileAddDialog = new ProfileAddDialog();
+
     windowFacade = mainWindow->getWindowFacade();
 
     connect(profileAddDialog, SIGNAL(updateMenu()), this, SLOT(loadProfilesMenu()));
@@ -21,12 +23,15 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
     connect(mainWindow, SIGNAL(profileChanged()), macroDialog, SLOT(reloadSettings()));
-    connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));
+    connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));    
 
     connect(this, SIGNAL(compassLocked(bool)), windowFacade->getCompassView(), SLOT(setCompassLocked(bool)));
     connect(this, SIGNAL(compassVisible(bool)), windowFacade->getCompassView(), SLOT(setCompassVisible(bool)));
     connect(this, SIGNAL(compassAnchored(bool)), windowFacade->getCompassView(), SLOT(setCompassAnchored(bool)));
     connect(this, SIGNAL(resetCompass()), windowFacade->getCompassView(), SLOT(resetCompass()));
+
+    connect(volumeControlDialog, SIGNAL(volumeChanged(int)), mainWindow, SLOT(menuVolumeChanged(int)));
+    connect(volumeControlDialog, SIGNAL(volumeMuted(bool)), mainWindow, SLOT(menuVolumeMuted(bool)));
 
     this->loadLoggingMenu();
     this->loadToolbarMenu();
@@ -132,6 +137,8 @@ void MenuHandler::menuTriggered(QAction* action) {
         emit compassAnchored(action->isChecked());
     } else if(action->objectName() == "actionCompassResetPosition") {
         emit resetCompass();
+    } else if(action->objectName() == "actionVolume") {
+        volumeControlDialog->show();
     }
 }
 

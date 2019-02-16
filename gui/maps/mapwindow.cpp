@@ -37,7 +37,9 @@ void MapWindow::scaleView(qreal step) {
 
 void MapWindow::wheelEvent(QWheelEvent* event) {
     int delta = event->delta();
-    if(delta != 0) scaleView(delta / qFabs(delta * 2));
+    if(delta != 0 && event->phase() == Qt::ScrollUpdate) {
+        scaleView(delta / qFabs(delta * 2));
+    }
 }
 
 void MapWindow::zoomIn() {

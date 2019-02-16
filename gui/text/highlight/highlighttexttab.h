@@ -10,7 +10,7 @@
 #include <text/highlight/highlightsettings.h>
 #include <text/highlight/highlightsettingsentry.h>
 #include <text/highlight/sortablelistwidgetitem.h>
-#include <audioplayer.h>
+#include <audio/audioplayer.h>
 #include <generalsettings.h>
 
 class HighlightDialog;

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-RELEASE_VERSION = 1.9.1b
+RELEASE_VERSION = 1.9.2b
 
 DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
 
@@ -28,6 +28,7 @@ include(lich/lich.pri)
 include(compass/compass.pri)
 include(window/window.pri)
 include(custom/custom.pri)
+include(audio/audio.pri)
 
 APP_NAME = Frostbite
 
@@ -54,7 +55,6 @@ SOURCES += main.cpp\
     commandline.cpp \
     keyboardfilter.cpp \
     menuhandler.cpp \
-    audioplayer.cpp \
     eauthservice.cpp \
     script.cpp \
     scriptservice.cpp \
@@ -118,7 +118,6 @@ HEADERS  += mainwindow.h \
     version.h \
     keyboardfilter.h \
     menuhandler.h \
-    audioplayer.h \
     eauthservice.h \
     script.h \
     scriptservice.h \

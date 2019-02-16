@@ -277,10 +277,17 @@ QTabBar {
     <addaction name="separator"/>
     <addaction name="actionCompassResetPosition"/>
    </widget>
+   <widget class="QMenu" name="menuAudio">
+    <property name="title">
+     <string>Audio</string>
+    </property>
+    <addaction name="actionVolume"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuConfiguration"/>
    <addaction name="menuLogging"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuAudio"/>
    <addaction name="menuToolbar"/>
    <addaction name="menuCompass"/>
    <addaction name="menuMap"/>
@@ -568,6 +575,11 @@ QTabBar {
    </property>
    <property name="text">
     <string>Visible</string>
+   </property>
+  </action>
+  <action name="actionVolume">
+   <property name="text">
+    <string>Volume</string>
    </property>
   </action>
  </widget>

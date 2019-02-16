@@ -90,7 +90,7 @@ public:
     void connectEnabled(bool);    
     void toggleFullScreen();
     void toggleMaximized();
-    void updateProfileSettings(QString, QString);
+    void updateProfileSettings(QString, QString);        
     void openConnectDialog();
     void openConnection(QString host, QString port, QString key);
     void openAppearanceDialog();
@@ -105,6 +105,7 @@ public:
 
     void enableMapsMenu(bool enabled);
 
+    MenuHandler* getMenuHandler();
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();
     VitalsBar* getVitalsBar();
@@ -141,15 +142,15 @@ protected:
 
 signals:
     void profileChanged();
+    void volumeChanged(int);
+    void volumeMuted(bool);
 
 public slots:
     void setMainTitle(QString);
     void handleAppMessage(const QString&);
-    void updateScriptSettings();
-
-/*private slots:
-    void menuTriggered(QAction*);*/
-
+    void updateScriptSettings();    
+    void menuVolumeChanged(int);
+    void menuVolumeMuted(bool);
 };
 
 #endif // MAINWINDOW_H

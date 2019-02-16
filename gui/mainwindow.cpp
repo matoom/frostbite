@@ -59,6 +59,14 @@ void MainWindow::updateScriptSettings() {
     scriptApiServer->reloadSettings();
 }
 
+void MainWindow::menuVolumeChanged(int volume) {
+    emit volumeChanged(volume);
+}
+
+void MainWindow::menuVolumeMuted(bool muted) {
+    emit volumeMuted(muted);
+}
+
 void MainWindow::updateProfileSettings(QString name, QString type) {
     settings->setParameter("Profile/name", name);
     settings->setParameter("Profile/type", type);
@@ -74,6 +82,10 @@ void MainWindow::updateProfileSettings(QString name, QString type) {
 
 void MainWindow::openConnection(QString host, QString port, QString key) {
     tcpClient->connectToHost(host, port, key);
+}
+
+MenuHandler* MainWindow::getMenuHandler() {
+    return menuHandler;
 }
 
 void MainWindow::openConnectDialog() {

@@ -3,8 +3,7 @@
 HighlightAlertTab::HighlightAlertTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
     settings = HighlightSettings::getInstance();
-    audioPlayer = AudioPlayer::Instance();
-
+    audioPlayer = new AudioPlayer(highlightDialog->getMainWindow());
     applyButton = highlightDialog->getApplyButton();
 
     bleedingGroup = highlightDialog->getBleedingGroup();
@@ -217,4 +216,5 @@ void HighlightAlertTab::cancelChanges() {
 }
 
 HighlightAlertTab::~HighlightAlertTab() {
+    delete audioPlayer;
 }

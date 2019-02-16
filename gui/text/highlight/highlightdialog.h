@@ -29,6 +29,8 @@ public:
     explicit HighlightDialog(QWidget *parent = 0);
     ~HighlightDialog();
 
+    MainWindow* getMainWindow();
+
     /* general tab items */
     QListWidget* getGeneralList();
     QGroupBox* getGeneralAlertGroup();

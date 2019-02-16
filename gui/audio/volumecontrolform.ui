@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VolumeControlForm</class>
+ <widget class="QWidget" name="VolumeControlForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>42</width>
+    <height>143</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QCheckBox {
+    spacing: 5px;
+}
+
+QCheckBox::indicator {
+    width: 13px;
+    height: 13px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/window/images/connect.png);
+}
+
+QCheckBox::indicator:unchecked:hover {
+    image: url(:/window/images/connect.png);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    image: url(:/window/images/connect.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/window/images/disconnect.png);
+}
+
+QCheckBox::indicator:checked:hover {
+    image: url(:/windo:/images/disconnect.png);
+}
+
+QCheckBox::indicator:checked:pressed {
+    image: url(:/windo:/images/disconnect.png);
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QSlider" name="audioSlider">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="audioMuted">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -14,5 +14,7 @@
         <file>images/arrow_right.png</file>
         <file>images/alter.png</file>
         <file>images/keyboard.png</file>
+        <file>images/unmute.png</file>
+        <file>images/mute.png</file>
     </qresource>
 </RCC>

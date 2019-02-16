@@ -2,11 +2,13 @@
 
 HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {    
     highlightSettings = HighlightSettings::getInstance();
-    audioPlayer = AudioPlayer::Instance();
+
     highlightList = highlightSettings->getTextHighlights();
     generalSettings = GeneralSettings::getInstance();
 
     highlightDialog = (HighlightDialog*)parent;
+    audioPlayer = new AudioPlayer(highlightDialog->getMainWindow());
+
     addButton = highlightDialog->getTextAddButton();
     applyButton = highlightDialog->getApplyButton();
     removeButton = highlightDialog->getTextRemoveButton();    
@@ -500,4 +502,5 @@ void HighlightTextTab::showEditDialog() {
 }
 
 HighlightTextTab::~HighlightTextTab() {
+    delete audioPlayer;
 }

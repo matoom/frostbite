@@ -3,15 +3,17 @@
 
 #include <QObject>
 #include <text/highlight/highlightsettings.h>
-#include <audioplayer.h>
+#include <audio/audioplayer.h>
 #include <mainwindow.h>
 #include <textutils.h>
+#include <audio/audioplayer.h>
 
 #include <QSettings>
 
 class HighlightSettings;
 class MainWindow;
 class HighlightSettingsEntry;
+class AudioPlayer;
 
 class Highlighter : public QObject {
     Q_OBJECT

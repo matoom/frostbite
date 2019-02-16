@@ -8,7 +8,7 @@
 #include <text/highlight/highlightdialog.h>
 #include <text/highlight/highlightsettings.h>
 #include <text/highlight/highlightsettingsentry.h>
-#include <audioplayer.h>
+#include <audio/audioplayer.h>
 
 class HighlightDialog;
 class HighlightSettings;

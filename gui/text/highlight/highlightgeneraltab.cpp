@@ -4,7 +4,7 @@ HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
     settings = HighlightSettings::getInstance();
     generalSettings = GeneralSettings::getInstance();
-    audioPlayer = AudioPlayer::Instance();
+    audioPlayer = new AudioPlayer(highlightDialog->getMainWindow());
 
     listWidget = highlightDialog->getGeneralList();
     alertGroup = highlightDialog->getGeneralAlertGroup();
@@ -239,4 +239,5 @@ void HighlightGeneralTab::cancelChanges() {
 }
 
 HighlightGeneralTab::~HighlightGeneralTab() {
+    delete audioPlayer;
 }

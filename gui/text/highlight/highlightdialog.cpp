@@ -16,6 +16,10 @@ HighlightDialog::HighlightDialog(QWidget *parent) : QDialog(parent), ui(new Ui::
     connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyPressed()));
 }
 
+MainWindow* HighlightDialog::getMainWindow() {
+    return mainWindow;
+}
+
 void HighlightDialog::updateSettings() {
     generalTab->updateSettings();
     textTab->updateSettings();
