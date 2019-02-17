@@ -6,8 +6,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QApplication>
-#include <QMediaPlayer>
-#include <QBuffer>
+#include <QSoundEffect>
 #include <clientsettings.h>
 #include <mainwindow.h>
 
@@ -22,14 +21,15 @@ public:
 
 private:    
     void loadAudio();
-    QByteArray* readFile(QString fileName);
 
     QStringList fileList;
-    QMap<QString, QBuffer*> sounds;
-    QMediaPlayer* player;
+    QMap<QString, QSoundEffect*> sounds;
 
     ClientSettings* clientSettings;
     MainWindow* mainWindow;
+
+    float volume;
+    bool muted;
 
 signals:
 

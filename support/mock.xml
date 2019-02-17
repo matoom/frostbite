@@ -979,6 +979,8 @@ Troll has normal vitality.
 
 <spell exist='spell'>Iron Constitution</spell>Since you're not feeding enough power into the spell pattern to make it coherent, you quickly work your way to the minimum required.
 
+Directions towards the First Provincial Bank: <d cmd="South">South</d>, <d cmd="East">East</d>, <d cmd="East">East</d>, <d cmd="East">East</d>, <d cmd="Northeast">Northeast</d>, <d cmd="GO Longbow Bridge">GO Longbow Bridge</d>, <d cmd="Northeast">Northeast</d>, <d cmd="GO Provincial Bank">GO Provincial Bank</d>, and you're there.
+
 <output class="mono"/>
 The following channels are available to you.
 <pushBold/>Bold channels are currently active.

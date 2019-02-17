@@ -5,22 +5,21 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent) {
 
     clientSettings = ClientSettings::getInstance();
 
-    player = new QMediaPlayer(this);
-    player->setVolume(clientSettings->getParameter("Audio/volume", 80).toInt());
-    player->setMuted(clientSettings->getParameter("Audio/muted", false).toBool());
-
     this->loadAudio();
+
+    volume = clientSettings->getParameter("Audio/volume", 80).toFloat() / float(100);
+    muted = clientSettings->getParameter("Audio/muted", false).toBool();
 
     connect(mainWindow, SIGNAL(volumeChanged(int)), this, SLOT(setVolume(int)));
     connect(mainWindow, SIGNAL(volumeMuted(bool)), this, SLOT(setMuted(bool)));
 }
 
 void AudioPlayer::setVolume(int volume) {
-   player->setVolume(volume);
+    this->volume = float(volume) / float(100);
 }
 
 void AudioPlayer::setMuted(bool muted) {
-   player->setMuted(muted);
+    this->muted = muted;
 }
 
 void AudioPlayer::loadAudio() {
@@ -31,9 +30,9 @@ void AudioPlayer::loadAudio() {
     fileList = myDir.entryList(filter, QDir::Files, QDir::Name);
 
     for(QString fileName : fileList) {
-        QBuffer* buffer = new QBuffer(readFile(fileName));
-        buffer->open(QIODevice::ReadOnly);
-        sounds.insert(fileName, buffer);
+        QSoundEffect* effect = new QSoundEffect(this);
+        effect->setSource(QUrl::fromLocalFile(QApplication::applicationDirPath() + "/sounds/" + fileName));
+        sounds.insert(fileName, effect);
     }
 }
 
@@ -41,29 +40,14 @@ QStringList AudioPlayer::getAudioList() {
     return fileList;
 }
 
-QByteArray* AudioPlayer::readFile(QString fileName) {
-    QFile file(QApplication::applicationDirPath() + "/sounds/" + fileName);
-    file.open(QIODevice::ReadOnly);
-    QByteArray* fileBytes = new QByteArray(file.readAll());
-    file.close();
-    return fileBytes;
-}
-
 void AudioPlayer::play(const QString& fileName) {
-    if(!fileName.isEmpty() && sounds.contains(fileName)) {
-        QBuffer* buffer = sounds.value(fileName);
-        player->setMedia(QMediaContent(), buffer);
-        player->play();
+    if(!muted && sounds.contains(fileName)) {
+        QSoundEffect* effect = sounds.value(fileName);
+        effect->setVolume(volume);
+        effect->play();
     }
 }
 
 AudioPlayer::~AudioPlayer() {
-    player->stop();
-    delete player;
-
-    for(QBuffer* buffer : sounds) {
-        buffer->close();
-        delete buffer;
-    }
 }
 

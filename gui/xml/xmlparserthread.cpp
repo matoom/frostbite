@@ -170,7 +170,7 @@ QString XmlParserThread::processCommands(QString line) {
 
 void XmlParserThread::processGameData(QString data) {
     data = processMonoOutput(data);
-    data = processCommands(data);
+    if(mono) data = processCommands(data);
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                

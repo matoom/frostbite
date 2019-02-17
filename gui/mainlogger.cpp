@@ -46,4 +46,5 @@ void MainLogger::log(LogEntry logEntry) {
 }
 
 MainLogger::~MainLogger() {
+    delete alter;
 }
