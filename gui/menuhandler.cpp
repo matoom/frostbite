@@ -30,9 +30,6 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(compassAnchored(bool)), windowFacade->getCompassView(), SLOT(setCompassAnchored(bool)));
     connect(this, SIGNAL(resetCompass()), windowFacade->getCompassView(), SLOT(resetCompass()));
 
-    connect(volumeControlDialog, SIGNAL(volumeChanged(int)), mainWindow, SLOT(menuVolumeChanged(int)));
-    connect(volumeControlDialog, SIGNAL(volumeMuted(bool)), mainWindow, SLOT(menuVolumeMuted(bool)));
-
     this->loadLoggingMenu();
     this->loadToolbarMenu();
     this->loadWindowMenu();
@@ -122,6 +119,9 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionToolVitals") {
         clientSettings->setParameter("Toolbar/vitals", action->isChecked());
         mainWindow->getToolbar()->setVitalsVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolMute") {
+        clientSettings->setParameter("Toolbar/muted", action->isChecked());
+        mainWindow->getToolbar()->setMuteVisible(action->isChecked());
     } else if(action->objectName() == "actionMapReload") {
         mainWindow->reloadMaps();
     } else if(action->objectName() == "actionMapShow") {
@@ -228,6 +228,7 @@ void MenuHandler::loadToolbarMenu() {
     mainWindow->setMenuStatusVisible(clientSettings->getParameter("Toolbar/status", true).toBool());
     mainWindow->setMenuButtonsVisible(clientSettings->getParameter("Toolbar/buttons", true).toBool());
     mainWindow->setMenuVitalsVisible(clientSettings->getParameter("Toolbar/vitals", true).toBool());
+    mainWindow->setMenuMutedVisible(clientSettings->getParameter("Toolbar/muted", false).toBool());
 }
 
 void MenuHandler::loadWindowMenu() {

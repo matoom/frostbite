@@ -6,7 +6,7 @@
 #include <QProgressBar>
 #include <QHBoxLayout>
 
-#include <toolbardefines.h>
+#include <toolbar/toolbardefines.h>
 
 class VitalsIndicator : public QObject {
     Q_OBJECT

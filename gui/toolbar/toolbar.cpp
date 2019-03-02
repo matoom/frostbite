@@ -13,7 +13,7 @@ Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     spell = new SpellIndicator(this);            
     activeSpell = new ActiveSpellIndicator(this);
 
-    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));   
 }
 
 void Toolbar::reloadSettings() {
@@ -22,6 +22,20 @@ void Toolbar::reloadSettings() {
 
 MainWindow* Toolbar::getMainWindow() {
     return mainWindow;
+}
+
+void Toolbar::addMuteButton() {
+    muteButton = new MuteButton(mainWindow);
+    QWidget* buttonWidget = new QWidget(mainWindow);
+    QHBoxLayout* hLayout = new QHBoxLayout(buttonWidget);
+    buttonWidget->setLayout(hLayout);
+    hLayout->addWidget((QToolButton*)muteButton);
+    hLayout->setContentsMargins(25, 0, 25, 0);
+
+    muteButtonAction = mainWindow->addToolbarWidget(buttonWidget);    
+
+    bool mutedVisible = clientSettings->getParameter("Toolbar/muted", true).toBool();
+    if(!mutedVisible) muteButtonAction->setVisible(mutedVisible);
 }
 
 void Toolbar::addFullScreenButton() {
@@ -68,6 +82,8 @@ void Toolbar::loadToolbar() {
     bool statusVisible = clientSettings->getParameter("Toolbar/status", true).toBool();
     if(!statusVisible) statusWidget->setVisible(statusVisible);
     statusAction = mainWindow->addToolbarWidget(statusWidget);
+
+    this->addMuteButton();
 
     QWidget* buttonsWidget = quickButtonDisplay->create();
     bool buttonsVisible = clientSettings->getParameter("Toolbar/buttons", true).toBool();
@@ -183,6 +199,10 @@ void Toolbar::setVitalsVisible(bool visible) {
     vitalsAction->setVisible(visible);
 }
 
+void Toolbar::setMuteVisible(bool visible) {
+    muteButtonAction->setVisible(visible);
+}
+
 void Toolbar::updateActiveSpells(QStringList activeSpells) {
     activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells));
 
@@ -207,4 +227,5 @@ Toolbar::~Toolbar() {
     delete wieldLeft;
     delete wieldRight;
     delete activeSpell;
+    delete muteButton;
 }

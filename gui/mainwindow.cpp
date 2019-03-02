@@ -277,6 +277,10 @@ void MainWindow::setMenuVitalsVisible(bool enabled) {
     ui->actionToolVitals->setChecked(enabled);
 }
 
+void MainWindow::setMenuMutedVisible(bool enabled) {
+    ui->actionToolMute->setChecked(enabled);
+}
+
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {
     ui->mainToolBar->setAllowedAreas(areas);
 }

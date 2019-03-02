@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QToolButton>
 
-#include <toolbar.h>
+#include <toolbar/toolbar.h>
 #include <mainwindow.h>
 
 class Toolbar;

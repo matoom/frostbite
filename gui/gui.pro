@@ -29,6 +29,7 @@ include(compass/compass.pri)
 include(window/window.pri)
 include(custom/custom.pri)
 include(audio/audio.pri)
+include(toolbar/toolbar.pri)
 
 APP_NAME = Frostbite
 
@@ -45,13 +46,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     clientsettings.cpp \
-    toolbar.cpp \
     roundtimedisplay.cpp \
-    gamewindow.cpp \
-    vitalsindicator.cpp \
-    statusindicator.cpp \
-    wieldindicator.cpp \
-    quickbuttondisplay.cpp \
+    gamewindow.cpp \    
     commandline.cpp \
     keyboardfilter.cpp \
     menuhandler.cpp \
@@ -63,10 +59,8 @@ SOURCES += main.cpp\
     macrodialog.cpp \
     macrosettings.cpp \
     macrothread.cpp \
-    macroservice.cpp \
-    spellindicator.cpp \
-    wordcompleter.cpp \
-    quickbuttoneditdialog.cpp \
+    macroservice.cpp \   
+    wordcompleter.cpp \    
     appearancedialog.cpp \
     aboutdialog.cpp \
     connectwizard.cpp \
@@ -74,7 +68,6 @@ SOURCES += main.cpp\
     scripteditdialog.cpp \
     genericwindowfactory.cpp \
     genericwindow.cpp \
-    fullscreenbutton.cpp \
     profileadddialog.cpp \
     generalsettings.cpp \
     scriptwriterthread.cpp \
@@ -87,7 +80,6 @@ SOURCES += main.cpp\
     snapshot.cpp \
     guiapplication.cpp \
     tray.cpp \
-    activespellindicator.cpp \
     tcpclient.cpp \
     windowfacade.cpp \
     textutils.cpp \
@@ -105,15 +97,9 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
-    toolbar.h \
-    toolbardefines.h \
     navigationdefines.h \
     roundtimedisplay.h \
     gamewindow.h \
-    vitalsindicator.h \
-    statusindicator.h \
-    wieldindicator.h \
-    quickbuttondisplay.h \
     commandline.h \
     version.h \
     keyboardfilter.h \
@@ -128,10 +114,8 @@ HEADERS  += mainwindow.h \
     macrothread.h \
     macroservice.h \
     defaultvalues.h \
-    spellindicator.h \
     environment.h \
     wordcompleter.h \
-    quickbuttoneditdialog.h \
     appearancedialog.h \
     aboutdialog.h \
     connectwizard.h \
@@ -139,7 +123,6 @@ HEADERS  += mainwindow.h \
     scripteditdialog.h \
     genericwindowfactory.h \
     genericwindow.h \
-    fullscreenbutton.h \
     profileadddialog.h \
     generalsettings.h \
     scriptwriterthread.h \
@@ -153,8 +136,7 @@ HEADERS  += mainwindow.h \
     snapshot.h \
     windowinterface.h \
     guiapplication.h \
-    tray.h \
-    activespellindicator.h \
+    tray.h \    
     tcpclient.h \
     windowfacade.h \
     textutils.h \
@@ -172,7 +154,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \
-    quickbuttoneditdialog.ui \
     appearancedialog.ui \
     aboutdialog.ui \
     connectwizard.ui \

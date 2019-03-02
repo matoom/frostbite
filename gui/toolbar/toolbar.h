@@ -4,21 +4,23 @@
 #include <QObject>
 
 #include <mainwindow.h>
-#include <vitalsindicator.h>
-#include <statusindicator.h>
-#include <wieldindicator.h>
-#include <spellindicator.h>
-#include <quickbuttondisplay.h>
-#include <quickbuttoneditdialog.h>
+#include <toolbar/vitalsindicator.h>
+#include <toolbar/statusindicator.h>
+#include <toolbar/wieldindicator.h>
+#include <toolbar/spellindicator.h>
+#include <toolbar/quickbuttondisplay.h>
+#include <toolbar/quickbuttoneditdialog.h>
+#include <toolbar/fullscreenbutton.h>
+#include <toolbar/activespellindicator.h>
+#include <toolbar/mutebutton.h>
 #include <gamedatacontainer.h>
-#include <fullscreenbutton.h>
-#include <activespellindicator.h>
 
 class MainWindow;
 class QuickButtonDisplay;
 class QuickButtonEditDialog;
 class GameDataContainer;
 class FullscreenButton;
+class MuteButton;
 
 class Toolbar : public QObject {
     Q_OBJECT
@@ -49,6 +51,7 @@ private:
     WieldIndicator* wieldRight;
     SpellIndicator* spell;
     ActiveSpellIndicator* activeSpell;
+    MuteButton* muteButton;
 
     ClientSettings* clientSettings;
 
@@ -59,8 +62,10 @@ private:
     QAction* statusAction;
     QAction* buttonsAction;
     QAction* vitalsAction;
+    QAction* muteButtonAction;
 
     void addFullScreenButton();
+    void addMuteButton();
 
 public slots:
     void quickButtonAction();
@@ -81,6 +86,7 @@ public slots:
     void setStatusVisible(bool visible);
     void setButtonsVisible(bool visible);
     void setVitalsVisible(bool visible);
+    void setMuteVisible(bool visible);
 
     void reloadSettings();
 };

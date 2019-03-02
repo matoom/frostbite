@@ -250,6 +250,7 @@ QTabBar {
     <addaction name="actionToolSpell"/>
     <addaction name="actionToolActiveSpells"/>
     <addaction name="actionToolStatus"/>
+    <addaction name="actionToolMute"/>
     <addaction name="actionToolButtons"/>
     <addaction name="actionToolVitals"/>
    </widget>
@@ -580,6 +581,14 @@ QTabBar {
   <action name="actionVolume">
    <property name="text">
     <string>Volume</string>
+   </property>
+  </action>
+  <action name="actionToolMute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mute</string>
    </property>
   </action>
  </widget>

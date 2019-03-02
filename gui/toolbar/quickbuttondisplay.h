@@ -6,10 +6,10 @@
 #include <QToolButton>
 #include <QHBoxLayout>
 
-#include <toolbardefines.h>
-#include <toolbar.h>
+#include <toolbar/toolbardefines.h>
+#include <toolbar/toolbar.h>
 #include <generalsettings.h>
-#include <quickbuttondisplay.h>
+#include <toolbar/quickbuttondisplay.h>
 
 class Toolbar;
 class GeneralSettings;

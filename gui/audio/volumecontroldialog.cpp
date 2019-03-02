@@ -7,6 +7,7 @@ VolumeControlDialog::VolumeControlDialog(QWidget *parent) : QDialog(parent), ui(
     this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     this->setFixedSize(100, 210);
 
+    mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
     clientSettings = ClientSettings::getInstance();
 
     int volume = clientSettings->getParameter("Audio/volume", 80).toInt();
@@ -19,6 +20,10 @@ VolumeControlDialog::VolumeControlDialog(QWidget *parent) : QDialog(parent), ui(
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(volumeValueChanged(int)));
     connect(ui->volumeSlider, SIGNAL(sliderReleased()), this, SLOT(volumeSelected()));
     connect(ui->volumeMuted, SIGNAL(stateChanged(int)), this, SLOT(mutedValueChanged(int)));
+
+    connect(this, SIGNAL(volumeChanged(int)), mainWindow, SLOT(menuVolumeChanged(int)));
+    connect(this, SIGNAL(volumeMuted(bool)), mainWindow, SLOT(menuVolumeMuted(bool)));
+    connect(mainWindow, SIGNAL(volumeMuted(bool)), this, SLOT(muteSounds(bool)));
 }
 
 void VolumeControlDialog::volumeValueChanged(int value) {
@@ -33,7 +38,6 @@ void VolumeControlDialog::volumeSelected() {
 
 void VolumeControlDialog::mutedValueChanged(int state) {
     bool checked = state == Qt::CheckState::Checked;
-    this->muteSounds(checked);
     clientSettings->setParameter("Audio/muted", checked);
     emit volumeMuted(checked);
 }

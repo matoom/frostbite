@@ -25,6 +25,9 @@
 #define BUTTON_XBOW_ICO ":/images/button_xbow.png"
 #define BUTTON_XSHIELD_ICO ":/images/button_xshield.png"
 
+#define BUTTON_MUTE ":/images/button_mute.png"
+#define BUTTON_UNMUTE ":/images/button_unmute.png"
+
 #define SWORD_ICO ":/images/sword.png"
 #define BOW_ICO ":/images/bow.png"
 #define SHIELD_ICO ":/images/shield.png"

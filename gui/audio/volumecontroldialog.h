@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <clientsettings.h>
+#include <mainwindow.h>
 
 namespace Ui {
 class VolumeControlDialog;
@@ -19,14 +20,15 @@ private:
     Ui::VolumeControlDialog *ui;
 
     ClientSettings* clientSettings;
+    MainWindow* mainWindow;
 
-    void setVolumeText(int value);
-    void muteSounds(bool checked);
+    void setVolumeText(int value);    
 
 public slots:
     void volumeValueChanged(int);
     void mutedValueChanged(int);
     void volumeSelected();
+    void muteSounds(bool checked);
 
 signals:
     void volumeChanged(int);

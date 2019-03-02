@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <toolbardefines.h>
+#include <toolbar/toolbardefines.h>
 
 #include <gamedatacontainer.h>
 

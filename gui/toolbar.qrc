@@ -34,5 +34,7 @@
         <file>images/fullscreen.png</file>
         <file>images/mana.png</file>
         <file>images/web.png</file>
+        <file>images/button_mute.png</file>
+        <file>images/button_unmute.png</file>
     </qresource>
 </RCC>

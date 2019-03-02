@@ -6,7 +6,7 @@
 
 #include <windowfacade.h>
 #include <tcpclient.h>
-#include <toolbar.h>
+#include <toolbar/toolbar.h>
 #include <clientsettings.h>
 #include <commandline.h>
 #include <menuhandler.h>
@@ -85,6 +85,7 @@ public:
     void setMenuStatusVisible(bool enabled);
     void setMenuButtonsVisible(bool enabled);
     void setMenuVitalsVisible(bool enabled);
+    void setMenuMutedVisible(bool enabled);
 
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void connectEnabled(bool);    
