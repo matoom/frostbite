@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-RELEASE_VERSION = 1.9.2b
+RELEASE_VERSION = 1.9.3b
 
 DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
 

@@ -34,7 +34,7 @@ void Toolbar::addMuteButton() {
 
     muteButtonAction = mainWindow->addToolbarWidget(buttonWidget);    
 
-    bool mutedVisible = clientSettings->getParameter("Toolbar/muted", true).toBool();
+    bool mutedVisible = clientSettings->getParameter("Toolbar/muted", false).toBool();
     if(!mutedVisible) muteButtonAction->setVisible(mutedVisible);
 }
 
