@@ -29,13 +29,13 @@ public:
     RoundTimeDisplay* getRoundtimeDisplay();
 
     void clearRt();
-
     void abortScript();
     void abortSequence();
 
     void historyBack();
     void historyForward();
     void writeCommand(QString, QString style = "body");
+    void write(QString, QString style = "body");
     void moveCursor(int);
     void completeCommand();
     bool runMacro(QString);
@@ -56,7 +56,7 @@ private:
     WindowFacade* windowFacade;
     MacroService* macroService;
     WordCompleter* wordCompleter;
-    KeyboardFilter* keyboardFilter;    
+    KeyboardFilter* keyboardFilter;        
     GeneralSettings* settings;
 
     void resizeEvent(QResizeEvent  *event);

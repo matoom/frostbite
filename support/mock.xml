@@ -442,7 +442,7 @@ Obvious paths: <d>northwest</d>.
 <prompt time="1324908227">&gt;</prompt>
 <component id='exp First Aid'><preset id='whisper'>       First Aid:   40 06% perusing     </preset></component>
 <component id='exp Scholarship'><preset id='whisper'>     Scholarship:   87 13% dabbling     </preset></component>
-<component id='exp Teaching'><preset id='whisper'>        Teaching:   65 93% dabbling     </preset></component>
+<component id='exp Teaching'><preset id='whisper'>        Teaching:   65 93% mind lock     </preset></component>
 Boromir expounds patiently and clearly to you on some nuances of First Aid that had heretofore escaped you.
 <prompt time="1324912569">&gt;</prompt>
 Samwise Gamgee came through the Northeast Gate.

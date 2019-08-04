@@ -127,17 +127,19 @@ void CommandLine::insertRt(QPixmap segmentDisplay, QPixmap numericDisplay) {
 }
 
 void CommandLine::addHistory() {
+    QString text = this->text();
+    if(text.startsWith("{") && text.endsWith("}")) return;
+
     if(history.isEmpty()) {
-        history.prepend(this->text());
+        history.prepend(text);
     } else {
-        if(history.first() != this->text()){
+        if(history.first() != text){
             if(history.size() >= MAX_HISTORY_SIZE) {
                 history.remove(history.size() - 1);
             }
-            history.prepend(this->text());
+            history.prepend(text);
         }
     }
-
     historyCounter = -1;
 }
 
@@ -159,8 +161,11 @@ void CommandLine::doCopy() {
 }
 
 void CommandLine::writeCommand(QString text, QString style) {
-    if(this->filterCommand(text)) return;
+    if(this->filterCommand(text)) return;    
+    this->write(text, style);
+}
 
+void CommandLine::write(QString text, QString style) {
     mainWindow->getTcpClient()->writeCommand(text);
     QTextCursor cursor(windowFacade->getGameWindow()->textCursor());
     cursor.movePosition(QTextCursor::End);
@@ -177,7 +182,7 @@ void CommandLine::writeCommand(QString text, QString style) {
         windowFacade->getGameWindow()->appendHtml(html);
     }
 
-    windowFacade->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);        
+    windowFacade->logGameText(text.toLocal8Bit(), MainLogger::COMMAND);
 }
 
 void CommandLine::completeCommand() {
@@ -203,7 +208,7 @@ void CommandLine::sendCommand() {
         this->writeCommand("");
     } else {
         /* add command to history */
-        this->addHistory();       
+        this->addHistory();
         /* write command to tcp socket and game window */
         this->writeCommand(this->text());
         this->clear();
@@ -224,6 +229,26 @@ bool CommandLine::filterCommand(QString text) {
             mainWindow->getWindowFacade()->getMapFacade()->showMapDialog();
         } else if(text.startsWith("#hideMap")) {
             mainWindow->getWindowFacade()->getMapFacade()->hideMapDialog();
+        }
+        this->clear();
+        return true;
+    } else if(text.startsWith("{") && text.endsWith("}")) {
+        if(text.startsWith("{RepeatLast}")) {
+            if(history.size() > 0) {
+               this->write(history.first());
+            }
+        } else if(text.startsWith("{RepeatSecondToLast}")) {
+            if(history.size() > 1) {
+               this->write(history.begin()[1]);
+            }
+        } else if(text.startsWith("{ReturnOrRepeatLast}")) {
+            if(this->text().isEmpty() && history.size() > 0) {
+                this->write(history.first());
+            } else {
+                this->addHistory();
+                this->write(this->text());
+                return true;
+            }
         }
         this->clear();
         return true;

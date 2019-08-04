@@ -15,7 +15,7 @@ RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
 
     connect(timer, SIGNAL(timeout()), this, SLOT(intervalEvent()));
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
-    connect(this, SIGNAL(callPaint(int, int)), this, SLOT(paint(int, int)));
+    connect(this, SIGNAL(callPaint(int, int)), this, SLOT(paint(int, int)));    
 }
 
 void RoundTimeDisplay::loadSettings() {
