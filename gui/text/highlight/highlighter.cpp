@@ -35,7 +35,7 @@ QString Highlighter::highlight(QString text) {
             int indexStart = rx.indexIn(text);
             if(indexStart != -1) {
                 // highlight text
-                this->highlightText(highlightEntry, text, indexStart, rx.capturedTexts());
+                this->highlightText(highlightEntry, text, indexStart, rx.cap(0));
                 // play alert
                 this->highlightAlert(highlightEntry);
                 // start timer
@@ -46,24 +46,22 @@ QString Highlighter::highlight(QString text) {
     return text;
 }
 
-void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QStringList capturedTexts) {
+void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QString match) {
     QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
     QString endTag = "</span>";
 
-    foreach(QString match, capturedTexts) {
-        int indexEnd = indexStart + startTag.length() + match.length();
-        //entire row
-        if(entry.options.at(0)) {
-            indexEnd = text.length() + startTag.length();
-            // starting with
-            if(!entry.options.at(2)) {
-                indexStart = 0;
-            }
-            text.insert(indexStart, startTag);
-            text.insert(indexEnd, endTag);
-        } else {
-            text.replace(rx, startTag + match + endTag);
+    int indexEnd = indexStart + startTag.length() + match.length();
+    //entire row
+    if(entry.options.at(0)) {
+        indexEnd = text.length() + startTag.length();
+        // starting with
+        if(!entry.options.at(2)) {
+            indexStart = 0;
         }
+        text.insert(indexStart, startTag);
+        text.insert(indexEnd, endTag);
+    } else {
+        text.replace(rx, startTag + match + endTag);
     }
 }
 

@@ -176,7 +176,7 @@
               <item row="3" column="1">
                <widget class="QCheckBox" name="lichBox">
                 <property name="text">
-                 <string>Connect to Lich</string>
+                 <string>Run Lich</string>
                 </property>
                </widget>
               </item>

@@ -34,7 +34,7 @@ private:
 
     bool healthAlert;    
 
-    void highlightText(HighlightSettingsEntry, QString&, int, QStringList);
+    void highlightText(HighlightSettingsEntry, QString&, int, QString);
     void highlightAlert(HighlightSettingsEntry);
     void highlightTimer(HighlightSettingsEntry);
 
