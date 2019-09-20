@@ -57,6 +57,8 @@ private:
     QLineEdit *timerValueLine;
     QCheckBox *entireRowCheck;
     QCheckBox *partialMatchCheck;
+    QCheckBox *groupsMatchCheck;
+    QCheckBox *caseInsensitiveCheck;
     QCheckBox *startingWithCheck;
     QComboBox *groupSelect;
     QComboBox *sortBySelect;
@@ -110,6 +112,8 @@ private slots:
     void timerActionSelected(const QString&);
     void entireRowSelected(bool);
     void partialMatchSelected(bool);
+    void matchGroupsSelected(bool);
+    void caseInsensitiveSelected(bool);
     void startingWithSelected(bool);
     void groupSelected(const QString&);
     void listWidgetMenuRequested(const QPoint&);

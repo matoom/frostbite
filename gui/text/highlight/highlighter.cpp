@@ -20,49 +20,55 @@ void Highlighter::reloadSettings() {
 QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
         for(int i = 0; i < highlightList.size(); ++i) {
-            HighlightSettingsEntry highlightEntry = highlightList.at(i);
-            TextUtils::plainToHtml(highlightEntry.value);
-
-            // match whole or partial words
-            if(highlightEntry.options.at(1)) {
+            HighlightSettingsEntry entry = highlightList.at(i);
+            TextUtils::plainToHtml(entry.value);
+            // 0 - entire row; 1 - partial words; 2 - starting with; 3 - match groups; 4 - case insensitive
+            if(entry.options.at(1)) {
                 // do not match inside tags
-                rx.setPattern(highlightEntry.value + "(?=[^>]*(<|$))");
+                rx.setPattern(entry.value % "(?=[^>]*(<|$))");
             } else {
                 // do not match inside tags                 
-                rx.setPattern("\\b" + highlightEntry.value + "\\b(?=[^>]*(<|$))");
+                rx.setPattern("\\b" % entry.value % "\\b(?=[^>]*(<|$))");
             }
+            rx.setCaseSensitivity(entry.options.at(4) ? Qt::CaseInsensitive : Qt::CaseSensitive);
 
-            int indexStart = rx.indexIn(text);
-            if(indexStart != -1) {
-                // highlight text
-                this->highlightText(highlightEntry, text, indexStart, rx.cap(0));
-                // play alert
-                this->highlightAlert(highlightEntry);
-                // start timer
-                this->highlightTimer(highlightEntry);
+            int index = rx.indexIn(text);
+            if(index != -1) {
+                int count = rx.captureCount();
+                if(count == 0 || !entry.options.at(3)) {
+                    this->highlightText(entry, text, index, rx.cap(0));
+                } else {
+                    int inserted = 0;
+                    for(int i = 1; i < count + 1; i++) {
+                        inserted += this->highlightText(entry, text, rx.pos(i) + inserted, rx.cap(i));
+                    }
+                }
+                this->highlightAlert(entry);
+                this->highlightTimer(entry);
             }
         }
     }
     return text;
 }
 
-void Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QString match) {
-    QString startTag = "<span style=\"color:" + entry.color.name() + ";\">";
+int Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QString match) {
+    QString startTag = "<span style=\"color:" % entry.color.name() % ";\">";
     QString endTag = "</span>";
 
-    int indexEnd = indexStart + startTag.length() + match.length();
+    int startTagLength = startTag.length();
+    int indexEnd = indexStart + startTagLength + match.length();
     //entire row
-    if(entry.options.at(0)) {
-        indexEnd = text.length() + startTag.length();
+    if(entry.options.at(0) && !entry.options.at(3)) {
+        indexEnd = text.length() + startTagLength;
         // starting with
         if(!entry.options.at(2)) {
             indexStart = 0;
         }
-        text.insert(indexStart, startTag);
-        text.insert(indexEnd, endTag);
-    } else {
-        text.replace(rx, startTag + match + endTag);
     }
+    text.insert(indexStart, startTag);
+    text.insert(indexEnd, endTag);
+
+    return startTagLength + endTag.length();
 }
 
 void Highlighter::highlightAlert(HighlightSettingsEntry entry) {

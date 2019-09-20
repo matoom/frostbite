@@ -80,6 +80,11 @@ QList<HighlightSettingsEntry> HighlightSettings::loadSettings(QString group) {
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
         settings->setArrayIndex(i);
+
+        // convert legacy settings
+        QBitArray opts = settings->value("options", QBitArray()).value<QBitArray>();
+        if(opts.size() < 5) opts.resize(5);
+
         settingsList.append(HighlightSettingsEntry((const int&)i,
                 (const QString&)settings->value("value", "").toString(),
                 (const QString&)settings->value("group", "").toString(),
@@ -89,7 +94,7 @@ QList<HighlightSettingsEntry> HighlightSettings::loadSettings(QString group) {
                 (const bool&)settings->value("timer", false).toBool(),
                 (const int&)settings->value("timerValue", 0).toInt(),
                 (const QString&)settings->value("timerAction", "").toString(),
-                (const QBitArray&)settings->value("options", QBitArray(3)).value<QBitArray>()));
+                (const QBitArray&)opts));
     }
     settings->endArray();
     return settingsList;

@@ -110,6 +110,14 @@ QCheckBox* HighlightDialog::getTextPartialMatch(){
     return ui->tPartialMatch;
 }
 
+QCheckBox* HighlightDialog::getTextGroupsMatch(){
+    return ui->tGroupsMatch;
+}
+
+QCheckBox* HighlightDialog::getTextCaseInsensitive(){
+    return ui->tCaseInsensitive;
+}
+
 QCheckBox* HighlightDialog::getTextStartingWith(){
     return ui->tStartingWith;
 }

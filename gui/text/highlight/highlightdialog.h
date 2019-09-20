@@ -49,6 +49,8 @@ public:
     QGroupBox* getTextAlertGroup();    
     QCheckBox* getTextEntireRow();
     QCheckBox* getTextPartialMatch();
+    QCheckBox* getTextGroupsMatch();
+    QCheckBox* getTextCaseInsensitive();
     QCheckBox* getTextStartingWith();
     QComboBox* getTextHighlightGroup();
     QComboBox* getTextHighlightSortBy();

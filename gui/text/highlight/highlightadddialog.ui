@@ -32,7 +32,7 @@
    <string>Add New Highlight</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../window.qrc">
+   <iconset resource="../../window.qrc">
     <normaloff>:/window/images/color.png</normaloff>:/window/images/color.png</iconset>
   </property>
   <property name="locale">
@@ -124,7 +124,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../window.qrc"/>
+  <include location="../../window.qrc"/>
  </resources>
  <connections/>
 </ui>

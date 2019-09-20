@@ -16,6 +16,8 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     alertFileSelect = highlightDialog->getTextFileSelect();    
     entireRowCheck = highlightDialog->getTextEntireRow();
     partialMatchCheck = highlightDialog->getTextPartialMatch();
+    groupsMatchCheck = highlightDialog->getTextGroupsMatch();
+    caseInsensitiveCheck = highlightDialog->getTextCaseInsensitive();
     startingWithCheck = highlightDialog->getTextStartingWith();
     timerBox = highlightDialog->getTextTimerGroup();
     timerActionSelect = highlightDialog->getTextActionSelect();
@@ -66,6 +68,8 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 
     connect(entireRowCheck, SIGNAL(clicked(bool)), this, SLOT(entireRowSelected(bool)));
     connect(partialMatchCheck, SIGNAL(clicked(bool)), this, SLOT(partialMatchSelected(bool)));
+    connect(groupsMatchCheck, SIGNAL(clicked(bool)), this, SLOT(matchGroupsSelected(bool)));
+    connect(caseInsensitiveCheck, SIGNAL(clicked(bool)), this, SLOT(caseInsensitiveSelected(bool)));
     connect(startingWithCheck, SIGNAL(clicked(bool)), this, SLOT(startingWithSelected(bool)));
 
     connect(startingWithCheck, SIGNAL(clicked(bool)), this, SLOT(startingWithSelected(bool)));
@@ -328,6 +332,28 @@ void HighlightTextTab::partialMatchSelected(bool value) {
     }
 }
 
+void HighlightTextTab::matchGroupsSelected(bool value) {
+    if(listWidget->currentItem() != NULL) {
+        int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
+        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        currentEntry.options.setBit(3, value);
+
+        highlightList.replace(currentId, currentEntry);
+        this->registerChange();
+    }
+}
+
+void HighlightTextTab::caseInsensitiveSelected(bool value) {
+    if(listWidget->currentItem() != NULL) {
+        int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
+        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        currentEntry.options.setBit(4, value);
+
+        highlightList.replace(currentId, currentEntry);
+        this->registerChange();
+    }
+}
+
 void HighlightTextTab::startingWithSelected(bool value) {
     if(listWidget->currentItem() != NULL) {
         int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
@@ -360,6 +386,12 @@ void HighlightTextTab::clearControls() {
     partialMatchCheck->setChecked(false);
     partialMatchCheck->setDisabled(true);
 
+    groupsMatchCheck->setChecked(false);
+    groupsMatchCheck->setDisabled(true);
+
+    caseInsensitiveCheck->setChecked(false);
+    caseInsensitiveCheck->setDisabled(true);
+
     startingWithCheck->setChecked(false);
     startingWithCheck->setDisabled(true);
 
@@ -380,16 +412,22 @@ void HighlightTextTab::clearControls() {
 void HighlightTextTab::updateOptionsControl(QBitArray options) {
     entireRowCheck->setDisabled(false);
     partialMatchCheck->setDisabled(false);
+    groupsMatchCheck->setDisabled(false);
+    caseInsensitiveCheck->setDisabled(false);
     startingWithCheck->setDisabled(false);
 
     if(options.isNull()) {
         entireRowCheck->setChecked(false);
         partialMatchCheck->setChecked(false);
+        groupsMatchCheck->setChecked(false);
+        caseInsensitiveCheck->setCheckable(false);
         startingWithCheck->setChecked(false);
     } else {
         entireRowCheck->setChecked(options.at(0));
         partialMatchCheck->setChecked(options.at(1));
         startingWithCheck->setChecked(options.at(2));
+        groupsMatchCheck->setChecked(options.at(3));
+        caseInsensitiveCheck->setChecked(options.at(4));
     }
 }
 

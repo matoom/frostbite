@@ -12,7 +12,7 @@
 #include <unistd.h>
 #endif
 
-bool MainWindow::DEBUG = false;
+bool MainWindow::DEBUG = true;
 
 #ifdef __linux__
 void handler(int sig) {
