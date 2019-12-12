@@ -152,6 +152,7 @@ public slots:
     void updateScriptSettings();    
     void menuVolumeChanged(int);
     void menuVolumeMuted(bool);
+    void reloadSettings();
 };
 
 #endif // MAINWINDOW_H

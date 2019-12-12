@@ -9,6 +9,8 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     keyboardFilter = new KeyboardFilter(this);
     settings = GeneralSettings::getInstance();
 
+    genieUtils = new GenieUtils(mainWindow);
+
     historyCounter = -1;
 
     this->setStyleSheet("QLineEdit { min-width: 50em;"
@@ -229,6 +231,8 @@ bool CommandLine::filterCommand(QString text) {
             mainWindow->getWindowFacade()->getMapFacade()->showMapDialog();
         } else if(text.startsWith("#hideMap")) {
             mainWindow->getWindowFacade()->getMapFacade()->hideMapDialog();
+        } else if(text.startsWith("#highlight")) {
+            genieUtils->importHighlights(text);
         }
         this->clear();
         return true;

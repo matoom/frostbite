@@ -109,6 +109,10 @@ bool TextUtils::toBool(QString value) {
     return value.toLower() == "true" || value == "1";
 }
 
+QString TextUtils::stripBraces(QString value) {
+    return value.remove("{").remove("}");
+}
+
 TextUtils::~TextUtils() {
 }
 

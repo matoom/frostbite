@@ -10,12 +10,15 @@
 
 #include <wordcompleter.h>
 
+#include <genieutils.h>
+
 #define MAX_HISTORY_SIZE 50
 #define MAX_FILENAME_SIZE 30
 
 class RoundTimeDisplay;
 class MacroService;
 class WordCompleter;
+class GenieUtils;
 
 class CommandLine : public QLineEdit {
     Q_OBJECT
@@ -58,6 +61,7 @@ private:
     WordCompleter* wordCompleter;
     KeyboardFilter* keyboardFilter;        
     GeneralSettings* settings;
+    GenieUtils* genieUtils;
 
     void resizeEvent(QResizeEvent  *event);
     //void keyPressEvent(QKeyEvent *event);

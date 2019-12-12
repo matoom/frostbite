@@ -80,6 +80,10 @@ void MainWindow::updateProfileSettings(QString name, QString type) {
     emit profileChanged();
 }
 
+void MainWindow::reloadSettings() {
+    emit profileChanged();
+}
+
 void MainWindow::openConnection(QString host, QString port, QString key) {
     tcpClient->connectToHost(host, port, key);
 }

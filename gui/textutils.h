@@ -29,6 +29,7 @@ public:
     static QString stripMapSpecial(QString text);
     static QString rstrip(const QString& str);
     static bool toBool(QString value);
+    static QString stripBraces(QString value);
 
 private:
     static void populateExpStates();

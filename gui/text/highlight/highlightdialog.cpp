@@ -20,6 +20,11 @@ MainWindow* HighlightDialog::getMainWindow() {
     return mainWindow;
 }
 
+void HighlightDialog::reloadTextHighlights() {
+    textTab->updateSettings();
+    textTab->reloadHighlightList();
+}
+
 void HighlightDialog::updateSettings() {
     generalTab->updateSettings();
     textTab->updateSettings();

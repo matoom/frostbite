@@ -92,6 +92,9 @@ private:
     HighlightTextTab *textTab;
     HighlightAlertTab *alertTab;
 
+public slots:
+    void reloadTextHighlights();
+
 private slots:
     void okPressed();
     void cancelPressed();

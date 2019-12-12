@@ -93,7 +93,8 @@ SOURCES += main.cpp\
     gridwriterthread.cpp \
     vitalsbar.cpp \
     scriptsettingsdialog.cpp \
-    compass.cpp
+    compass.cpp \
+    genieutils.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -150,7 +151,8 @@ HEADERS  += mainwindow.h \
     gridwriterthread.h \
     vitalsbar.h \
     scriptsettingsdialog.h \
-    compass.h
+    compass.h \
+    genieutils.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

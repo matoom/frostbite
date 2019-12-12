@@ -40,7 +40,7 @@ void RoomWindow::write() {
 }
 
 void RoomWindow::setTitle(QString title) {
-    window->setWindowTitle("Room " + title);
+    dock->setWindowTitle(DOCK_TITLE_ROOM + title);
 }
 
 RoomWindow::~RoomWindow() {

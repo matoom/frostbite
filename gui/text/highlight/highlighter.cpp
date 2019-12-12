@@ -17,7 +17,7 @@ void Highlighter::reloadSettings() {
     highlightList = highlightSettings->getTextHighlights();
 }
 
-QString Highlighter::highlight(QString text) {
+QString Highlighter::highlight(QString text) {        
     if(!text.isEmpty()) {
         for(int i = 0; i < highlightList.size(); ++i) {
             HighlightSettingsEntry entry = highlightList.at(i);
@@ -36,7 +36,10 @@ QString Highlighter::highlight(QString text) {
             if(index != -1) {
                 int count = rx.captureCount();
                 if(count == 0 || !entry.options.at(3)) {
-                    this->highlightText(entry, text, index, rx.cap(0));
+                    int pos = this->highlightText(entry, text, index, rx.cap(0));
+                    while ((pos = rx.indexIn(text, pos)) != -1) {
+                        pos += this->highlightText(entry, text, pos, rx.cap(0));
+                    }
                 } else {
                     int inserted = 0;
                     for(int i = 1; i < count + 1; i++) {

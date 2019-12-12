@@ -23,7 +23,7 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
     connect(mainWindow, SIGNAL(profileChanged()), macroDialog, SLOT(reloadSettings()));
-    connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));    
+    connect(mainWindow, SIGNAL(profileChanged()), appearanceDialog, SLOT(reloadSettings()));
 
     connect(this, SIGNAL(compassLocked(bool)), windowFacade->getCompassView(), SLOT(setCompassLocked(bool)));
     connect(this, SIGNAL(compassVisible(bool)), windowFacade->getCompassView(), SLOT(setCompassVisible(bool)));
