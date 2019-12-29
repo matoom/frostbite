@@ -175,19 +175,19 @@ void ScriptApiServer::readyRead() {
             if(request.name == "CONNECT") {                
                 QStringList args = request.args;
                 if(args.size() < 7) {
-                    this->write(socket, tr("1\\0"));
+                    this->write(socket, tr("0\\0"));
                 } else {
                     tcpClient->connectApi(args.at(0), args.at(1), args.at(2), args.at(3),
                         args.at(4), args.at(5), TextUtils::toBool(args.at(6)));
-                    this->write(socket, tr("0\\0"));
+                    this->write(socket, tr("1\\0"));
                 }
             } else if(request.name == "TRACK_EXP") {
                 QStringList args = request.args;
                 if(args.size() < 1) {
-                    this->write(socket, tr("1\\0"));
+                    this->write(socket, tr("0\\0"));
                 } else {
                     emit track(args.at(0));
-                    this->write(socket, tr("0\\0"));
+                    this->write(socket, tr("1\\0"));
                 }
             } else if(request.name == "TRACK_EXP_CLEAR") {
                 emit clearTracked();

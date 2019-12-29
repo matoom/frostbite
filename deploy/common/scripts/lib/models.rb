@@ -472,7 +472,7 @@ class Client
   # @param [String] pass account password
   # @return [int] 1 on success; 0 on fail
   def self.connect_prime(name, user, pass)
-    Client.connect(API::AUTH_GAMES[:prime], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:prime], name, user, pass, false)
   end
 
   # Connect test
@@ -482,7 +482,7 @@ class Client
   # @param [String] pass account password
   # @return [int] 1 on success; 0 on fail
   def self.connect_test(name, user, pass)
-    Client.connect(API::AUTH_GAMES[:test], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:test], name, user, pass, false)
   end
 
   # Connect fallen
@@ -492,7 +492,7 @@ class Client
   # @param [String] pass account password
   # @return [int] 1 on success; 0 on fail
   def self.connect_fallen(name, user, pass)
-    Client.connect(API::AUTH_GAMES[:fallen], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:fallen], name, user, pass, false)
   end
 
   # Connect plat
@@ -502,7 +502,7 @@ class Client
   # @param [String] pass account password
   # @return [int] 1 on success; 0 on fail
   def self.connect_plat(name, user, pass)
-    Client.connect(API::AUTH_GAMES[:plat], name, user, pass)
+    Client.connect(API::AUTH_GAMES[:plat], name, user, pass, false)
   end
 
   # Connect game
@@ -511,9 +511,21 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @param [bool] lich use lich integration if true
   # @return [int] 1 on success; 0 on fail
-  def self.connect(game, name, user, pass)
-    Client.connect_host(API::AUTH_HOST, API::AUTH_PORT, game, name, user, pass)
+  def self.connect(game, name, user, pass, lich)
+    Client.connect_host(API::AUTH_HOST, API::AUTH_PORT, game, name, user, pass, lich)
+  end
+
+
+  # Connect prime lich integration
+  #
+  # @param [String] name character name
+  # @param [String] user account user name
+  # @param [String] pass account password
+  # @return [int] 1 on success; 0 on fail
+  def self.connect_prime_lich(name, user, pass)
+    Client.connect(API::AUTH_GAMES[:prime], name, user, pass, true)
   end
 
   # Connect host
@@ -524,9 +536,11 @@ class Client
   # @param [String] name character name
   # @param [String] user account user name
   # @param [String] pass account password
+  # @param [bool] lich use lich integration if true
   # @return [int] 1 on success; 0 on fail
-  def self.connect_host(host, port, game, name, user, pass)
-    $_api_socket.puts "CLIENT CONNECT?#{ERB::Util.url_encode(host)}&#{ERB::Util.url_encode(port)}&#{ERB::Util.url_encode(user)}&#{ERB::Util.url_encode(pass)}&#{ERB::Util.url_encode(game)}&#{ERB::Util.url_encode(name)}\n"
+  def self.connect_host(host, port, game, name, user, pass, lich)
+    $_api_socket.puts "CLIENT CONNECT?#{ERB::Util.url_encode(host)}&#{ERB::Util.url_encode(port)}&#{ERB::Util.url_encode(user)}&" \
+        "#{ERB::Util.url_encode(pass)}&#{ERB::Util.url_encode(game)}&#{ERB::Util.url_encode(name)}&#{ERB::Util.url_encode(lich)}\n"
     $_api_socket.gets('\0').chomp('\0').to_s
   end
 
