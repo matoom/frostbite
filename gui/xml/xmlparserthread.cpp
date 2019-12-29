@@ -226,6 +226,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         emit writeSettings();
     } if(e.tagName() == "app") {
         this->charName = e.attribute("char");
+        gameDataContainer->setCharName(charName);
         emit setMainTitle(" - " + this->charName);
     } else if(e.tagName() == "style" && e.attribute("id") == "roomName") {
         QString roomName = root.text().trimmed();

@@ -461,8 +461,8 @@ class Client
   #
   # @return [String] current character name
   def self.char_name
-    $_api_socket.puts "MAP CHAR_NAME\n"
-    eval($_api_socket.gets('\0').chomp('\0').to_s)
+    $_api_socket.puts "GET CHAR_NAME\n"
+    $_api_socket.gets('\0').chomp('\0').to_s
   end
 
   # Connect prime
