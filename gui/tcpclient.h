@@ -48,6 +48,7 @@ private:
     QString sessionKey;
     XmlParserThread* xmlParser;
     DebugLogger* debugLogger;
+    QByteArray commandPrefix;
 
     Lich* lich;
 
@@ -76,6 +77,7 @@ public slots:
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError);
     bool connectToHost(QString, QString, QString);
+    bool connectToLocalPort(QString port);
     void connectToLich(QString sessionHost, QString sessionPort, QString sessionKey);
     void disconnectedFromHost();
     void initEauthSession(QString, QString, QString, QString);

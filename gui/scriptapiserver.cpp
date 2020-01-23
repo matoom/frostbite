@@ -172,7 +172,7 @@ void ScriptApiServer::readyRead() {
             }
         } else if(line.startsWith("CLIENT")) {
             ApiRequest request = parseRequest(line.mid(6).trimmed());
-            if(request.name == "CONNECT") {                
+            if(request.name == "CONNECT") {
                 QStringList args = request.args;
                 if(args.size() < 7) {
                     this->write(socket, tr("0\\0"));

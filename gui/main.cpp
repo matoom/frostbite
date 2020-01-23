@@ -66,7 +66,9 @@ int main(int argc, char *argv[]) {
 
     QStringList args = QCoreApplication::arguments();
     if(!args.isEmpty() && args.count() > 1) {
-        if (QFile(args.at(1)).exists()) {
+        if(args.at(1).startsWith("--port=")) {
+            w.openLocalConnection(args.at(1).mid(7).trimmed());
+        } else if (QFile(args.at(1)).exists()) {
             QSettings settings(args.at(1), QSettings::IniFormat);
             if(settings.contains("GAMEHOST") && settings.contains("GAMEPORT") && settings.contains("KEY")){
               w.openConnection(settings.value("GAMEHOST").toString(),

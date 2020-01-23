@@ -9,6 +9,8 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     api = false;
     apiLich = false;
 
+    commandPrefix = "<c>";
+
     debugLogger = new DebugLogger();
 
     lich = new Lich(mainWindow);
@@ -18,6 +20,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+        tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     }    
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
@@ -138,12 +141,21 @@ void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString 
     QTimer::singleShot(3000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
 }
 
+bool TcpClient::connectToLocalPort(QString port) {
+    this->api = false;
+    windowFacade->writeGameWindow("Connecting ...");
+    mainWindow->connectEnabled(false);
+    commandPrefix = "";
+
+    tcpSocket->connectToHost("127.0.0.1", port.toInt());
+    return tcpSocket->waitForConnected();
+}
+
 bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
     this->api = false;
-
     windowFacade->writeGameWindow("Connecting ...");
-
     mainWindow->connectEnabled(false);
+    commandPrefix = "<c>";
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
     bool conntected = tcpSocket->waitForConnected();
@@ -187,14 +199,13 @@ void TcpClient::writeDefaultSettings(QString settings) {
     this->writeCommand("<db>" + settings);
 }
 
-void TcpClient::socketReadyRead() {    
+void TcpClient::socketReadyRead() {
     QByteArray data = tcpSocket->readAll();
 
     // log raw data
     this->logDebug(data);
 
     buffer.append(data);
-
     if(buffer.endsWith("\n") || xmlParser->isCmgr()) {
         // process raw data
         emit addToQueue(buffer);
@@ -205,8 +216,8 @@ void TcpClient::socketReadyRead() {
     }
 }
 
-void TcpClient::writeCommand(QString cmd) {    
-    QByteArray sendCmd = "<c>" + cmd.append("\n").toUtf8();
+void TcpClient::writeCommand(QString cmd) {
+    QByteArray sendCmd = commandPrefix + cmd.append("\r\n").toUtf8();
     this->logDebug(sendCmd);
     tcpSocket->write(sendCmd);
     tcpSocket->flush();

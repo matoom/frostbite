@@ -94,6 +94,7 @@ public:
     void updateProfileSettings(QString, QString);        
     void openConnectDialog();
     void openConnection(QString host, QString port, QString key);
+    void openLocalConnection(QString port);
     void openAppearanceDialog();
     void saveWindow();
 

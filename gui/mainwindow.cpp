@@ -88,6 +88,10 @@ void MainWindow::openConnection(QString host, QString port, QString key) {
     tcpClient->connectToHost(host, port, key);
 }
 
+void MainWindow::openLocalConnection(QString port) {
+    tcpClient->connectToLocalPort(port);
+}
+
 MenuHandler* MainWindow::getMenuHandler() {
     return menuHandler;
 }
