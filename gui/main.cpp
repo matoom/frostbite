@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
     Log4Qt::PropertyConfigurator::configure(QApplication::applicationDirPath()  + "/log.ini");
 
-    QApplication::addLibraryPath(QApplication::applicationDirPath());    
+    QApplication::addLibraryPath(QApplication::applicationDirPath());
 
     MainWindow w;
     w.show();

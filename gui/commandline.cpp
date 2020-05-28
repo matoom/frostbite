@@ -162,6 +162,25 @@ void CommandLine::doCopy() {
     }
 }
 
+void CommandLine::windowControl(int key) {
+    QPlainTextEdit* gameWindow = mainWindow->getWindowFacade()->getGameWindow();
+    QScrollBar* scrollBar = gameWindow->verticalScrollBar();
+    switch(key) {
+        case Qt::Key_End:
+            scrollBar->setValue(scrollBar->maximum());
+        break;
+        case Qt::Key_Home:
+            scrollBar->setValue(0);
+        break;
+        case Qt::Key_PageUp:
+            scrollBar->setValue(scrollBar->value() - scrollBar->pageStep());
+        break;
+        case Qt::Key_PageDown:
+            scrollBar->setValue(scrollBar->value() + scrollBar->pageStep());
+        break;
+    }
+}
+
 void CommandLine::writeCommand(QString text, QString style) {
     if(this->filterCommand(text)) return;    
     this->write(text, style);

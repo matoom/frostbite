@@ -48,6 +48,12 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
                         commandLine->completeCommand();
                         return true;
                     break;
+                    case Qt::Key_End:
+                    case Qt::Key_Home:
+                    case Qt::Key_PageUp:
+                    case Qt::Key_PageDown:
+                        commandLine->windowControl(keyEvent->key());
+                    break;
                     default:
                         QString cmd = macroSettings->getParameter("function/" +
                             QString::number(keyEvent->modifiers() | keyEvent->key()), "").toString();

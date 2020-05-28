@@ -43,7 +43,9 @@ public:
     void completeCommand();
     bool runMacro(QString);
     void clearCommand();    
-    void doCopy();
+    void doCopy();    
+    void windowControl(int key);
+
 
     void loadSettings();
 

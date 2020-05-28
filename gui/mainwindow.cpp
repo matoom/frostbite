@@ -186,7 +186,7 @@ void MainWindow::addWidgetMainLayout(QWidget* widget) {
 
 void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *dock) {
     QAction *action = dock->toggleViewAction();
-    action->setText(action->text() + " window");
+    action->setText(action->text());
     ui->menuWindow->addAction(action);
 
     if(!restoreDockWidget(dock)) {

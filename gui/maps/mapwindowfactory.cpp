@@ -105,7 +105,7 @@ QGraphicsView* MapWindowFactory::getView(QString name) {
 
 QDockWidget* MapWindowFactory::createWindow(const char* name) {
     QDockWidget* dock = new QDockWidget(QObject::tr(name), mapFacade->getMainWindow());
-    dock->setObjectName(QObject::tr(name) + "Window");
+    dock->setObjectName(QObject::tr(name));
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea);
 
     dock->setPalette(this->palette());

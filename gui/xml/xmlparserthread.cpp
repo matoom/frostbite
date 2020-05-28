@@ -368,12 +368,14 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             gameDataContainer->setRightNoun(e.attribute("noun"));
         } else if(e.tagName() == "spell") {
             emit updateSpell(e.text());
-        } else if(e.tagName() == "streamWindow" && e.attribute("id") == "main") {
-            /* filter main window title */
-            QString title = e.attribute("subtitle");                       
-            gameDataContainer->setRoomName(title.mid(3));
-            emit setMainTitle(" (" + this->charName + ")" + title);
-            //emit updateRoomWindowTitle(title);
+        } else if(e.tagName() == "streamWindow") {
+            if(e.attribute("id") == "main") {
+                /* filter main window title */
+                QString title = e.attribute("subtitle");
+                gameDataContainer->setRoomName(title.mid(3));
+                emit setMainTitle(" (" + this->charName + ")" + title);
+                //emit updateRoomWindowTitle(title);
+            }
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");
         } else if(e.tagName() == "component") {
