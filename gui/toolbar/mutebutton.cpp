@@ -9,7 +9,14 @@ MuteButton::MuteButton(QWidget *parent) : QToolButton(parent) {
     setCursor(Qt::PointingHandCursor);
 
     setStyleSheet("QToolButton {"
-                  " background: #242024;"
+                  "background: #242024;"
+                  "}"
+                  "QToolTip {"
+                  "color: #F8F8F8;"
+                  "font: 11pt \"" TOOLBAR_FONT "\";"
+                  "background-color: #383533;"
+                  "border: 2px outset #2a82da;"
+                  "padding: 2px;"
                   "}");
 
     this->muted = clientSettings->getParameter("Audio/muted", false).toBool();

@@ -99,10 +99,12 @@ void Toolbar::loadToolbar() {
 }
 
 void Toolbar::updateWieldLeft(QString value) {
+    wieldLeft->textLabel->setToolTip(value);
     wieldLeft->textLabel->setText(value);
 }
 
 void Toolbar::updateWieldRight(QString value) {
+    wieldRight->textLabel->setToolTip(value);
     wieldRight->textLabel->setText(value);
 }
 
@@ -206,9 +208,9 @@ void Toolbar::setMuteVisible(bool visible) {
 void Toolbar::updateActiveSpells(QStringList activeSpells) {
     activeSpell->setText(TextUtils::findLowestActiveValue(activeSpells));
 
-    QString text = "<table style='margin: 4px;'>";
+    QString text = "<table>";
     foreach(QString activeSpell, activeSpells) {
-        text += "<tr><td><div style='font-size: 14px; white-space: pre;'>" + activeSpell + "</div><td/></tr>";
+        text += "<tr><td><div style='white-space: pre;'>" + activeSpell + "</div><td/></tr>";
     }
     text += "</table>";
 

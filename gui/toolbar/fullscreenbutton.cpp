@@ -9,7 +9,16 @@ FullscreenButton::FullscreenButton(QWidget *parent) : QToolButton(parent) {
 }
 
 void FullscreenButton::init() {    
-    setStyleSheet("QToolButton {background: none;border: none;}");
+    setStyleSheet("QToolButton {"
+                  "background: none; border: none;"
+                  "}"
+                  "QToolTip {"
+                  "color: #F8F8F8;"
+                  "font: 11pt \"" TOOLBAR_FONT "\";"
+                  "background-color: #383533;"
+                  "border: 2px outset #2a82da;"
+                  "padding: 2px; "
+                  "}");
     setIconSize(QSize(28, 28));
     setObjectName("Fullscreen");
     setCursor(Qt::PointingHandCursor);

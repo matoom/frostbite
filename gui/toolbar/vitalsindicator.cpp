@@ -1,7 +1,6 @@
 #include "vitalsindicator.h"
 
 VitalsIndicator::VitalsIndicator(QObject *parent) : QObject(parent) {
-
 }
 
 QProgressBar* VitalsIndicator::vitalsProgress(const char* obName, const char* img, qint8 value) {
@@ -15,6 +14,13 @@ QProgressBar* VitalsIndicator::vitalsProgress(const char* obName, const char* im
                        "background-image: url(" + QString(img) + ");"
                        "background-position: bottom 100%;"
                        "background-repeat: no-repeat;"
+                       "}"
+                       "QToolTip {"
+                       "color: #F8F8F8;"
+                       "font: 11pt \"" TOOLBAR_FONT "\";"
+                       "background-color: #383533;"
+                       "border: 2px outset #2a82da;"
+                       "padding: 2px; "
                        "}");
     bar->setValue(value);
     bar->setToolTip(QString(obName) + " " + QString::number(value) + "%");

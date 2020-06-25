@@ -6,18 +6,27 @@ WieldIndicator::WieldIndicator(QObject *parent, const char* icon) : QObject(pare
 
 QLabel *WieldIndicator::wieldTextLabel(const char* text) {
     textLabel = new QLabel;
+    textLabel->setToolTip("Empty");
     textLabel->setObjectName("text");
     textLabel->setFixedWidth(150);
     textLabel->setFixedHeight(34);
     textLabel->setWordWrap(true);
     textLabel->setAlignment(Qt::AlignCenter);
-
-    textLabel->setStyleSheet("color: #d7d7d7;"
-                             "font: 10pt \"" TOOLBAR_FONT "\";"
+    textLabel->setStyleSheet("QLabel {"
+                             "color: #d7d7d7;"
+                             "font: 9pt \"" TOOLBAR_FONT "\";"
                              "font-weight: normal;"
                              "background: #383533;"
                              "border: 1px solid rgb(190, 190, 190);"
-                             "border-bottom-right-radius: 10px");
+                             "border-bottom-right-radius: 10px"
+                             "}"
+                             "QToolTip {"
+                             "color: #F8F8F8;"
+                             "font: 11pt \"" TOOLBAR_FONT "\";"
+                             "background-color: #383533;"
+                             "border: 2px outset #2a82da;"
+                             "padding: 2px;"
+                             "}");
 
     textLabel->setText(text);
 

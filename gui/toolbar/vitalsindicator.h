@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 
 #include <toolbar/toolbardefines.h>
+#include <defaultvalues.h>
 
 class VitalsIndicator : public QObject {
     Q_OBJECT

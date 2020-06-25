@@ -29,6 +29,13 @@ QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* i
 
     toolButton->setStyleSheet("QToolButton {"
                               "background: #242024;"
+                              "}"
+                              "QToolTip {"
+                              "color: #F8F8F8;"
+                              "font: 11pt \"" TOOLBAR_FONT "\";"
+                              "background-color: #383533;"
+                              "border: 2px outset #2a82da;"
+                              "padding: 2px;"
                               "}");
 
     connect(toolButton, SIGNAL(clicked()),

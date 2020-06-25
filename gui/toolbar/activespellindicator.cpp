@@ -12,16 +12,22 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     spellLabel->setWordWrap(true);
     spellLabel->setFixedWidth(120);
     spellLabel->setFixedHeight(34);
-    spellLabel->setStyleSheet("QLabel {border: 1px solid rgb(190, 190, 190);"
-                             "background: #383533;"
-                             "padding-right: 5px;"
-                             "padding-left: 5px;"
-                             "color: #E0E0E0;"
-                             "min-width: 23px;"
-                             "border-radius: 5px; }"
-                             "QToolTip {color: #F8F8F8;"
-                             "background-color: #383533;"
-                             "border: 2px outset #2a82da;}");
+    spellLabel->setStyleSheet("QLabel {"
+                              "border: 1px solid rgb(190, 190, 190);"
+                              "background: #383533;"
+                              "padding-right: 5px;"
+                              "padding-left: 5px;"
+                              "color: #E0E0E0;"
+                              "min-width: 23px;"
+                              "border-radius: 5px;"
+                              "}"
+                              "QToolTip {"
+                              "color: #F8F8F8;"
+                              "font: 11pt \"" TOOLBAR_FONT "\";"
+                              "background-color: #383533;"
+                              "border: 2px outset #2a82da;"
+                              "padding: 2px;"
+                              "}");
 
     QFont f(DEFAULT_FONT, 14, QFont::Bold);
     spellLabel->setFont(f);

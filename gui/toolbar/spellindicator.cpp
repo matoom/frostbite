@@ -7,9 +7,13 @@ QLabel *SpellIndicator::spellImageLabel(const char* img) {
     imageLabel = new QLabel;
     imageLabel->setObjectName("image");
     imageLabel->setAlignment(Qt::AlignCenter);
-    imageLabel->setStyleSheet("QToolTip {color: #ffffff;"
-                             "background-color: #383533;"
-                             "border: 2px outset #2a82da;}");
+    imageLabel->setStyleSheet("QToolTip {"
+                              "color: #ffffff;"
+                              "font: 11pt \"" TOOLBAR_FONT "\";"
+                              "background-color: #383533;"
+                              "border: 2px outset #2a82da;"
+                              "padding: 2px;"
+                              "}");
     imageLabel->setPixmap(QPixmap::fromImage(QImage(img)));
 
     return imageLabel;
@@ -17,21 +21,29 @@ QLabel *SpellIndicator::spellImageLabel(const char* img) {
 
 QLabel* SpellIndicator::spellTextLabel() {
     textLabel = new QLabel;
-    textLabel->setObjectName("text");
+    textLabel->setObjectName("spells");
     textLabel->setFixedWidth(150);
     textLabel->setFixedHeight(34);
     textLabel->setWordWrap(true);
     textLabel->setAlignment(Qt::AlignCenter);
+    textLabel->setTextFormat(Qt::RichText);
 
-    textLabel->setStyleSheet("QLabel {border: 1px solid rgb(190, 190, 190);"
+    textLabel->setStyleSheet("QLabel {"
+                             "border: 1px solid rgb(190, 190, 190);"
+                             "font: 9pt \"" TOOLBAR_FONT "\";"
                              "background: #383533;"
                              "padding-right: 5px;"
                              "padding-left: 5px;"
                              "color: #E0E0E0;"
-                             "border-radius: 5px; }"
-                             "QToolTip {color: #ffffff;"
+                             "border-radius: 5px; "
+                             "}"
+                             "QToolTip {"
+                             "color: #ffffff;"
+                             "font: 11pt \"" TOOLBAR_FONT "\";"
                              "background-color: #383533;"
-                             "border: 2px outset #2a82da;}");
+                             "border: 2px outset #2a82da;"
+                             "padding: 2px;"
+                             "}");
     this->setText("None");
     return textLabel;
 }
@@ -42,7 +54,7 @@ void SpellIndicator::setToolTip(QString text) {
 }
 
 void SpellIndicator::setText(QString text) {
-    this->setToolTip("<table style='margin: 2px;'><tr><td>" + text + "</td></tr></table>");
+    this->setToolTip(text);
     textLabel->setText(text);
 }
 
