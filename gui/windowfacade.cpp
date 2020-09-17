@@ -191,6 +191,11 @@ void WindowFacade::loadWindows() {
     roomWindow = new RoomWindow(mainWindow);
     dockWindows << roomWindow->getDockWidget();
 
+    mapFacade = new MapFacade(mainWindow);
+
+    conversationsWindow = new ConversationsWindow(mainWindow);
+    dockWindows << conversationsWindow->getDockWidget();
+
     arrivalsWindow = new ArrivalsWindow(mainWindow);
     dockWindows << arrivalsWindow->getDockWidget();
 
@@ -199,12 +204,6 @@ void WindowFacade::loadWindows() {
 
     thoughtsWindow = new ThoughtsWindow(mainWindow);
     dockWindows << thoughtsWindow->getDockWidget();
-
-    expWindow = new ExpWindow(mainWindow);
-    dockWindows << expWindow->getDockWidget();
-
-    conversationsWindow = new ConversationsWindow(mainWindow);
-    dockWindows << conversationsWindow->getDockWidget();
 
     familiarWindow = new FamiliarWindow(mainWindow);
     dockWindows << familiarWindow->getDockWidget();
@@ -215,19 +214,25 @@ void WindowFacade::loadWindows() {
     atmosphericsWindow = new AtmosphericsWindow(mainWindow);
     dockWindows << atmosphericsWindow->getDockWidget();
 
-    mapFacade = new MapFacade(mainWindow);
+    groupWindow = new GroupWindow(mainWindow);
+    dockWindows << groupWindow->getDockWidget();
+
+    expWindow = new ExpWindow(mainWindow);
+    dockWindows << expWindow->getDockWidget();
 
     compassView = new CompassView(mainWindow);
     compassView->paint(compass);
 
     if(!clientSettings->hasValue("MainWindow/state")) {
+        mainWindow->tabifyDockWidget(mapFacade->getMapWindow(), roomWindow->getDockWidget());
+        mainWindow->tabifyDockWidget(roomWindow->getDockWidget(), conversationsWindow->getDockWidget());
+        mainWindow->tabifyDockWidget(conversationsWindow->getDockWidget(), groupWindow->getDockWidget());
+
         mainWindow->tabifyDockWidget(thoughtsWindow->getDockWidget(), arrivalsWindow->getDockWidget());
         mainWindow->tabifyDockWidget(arrivalsWindow->getDockWidget(), deathsWindow->getDockWidget());
         mainWindow->tabifyDockWidget(deathsWindow->getDockWidget(), familiarWindow->getDockWidget());
         mainWindow->tabifyDockWidget(familiarWindow->getDockWidget(), spellWindow->getDockWidget());
         mainWindow->tabifyDockWidget(spellWindow->getDockWidget(), atmosphericsWindow->getDockWidget());
-        mainWindow->tabifyDockWidget(roomWindow->getDockWidget(), conversationsWindow->getDockWidget());
-        mainWindow->tabifyDockWidget(conversationsWindow->getDockWidget(), mapFacade->getMapWindow());
     }
 
     this->updateWindowStyle();
@@ -285,6 +290,10 @@ SpellWindow* WindowFacade::getSpellWindow() {
 
 AtmosphericsWindow* WindowFacade::getAtmosphericsWindow() {
     return this->atmosphericsWindow;
+}
+
+GroupWindow* WindowFacade::getGroupWindow() {
+    return this->groupWindow;
 }
 
 MapFacade* WindowFacade::getMapFacade() {

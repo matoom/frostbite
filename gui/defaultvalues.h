@@ -70,6 +70,7 @@
 #define DOCK_TITLE_ARRIVALS "Arrivals"
 #define DOCK_TITLE_THOUGHTS "Thoughts"
 #define DOCK_TITLE_ROOM "Room"
+#define DOCK_TITLE_GROUP "Group"
 #define DOCK_TITLE_CONVERSATIONS "Conversations"
 #define DOCK_TITLE_FAMILIAR "Familiar"
 #define DOCK_TITLE_SPELL "Active Spells"

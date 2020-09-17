@@ -59,6 +59,7 @@ private:
     QString charName;
 
     QString activeSpells;
+    QString group;
 
     QString stormfrontSettings;
 
@@ -123,6 +124,7 @@ signals:
     void updateFamiliarWindow(QString);
     void updateSpellWindow(QString);
     void updateAtmosphericsWindow(QString);
+    void updateGroupWindow(QString);
 
     void updateVitals(QString, QString);
     void updateStatus(QString, QString);

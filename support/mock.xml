@@ -900,10 +900,13 @@ A low, almost subliminal buzz begins in the back of your mind.
 <prompt time="1445452836">&gt;</prompt>
 
 Frodo joins your group.
+<indicator id="IconJOINED" visible="y"/>
 <clearStream id='group'/>
-<pushStream id="group"/> Members of your group:
-<popStream/><pushStream id="group"/>  Frodo: <popStream/><pushStream id="group"/>Invigorated<popStream/><pushStream id="group"/>.<popStream/><pushStream id="group"/>
-<popStream/><prompt time="1446053687">&gt;</prompt>
+<pushStream id="group"/>Members of your group:
+<popStream/><pushStream id="group"/>  You: Healthy.
+<popStream/><pushStream id="group"/>  Kiborkieyt (Leader): Healthy.
+<popStream/><pushStream id="group"/>There are 2 members in your group.
+<popStream/><prompt time="1600246881">&gt;</prompt>
 
 <pushStream id="whispers"/><preset id="whisper">Frodo whispers,</preset> "OOC: I am so confused at what is going on."
 <popStream/><pushStream id="ooc"/><preset id="whisper">OocTest whispers,</preset> "OOC: I am so confused at what is going on."

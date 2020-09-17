@@ -32,6 +32,7 @@ void MapFacade::init() {
 void MapFacade::mapsReady() {
     if(!mapReader->isInitialized()) {
         this->setNotFoundMessage();
+        this->unlockControls();
         return;
     }    
     if(mapView->scene() != NULL) mapView->scene()->clear();

@@ -23,6 +23,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade->getFamiliarWindow(), SLOT(write(QString)));
     connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade->getSpellWindow(), SLOT(write(QString)));
     connect(this, SIGNAL(updateAtmosphericsWindow(QString)), windowFacade->getAtmosphericsWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateGroupWindow(QString)), windowFacade->getGroupWindow(), SLOT(write(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateVitals(QString, QString)), vitalsBar, SLOT(updateVitals(QString, QString)));
@@ -426,9 +427,12 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 emit updateRoomWindow();
             }
         } else if(e.tagName() == "clearStream") {
-            if(e.attribute("id") == "percWindow") {               
+            if(e.attribute("id") == "percWindow") {
                 scheduled.insert(e.attribute("id"), QStringList());
                 this->activeSpells.clear();
+            } else if(e.attribute("id") == "group") {
+                scheduled.insert(e.attribute("id"), QStringList());
+                this->group.clear();
             } else {
                 if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
                     emit clearStreamWindow(e.attribute("id"));
@@ -532,12 +536,14 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             activeSpells += root.text();
         }
-        QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);        
+        QStringList list = activeSpells.split("\n", QString::SkipEmptyParts);
         scheduled.insert(e.attribute("id"), list);
     } else if(e.attribute("id") == "shopWindow") {
         this->writeTextLines(toString(e));
     } else if(e.attribute("id") == "group") {
-        // ignored
+        group += root.text();
+        QStringList list = group.split("\n", QString::SkipEmptyParts);
+        scheduled.insert(e.attribute("id"), list);
     } else if(e.attribute("id") == "chatter") {
         QString text = this->traverseXmlNode(e, QString("")).trimmed();
         emit updateThoughtsWindow(addTime(text));
@@ -655,7 +661,9 @@ void XmlParserThread::runEvent(QString event, QVariant data) {
         gameDataContainer->setActiveSpells(data.toStringList());
         emit updateActiveSpells(data.toStringList());
         emit updateSpellWindow(data.toStringList().join("\n"));        
-    } else {
+    } else if(event == "group") {
+        emit updateGroupWindow(data.toStringList().join("\n") + "\n");
+    } else {    
         qDebug() << tr("Event \"%1\" not found").arg(event);
     }
 }
