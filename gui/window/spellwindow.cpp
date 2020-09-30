@@ -20,6 +20,8 @@ QDockWidget* SpellWindow::getDockWidget() {
 }
 
 void SpellWindow::write(QString text) {
+    text = text.remove(QRegularExpression("\\s+(roisaen|roisan)"));
+    text = text.replace(QRegularExpression("Indefinite"), "Cyclic");
     writer->addText(text + "\n");
     if(!writer->isRunning()) writer->start();
 }
