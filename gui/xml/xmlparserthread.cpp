@@ -513,7 +513,7 @@ void XmlParserThread::processPushStream(QString data) {
         QString atmo = root.text().trimmed();
         if(!atmo.isEmpty()) emit updateAtmosphericsWindow(atmo);
     } else if(e.attribute("id") == "whispers") {
-        emit updateConversationsWindow(this->traverseXmlNode(e, QString("")).trimmed());
+        emit updateConversationsWindow(addTime(this->traverseXmlNode(e, QString("")).trimmed()));
     } else if(e.attribute("id") == "familiar") {
         QDomElement next = e.firstChild().nextSibling().toElement();
         if(next.tagName() == "pushStream") {
@@ -525,7 +525,8 @@ void XmlParserThread::processPushStream(QString data) {
         QString text = this->traverseXmlNode(e, QString("")).trimmed();
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {
-            emit updateConversationsWindow(addTime(text));
+            // ignore speech in ooc stream; duplicated from whisper stream
+            // emit updateConversationsWindow(addTime(text));
         } else {            
             this->writeTextLines(text);
         }
