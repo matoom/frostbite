@@ -63,6 +63,18 @@ void HighlightGeneralTab::initContextMenu() {
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
+    menu->addSeparator();
+
+    bgColorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Background..."), listWidget);
+    menu->addAction(bgColorAct);
+    connect(bgColorAct, SIGNAL(triggered()), this, SLOT(bgColorDialog()));
+
+    bgClearAct = new QAction(QIcon(), tr("&Clear Background"), listWidget);
+    menu->addAction(bgClearAct);
+    connect(bgClearAct, SIGNAL(triggered()), this, SLOT(clearBgColor()));
+
+    menu->addSeparator();
+
     editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
     menu->addAction(editAct);
     editAct->setEnabled(false);
@@ -77,9 +89,33 @@ void HighlightGeneralTab::colorDialog() {
         updateSelectedItemColor(listWidget->currentItem());
         highlightList[currentItemKey].insert("color", color);
 
-        registerChange(currentItemKey);
+        this->registerChange(currentItemKey);
     }
 }
+
+void HighlightGeneralTab::bgColorDialog() {
+    QColor color = QColorDialog::getColor(listWidget->currentItem()->textColor(),
+        listWidget, tr("Select background color"));
+
+    if (color.isValid()) {
+        QString currentItemKey = listWidget->currentItem()->data(Qt::UserRole).toString();
+        listWidget->currentItem()->setBackgroundColor(color);
+        updateSelectedItemColor(listWidget->currentItem());
+        highlightList[currentItemKey].insert("bgColor", color);
+        this->registerChange(currentItemKey);
+    }
+}
+
+void HighlightGeneralTab::clearBgColor() {
+    QColor color = QColor();
+
+    QString currentItemKey = listWidget->currentItem()->data(Qt::UserRole).toString();
+    listWidget->currentItem()->setBackgroundColor(QColor(Qt::transparent));
+    updateSelectedItemColor(listWidget->currentItem());
+    highlightList[currentItemKey].insert("bgColor", color);
+    this->registerChange(currentItemKey);
+}
+
 
 void HighlightGeneralTab::listWidgetMenuRequested(const QPoint &point) {
     QPoint globalPos = listWidget->mapToGlobal(point);
@@ -102,6 +138,8 @@ void HighlightGeneralTab::prepareList() {
             tr(i.value().value("name").toByteArray().data()), listWidget);
         newItem->setData(Qt::UserRole, i.key());
         newItem->setTextColor(i.value().value("color").value<QColor>());
+        QColor bgColor = i.value().value("bgColor").value<QColor>();
+        if(bgColor.isValid()) newItem->setBackgroundColor(bgColor);
         newItem->setFont(QFont(DEFAULT_FONT, 12));
         ++i;
     }
@@ -110,11 +148,13 @@ void HighlightGeneralTab::prepareList() {
 QHash<QString, QVariant> HighlightGeneralTab::readSettings(QString id, QString name, QColor color) {
     QString nameSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/name", "").toString();
     QColor colorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/color", DEFAULT_MAIN_FONT_COLOR).value<QColor>();
+    QColor bgColorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/bgColor", QColor()).value<QColor>();
     QString alertSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/alert", "").toString();
 
     QHash<QString, QVariant> item;
     item.insert("name", name);
     item.insert("color", colorSetting.isValid() ? colorSetting : color);
+    item.insert("bgColor", bgColorSetting);
     item.insert("alert", alertSetting);
 
     if(nameSetting.isEmpty()) {
@@ -170,7 +210,13 @@ void HighlightGeneralTab::updateSelectedItemColor(QListWidgetItem *current) {
         /* change highlight color to item color */
         QPalette palette = listWidget->palette();
         palette.setColor(QPalette::HighlightedText, current->textColor());
-        palette.setColor(QPalette::Highlight, Qt::transparent);
+        if(current->backgroundColor().isValid()) {
+            palette.setColor(QPalette::Highlight, current->backgroundColor());
+            palette.setColor(QPalette::Background, current->backgroundColor());
+        } else {
+            palette.setColor(QPalette::Highlight, Qt::transparent);
+            palette.setColor(QPalette::Base, Qt::transparent);
+        }
         listWidget->setPalette(palette);
     }
 }

@@ -173,6 +173,7 @@ private:
     QString style;
 
     QString textColor(QString, QString);
+    QString bgColor(QString);
     void setVisibilityIndicator(QDockWidget*, bool, QString);
 
 signals:

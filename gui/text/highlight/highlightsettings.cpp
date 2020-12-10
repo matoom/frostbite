@@ -59,6 +59,7 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue("value", entry.value);
     settings->setValue("group", entry.group);
     settings->setValue("color", entry.color);
+    settings->setValue("bgColor", entry.bgColor);
     settings->setValue("alert", entry.alert);
     settings->setValue("alertValue", entry.alertValue);
     settings->setValue("timer", entry.timer);
@@ -89,6 +90,7 @@ QList<HighlightSettingsEntry> HighlightSettings::loadSettings(QString group) {
                 (const QString&)settings->value("value", "").toString(),
                 (const QString&)settings->value("group", "").toString(),
                 (const QColor&)settings->value("color", QColor()).value<QColor>(),
+                (const QColor&)settings->value("bgColor", QColor()).value<QColor>(),
                 (const bool&)settings->value("alert", false).toBool(),
                 (const QString&)settings->value("alertValue", "").toString(),
                 (const bool&)settings->value("timer", false).toBool(),
@@ -112,6 +114,7 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
         settings->setValue("value", entry.value);
         settings->setValue("group", entry.group);
         settings->setValue("color", entry.color);
+        settings->setValue("bgColor", entry.bgColor);
         settings->setValue("alert", entry.alert);
         settings->setValue("alertValue", entry.alertValue);
         settings->setValue("timer", entry.timer);

@@ -56,6 +56,11 @@ QString WindowFacade::textColor(QString name, QString defaultValue) {
             .value<QColor>().name();
 }
 
+QString WindowFacade::bgColor(QString name) {
+    QColor color = settings->getSingleParameter("GeneralHighlight/" + name + "/bgColor", QColor()).value<QColor>();
+    return color.isValid() ? color.name() : "none";
+}
+
 void WindowFacade::setGameWindowFont(QFont font) {
     gameWindow->setFont(font);
 }
@@ -157,16 +162,16 @@ void WindowFacade::setDockFont(QFont font) {
 }
 
 void WindowFacade::updateWindowStyle() {
-    style = ".speech {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";}\n"
-            ".whisper {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";}\n"
-            ".bonus {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";}\n"
-            ".penalty {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";}\n"
-            ".thinking {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";}\n"
-            ".room-name {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";}\n"
-            ".echo {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";}\n"
-            ".script {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";}\n"
-            ".bold {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";}\n"
-            ".damage {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";}\n"
+    style = ".speech {color: " + textColor(SPEECH, SPEECH_COLOR_HEX) + ";background:" + bgColor(SPEECH) + ";}\n"
+            ".whisper {color: " + textColor(WHISPER, WHISPER_COLOR_HEX) + ";background:" + bgColor(WHISPER) + ";}\n"
+            ".bonus {color: " + textColor(BONUS, BOOST_COLOR_HEX) + ";background:" + bgColor(BONUS) + ";}\n"
+            ".penalty {color: " + textColor(PENALTY, PENALTY_COLOR_HEX) + ";background:" + bgColor(PENALTY) + ";}\n"
+            ".thinking {color: " + textColor(THINKING, THINKING_COLOR_HEX) + ";background:" + bgColor(THINKING) + ";}\n"
+            ".room-name {color: " + textColor(ROOM_NAME, ROOM_NAME_COLOR_HEX) + ";background:" + bgColor(ROOM_NAME) + ";}\n"
+            ".echo {color: " + textColor(ECHO, ECHO_COLOR_HEX) + ";background:" + bgColor(ECHO) + ";}\n"
+            ".script {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";background:" + bgColor(SCRIPT) + ";}\n"
+            ".bold {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";background:" + bgColor(GAME_MESSAGE) + ";}\n"
+            ".damage {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";background:" + bgColor(DAMAGE) + ";}\n"
             "span {white-space:pre-wrap;}";
 
     foreach(QDockWidget* dock, dockWindows) {

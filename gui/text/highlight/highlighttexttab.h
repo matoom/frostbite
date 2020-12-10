@@ -76,8 +76,10 @@ private:
     QList<HighlightSettingsEntry> highlightList;
     QList<int> changeList;
 
-    QAction *colorAct;
+    QAction *colorAct;    
     QAction *editAct;
+    QAction *bgColorAct;
+    QAction *bgClearAct;
     QMenu *menu;
 
     void initSortBy();
@@ -91,8 +93,8 @@ private:
     void updateTimerControl(bool, int, QString);
     void updateOptionsControl(QBitArray);
     void registerChange();
-    void createListItem(int, QString, QColor);
-    void updateSelectedItemColor(QListWidgetItem*);
+    void createListItem(int, QString, QColor, QColor);
+    void updateSelectedItemColor(QListWidgetItem*);   
     void updateIcon(QListWidgetItem*, QListWidgetItem*);
     void enableMenuItems();
     void populateHighlights();
@@ -118,6 +120,8 @@ private slots:
     void groupSelected(const QString&);
     void listWidgetMenuRequested(const QPoint&);
     void colorDialog();
+    void bgColorDialog();
+    void clearBgColor();
     void playSound();
     void sortBySelected(int index);
     void filterList(const QString&);

@@ -96,6 +96,20 @@ void HighlightTextTab::initContextMenu() {
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
+    menu->addSeparator();
+
+    bgColorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Background..."), listWidget);
+    bgColorAct->setEnabled(false);
+    menu->addAction(bgColorAct);
+    connect(bgColorAct, SIGNAL(triggered()), this, SLOT(bgColorDialog()));
+
+    bgClearAct = new QAction(QIcon(), tr("&Clear Background"), listWidget);
+    bgClearAct->setEnabled(false);
+    menu->addAction(bgClearAct);
+    connect(bgClearAct, SIGNAL(triggered()), this, SLOT(clearBgColor()));
+
+    menu->addSeparator();
+
     editAct = new QAction(QIcon(":/window/images/edit.png"), tr("&Edit..."), listWidget);
     editAct->setEnabled(false);    
     menu->addAction(editAct);
@@ -130,9 +144,42 @@ void HighlightTextTab::colorDialog() {
     }
 }
 
+void HighlightTextTab::bgColorDialog() {
+    QColor color = QColorDialog::getColor(listWidget->currentItem()->textColor(),
+        listWidget, tr("Select background color"));
+
+    if (color.isValid()) {
+        int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
+        listWidget->currentItem()->setBackgroundColor(color);
+
+        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+        currentEntry.bgColor = color;
+        updateSelectedItemColor(listWidget->currentItem());
+        highlightList.replace(currentId, currentEntry);
+
+        this->registerChange();
+    }
+}
+
+void HighlightTextTab::clearBgColor() {
+    QColor color = QColor();
+
+    int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
+    listWidget->currentItem()->setBackgroundColor(QColor(Qt::transparent));
+
+    HighlightSettingsEntry currentEntry = highlightList.at(currentId);
+    currentEntry.bgColor = color;
+    updateSelectedItemColor(listWidget->currentItem());
+
+    highlightList.replace(currentId, currentEntry);
+    this->registerChange();
+}
+
 void HighlightTextTab::enableMenuItems() {
     colorAct->setEnabled(true);
     editAct->setEnabled(true);
+    bgColorAct->setEnabled(true);
+    bgClearAct->setEnabled(true);
 }
 
 void HighlightTextTab::updateIcon(QListWidgetItem *current, QListWidgetItem *previous) {
@@ -148,10 +195,15 @@ void HighlightTextTab::updateIcon(QListWidgetItem *current, QListWidgetItem *pre
 
 void HighlightTextTab::updateSelectedItemColor(QListWidgetItem *current) {
     if(current != NULL) {
-        /* change highlight color to item color */
         QPalette palette = listWidget->palette();
         palette.setColor(QPalette::HighlightedText, current->textColor());
-        palette.setColor(QPalette::Highlight, Qt::transparent);
+        if(current->backgroundColor().isValid()) {
+            palette.setColor(QPalette::Highlight, current->backgroundColor());
+            palette.setColor(QPalette::Background, current->backgroundColor());
+        } else {
+            palette.setColor(QPalette::Highlight, Qt::transparent);
+            palette.setColor(QPalette::Base, Qt::transparent);
+        }
         listWidget->setPalette(palette);
     }
 }
@@ -180,20 +232,21 @@ void HighlightTextTab::loadHighlightList() {
         if(!filterText.isEmpty() && !entry.value.contains(filterText, Qt::CaseInsensitive)) continue;
 
         if(group == groupNames.at(0)) {
-            this->createListItem(entry.id, entry.value, entry.color);
+            this->createListItem(entry.id, entry.value, entry.color, entry.bgColor);
         } else {
             if(entry.group == group) {
-                this->createListItem(entry.id, entry.value, entry.color);
+                this->createListItem(entry.id, entry.value, entry.color, entry.bgColor);
             }
         }
     }
     listWidget->sortItems(Qt::AscendingOrder);
 }
 
-void HighlightTextTab::createListItem(int id, QString value, QColor color) {
+void HighlightTextTab::createListItem(int id, QString value, QColor color, QColor bgColor) {
     SortableListWidgetItem *newItem = new SortableListWidgetItem(QIcon(":/window/images/icon_ph.png"), value, listWidget);
     newItem->setData(Qt::UserRole, id);
     newItem->setTextColor(color);
+    if(bgColor.isValid()) newItem->setBackgroundColor(bgColor);
     newItem->setFont(QFont(DEFAULT_FONT, 12));
 }
 

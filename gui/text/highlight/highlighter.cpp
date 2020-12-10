@@ -55,7 +55,12 @@ QString Highlighter::highlight(QString text) {
 }
 
 int Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QString match) {
-    QString startTag = "<span style=\"color:" % entry.color.name() % ";\">";
+    QString startTag;
+    if(entry.bgColor.isValid()) {
+        startTag = "<span style=\"color:" % entry.color.name() % ";background:" % entry.bgColor.name()% ";\">";
+    } else {
+        startTag = "<span style=\"color:" % entry.color.name() % ";\">";
+    }
     QString endTag = "</span>";
 
     int startTagLength = startTag.length();

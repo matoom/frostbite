@@ -50,6 +50,8 @@ private:
     QPushButton* applyButton;
 
     QAction *colorAct;
+    QAction *bgColorAct;
+    QAction *bgClearAct;
     QAction *editAct;
     ContextMenu *menu;
 
@@ -68,6 +70,8 @@ signals:
 
 private slots:
     void colorDialog();
+    void bgColorDialog();
+    void clearBgColor();
     void playSound();
     void itemSelected(QListWidgetItem* current, QListWidgetItem* previous);
     void fileSelected(const QString& text);
