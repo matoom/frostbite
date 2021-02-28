@@ -7,8 +7,21 @@
 #include <clientsettings.h>
 #include <mainwindow.h>
 
+struct Tab {
+    typedef enum {
+        Login,
+        DirectConnect,
+        AnyConnect,
+        Proxy
+    } Type;
+};
+
+/*namespace Tab {
+    enum { login, directConnect, anyConnect, proxy };
+}*/
+
 namespace Page {
-    enum { login, game, character, connect };
+    enum { Login, Game, Character, Connect };
 }
 
 class ClientSettings;
@@ -44,12 +57,12 @@ private:
     bool gamesLoaded;    
     bool isLichConfigured;
 
-    bool directConnect;
+    Tab::Type currentTab;
 
     void init();
     void initProxy();
     void saveField(QString, QString);
-    void saveSettings();
+    void saveSettings(Tab::Type tab);
     void saveHistory();
     void registerFields();
     void populateGameList();
@@ -83,6 +96,7 @@ signals:
     void retrieveSession(QString);
     void connectToLich(QString, QString, QString);
     void connectToServer(QString, QString, QString);
+    void connectToHost(QString, QString);
     void resetConnection();
 };
 

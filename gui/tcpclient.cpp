@@ -141,14 +141,17 @@ void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString 
     QTimer::singleShot(3000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
 }
 
-bool TcpClient::connectToLocalPort(QString port) {
+void TcpClient::connectToLocalPort(QString port) {
+    this->connectToHost("127.0.0.1", port);
+}
+
+void TcpClient::connectToHost(QString host, QString port) {
     this->api = false;
     windowFacade->writeGameWindow("Connecting ...");
     mainWindow->connectEnabled(false);
     commandPrefix = "";
 
-    tcpSocket->connectToHost("127.0.0.1", port.toInt());
-    return tcpSocket->waitForConnected();
+    tcpSocket->connectToHost(host, port.toInt());
 }
 
 bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {

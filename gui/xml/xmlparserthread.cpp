@@ -521,7 +521,7 @@ void XmlParserThread::processPushStream(QString data) {
         } else {
             emit updateFamiliarWindow(this->traverseXmlNode(e, QString("")));
         }
-    } else if(e.attribute("id") == "ooc") {        
+    } else if(e.attribute("id") == "ooc") {
         QString text = this->traverseXmlNode(e, QString("")).trimmed();
         QDomElement element = e.firstChild().toElement();
         if(element.tagName() == "preset") {

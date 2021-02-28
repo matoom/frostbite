@@ -9,14 +9,15 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
 
     movie = new QMovie(":/window/images/loading.gif");
 
-    directConnect = false;
+    currentTab = Tab::Login;
+    ui->Connect->setCurrentIndex(0);
 
     this->registerFields();
 
     connect(this, SIGNAL(currentIdChanged(int)), this, SLOT(pageSelected(int)));
 
     connect(ui->lichBox, SIGNAL(stateChanged(int)), this, SLOT(lichBoxChanged(int)));
-    connect(ui->directLichBox, SIGNAL(stateChanged(int)), this, SLOT(lichBoxChanged(int)));
+    connect(ui->gameLichBox, SIGNAL(stateChanged(int)), this, SLOT(lichBoxChanged(int)));
 
     connect(this, SIGNAL(gameSelected(QString)),
             mainWindow->getTcpClient(), SLOT(gameSelected(QString)));
@@ -42,6 +43,9 @@ ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::Conn
     connect(this, SIGNAL(connectToLich(QString, QString, QString)),
             mainWindow->getTcpClient(), SLOT(connectToLich(QString, QString, QString)));
 
+    connect(this, SIGNAL(connectToHost(QString, QString)),
+            mainWindow->getTcpClient(), SLOT(connectToHost(QString, QString)));
+
     connect(this, SIGNAL(resetConnection()),
             mainWindow->getTcpClient(), SLOT(resetEauthSession()));
 
@@ -64,24 +68,37 @@ void ConnectWizard::tabChanged(int id) {
     if(id == 0) {
         this->page(0)->setFinalPage(false);
         this->button(WizardButton::NextButton)->setEnabled(true);
-        directConnect = false;
+        this->button(WizardButton::FinishButton)->setEnabled(true);
+        currentTab = Tab::Login;
     } else if (id == 1) {
         this->page(0)->setFinalPage(true);
         this->button(WizardButton::NextButton)->setEnabled(false);
-        directConnect = true;
+        this->button(WizardButton::FinishButton)->setEnabled(true);
+        currentTab = Tab::DirectConnect;
+    } else if (id == 2) {
+        this->page(0)->setFinalPage(true);
+        this->button(WizardButton::NextButton)->setEnabled(false);
+        this->button(WizardButton::FinishButton)->setEnabled(true);
+        currentTab = Tab::AnyConnect;
+    } else if(id == 3) {
+        this->button(WizardButton::NextButton)->setEnabled(false);
+        this->button(WizardButton::FinishButton)->setEnabled(false);
+        currentTab = Tab::Proxy;
     }
 }
 
 void ConnectWizard::lichBoxChanged(int state) {
     ui->lichBox->setChecked(state == Qt::CheckState::Checked);
-    ui->directLichBox->setChecked(state == Qt::CheckState::Checked);
     settings->setParameter("Login/lichEnabled", state == Qt::CheckState::Checked);
+    ui->gameLichBox->setChecked(state == Qt::CheckState::Checked);
+    settings->setParameter("DirectConnect/lichEnabled", state == Qt::CheckState::Checked);
 }
 
 void ConnectWizard::showEvent(QShowEvent* event) {
     QDialog::showEvent(event);
     this->init();
     this->initProxy();
+    this->tabChanged(ui->Connect->currentIndex());
 }
 
 void ConnectWizard::populateGameList() {
@@ -126,19 +143,22 @@ void ConnectWizard::initProxy() {
 }
 
 void ConnectWizard::init() {
-    ui->lichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
-
     ui->authHostEdit->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());
     ui->authHostEdit->setModified(true);
-
     ui->authPortEdit->setText(settings->getParameter("Login/authPort", "7900").toString());
     ui->authPortEdit->setModified(true);
+    ui->lichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
 
-    ui->gameHostEdit->setText(settings->getParameter("Login/gameHost", "dr.simutronics.net").toString());
+    ui->gameHostEdit->setText(settings->getParameter("DirectConnct/gameHost", "dr.simutronics.net").toString());
     ui->gameHostEdit->setModified(true);
-
-    ui->gamePortEdit->setText(settings->getParameter("Login/gamePort", "11024").toString());
+    ui->gamePortEdit->setText(settings->getParameter("DirectConnct/gamePort", "11024").toString());
     ui->gamePortEdit->setModified(true);
+    ui->gameLichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
+
+    ui->anyHostEdit->setText(settings->getParameter("AnyConnect/host", "locahost").toString());
+    ui->anyHostEdit->setModified(true);
+    ui->anyPortEdit->setText(settings->getParameter("AnyConnect/port", "8000").toString());
+    ui->anyPortEdit->setModified(true);
 
     QString user = settings->getParameter("Login/user", "").toString();
     if(!user.isEmpty()) {
@@ -162,10 +182,10 @@ void ConnectWizard::init() {
     isLichConfigured = !settings->getParameter("Script/lichLocation", "").toString().isEmpty();
     if(isLichConfigured) {
         ui->lichBox->setVisible(true);
-        ui->directLichBox->setVisible(true);
+        ui->gameLichBox->setVisible(true);
     } else {
         ui->lichBox->setVisible(false);
-        ui->directLichBox->setVisible(false);
+        ui->gameLichBox->setVisible(false);
     }
 }
 
@@ -175,11 +195,18 @@ void ConnectWizard::saveField(QString name, QString value) {
     }
 }
 
-void ConnectWizard::saveSettings() {
-    this->saveField("Login/authHost", ui->authHostEdit->text());
-    this->saveField("Login/authPort", ui->authPortEdit->text());
-    this->saveField("Login/user", ui->userEdit->text());
-
+void ConnectWizard::saveSettings(Tab::Type tab) {
+    if(tab == Tab::Login) {
+        this->saveField("Login/authHost", ui->authHostEdit->text());
+        this->saveField("Login/authPort", ui->authPortEdit->text());
+        this->saveField("Login/user", ui->userEdit->text());
+    } else if(tab == Tab::DirectConnect) {
+        this->saveField("DirectConnect/gameHost", ui->gameHostEdit->text());
+        this->saveField("DirectConnect/gamePort", ui->gamePortEdit->text());
+    } else if(tab == Tab::AnyConnect) {
+        this->saveField("AnyConnect/host", ui->anyHostEdit->text());
+        this->saveField("AnyConnect/port", ui->anyPortEdit->text());
+    }
     settings->setParameter("Proxy/enabled", ui->proxyEnabled->isChecked());
     this->saveField("Proxy/host", ui->proxyHostEdit->text());
     this->saveField("Proxy/port", ui->proxyPortEdit->text());
@@ -216,17 +243,16 @@ void ConnectWizard::setGameListLoading(bool loading) {
 
 void ConnectWizard::pageSelected(int id) {
     switch (id) {
-    case Page::login:                       
+    case Page::Login:
         gamesLoaded = false;
         ui->gameList->setEnabled(false);
         emit resetConnection();
         break;
-    case Page::game:
+    case Page::Game:
         characterList.clear();
         ui->characterList->clear();
 
         if(!gamesLoaded) {
-            this->saveSettings();
             this->setGameListLoading(true);
             emit setProxy(ui->proxyEnabled->isChecked(), ui->proxyHostEdit->text(), ui->proxyPortEdit->text());
             emit initSession(ui->authHostEdit->text().trimmed(), ui->authPortEdit->text().trimmed(),
@@ -235,7 +261,7 @@ void ConnectWizard::pageSelected(int id) {
             gamesLoaded = true;
         }
         break;
-    case Page::character:        
+    case Page::Character:
         selectedGame = ui->gameList->currentItem()->text();        
         emit gameSelected(gameList.value(selectedGame));
         if(characterList.isEmpty()) {
@@ -247,7 +273,7 @@ void ConnectWizard::pageSelected(int id) {
             this->button(QWizard::NextButton)->setEnabled(false);
         }
         break;
-    case Page::connect:
+    case Page::Connect:
         this->button(QWizard::BackButton)->setEnabled(false);
 
         selectedCharacter = ui->characterList->currentItem()->text();
@@ -295,13 +321,16 @@ void ConnectWizard::setSession(QString host, QString port, QString sessionKey) {
 
 void ConnectWizard::accept() {
     QDialog::accept();
-    if(this->validateCurrentPage()) {
-        if(directConnect) {
+    if(this->validateCurrentPage()) {                
+        if(currentTab == Tab::DirectConnect) {
             this->_connect(ui->gameHostEdit->text().trimmed(), ui->gamePortEdit->text().trimmed(),
                            ui->sessionKeyEdit->text().trimmed());
-        } else {
+        } else if(currentTab == Tab::AnyConnect) {
+            emit connectToHost(ui->anyHostEdit->text().trimmed(), ui->anyPortEdit->text().trimmed());
+        } else if(currentTab == Tab::Login) {
             this->_connect(sessionHost, sessionPort, sessionKey);
         }
+        this->saveSettings(currentTab);
         this->restart();
         this->init();
     }
@@ -332,7 +361,7 @@ void ConnectWizard::showError(QString errorMsg) {
 
 bool ConnectWizard::validateCurrentPage() {
     if(this->currentId() == 0) {
-        if(directConnect) {
+        if(currentTab == Tab::DirectConnect) {
             if(ui->gameHostEdit->text().isEmpty()) {
                 ui->directErrorLabel->setText("Game host is required.");
                 return false;
@@ -341,6 +370,16 @@ bool ConnectWizard::validateCurrentPage() {
                 return false;
             } else if (ui->sessionKeyEdit->text().isEmpty()) {
                 ui->directErrorLabel->setText("Session key is required.");
+                return false;
+            } else {
+                return true;
+            }
+        } else if(currentTab == Tab::AnyConnect) {
+            if(ui->anyHostEdit->text().isEmpty()) {
+                ui->anyErrorLabel->setText("Host is required.");
+                return false;
+            } else if (ui->anyPortEdit->text().isEmpty()) {
+                ui->anyErrorLabel->setText("Port is required.");
                 return false;
             } else {
                 return true;
@@ -365,6 +404,7 @@ bool ConnectWizard::validateCurrentPage() {
     } else {
         ui->directErrorLabel->setText("");
         ui->errorLabel->setText("");
+        ui->anyErrorLabel->setText("");
         return true;
     }
 }

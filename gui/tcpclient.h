@@ -76,8 +76,9 @@ public slots:
     void setProxy(bool, QString, QString);
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError);
-    bool connectToHost(QString, QString, QString);
-    bool connectToLocalPort(QString port);
+    bool connectToHost(QString host, QString port, QString sessionKey);
+    void connectToHost(QString host, QString port);
+    void connectToLocalPort(QString port);
     void connectToLich(QString sessionHost, QString sessionPort, QString sessionKey);
     void disconnectedFromHost();
     void initEauthSession(QString, QString, QString, QString);

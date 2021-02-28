@@ -59,13 +59,13 @@ void HighlightGeneralTab::loadSettings() {
 
 void HighlightGeneralTab::initContextMenu() {
     menu = new ContextMenu(listWidget);
-    colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color..."), listWidget);
+    colorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Color ..."), listWidget);
     menu->addAction(colorAct);
     connect(colorAct, SIGNAL(triggered()), this, SLOT(colorDialog()));
 
     menu->addSeparator();
 
-    bgColorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Background..."), listWidget);
+    bgColorAct = new QAction(QIcon(":/window/images/color.png"), tr("&Change Background ..."), listWidget);
     menu->addAction(bgColorAct);
     connect(bgColorAct, SIGNAL(triggered()), this, SLOT(bgColorDialog()));
 
