@@ -19,6 +19,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
         connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
+        connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
         tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     }    
@@ -171,6 +172,10 @@ bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
 
 void TcpClient::disconnectedFromHost() {
     mainWindow->connectEnabled(true);
+}
+
+void TcpClient::connectedToHost() {
+    windowFacade->writeGameWindow("Connection established.<br/>");
 }
 
 void TcpClient::setProxy(bool enabled, QString proxyHost, QString proxyPort) {

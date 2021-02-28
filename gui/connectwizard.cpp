@@ -155,7 +155,7 @@ void ConnectWizard::init() {
     ui->gamePortEdit->setModified(true);
     ui->gameLichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
 
-    ui->anyHostEdit->setText(settings->getParameter("AnyConnect/host", "locahost").toString());
+    ui->anyHostEdit->setText(settings->getParameter("AnyConnect/host", "localhost").toString());
     ui->anyHostEdit->setModified(true);
     ui->anyPortEdit->setText(settings->getParameter("AnyConnect/port", "8000").toString());
     ui->anyPortEdit->setModified(true);

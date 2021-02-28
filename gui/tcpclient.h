@@ -81,6 +81,7 @@ public slots:
     void connectToLocalPort(QString port);
     void connectToLich(QString sessionHost, QString sessionPort, QString sessionKey);
     void disconnectedFromHost();
+    void connectedToHost();
     void initEauthSession(QString, QString, QString, QString);
     void selectGame(QMap<QString, QString>);
     void gameSelected(QString);
