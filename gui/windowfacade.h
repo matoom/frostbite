@@ -35,6 +35,7 @@
 #include <window/spellwindow.h>
 #include <window/atmosphericswindow.h>
 #include <window/groupwindow.h>
+#include <window/combatwindow.h>
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsProxyWidget>
@@ -60,6 +61,7 @@ class FamiliarWindow;
 class SpellWindow;
 class AtmosphericsWindow;
 class GroupWindow;
+class CombatWindow;
 
 typedef QList<QString> DirectionsList;
 typedef QMap<QString, QString> GridItems;
@@ -102,6 +104,7 @@ public:
     SpellWindow* getSpellWindow();
     AtmosphericsWindow* getAtmosphericsWindow();
     GroupWindow* getGroupWindow();
+    CombatWindow* getCombatWindow();
 
     QStringList getWindowNames();
 
@@ -155,6 +158,7 @@ private:
     SpellWindow* spellWindow;
     AtmosphericsWindow* atmosphericsWindow;
     GroupWindow* groupWindow;
+    CombatWindow* combatWindow;
 
     QList<QDockWidget*> dockWindows;
     QHash<QString, QDockWidget*> streamWindows;

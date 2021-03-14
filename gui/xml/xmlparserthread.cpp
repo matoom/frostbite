@@ -24,6 +24,7 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade->getSpellWindow(), SLOT(write(QString)));
     connect(this, SIGNAL(updateAtmosphericsWindow(QString)), windowFacade->getAtmosphericsWindow(), SLOT(write(QString)));
     connect(this, SIGNAL(updateGroupWindow(QString)), windowFacade->getGroupWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(updateCombatWindow(QString)), windowFacade->getCombatWindow(), SLOT(write(QString)));
 
     connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
     connect(this, SIGNAL(updateVitals(QString, QString)), vitalsBar, SLOT(updateVitals(QString, QString)));
@@ -242,11 +243,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         if(!mono) TextUtils::plainToHtml(textData);
 
         if(bold) {
-            if(root.text().contains(rxDmg)) {
-                gameText += "<span class=\"damage\">" + textData + "</span>";
-            } else {
-                gameText += "<span class=\"bold\">" + textData + "</span>";
-            }
+            gameText += "<span class=\"bold\">" + textData + "</span>";
         } else {
             gameText += textData;
         }
@@ -501,6 +498,11 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "room") {
         // ignored
         // <compDef id='room desc'/> ..
+    } else if(e.attribute("id") == "combat") {
+        QString text = this->traverseXmlNode(e, QString("")).trimmed();
+        if(text.contains(rxDmg)) text.replace("class=\"bold\"", "class=\"damage\"");
+        //this->writeTextLines(text);
+        emit updateCombatWindow(text);
     } else if(e.attribute("id") == "assess") {
         QString ass = root.text().trimmed();
         if(!ass.isEmpty()) this->writeTextLines(ass);

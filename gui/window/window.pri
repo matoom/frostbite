@@ -8,7 +8,8 @@ HEADERS += \
     $$PWD/atmosphericswindow.h \
     $$PWD/roomwindow.h \
     $$PWD/expwindow.h \
-    $$PWD/groupwindow.h
+    $$PWD/groupwindow.h \
+    $$PWD/combatwindow.h
 
 SOURCES += \
     $$PWD/spellwindow.cpp \
@@ -20,4 +21,5 @@ SOURCES += \
     $$PWD/atmosphericswindow.cpp \
     $$PWD/roomwindow.cpp \
     $$PWD/expwindow.cpp \
-    $$PWD/groupwindow.cpp
+    $$PWD/groupwindow.cpp \
+    $$PWD/combatwindow.cpp

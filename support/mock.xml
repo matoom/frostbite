@@ -1186,3 +1186,16 @@ NEXT      (finds the next occurance of the word specified in FIND)
 
 
 Reading: <mode id="GAME"/><output class="" />
+
+<pushStream id="combat" />&lt; Driving in with an overwhelming assault, you slice a stout broadsword at a ship's rat.  A ship's rat fails to dodge, failing miserably.  <pushBold/>The broadsword lands a heavy strike to the rat's right arm.<popBold/>
+[You're solidly balanced with no advantage.]
+[Roundtime 7 sec.]
+<popStream id="combat" />
+<prompt time="1615727006">&gt;</prompt>
+
+<pushStream id="combat" />
+&lt; Attacking well, a musk hog slams its balled fist at you.  You attempt to evade.  <pushBold/>The fist lands a light hit to your right leg.<popBold/>
+[You're incredibly balanced and overwhelming opponent.]
+[Roundtime 3 sec.]
+<popStream id="combat" />
+<prompt time="1615727006">&gt;</prompt>

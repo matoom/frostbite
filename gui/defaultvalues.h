@@ -77,6 +77,7 @@
 #define DOCK_TITLE_EXP "Experience"
 #define DOCK_TITLE_MAP "Map"
 #define DOCK_TITLE_ATMOSPHERICS "Atmospherics"
+#define DOCK_TITLE_COMBAT "Combat"
 
 #define SCRIPT_ENTRY QApplication::applicationDirPath() + "/scripts/lib/main.rb"
 #define SCRIPT_INTERPRETER "ruby"

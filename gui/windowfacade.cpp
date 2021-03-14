@@ -225,6 +225,9 @@ void WindowFacade::loadWindows() {
     expWindow = new ExpWindow(mainWindow);
     dockWindows << expWindow->getDockWidget();
 
+    combatWindow = new CombatWindow(mainWindow);
+    dockWindows << combatWindow->getDockWidget();
+
     compassView = new CompassView(mainWindow);
     compassView->paint(compass);
 
@@ -236,8 +239,14 @@ void WindowFacade::loadWindows() {
         mainWindow->tabifyDockWidget(thoughtsWindow->getDockWidget(), arrivalsWindow->getDockWidget());
         mainWindow->tabifyDockWidget(arrivalsWindow->getDockWidget(), deathsWindow->getDockWidget());
         mainWindow->tabifyDockWidget(deathsWindow->getDockWidget(), familiarWindow->getDockWidget());
-        mainWindow->tabifyDockWidget(familiarWindow->getDockWidget(), spellWindow->getDockWidget());
+        mainWindow->tabifyDockWidget(familiarWindow->getDockWidget(), spellWindow->getDockWidget());        
         mainWindow->tabifyDockWidget(spellWindow->getDockWidget(), atmosphericsWindow->getDockWidget());
+        mainWindow->tabifyDockWidget(atmosphericsWindow->getDockWidget(), combatWindow->getDockWidget());
+
+        groupWindow->getDockWidget()->close();
+        combatWindow->getDockWidget()->close();
+        atmosphericsWindow->getDockWidget()->close();
+        familiarWindow->getDockWidget()->close();
     }
 
     this->updateWindowStyle();
@@ -299,6 +308,10 @@ AtmosphericsWindow* WindowFacade::getAtmosphericsWindow() {
 
 GroupWindow* WindowFacade::getGroupWindow() {
     return this->groupWindow;
+}
+
+CombatWindow* WindowFacade::getCombatWindow() {
+    return this->combatWindow;
 }
 
 MapFacade* WindowFacade::getMapFacade() {
