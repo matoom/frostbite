@@ -501,7 +501,6 @@ void XmlParserThread::processPushStream(QString data) {
     } else if(e.attribute("id") == "combat") {
         QString text = this->traverseXmlNode(e, QString("")).trimmed();
         if(text.contains(rxDmg)) text.replace("class=\"bold\"", "class=\"damage\"");
-        //this->writeTextLines(text);
         emit updateCombatWindow(text);
     } else if(e.attribute("id") == "assess") {
         QString ass = root.text().trimmed();

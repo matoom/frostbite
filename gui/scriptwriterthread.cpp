@@ -28,10 +28,12 @@ void ScriptWriterThread::run() {
     }
 }
 
-void ScriptWriterThread::process(QString line) {
-    line = line.remove(rxRemoveTags);
-    TextUtils::htmlToPlain(line);
-    emit writeText(line.toLocal8Bit());
+void ScriptWriterThread::process(QString lines) {
+    foreach (QString line, lines.split("\n")) {
+        line = line.remove(rxRemoveTags);
+        TextUtils::htmlToPlain(line);
+        emit writeText(line.toLocal8Bit());
+    }
 }
 
 ScriptWriterThread::~ScriptWriterThread() {
