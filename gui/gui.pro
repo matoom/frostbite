@@ -30,6 +30,7 @@ include(window/window.pri)
 include(custom/custom.pri)
 include(audio/audio.pri)
 include(toolbar/toolbar.pri)
+include(dict/dict.pri)
 
 APP_NAME = Frostbite
 

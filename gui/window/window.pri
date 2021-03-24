@@ -9,7 +9,8 @@ HEADERS += \
     $$PWD/roomwindow.h \
     $$PWD/expwindow.h \
     $$PWD/groupwindow.h \
-    $$PWD/combatwindow.h
+    $$PWD/combatwindow.h \
+    $$PWD/dictionarywindow.h
 
 SOURCES += \
     $$PWD/spellwindow.cpp \
@@ -22,4 +23,5 @@ SOURCES += \
     $$PWD/roomwindow.cpp \
     $$PWD/expwindow.cpp \
     $$PWD/groupwindow.cpp \
-    $$PWD/combatwindow.cpp
+    $$PWD/combatwindow.cpp \
+    $$PWD/dictionarywindow.cpp

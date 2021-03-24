@@ -84,6 +84,12 @@ void GameWindow::buildContextMenu() {
 
     menu->addSeparator();
 
+    
+    lookupDictAct = new QAction(tr("&Lookup in Dictionary\t"), this);
+    menu->addAction(lookupDictAct);
+    lookupDictAct->setEnabled(false);
+    connect(lookupDictAct, SIGNAL(triggered()), this, SLOT(lookupInDictionary()));
+    
     copyAct = new QAction(tr("&Copy\t"), this);
     menu->addAction(copyAct);
     copyAct->setEnabled(false);
@@ -127,6 +133,17 @@ void GameWindow::resizeEvent(QResizeEvent *event) {
 
 void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
+    lookupDictAct->setEnabled(enabled);
+}
+
+void GameWindow::lookupInDictionary() {
+  QTextCursor textCursor = this->textCursor();
+  if (textCursor.hasSelection()) {
+    QString word = textCursor.selectedText().trimmed().toLower();
+    if (word.size()) {
+        mainWindow->getDictionaryService()->translate(word);
+    }
+  }
 }
 
 void GameWindow::copySelected() {
@@ -139,6 +156,7 @@ void GameWindow::copySelected() {
 
 GameWindow::~GameWindow() {        
     delete appearanceAct;
+    delete lookupDictAct;
     delete copyAct;
     delete selectAct;
     delete clearAct;

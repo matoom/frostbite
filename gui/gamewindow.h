@@ -53,6 +53,7 @@ private:
     Snapshot* snapshot;
 
     QAction* appearanceAct;
+    QAction* lookupDictAct;
     QAction* copyAct;
     QAction* selectAct;
     QAction* clearAct;
@@ -65,6 +66,7 @@ private:
 signals:    
 
 private slots:
+    void lookupInDictionary();
     void copySelected();
     void enableCopy(bool);
     void saveAsHtml();

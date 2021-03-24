@@ -16,6 +16,7 @@
 #include <generalsettings.h>
 #include <tray.h>
 #include <scriptapiserver.h>
+#include <dict/dictionaryservice.h>
 //#include <compass/compassview.h>
 
 #include "cleanlooks/qcleanlooksstyle.h"
@@ -114,6 +115,7 @@ public:
     TcpClient* getTcpClient();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
+    DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();
 
@@ -128,6 +130,7 @@ private:
     MenuHandler* menuHandler;
     ScriptService* scriptService;
     ScriptApiServer* scriptApiServer;
+    DictionaryService* dictionaryService;
 
     Tray* tray;
     TimerBar* timerBar;
