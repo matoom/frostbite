@@ -4,7 +4,6 @@
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QLabel>
-#include <QMessageBox>
 
 DictionaryDialog::DictionaryDialog(QWidget *parent) : QDialog(parent), settings(DictionarySettings::getInstance()) {
     setWindowTitle(tr("Dictionary settings"));
