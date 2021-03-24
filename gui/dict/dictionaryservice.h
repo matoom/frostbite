@@ -2,8 +2,6 @@
 #define DICTIONARYSERVICE_H
 
 #include <QObject>
-#include <QMutex>
-#include <QQueue>
 #include <QProcess>
 
 class DictionarySettings;
@@ -21,11 +19,13 @@ public:
     ~DictionaryService();
 
     void translate(const QString& word);
-    
 signals:
     void translationFinished(QString translation);
     void translationFailed(QString reason);
 
+private:
+    void emitError(const QString& reason);
+        
 private slots:
     void processErrorOccurred(QProcess::ProcessError error);
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -33,8 +33,6 @@ private slots:
 private:
     DictionarySettings *settings;
     QProcess* process;
-    QMutex mutex;
-    QQueue<QString> wordQueue;
 };
 
 #endif // DICTIONARYSERVICE_H
