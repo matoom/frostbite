@@ -86,6 +86,11 @@ void GenericWindow::buildContextMenu() {
     menu->addAction(appearanceAct);
     connect(appearanceAct, SIGNAL(triggered()), this, SLOT(changeAppearance()));
 
+    lookupDictAct = new QAction(tr("&Lookup in Dictionary\t"), this);
+    menu->addAction(lookupDictAct);
+    lookupDictAct->setEnabled(false);
+    connect(lookupDictAct, SIGNAL(triggered()), this, SLOT(lookupInDictionary()));
+
     menu->addSeparator();
 
     fontAct = new QAction(tr("&" WINDOW_FONT_SET "\t"), this);
@@ -162,6 +167,17 @@ void GenericWindow::contextMenuEvent(QContextMenuEvent* event) {
 
 void GenericWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
+    lookupDictAct->setEnabled(enabled);    
+}
+
+void GenericWindow::lookupInDictionary() {
+  QTextCursor textCursor = this->textCursor();
+  if (textCursor.hasSelection()) {
+    QString word = textCursor.selectedText().trimmed().toLower();
+    if (word.size()) {
+        mainWindow->getDictionaryService()->translate(word);
+    }
+  }
 }
 
 void GenericWindow::copySelected() {
