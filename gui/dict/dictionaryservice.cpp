@@ -53,13 +53,18 @@ void DictionaryService::processErrorOccurred(QProcess::ProcessError error) {
 void DictionaryService::processFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     switch (exitStatus) {
     case QProcess::NormalExit:
-        if (exitCode == 0 || exitCode == 21) {
-            // 21 is the error code for dict meaning
-            // "Approximate matches found"
+        switch (exitCode) {
+        case 0: {
             QString translation = process->readAllStandardOutput();
+            emit translationFinished(translation);                        
+        } break;
+        case 21: { // dict error code "Approximate matches found"
+            QString translation = process->readAllStandardError();
             emit translationFinished(translation);            
-        } else {
+        } break;
+        default:
             emitError("Word not found");
+            break;
         }
         break;
     default:
