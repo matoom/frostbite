@@ -28,10 +28,6 @@ public:
 private:
     explicit DictionarySettings();
 
-    void init();
-
-    QSettings* settings;
-
     ClientSettings* clientSettings;
 };
 

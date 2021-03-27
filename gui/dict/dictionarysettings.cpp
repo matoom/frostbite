@@ -17,51 +17,29 @@ DictionarySettings* DictionarySettings::getInstance() {
     return uniqueInstance;
 }
 
-DictionarySettings::DictionarySettings() {
-    clientSettings = ClientSettings::getInstance();
-    this->init();
+DictionarySettings::DictionarySettings() : clientSettings(ClientSettings::getInstance()) {
 }
 
-DictionarySettings::~DictionarySettings() {    
-    delete settings;
+DictionarySettings::~DictionarySettings() {
 }
-
-
-void DictionarySettings::init() {    
-    settings = new QSettings(clientSettings->profilePath() + "dict.ini", QSettings::IniFormat);
-}
-
-void DictionarySettings::reInit() {
-    delete settings;
-    this->init();
-}
-
-void DictionarySettings::setParameter(QString name, QVariant value) {
-    settings->setValue(name, value);
-}
-
-QVariant DictionarySettings::getParameter(QString name, QVariant defaultValue) const {
-    return settings->value(name, defaultValue);
-}
-
 
 QString DictionarySettings::getDictCommand() const {
-    return settings->value(DICTIONARY_NAME_PATH,
-        DEFAULT_DICT_CMD).value<QString>();
+    return clientSettings->getParameter(DICTIONARY_NAME_PATH,
+                                        DEFAULT_DICT_CMD).toString();
 }
 
 QString DictionarySettings::getDictArguments() const {
-    return settings->value(DICTIONARY_ARGS_PATH,
-        DEFAULT_DICT_ARGS).value<QString>();
+    return clientSettings->getParameter(DICTIONARY_ARGS_PATH,
+                                        DEFAULT_DICT_ARGS).toString();
 }
 
 DictionarySettings& DictionarySettings::setDictCommand(const QString &cmd) {
-    settings->setValue(DICTIONARY_NAME_PATH, cmd);
+    clientSettings->setParameter(DICTIONARY_NAME_PATH, cmd);
     return *this;
 }
 
 DictionarySettings& DictionarySettings::setDictArguments(const QString& args) {
-    settings->setValue(DICTIONARY_ARGS_PATH, args);
+    clientSettings->setParameter(DICTIONARY_ARGS_PATH, args);
     return *this;
 }
 
