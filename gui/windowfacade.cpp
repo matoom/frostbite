@@ -2,7 +2,7 @@
 
 QStringList WindowFacade::staticWindows = QStringList() << "inv" << "familiar" << "thoughts"
     << "logons" << "death" << "assess" << "conversation" << "whispers" << "talk" << "experience"
-    << "group" << "atmospherics" << "ooc" << "room" << "percWindow" << "chatter";
+    << "group" << "atmospherics" << "ooc" << "room" << "percWindow" << "chatter" << "dictionary";
 
 WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;    
@@ -228,6 +228,9 @@ void WindowFacade::loadWindows() {
     combatWindow = new CombatWindow(mainWindow);
     dockWindows << combatWindow->getDockWidget();
 
+    dictionaryWindow = new DictionaryWindow(mainWindow);
+    dockWindows << dictionaryWindow->getDockWidget();
+
     compassView = new CompassView(mainWindow);
     compassView->paint(compass);
 
@@ -242,11 +245,13 @@ void WindowFacade::loadWindows() {
         mainWindow->tabifyDockWidget(familiarWindow->getDockWidget(), spellWindow->getDockWidget());        
         mainWindow->tabifyDockWidget(spellWindow->getDockWidget(), atmosphericsWindow->getDockWidget());
         mainWindow->tabifyDockWidget(atmosphericsWindow->getDockWidget(), combatWindow->getDockWidget());
+        mainWindow->tabifyDockWidget(combatWindow->getDockWidget(), dictionaryWindow->getDockWidget());
 
         groupWindow->getDockWidget()->close();
         combatWindow->getDockWidget()->close();
         atmosphericsWindow->getDockWidget()->close();
         familiarWindow->getDockWidget()->close();
+        dictionaryWindow->getDockWidget()->close();
     }
 
     this->updateWindowStyle();
@@ -313,6 +318,11 @@ GroupWindow* WindowFacade::getGroupWindow() {
 CombatWindow* WindowFacade::getCombatWindow() {
     return this->combatWindow;
 }
+
+DictionaryWindow* WindowFacade::getDictionaryWindow() {
+    return this->dictionaryWindow;
+}
+
 
 MapFacade* WindowFacade::getMapFacade() {
     return this->mapFacade;

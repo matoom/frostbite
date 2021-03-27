@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 
 #include <generalsettings.h>
+#include <dict/dictionarysettings.h>
 #include <mainwindow.h>
 #include <windowinterface.h>
 #include <snapshot.h>
@@ -38,17 +39,20 @@ public:
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent *e);    
     void buildContextMenu();    
     void loadSettings();
 
     MainWindow* mainWindow;
     GeneralSettings* settings;
+    DictionarySettings* dictionarySettings;
     WindowFacade* wm;
     QString windowId;
 
     Snapshot* snapshot;
 
     QAction* appearanceAct;
+    QAction* lookupDictAct;    
     QAction* copyAct;
     QAction* selectAct;
     QAction* saveAct;
@@ -63,6 +67,7 @@ private:
 signals:
 
 private slots:
+    void lookupInDictionary();    
     void copySelected();
     void enableCopy(bool);
     void saveAsHtml();

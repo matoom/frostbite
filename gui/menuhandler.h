@@ -17,6 +17,7 @@
 #include <clientsettings.h>
 #include <scriptsettingsdialog.h>
 #include <audio/volumecontroldialog.h>
+#include <dict/dictionarydialog.h>
 
 class ConnectWizard;
 class MainWindow;
@@ -28,6 +29,7 @@ class ScriptEditDialog;
 class ProfileAddDialog;
 class ScriptSettingsDialog;
 class VolumeControlDialog;
+class DictionaryDialog;
 
 #define USER_GUIDE_URL "http://matoom.github.com/frostbite"
 
@@ -56,6 +58,7 @@ private:
     ProfileAddDialog* profileAddDialog;
     WindowFacade* windowFacade;
     VolumeControlDialog* volumeControlDialog;
+    DictionaryDialog* dictionaryDialog;
 
     QMenu* profilesMenu;
     QAction* action;

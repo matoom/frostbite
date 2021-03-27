@@ -197,6 +197,7 @@ QTabBar {
     <addaction name="actionAppearance"/>
     <addaction name="actionSubstitute"/>
     <addaction name="actionMacros"/>
+    <addaction name="actionDictionary"/>
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="title">
@@ -368,6 +369,17 @@ QTabBar {
    </property>
    <property name="text">
     <string>Window Appearance</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="actionDictionary">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Dictionary</string>
    </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>

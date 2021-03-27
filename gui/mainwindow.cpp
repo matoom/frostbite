@@ -143,8 +143,15 @@ void MainWindow::loadClient() {
 
     scriptApiServer = new ScriptApiServer(this);
 
+    dictionaryService = new DictionaryService(this);
+    
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
+
+    connect(dictionaryService, SIGNAL(translationFinished(QString)),
+            windowFacade->getDictionaryWindow(), SLOT(write(QString)));
+    connect(dictionaryService, SIGNAL(translationFailed(QString)),
+            windowFacade->getDictionaryWindow(), SLOT(write(QString)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -169,6 +176,10 @@ CommandLine* MainWindow::getCommandLine() {
 
 ScriptService* MainWindow::getScriptService() {
     return scriptService;
+}
+
+DictionaryService* MainWindow::getDictionaryService() {
+    return dictionaryService;
 }
 
 TimerBar* MainWindow::getTimerBar() {

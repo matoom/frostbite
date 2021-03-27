@@ -64,6 +64,11 @@
 #define DEFAULT_CMD_RT_COLOR "#E86850"
 #define DEFAULT_CMD_CT_COLOR "#66A7C5"
 
+#define DEFAULT_DICT_CMD "dict"
+#define DEFAULT_DICT_ARGS ""
+#define DEFAULT_DICT_DBLCLK_ENABLED false
+#define DEFAULT_DICT_DBLCLK_MOD Qt::NoModifier
+
 #define WINDOW_TITLE_MAIN "Main"
 
 #define DOCK_TITLE_DEATHS "Deaths"
@@ -78,6 +83,7 @@
 #define DOCK_TITLE_MAP "Map"
 #define DOCK_TITLE_ATMOSPHERICS "Atmospherics"
 #define DOCK_TITLE_COMBAT "Combat"
+#define DOCK_TITLE_DICTIONARY "Dictionary"
 
 #define SCRIPT_ENTRY QApplication::applicationDirPath() + "/scripts/lib/main.rb"
 #define SCRIPT_INTERPRETER "ruby"

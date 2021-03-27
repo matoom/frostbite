@@ -1,4 +1,5 @@
 #include "menuhandler.h"
+#include "gui/dict/dictionarydialog.h"
 
 MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
@@ -13,6 +14,8 @@ MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     aboutDialog = new AboutDialog(qobject_cast<QWidget *>(parent));
     scriptEditDialog = new ScriptEditDialog(qobject_cast<QWidget *>(parent));    
     volumeControlDialog = new VolumeControlDialog(qobject_cast<QWidget *>(parent));
+    dictionaryDialog = new DictionaryDialog(qobject_cast<QWidget *>(parent));
+    
     profileAddDialog = new ProfileAddDialog();
 
     windowFacade = mainWindow->getWindowFacade();
@@ -68,6 +71,8 @@ void MenuHandler::menuTriggered(QAction* action) {
         alterDialog->show();
     } else if (action->objectName() == "actionAppearance") {
         appearanceDialog->show();
+    } else if(action->objectName() == "actionDictionary") {
+        dictionaryDialog->show();
     } else if(action->objectName() == "actionExit") {
         mainWindow->close();
     } else if(action->objectName() == "actionAbout") {
