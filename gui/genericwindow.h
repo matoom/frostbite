@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 
 #include <generalsettings.h>
+#include <dict/dictionarysettings.h>
 #include <mainwindow.h>
 #include <windowinterface.h>
 #include <snapshot.h>
@@ -38,11 +39,13 @@ public:
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent *e);    
     void buildContextMenu();    
     void loadSettings();
 
     MainWindow* mainWindow;
     GeneralSettings* settings;
+    DictionarySettings* dictionarySettings;
     WindowFacade* wm;
     QString windowId;
 

@@ -10,6 +10,8 @@ Q_GLOBAL_STATIC(DictionarySettingsInstance, uniqueInstance)
 namespace {
 const char* DICTIONARY_NAME_PATH = "Dictionary/Command";
 const char* DICTIONARY_ARGS_PATH = "Dictionary/Arguments";
+const char* DICTIONARY_DBLCLICK_PATH = "Dictionary/DoubleClickEnabled";
+const char* DICTIONARY_DBLCLICK_MOD_PATH = "Dictionary/DoubleClickModifier";
 }
 
 
@@ -33,6 +35,32 @@ QString DictionarySettings::getDictArguments() const {
                                         DEFAULT_DICT_ARGS).toString();
 }
 
+bool DictionarySettings::getDoubleClickEnabled() const {
+    return clientSettings->getParameter(DICTIONARY_DBLCLICK_PATH,
+                                        DEFAULT_DICT_DBLCLK_ENABLED).toBool();
+}
+
+Qt::KeyboardModifier DictionarySettings::getDoubleClickModifier() const {
+    bool ok;
+    uint modifierVal = clientSettings->getParameter(DICTIONARY_DBLCLICK_MOD_PATH,
+                                                    DEFAULT_DICT_DBLCLK_MOD).toUInt(&ok);
+    // Accept only known modifiers
+    Qt::KeyboardModifier modifier = DEFAULT_DICT_DBLCLK_MOD;
+    if (ok) {
+        switch (modifierVal) {
+        case Qt::ShiftModifier:
+        case Qt::ControlModifier:
+        case Qt::AltModifier:
+            modifier = static_cast<Qt::KeyboardModifier>(modifierVal);
+            break;
+        default:
+            break;
+        };
+    }
+    return modifier;
+}
+
+
 DictionarySettings& DictionarySettings::setDictCommand(const QString &cmd) {
     clientSettings->setParameter(DICTIONARY_NAME_PATH, cmd);
     return *this;
@@ -40,6 +68,16 @@ DictionarySettings& DictionarySettings::setDictCommand(const QString &cmd) {
 
 DictionarySettings& DictionarySettings::setDictArguments(const QString& args) {
     clientSettings->setParameter(DICTIONARY_ARGS_PATH, args);
+    return *this;
+}
+
+DictionarySettings& DictionarySettings::setDoubleClickEnabled(bool enabled) {
+    clientSettings->setParameter(DICTIONARY_DBLCLICK_PATH, enabled);
+    return *this;
+}
+
+DictionarySettings& DictionarySettings::setDoubleClickModifier(Qt::KeyboardModifier modifier) {
+    clientSettings->setParameter(DICTIONARY_DBLCLICK_MOD_PATH, modifier);
     return *this;
 }
 

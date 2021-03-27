@@ -14,16 +14,18 @@ public:
  
     ~DictionarySettings();
 
-    void reInit();
-
     void setParameter(QString name, QVariant value);
     QVariant getParameter(QString name, QVariant defaultValue) const;
 
     QString getDictCommand() const;
     QString getDictArguments() const;
+    bool getDoubleClickEnabled() const;
+    Qt::KeyboardModifier getDoubleClickModifier() const;
 
     DictionarySettings& setDictCommand(const QString& cmd);
     DictionarySettings& setDictArguments(const QString& args);
+    DictionarySettings& setDoubleClickEnabled(bool enabled);
+    DictionarySettings& setDoubleClickModifier(Qt::KeyboardModifier modifier);
     
 private:
     explicit DictionarySettings();

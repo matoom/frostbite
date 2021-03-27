@@ -2,18 +2,25 @@
 #define DICTIONARYDIALOG_H
 
 #include <QDialog>
+#include <vector>
+#include <utility>
 
+class QRadioButton;
 class QLineEdit;
 class DictionarySettings;
+class QGroupBox;
 
 class DictionaryDialog : public QDialog {
     Q_OBJECT
+public:
+    typedef std::pair<Qt::KeyboardModifier, QRadioButton*> ButtonPair;
+    
 public:
     explicit DictionaryDialog(QWidget *parent = 0);
     ~DictionaryDialog();
 
 private:
-    void saveChanges();
+    void saveSettings();
     void loadSettings();
 
 private slots:
@@ -24,8 +31,11 @@ private slots:
 private:
     QLineEdit* dictNameEdit;
     QLineEdit* dictArgumentsEdit;
-
+    QGroupBox* hotkeyOptionsBox;
+    
     DictionarySettings* settings;
+    typedef std::vector<ButtonPair> ButtonVector;
+    ButtonVector dblClkButtons;
 };
 
 #endif // DICTIONARYDIALOG_H

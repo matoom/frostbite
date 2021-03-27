@@ -3,6 +3,7 @@
 GenericWindow::GenericWindow(QString title, QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
     settings = GeneralSettings::getInstance();
+    dictionarySettings = DictionarySettings::getInstance();
     wm = mainWindow->getWindowFacade();
     snapshot = new Snapshot(this);
 
@@ -163,6 +164,15 @@ void GenericWindow::contextMenuEvent(QContextMenuEvent* event) {
     QPoint point = event->globalPos();
     point.rx()--; point.ry()--;
     menu->exec(point);
+}
+
+void GenericWindow::mouseDoubleClickEvent(QMouseEvent *e) {
+    QPlainTextEdit::mouseDoubleClickEvent(e);
+    if (dictionarySettings->getDoubleClickEnabled() &&
+        e->button() == Qt::LeftButton &&
+        e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
+        lookupInDictionary();
+    }
 }
 
 void GenericWindow::enableCopy(bool enabled) {

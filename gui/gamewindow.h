@@ -8,6 +8,7 @@
 #include <mainwindow.h>
 #include <windowfacade.h>
 #include <generalsettings.h>
+#include <dict/dictionarysettings.h>
 #include <defaultvalues.h>
 #include <windowinterface.h>
 #include <snapshot.h>
@@ -17,6 +18,7 @@ class MainWindow;
 class WindowFacade;
 class Snapshot;
 class Compass;
+class DictionarySettings;
 
 class GameWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT
@@ -40,7 +42,8 @@ public:
 private:
     void contextMenuEvent(QContextMenuEvent* event);
     void resizeEvent(QResizeEvent* event);
-
+    void mouseDoubleClickEvent(QMouseEvent *e);
+    
     void loadSettings();
     void buildContextMenu();
 
@@ -49,6 +52,7 @@ private:
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
     GeneralSettings* settings;
+    DictionarySettings* dictionarySettings;
 
     Snapshot* snapshot;
 

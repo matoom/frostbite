@@ -66,6 +66,8 @@
 
 #define DEFAULT_DICT_CMD "dict"
 #define DEFAULT_DICT_ARGS ""
+#define DEFAULT_DICT_DBLCLK_ENABLED false
+#define DEFAULT_DICT_DBLCLK_MOD Qt::NoModifier
 
 #define WINDOW_TITLE_MAIN "Main"
 

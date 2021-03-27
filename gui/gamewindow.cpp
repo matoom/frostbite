@@ -4,6 +4,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
     windowFacade = mainWindow->getWindowFacade();
     settings = GeneralSettings::getInstance();
+    dictionarySettings = DictionarySettings::getInstance();
     snapshot = new Snapshot(this);
 
     this->setObjectName(WINDOW_TITLE_MAIN);
@@ -131,10 +132,20 @@ void GameWindow::resizeEvent(QResizeEvent *event) {
     QPlainTextEdit::resizeEvent(event);
 }
 
+void GameWindow::mouseDoubleClickEvent(QMouseEvent *e) {
+    QPlainTextEdit::mouseDoubleClickEvent(e);
+    if (dictionarySettings->getDoubleClickEnabled() &&
+        e->button() == Qt::LeftButton &&
+        e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
+        lookupInDictionary();
+    }
+}
+
 void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
     lookupDictAct->setEnabled(enabled);
 }
+
 
 void GameWindow::lookupInDictionary() {
   QTextCursor textCursor = this->textCursor();
