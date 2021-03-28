@@ -1,4 +1,5 @@
 #include "gamewindow.h"
+#include <QDesktopServices>
 
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
@@ -140,6 +141,22 @@ void GameWindow::mouseDoubleClickEvent(QMouseEvent *e) {
         lookupInDictionary();
     }
 }
+
+void GameWindow::mousePressEvent(QMouseEvent *e) {
+    clickedAnchor = (e->button() == Qt::LeftButton) ?
+        anchorAt(e->pos()) : QString();
+    QPlainTextEdit::mousePressEvent(e);
+}
+
+void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton &&
+        !clickedAnchor.isEmpty() &&
+        anchorAt(e->pos()) == clickedAnchor) {
+        QDesktopServices::openUrl(QUrl(clickedAnchor, QUrl::TolerantMode));
+    }
+    QPlainTextEdit::mouseReleaseEvent(e);
+}
+
 
 void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
