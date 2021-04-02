@@ -45,6 +45,7 @@ private:
     void mouseDoubleClickEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent*);
     
     void loadSettings();
     void buildContextMenu();

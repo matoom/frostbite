@@ -16,6 +16,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     this->setFocusPolicy(Qt::NoFocus);
     this->setReadOnly(true);
     this->setUndoRedoEnabled(false);
+    this->setMouseTracking(true);
     this->document()->setMaximumBlockCount(GAME_WINDOW_LIMIT);
 
     _append = true;
@@ -24,7 +25,7 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(enableCopy(bool)));
 
     /* workaround for bottom margin */
-    setViewportMargins(0, 0, 0, -6);    
+    setViewportMargins(0, 0, 0, -6);
 }
 
 void GameWindow::setAppend(bool append) {
@@ -157,6 +158,14 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
     QPlainTextEdit::mouseReleaseEvent(e);
 }
 
+void GameWindow::mouseMoveEvent(QMouseEvent *e) {
+    if(!anchorAt(e->pos()).isEmpty()) {
+        viewport()->setCursor(Qt::PointingHandCursor);
+    } else {
+        viewport()->unsetCursor();
+    }
+    QPlainTextEdit::mouseMoveEvent(e);
+}
 
 void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
