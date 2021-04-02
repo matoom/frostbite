@@ -43,6 +43,8 @@ private:
     void contextMenuEvent(QContextMenuEvent* event);
     void resizeEvent(QResizeEvent* event);
     void mouseDoubleClickEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
     
     void loadSettings();
     void buildContextMenu();
@@ -67,6 +69,7 @@ private:
     bool _append;
     bool _stream;
 
+    QString clickedAnchor;
 signals:    
 
 private slots:
