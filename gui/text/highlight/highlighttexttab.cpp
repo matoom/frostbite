@@ -37,6 +37,8 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     groupSelect = highlightDialog->getTextHighlightGroup();
     sortBySelect = highlightDialog->getTextHighlightSortBy();
     filterEdit = highlightDialog->getTextHighlightFilter();
+    commandBox = highlightDialog->getTextCommandGroup();
+    commandValueLine = highlightDialog->getTextCommandValue();
 
     playButton = highlightDialog->getTextPlayButton();
 

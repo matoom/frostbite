@@ -63,6 +63,8 @@ private:
     QComboBox *groupSelect;
     QComboBox *sortBySelect;
     QLineEdit *filterEdit;
+    QGroupBox *commandBox;
+    QLineEdit *commandValueLine;
 
     QListWidget *listWidget;
     QDialog *addDialog;

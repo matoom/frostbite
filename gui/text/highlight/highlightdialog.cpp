@@ -112,6 +112,14 @@ QLineEdit* HighlightDialog::getTextTimerValue(){
     return ui->tTimerValue;
 }
 
+QGroupBox* HighlightDialog::getTextCommandGroup() {
+    return ui->tCommandGroup;  
+}
+
+QLineEdit* HighlightDialog::getTextCommandValue() {
+    return ui->tOnClickCommand;
+}
+
 QGroupBox* HighlightDialog::getTextAlertGroup(){
     return ui->tAlertGroup;
 }
