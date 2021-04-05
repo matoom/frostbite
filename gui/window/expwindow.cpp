@@ -1,5 +1,13 @@
 #include "expwindow.h"
 
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "gridwindow.h"
+#include "gridwriterthread.h"
+#include "gamedatacontainer.h"
+#include "defaultvalues.h"
+#include "gridwindowfactory.h"
+
 ExpWindow::ExpWindow(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = (WindowFacade*)mainWindow->getWindowFacade();

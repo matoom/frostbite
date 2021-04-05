@@ -2,13 +2,13 @@
 #define IGNORETAB_H
 
 #include <QObject>
+#include <QCheckBox>
 
-#include <text/alter/alterdialog.h>
-#include <text/alter/altersettingsentry.h>
-#include <text/alter/ignoresettings.h>
-#include <text/alter/abstracttabletab.h>
+#include "text/alter/abstracttabletab.h"
 
 class AlterDialog;
+class AlterSettingsEntry;
+class IgnoreSettings;
 
 enum class TableChangeEvent;
 

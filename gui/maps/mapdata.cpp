@@ -1,4 +1,8 @@
 #include "mapdata.h"
+#include "maps/mapreader.h"
+#include "maps/mapnode.h"
+#include "maps/mapzone.h"
+#include "maps/mapdestination.h"
 
 MapData::MapData(MapReader* parent) : QObject(parent) {
     mapReader = parent;
@@ -8,12 +12,12 @@ QString MapData::getZones() {
     return mapReader->getZones().keys().join(",");
 }
 
-void MapData::setRoom(RoomNode roomNode) {
+void MapData::setRoom(const RoomNode& roomNode) {
     QWriteLocker locker(&lock);
     this->roomNode = roomNode;
 }
 
-RoomNode MapData::getRoom() {
+const RoomNode& MapData::getRoom() const {
     QReadLocker locker(&lock);
     return this->roomNode;
 }

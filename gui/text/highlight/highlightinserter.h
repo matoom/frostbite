@@ -3,11 +3,6 @@
 
 #include <QObject>
 
-#include <mainwindow.h>
-
-#include <text/highlight/highlightsettings.h>
-#include <text/highlight/highlightsettingsentry.h>
-
 class MainWindow;
 
 class HighlightInserter : public QObject {

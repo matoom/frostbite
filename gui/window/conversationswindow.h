@@ -2,8 +2,14 @@
 #define CONVERSATIONSWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
+#include <QDockWidget>
+
+class MainWindow;
+class WindowFacade;
+class GenericWindow;
+class WindowWriterThread;
+class ConversationsLogger;
+class ClientSettings;
 
 class ConversationsWindow : public QObject {
     Q_OBJECT

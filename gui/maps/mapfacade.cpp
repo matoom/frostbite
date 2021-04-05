@@ -1,5 +1,22 @@
 #include "mapfacade.h"
 
+#include <QDockWidget>
+#include <QComboBox>
+#include <QLabel>
+#include <QGraphicsTextItem>
+
+#include "mainwindow.h"
+#include "maps/mapwindowfactory.h"
+#include "maps/mapwindow.h"
+#include "maps/mapreader.h"
+#include "maps/mapdialog.h"
+#include "maps/mapdata.h"
+#include "maps/mapzone.h"
+#include "maps/mapnode.h"
+#include "generalsettings.h"
+#include "globaldefines.h"
+#include "defaultvalues.h"
+
 MapFacade::MapFacade(MainWindow *parent) : QObject(parent) {
     mainWindow = parent;
     mapWindowFactory = new MapWindowFactory(this);

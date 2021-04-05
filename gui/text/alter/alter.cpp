@@ -1,5 +1,9 @@
 #include "alter.h"
 
+#include "text/alter/substitutionsettings.h"
+#include "text/alter/ignoresettings.h"
+#include "textutils.h"
+
 Alter::Alter(QObject *parent) : QObject(parent) {
     ignoreSettings = IgnoreSettings::getInstance();
     ignoreList = ignoreSettings->getIgnores();

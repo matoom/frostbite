@@ -1,5 +1,12 @@
 #include "ignoretab.h"
 
+#include "text/alter/alterdialog.h"
+#include "text/alter/altersettingsentry.h"
+#include "text/alter/ignoresettings.h"
+#include "globaldefines.h"
+
+#include <QHeaderView>
+
 IgnoreTab::IgnoreTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     alterDialog = (AlterDialog*)parent;
 

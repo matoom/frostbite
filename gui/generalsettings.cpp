@@ -1,5 +1,10 @@
 #include "generalsettings.h"
+
 #include <QGlobalStatic>
+
+#include "clientsettings.h"
+#include "defaultvalues.h"
+
 
 Q_GLOBAL_STATIC(GeneralSettingsInstance, uniqueInstance)
 

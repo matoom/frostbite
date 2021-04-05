@@ -1,5 +1,19 @@
 #include "mapwindow.h"
 
+#include <QGraphicsTextItem>
+
+#include "globaldefines.h"
+#include "custom/contextmenu.h"
+#include "maps/mapzone.h"
+#include "maps/mapfacade.h"
+#include "maps/mapreader.h"
+#include "maps/mapnode.h"
+#include "generalsettings.h"
+#include "textutils.h"
+#include "gamedatacontainer.h"
+
+
+
 MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
     mapFacade = parent;
     selected = NULL;

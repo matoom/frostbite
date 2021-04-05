@@ -6,9 +6,6 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <toolbar/toolbardefines.h>
-#include <defaultvalues.h>
-
 class SpellIndicator : public QObject {
     Q_OBJECT
 

@@ -2,18 +2,7 @@
 #define TOOLBAR_H
 
 #include <QObject>
-
-#include <mainwindow.h>
-#include <toolbar/vitalsindicator.h>
-#include <toolbar/statusindicator.h>
-#include <toolbar/wieldindicator.h>
-#include <toolbar/spellindicator.h>
-#include <toolbar/quickbuttondisplay.h>
-#include <toolbar/quickbuttoneditdialog.h>
-#include <toolbar/fullscreenbutton.h>
-#include <toolbar/activespellindicator.h>
-#include <toolbar/mutebutton.h>
-#include <gamedatacontainer.h>
+#include <QAction>
 
 class MainWindow;
 class QuickButtonDisplay;
@@ -21,6 +10,12 @@ class QuickButtonEditDialog;
 class GameDataContainer;
 class FullscreenButton;
 class MuteButton;
+class WieldIndicator;
+class VitalsIndicator;
+class StatusIndicator;
+class ActiveSpellIndicator;
+class SpellIndicator;
+class ClientSettings;
 
 class Toolbar : public QObject {
     Q_OBJECT

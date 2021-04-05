@@ -4,9 +4,6 @@
 #include <QObject>
 #include <QToolButton>
 
-#include <toolbar/toolbar.h>
-#include <mainwindow.h>
-
 class Toolbar;
 class MainWindow;
 

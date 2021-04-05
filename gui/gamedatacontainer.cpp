@@ -1,5 +1,7 @@
 #include "gamedatacontainer.h"
 
+#include "textutils.h"
+
 GameDataContainer* GameDataContainer::m_pInstance = NULL;
 
 GameDataContainer* GameDataContainer::Instance() {

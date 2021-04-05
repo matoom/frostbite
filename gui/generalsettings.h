@@ -6,8 +6,7 @@
 #include <QDebug>
 #include <QDir>
 
-#include <clientsettings.h>
-#include <defaultvalues.h>
+class ClientSettings;
 
 class GeneralSettings {    
     friend class GeneralSettingsInstance;

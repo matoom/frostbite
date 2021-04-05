@@ -4,15 +4,13 @@
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
-
-#include <text/highlight/highlightdialog.h>
-#include <text/highlight/highlightsettings.h>
-#include <text/highlight/highlightsettingsentry.h>
-#include <audio/audioplayer.h>
+#include <QPushButton>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QSlider>
 
 class HighlightDialog;
 class HighlightSettings;
-class HighlightSettingsEntry;
 class AudioPlayer;
 
 class HighlightAlertTab : public QObject {

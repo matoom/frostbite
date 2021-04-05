@@ -7,10 +7,7 @@
 #include <QDockWidget>
 #include <QMenu>
 
-#include <defaultvalues.h>
-#include <globaldefines.h>
-
-#include <text/alter/altersettingsentry.h>
+#include "text/alter/altersettingsentry.h"
 
 enum class TableChangeEvent { Add, Remove, Update };
 

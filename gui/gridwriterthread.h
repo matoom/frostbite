@@ -3,12 +3,14 @@
 
 #include <QObject>
 #include <QThread>
-
-#include <mainwindow.h>
-#include <text/alter/alter.h>
-
+#include <QQueue>
+#include <QMutex>
+#include <QMap>
+ 
 class Highlighter;
 class GridWindow;
+class MainWindow;
+class Alter;
 
 struct GridEntry {
     QString name;

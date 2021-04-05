@@ -1,5 +1,9 @@
 #include "script.h"
 
+#include "scriptservice.h"
+#include "clientsettings.h"
+#include "defaultvalues.h"
+
 Script::Script(QObject *parent) : QObject(parent), script_proc(new QProcess(this)) {
     scriptService = (ScriptService*)parent;
     clientSettings = ClientSettings::getInstance();

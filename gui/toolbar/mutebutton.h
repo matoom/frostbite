@@ -4,8 +4,9 @@
 #include <QObject>
 #include <QToolButton>
 
-#include <clientsettings.h>
-#include <toolbar/toolbar.h>
+class Toolbar;
+class ClientSettings;
+class MainWindow;
 
 class MuteButton : QToolButton {
     Q_OBJECT

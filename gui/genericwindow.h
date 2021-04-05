@@ -4,19 +4,16 @@
 #include <QObject>
 #include <QPlainTextEdit>
 #include <QMouseEvent>
-
-#include <generalsettings.h>
-#include <dict/dictionarysettings.h>
-#include <mainwindow.h>
-#include <windowinterface.h>
-#include <snapshot.h>
 #include <QScrollBar>
-#include <custom/contextmenu.h>
+
+#include "windowinterface.h"
 
 class MainWindow;
 class WindowFacade;
 class GeneralSettings;
+class DictionarySettings;
 class Snapshot;
+class ContextMenu;
 
 class GenericWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT

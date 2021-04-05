@@ -8,11 +8,11 @@
 #include <QMouseEvent>
 #include <QGraphicsDropShadowEffect>
 #include <QLabel>
-#include <compass.h>
-#include <mainwindow.h>
-#include <gamewindow.h>
 
 class GameWindow;
+class ClientSettings;
+class MainWindow;
+class Compass;
 
 class CompassView : public QWidget {
     Q_OBJECT

@@ -1,5 +1,12 @@
 #include "macroservice.h"
 
+#include "commandline.h"
+#include "mainwindow.h"
+#include "macrothread.h"
+#include "macrosettings.h"
+#include "windowfacade.h"
+
+
 MacroService::MacroService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     macroSettings = MacroSettings::getInstance();

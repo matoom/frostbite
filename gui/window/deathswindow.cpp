@@ -1,4 +1,12 @@
 #include "deathswindow.h"
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "genericwindow.h"
+#include "deathslogger.h"
+#include "clientsettings.h"
+#include "genericwindowfactory.h"
+#include "windowwriterthread.h"
+#include "defaultvalues.h"
 
 DeathsWindow::DeathsWindow(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;

@@ -1,6 +1,15 @@
 #include "appearancedialog.h"
 #include "ui_appearancedialog.h"
 
+#include "defaultvalues.h"
+#include "mainwindow.h"
+#include "generalsettings.h"
+#include "windowfacade.h"
+#include "roundtimedisplay.h"
+#include "commandline.h"
+#include "windowfacade.h"
+
+
 AppearanceDialog::AppearanceDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AppearanceDialog) {
     ui->setupUi(this);
 

@@ -1,5 +1,22 @@
 #include "commandline.h"
 
+#include <QScrollBar>
+
+#include "mainwindow.h"
+#include "roundtimedisplay.h"
+#include "keyboardfilter.h"
+#include "macroservice.h"
+#include "wordcompleter.h"
+#include "genieutils.h"
+#include "generalsettings.h"
+#include "macroservice.h"
+#include "windowfacade.h"
+#include "scriptservice.h"
+#include "tcpclient.h"
+#include "mainlogger.h"
+#include "maps/mapfacade.h"
+
+
 CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     mainWindow = (MainWindow*)parent;
     roundtimeDisplay = new RoundTimeDisplay(parent);

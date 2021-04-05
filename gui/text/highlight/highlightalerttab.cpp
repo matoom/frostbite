@@ -1,5 +1,11 @@
 #include "highlightalerttab.h"
 
+#include "audio/audioplayer.h"
+#include "mainwindow.h"
+#include "text/highlight/highlightdialog.h"
+#include "text/highlight/highlightsettings.h"
+#include "text/highlight/highlightsettingsentry.h"
+
 HighlightAlertTab::HighlightAlertTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
     settings = HighlightSettings::getInstance();

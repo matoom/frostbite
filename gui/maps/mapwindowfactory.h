@@ -6,11 +6,11 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QGraphicsView>
 
-#include <mainwindow.h>
-#include <maps/mapwindow.h>
-
+class MapFacade;
 class MapWindow;
+class GeneralSettings;
 
 class MapWindowFactory : public QObject {
     Q_OBJECT

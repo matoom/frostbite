@@ -1,6 +1,8 @@
 #include "alterdialog.h"
 #include "ui_alterdialog.h"
 
+#include "windowfacade.h"
+
 AlterDialog::AlterDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AlterDialog) {
     ui->setupUi(this);
 

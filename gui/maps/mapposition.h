@@ -4,14 +4,13 @@
 class MapPosition {
 
 public:
-    MapPosition();
-    MapPosition(int x, int y, int z);
+    MapPosition(int x = 0, int y = 0, int z = 0);
 
-    int getX();
+    int getX() const;
     void setX(int x);
-    int getY();
+    int getY() const;
     void setY(int y);
-    int getZ();
+    int getZ() const;
     void setZ(int z);
 
 private:

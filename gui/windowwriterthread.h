@@ -2,15 +2,16 @@
 #define WINDOWWRITERTHREAD_H
 
 #include <QObject>
+#include <QThread>
 #include <QPlainTextEdit>
 #include <QQueue>
 #include <QMutex>
 
-#include <text/highlight/highlighter.h>
-#include <text/alter/alter.h>
-#include <globaldefines.h>
-
 class Highlighter;
+class Alter;
+class WindowInterface;
+class MainWindow;
+class WindowInterface;
 
 class WindowWriterThread : public QThread {
     Q_OBJECT

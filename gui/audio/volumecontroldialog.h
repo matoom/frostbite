@@ -2,12 +2,13 @@
 #define VOLUMECONTROLDIALOG_H
 
 #include <QDialog>
-#include <clientsettings.h>
-#include <mainwindow.h>
 
 namespace Ui {
 class VolumeControlDialog;
 }
+
+class ClientSettings;
+class MainWindow;
 
 class VolumeControlDialog : public QDialog {
     Q_OBJECT

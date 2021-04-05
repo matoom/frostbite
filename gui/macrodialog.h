@@ -5,8 +5,7 @@
 #include <QDebug>
 #include <QTableWidget>
 #include <QKeyEvent>
-
-#include <macrosettings.h>
+#include <QtGui>
 
 class MacroSettings;
 

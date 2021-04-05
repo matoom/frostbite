@@ -3,11 +3,12 @@
 
 #include <QDialog>
 #include <QtGui>
+#include <QComboBox>
 
-#include <text/highlight/highlighttexttab.h>
-#include <text/highlight/highlightsettings.h>
-#include <text/highlight/highlightsettingsentry.h>
+#include "text/highlight/highlightsettingsentry.h"
 
+class HighlightTextTab;
+class HighlightSettings;
 
 namespace Ui {
     class HighlightEditDialog;

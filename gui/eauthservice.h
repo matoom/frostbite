@@ -5,10 +5,6 @@
 #include <QDebug>
 #include <QtNetwork/QTcpSocket>
 
-#include <clientsettings.h>
-#include <authlogger.h>
-#include <tcpclient.h>
-
 class ClientSettings;
 class TcpClient;
 class AuthLogger;

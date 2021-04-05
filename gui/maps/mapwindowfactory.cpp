@@ -1,5 +1,15 @@
 #include "mapwindowfactory.h"
 
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+#include "mainwindow.h"
+#include "maps/mapwindow.h"
+#include "maps/mapfacade.h"
+#include "generalsettings.h"
+
+
+
 MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
     mapFacade = parent;
     mapWindow = new MapWindow(mapFacade);

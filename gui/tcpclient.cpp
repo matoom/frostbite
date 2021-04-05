@@ -1,5 +1,14 @@
 #include "tcpclient.h"
 
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "clientsettings.h"
+#include "eauthservice.h"
+#include "xml/xmlparserthread.h"
+#include "debuglogger.h"
+#include "lich/lich.h"
+#include "environment.h"
+
 TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);

@@ -1,5 +1,22 @@
 #include "menuhandler.h"
-#include "gui/dict/dictionarydialog.h"
+
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "connectwizard.h"
+#include "text/highlight/highlightdialog.h"
+#include "macrodialog.h"
+#include "text/alter/alterdialog.h"
+#include "appearancedialog.h"
+#include "aboutdialog.h"
+#include "scripteditdialog.h"
+#include "profileadddialog.h"
+#include "clientsettings.h"
+#include "scriptsettingsdialog.h"
+#include "audio/volumecontroldialog.h"
+#include "dict/dictionarydialog.h"
+#include "compass/compassview.h"
+#include "toolbar/toolbar.h"
+#include "tcpclient.h"
 
 MenuHandler::MenuHandler(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;

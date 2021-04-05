@@ -1,5 +1,7 @@
 #include "wieldindicator.h"
 
+#include "defaultvalues.h"
+
 WieldIndicator::WieldIndicator(QObject *parent, const char* icon) : QObject(parent) {
     this->icon = icon;
 }

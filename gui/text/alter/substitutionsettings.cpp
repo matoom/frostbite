@@ -1,4 +1,7 @@
 #include "substitutionsettings.h"
+
+#include "clientsettings.h"
+
 #include <QGlobalStatic>
 
 Q_GLOBAL_STATIC(SubstitutionSettingsInstance, uniqueInstance)

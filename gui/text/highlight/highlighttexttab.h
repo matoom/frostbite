@@ -3,15 +3,14 @@
 
 #include <QObject>
 #include <QCheckBox>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QMenu>
+#include <QPushButton>
+#include <QComboBox>
 
-#include <text/highlight/highlightdialog.h>
-#include <text/highlight/highlightadddialog.h>
-#include <text/highlight/highlighteditdialog.h>
-#include <text/highlight/highlightsettings.h>
-#include <text/highlight/highlightsettingsentry.h>
-#include <text/highlight/sortablelistwidgetitem.h>
-#include <audio/audioplayer.h>
-#include <generalsettings.h>
+#include "text/highlight/highlightsettingsentry.h"
+#include "text/highlight/sortablelistwidgetitem.h"
 
 class HighlightDialog;
 class HighlightAddDialog;
@@ -19,6 +18,7 @@ class HighlightEditDialog;
 class HighlightSettings;
 class AudioPlayer;
 class GeneralSettings;
+
 
 namespace Group {
     enum List {All, Names, Critters, Travel, Combat, Other};

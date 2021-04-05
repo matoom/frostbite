@@ -6,10 +6,9 @@
 #include <QMutex>
 #include <QReadLocker>
 
-#include <clientsettings.h>
-#include <mainwindow.h>
-
+class ClientSettings;
 class MainWindow;
+class WindowFacade;
 
 class Lich : public QObject {
     Q_OBJECT

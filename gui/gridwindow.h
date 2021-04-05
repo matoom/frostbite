@@ -5,8 +5,10 @@
 #include <QDockWidget>
 #include <QLabel>
 
-#include <mainwindow.h>
-#include <custom/contextmenu.h>
+class MainWindow;
+class GeneralSettings;
+class WindowFacade;
+class ContextMenu;
 
 class GridWindow : public QTableWidget {
     Q_OBJECT

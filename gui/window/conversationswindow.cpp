@@ -1,5 +1,16 @@
 #include "conversationswindow.h"
 
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "windowwriterthread.h"
+#include "genericwindow.h"
+#include "conversationslogger.h"
+#include "clientsettings.h"
+#include "genericwindowfactory.h"
+#include "defaultvalues.h"
+#include "tray.h"
+#include "windowinterface.h"
+
 ConversationsWindow::ConversationsWindow(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = (WindowFacade*)mainWindow->getWindowFacade();

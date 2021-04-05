@@ -1,6 +1,8 @@
 #include "profileadddialog.h"
 #include "ui_profileadddialog.h"
 
+#include "clientsettings.h"
+
 ProfileAddDialog::ProfileAddDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ProfileAddDialog) {
     ui->setupUi(this);
 

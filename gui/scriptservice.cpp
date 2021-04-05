@@ -1,5 +1,14 @@
 #include "scriptservice.h"
 
+#include "mainwindow.h"
+#include "commandline.h"
+#include "script.h"
+#include "textutils.h"
+#include "scriptwriterthread.h"
+#include "windowfacade.h"
+#include "defaultvalues.h"
+#include "clientsettings.h"
+
 ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     commandLine = mainWindow->getCommandLine();

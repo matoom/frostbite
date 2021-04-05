@@ -1,5 +1,12 @@
 #include "mutebutton.h"
 
+#include "clientsettings.h"
+#include "toolbar/toolbar.h"
+#include "toolbar/toolbardefines.h"
+#include "defaultvalues.h"
+#include "mainwindow.h"
+#include "clientsettings.h"
+
 MuteButton::MuteButton(QWidget *parent) : QToolButton(parent) {
     mainWindow = (MainWindow*)parent;
     clientSettings = ClientSettings::getInstance();

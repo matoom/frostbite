@@ -1,5 +1,10 @@
 #include "statusindicator.h"
 
+#include "toolbar/toolbardefines.h"
+#include "defaultvalues.h"
+
+#include "gamedatacontainer.h"
+
 StatusIndicator::StatusIndicator(QObject *parent) : QObject(parent) {
     gameDataContainer = GameDataContainer::Instance();
 }

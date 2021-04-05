@@ -1,6 +1,30 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "cleanlooks/qcleanlooksstyle.h"
+
+#include "windowfacade.h"
+#include "tcpclient.h"
+#include "toolbar/toolbar.h"
+#include "clientsettings.h"
+#include "commandline.h"
+#include "menuhandler.h"
+#include "scriptservice.h"
+#include "timerbar.h"
+#include "vitalsbar.h"
+#include "generalsettings.h"
+#include "tray.h"
+#include "scriptapiserver.h"
+#include "dict/dictionaryservice.h"
+#include "text/alter/substitutionsettings.h"
+#include "text/alter/ignoresettings.h"
+#include "text/highlight/highlightsettings.h"
+#include "window/dictionarywindow.h"
+#include "maps/mapfacade.h"
+#include "maps/mapreader.h"
+#include "compass/compassview.h"
+#include "macrosettings.h"
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 

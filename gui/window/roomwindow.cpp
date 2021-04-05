@@ -1,5 +1,13 @@
 #include "roomwindow.h"
 
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "genericwindow.h"
+#include "windowwriterthread.h"
+#include "gamedatacontainer.h"
+#include "defaultvalues.h"
+#include "genericwindowfactory.h"
+
 RoomWindow::RoomWindow(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = (WindowFacade*)mainWindow->getWindowFacade();

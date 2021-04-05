@@ -2,8 +2,14 @@
 #define DEATHSWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
+#include <QDockWidget>
+
+class MainWindow;
+class WindowFacade;
+class GenericWindow;
+class DeathsLogger;
+class ClientSettings;
+class WindowWriterThread;
 
 class DeathsWindow : public QObject {
     Q_OBJECT

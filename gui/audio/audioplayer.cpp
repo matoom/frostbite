@@ -1,5 +1,8 @@
 #include "audioplayer.h"
 
+#include "mainwindow.h"
+#include "clientsettings.h"
+
 AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 

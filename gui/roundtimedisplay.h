@@ -1,13 +1,12 @@
 #ifndef ROUNDTIMEDISPLAY_H
 #define ROUNDTIMEDISPLAY_H
 
-#include <mainwindow.h>
-#include <gamedatacontainer.h>
-
-#include <globaldefines.h>
+#include <QObject>
+#include <QtGui>
 
 class MainWindow;
 class GameDataContainer;
+class GeneralSettings;
 
 class RoundTimeDisplay : public QObject {
     Q_OBJECT

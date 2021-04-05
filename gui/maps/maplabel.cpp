@@ -4,23 +4,23 @@ MapLabel::MapLabel() {
 
 }
 
-MapLabel::MapLabel(QString text) {
+MapLabel::MapLabel(const QString& text) {
     this->text = text;
 }
 
-QString MapLabel::getText() {
+const QString& MapLabel::getText() const {
     return this->text;
 }
 
-void MapLabel::setText(QString text) {
+void MapLabel::setText(const QString& text) {
     this->text = text;
 }
 
-MapPosition MapLabel::getPosition() {
+const MapPosition& MapLabel::getPosition() const {
     return this->position;
 }
 
-void MapLabel::setPosition(MapPosition position) {
+void MapLabel::setPosition(const MapPosition& position) {
     this->position = position;
 }
 

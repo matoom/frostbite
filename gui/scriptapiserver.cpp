@@ -1,5 +1,18 @@
 #include "scriptapiserver.h"
 
+#include "gamedatacontainer.h"
+#include "apisettings.h"
+#include "mainwindow.h"
+#include "maps/mapdata.h"
+#include "tcpclient.h"
+#include "gridwindow.h"
+#include "windowfacade.h"
+#include "window/expwindow.h"
+#include "tray.h"
+#include "clientsettings.h"
+#include "textutils.h"
+#include "maps/mapfacade.h"
+
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();

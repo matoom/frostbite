@@ -4,10 +4,10 @@
 #include <QObject>
 #include <QRegularExpression>
 
-#include <text/alter/substitutionsettings.h>
-#include <text/alter/ignoresettings.h>
+#include "altersettingsentry.h"
 
-#include <textutils.h>
+class IgnoreSettings;
+class SubstitutionSettings;
 
 class Alter : public QObject {
     Q_OBJECT

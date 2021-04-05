@@ -1,6 +1,8 @@
 #include "quickbuttoneditdialog.h"
 #include "ui_quickbuttoneditdialog.h"
 
+#include "generalsettings.h"
+
 QuickButtonEditDialog::QuickButtonEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui::QuickButtonEditDialog) {
     ui->setupUi(this);
 

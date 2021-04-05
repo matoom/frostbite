@@ -1,5 +1,12 @@
 #include "substitutetab.h"
 
+#include "text/alter/alterdialog.h"
+#include "text/alter/altersettingsentry.h"
+#include "text/alter/substitutionsettings.h"
+#include "globaldefines.h"
+
+#include <QHeaderView>
+
 SubstituteTab::SubstituteTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     alterDialog = (AlterDialog*)parent;
 

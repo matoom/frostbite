@@ -7,8 +7,6 @@
 #include <QTime>
 #include <QRegularExpression>
 
-#include <textutils.h>
-
 class TextUtils;
 
 class GameDataContainer : public QObject {

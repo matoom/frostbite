@@ -1,4 +1,8 @@
 #include "gridwindowfactory.h"
+#include "mainwindow.h"
+#include "generalsettings.h"
+#include "defaultvalues.h"
+#include "gridwindow.h"
 
 GridWindowFactory::GridWindowFactory(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;

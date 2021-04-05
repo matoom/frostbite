@@ -7,8 +7,9 @@
 #include <QReadWriteLock>
 #include <QMutex>
 
-#include <text/highlight/highlightsettingsentry.h>
-#include <clientsettings.h>
+#include "text/highlight/highlightsettingsentry.h"
+
+class ClientSettings;
 
 class HighlightSettings {
     friend class HighlightSettingsInstance;

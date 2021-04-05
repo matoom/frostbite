@@ -6,11 +6,6 @@
 #include <QToolButton>
 #include <QHBoxLayout>
 
-#include <toolbar/toolbardefines.h>
-#include <toolbar/toolbar.h>
-#include <generalsettings.h>
-#include <toolbar/quickbuttondisplay.h>
-
 class Toolbar;
 class GeneralSettings;
 class QuickButtonEditDialog;

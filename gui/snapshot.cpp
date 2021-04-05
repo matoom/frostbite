@@ -1,4 +1,6 @@
 #include "snapshot.h"
+#include "windowinterface.h"
+#include "mainwindow.h"
 
 Snapshot::Snapshot(WindowInterface* window) : QObject() {
     this->window = window;

@@ -1,5 +1,11 @@
 #include "roundtimedisplay.h"
 
+#include "mainwindow.h"
+#include "gamedatacontainer.h"
+#include "globaldefines.h"
+#include "generalsettings.h"
+#include "commandline.h"
+
 RoundTimeDisplay::RoundTimeDisplay(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     data = GameDataContainer::Instance();

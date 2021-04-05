@@ -12,14 +12,14 @@ RoomNode::RoomNode(QString zoneId, int level, int nodeId) {
     this->nodeId = nodeId;
 }
 
-QString RoomNode::getZoneId() {
+const QString& RoomNode::getZoneId() const {
     return this->zoneId;
 }
 
-int RoomNode::getLevel() {
+int RoomNode::getLevel() const {
     return this->level;
 }
 
-int RoomNode::getNodeId() {
+int RoomNode::getNodeId() const {
     return this->nodeId;
 }

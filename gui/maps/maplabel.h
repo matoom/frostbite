@@ -8,13 +8,13 @@
 class MapLabel {
 
 public:
-    MapLabel();
-    MapLabel(QString text);
+    explicit MapLabel();
+    MapLabel(const QString& text);
 
-    QString getText();
-    void setText(QString text);
-    MapPosition getPosition();
-    void setPosition(MapPosition position);
+    const QString& getText() const;
+    void setText(const QString& text);
+    const MapPosition& getPosition() const;
+    void setPosition(const MapPosition& position);
 
 private:
     QString text;

@@ -1,5 +1,7 @@
 #include "timerbar.h"
 
+#include "mainwindow.h"
+
 TimerBar::TimerBar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 

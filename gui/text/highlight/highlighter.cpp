@@ -1,5 +1,15 @@
 #include "highlighter.h"
 
+#include "text/highlight/highlightsettings.h"
+#include "audio/audioplayer.h"
+#include "mainwindow.h"
+#include "textutils.h"
+#include "audio/audioplayer.h"
+#include "timerbar.h"
+
+#include <QSettings>
+
+
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     highlightSettings = HighlightSettings::getInstance();

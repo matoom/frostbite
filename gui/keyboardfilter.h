@@ -5,7 +5,6 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-#include <macrosettings.h>
 
 class CommandLine;
 class MacroSettings;

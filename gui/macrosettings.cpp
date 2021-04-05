@@ -1,5 +1,9 @@
 #include "macrosettings.h"
+
 #include <QGlobalStatic>
+
+#include "clientsettings.h"
+
 
 Q_GLOBAL_STATIC(MacroSettingsInstance, uniqueInstance)
 

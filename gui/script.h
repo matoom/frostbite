@@ -5,12 +5,11 @@
 #include <QDebug>
 #include <QProcess>
 #include <QDir>
-
-#include <scriptservice.h>
-#include <clientsettings.h>
-#include <defaultvalues.h>
+#include <QMutex>
+#include <QReadWriteLock>
 
 class ScriptService;
+class ClientSettings;
 
 class Script : public QObject {
     Q_OBJECT

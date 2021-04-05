@@ -6,9 +6,8 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 
-#include <mainwindow.h>
-
 class MainWindow;
+class ClientSettings;
 
 class Tray : public QObject {
     Q_OBJECT

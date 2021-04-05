@@ -1,5 +1,8 @@
 #include "spellindicator.h"
 
+#include "toolbar/toolbardefines.h"
+#include "defaultvalues.h"
+
 SpellIndicator::SpellIndicator(QObject *parent) : QObject(parent) {
 }
 

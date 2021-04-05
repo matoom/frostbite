@@ -5,16 +5,6 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QDebug>
 
-#include <mainwindow.h>
-#include <windowfacade.h>
-#include <clientsettings.h>
-#include <eauthservice.h>
-#include <xml/xmlparserthread.h>
-#include <debuglogger.h>
-#include <lich/lich.h>
-
-#include <environment.h>
-
 class MainWindow;
 class WindowFacade;
 class ClientSettings;
