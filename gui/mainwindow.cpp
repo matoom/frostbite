@@ -24,6 +24,7 @@
 #include "maps/mapreader.h"
 #include "compass/compassview.h"
 #include "macrosettings.h"
+#include "hyperlinkservice.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -168,6 +169,8 @@ void MainWindow::loadClient() {
     scriptApiServer = new ScriptApiServer(this);
 
     dictionaryService = new DictionaryService(this);
+
+    hyperlinkService = new HyperlinkService(this);
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
@@ -176,6 +179,9 @@ void MainWindow::loadClient() {
             windowFacade->getDictionaryWindow(), SLOT(write(QString)));
     connect(dictionaryService, SIGNAL(translationFailed(QString)),
             windowFacade->getDictionaryWindow(), SLOT(write(QString)));
+
+    connect(hyperlinkService, SIGNAL(actionCommand(const QString&)),
+            this, SLOT(actionCommand(const QString&)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -380,6 +386,11 @@ void MainWindow::closeEvent(QCloseEvent*) {
 
     /* terminate if script running at exit */
     scriptService->terminateScript();
+}
+
+void MainWindow::actionCommand(const QString& command) {
+    getCommandLine()->setText(command);
+    emit getCommandLine()->sendCommand();
 }
 
 MainWindow::~MainWindow() {

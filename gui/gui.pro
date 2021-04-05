@@ -95,7 +95,8 @@ SOURCES += main.cpp\
     vitalsbar.cpp \
     scriptsettingsdialog.cpp \
     compass.cpp \
-    genieutils.cpp
+    genieutils.cpp \
+    hyperlinkservice.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -153,7 +154,8 @@ HEADERS  += mainwindow.h \
     vitalsbar.h \
     scriptsettingsdialog.h \
     compass.h \
-    genieutils.h
+    genieutils.h \
+    hyperlinkservice.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

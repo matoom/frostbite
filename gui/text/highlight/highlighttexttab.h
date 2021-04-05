@@ -93,6 +93,7 @@ private:
     void clearControls();
     void updateAlertControl(bool, QString);
     void updateTimerControl(bool, int, QString);
+    void updateCommandControl(bool, const QString&);
     void updateOptionsControl(QBitArray);
     void registerChange();
     void createListItem(int, QString, QColor, QColor);
@@ -127,6 +128,8 @@ private slots:
     void playSound();
     void sortBySelected(int index);
     void filterList(const QString&);
+    void commandSelected(bool);
+    void commandValueChanged();
 
 public slots:
 

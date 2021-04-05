@@ -33,7 +33,7 @@ class Tray;
 class ScriptApiServer;
 class DictionaryService;
 class ClientSettings;
-//class CompassView;
+class HyperlinkService;
 
 
 class MainWindow : public QMainWindow {
@@ -117,6 +117,7 @@ private:
     ScriptService* scriptService;
     ScriptApiServer* scriptApiServer;
     DictionaryService* dictionaryService;
+    HyperlinkService* hyperlinkService;
 
     Tray* tray;
     TimerBar* timerBar;
@@ -143,6 +144,7 @@ public slots:
     void menuVolumeChanged(int);
     void menuVolumeMuted(bool);
     void reloadSettings();
+    void actionCommand(const QString&);
 };
 
 #endif // MAINWINDOW_H
