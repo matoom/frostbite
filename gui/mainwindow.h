@@ -13,6 +13,7 @@ class QMenu;
 class QTextEdit;
 class QTextBrowser;
 class QTextLine;
+class QStringList;
 QT_END_NAMESPACE
 
 namespace Ui {
@@ -118,6 +119,7 @@ private:
     ScriptApiServer* scriptApiServer;
     DictionaryService* dictionaryService;
     HyperlinkService* hyperlinkService;
+    QMenu* commandMenu;
 
     Tray* tray;
     TimerBar* timerBar;
@@ -145,6 +147,7 @@ public slots:
     void menuVolumeMuted(bool);
     void reloadSettings();
     void actionCommand(const QString&);
+    void actionCommands(const QStringList&);
 };
 
 #endif // MAINWINDOW_H

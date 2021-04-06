@@ -171,6 +171,9 @@ void MainWindow::loadClient() {
     dictionaryService = new DictionaryService(this);
 
     hyperlinkService = new HyperlinkService(this);
+
+    // setup menu for Hyperlink service
+    commandMenu = new QMenu(this);
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
@@ -182,6 +185,8 @@ void MainWindow::loadClient() {
 
     connect(hyperlinkService, SIGNAL(actionCommand(const QString&)),
             this, SLOT(actionCommand(const QString&)));
+    connect(hyperlinkService, SIGNAL(actionCommands(const QStringList&)),
+            this, SLOT(actionCommands(const QStringList&)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -391,6 +396,17 @@ void MainWindow::closeEvent(QCloseEvent*) {
 void MainWindow::actionCommand(const QString& command) {
     getCommandLine()->setText(command);
     emit getCommandLine()->sendCommand();
+}
+
+void MainWindow::actionCommands(const QStringList& commands) {
+    commandMenu->clear();
+    for (auto& command : commands) {
+        auto action = new QAction(command, this);
+        commandMenu->addAction(action);
+        connect(action, &QAction::triggered, this,
+        [=]() { this->actionCommand(action->text()); });
+    }
+    commandMenu->popup(mapFromGlobal(QCursor::pos()));
 }
 
 MainWindow::~MainWindow() {
