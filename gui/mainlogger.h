@@ -10,9 +10,7 @@
 
 #include <log4qt/logger.h>
 
-#include <defaultvalues.h>
-#include <textutils.h>
-#include <text/alter/alter.h>
+class Alter;
 
 class MainLogger : public QThread {
     Q_OBJECT

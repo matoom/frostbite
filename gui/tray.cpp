@@ -1,5 +1,10 @@
 #include "tray.h"
 
+#include "mainwindow.h"
+#include "clientsettings.h"
+#include "defaultvalues.h"
+#include "textutils.h"
+
 Tray::Tray(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
 

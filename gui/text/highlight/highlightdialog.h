@@ -4,13 +4,14 @@
 #include <QDialog>
 #include <QColorDialog>
 #include <QDebug>
-
-#include <mainwindow.h>
-#include <clientsettings.h>
-
-#include <text/highlight/highlightgeneraltab.h>
-#include <text/highlight/highlighttexttab.h>
-#include <text/highlight/highlightalerttab.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QListWidget>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QSlider>
+#include <QGroupBox>
+#include <QLabel>
 
 class MainWindow;
 class ClientSettings;

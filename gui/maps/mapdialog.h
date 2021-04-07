@@ -3,12 +3,11 @@
 
 #include <QDialog>
 
-#include <maps/mapzone.h>
-#include <maps/mapfacade.h>
-#include <maps/mapreader.h>
-#include <maps/roomnode.h>
-
 class MapReader;
+class GeneralSettings;
+class MapFacade;
+class MapNode;
+class RoomNode;
 
 namespace Ui {
     class MapDialog;
@@ -27,7 +26,7 @@ public:
     void populateLevels(QString zoneId, int level = 0);
     void setSelected(QString zoneId, int level = 0);
 
-    void center(RoomNode roomNode);
+    void center(const RoomNode& roomNode);
 
 private:
     Ui::MapDialog *ui;

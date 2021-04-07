@@ -1,5 +1,9 @@
 #include "fullscreenbutton.h"
 
+#include "toolbar/toolbar.h"
+#include "mainwindow.h"
+#include "defaultvalues.h"
+
 FullscreenButton::FullscreenButton(QWidget *parent) : QToolButton(parent) {
     mainWindow = (MainWindow*)parent;
 

@@ -1,6 +1,11 @@
 #include "highlightadddialog.h"
 #include "ui_highlightadddialog.h"
 
+#include "text/highlight/highlighttexttab.h"
+#include "text/highlight/highlightsettings.h"
+#include "text/highlight/highlightsettingsentry.h"
+#include "text/highlight/sortablelistwidgetitem.h"
+
 HighlightAddDialog::HighlightAddDialog(HighlightTextTab *textTab, QWidget *parent) :
     QDialog(parent), ui(new Ui::HighlightAddDialog) {
 

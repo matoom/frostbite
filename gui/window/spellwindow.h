@@ -2,8 +2,12 @@
 #define SPELLWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
+#include <QDockWidget>
+
+class MainWindow;
+class WindowFacade;
+class GenericWindow;
+class WindowWriterThread;
 
 class SpellWindow : public QObject {
     Q_OBJECT

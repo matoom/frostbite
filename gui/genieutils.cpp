@@ -1,4 +1,8 @@
 #include "genieutils.h"
+#include "mainwindow.h"
+#include "text/highlight/highlightsettingsentry.h"
+#include "text/highlight/highlightsettings.h"
+#include "textutils.h"
 
 GenieUtils::GenieUtils(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);

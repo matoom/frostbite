@@ -7,10 +7,9 @@
 #include <QDebug>
 #include <QApplication>
 #include <QSoundEffect>
-#include <clientsettings.h>
-#include <mainwindow.h>
 
 class MainWindow;
+class ClientSettings;
 
 class AudioPlayer : public QObject {
     Q_OBJECT

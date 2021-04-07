@@ -3,9 +3,7 @@
 
 #include <QWizard>
 #include <QDebug>
-
-#include <clientsettings.h>
-#include <mainwindow.h>
+#include <QMutex>
 
 struct Tab {
     typedef enum {
@@ -25,6 +23,7 @@ namespace Page {
 }
 
 class ClientSettings;
+class MainWindow;
 
 namespace Ui {
     class ConnectWizard;

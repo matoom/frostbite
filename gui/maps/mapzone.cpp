@@ -1,4 +1,6 @@
 #include "mapzone.h"
+#include "maps/mapnode.h"
+#include "maps/maplabel.h"
 
 MapZone::MapZone() {
     this->xMax = -10000;

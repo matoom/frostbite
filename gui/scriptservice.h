@@ -2,18 +2,14 @@
 #define SCRIPTSERVICE_H
 
 #include <QObject>
-
-#include <mainwindow.h>
-#include <commandline.h>
-#include <script.h>
-#include <textutils.h>
-#include <scriptwriterthread.h>
+#include <QElapsedTimer>
 
 class MainWindow;
 class CommandLine;
 class Script;
 class TextUtils;
 class ScriptWriterThread;
+class WindowFacade;
 
 class ScriptService : public QObject {
     Q_OBJECT

@@ -2,9 +2,14 @@
 #define EXPWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
-#include <gridwriterthread.h>
+#include <QDockWidget>
+#include <QMap>
+
+class MainWindow;
+class WindowFacade;
+class GridWindow;
+class GridWriterThread;
+class GameDataContainer;
 
 typedef QMap<QString, QString> GridItems;
 

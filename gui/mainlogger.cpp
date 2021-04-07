@@ -1,5 +1,9 @@
 #include "mainlogger.h"
 
+#include "defaultvalues.h"
+#include "textutils.h"
+#include "text/alter/alter.h"
+
 MainLogger::MainLogger(QObject*) {
     alter = new Alter();
 

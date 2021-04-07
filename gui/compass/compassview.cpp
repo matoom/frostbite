@@ -1,4 +1,9 @@
 #include "compassview.h"
+#include "compass.h"
+#include "mainwindow.h"
+#include "gamewindow.h"
+#include "clientsettings.h"
+#include "windowfacade.h"
 
 CompassView::CompassView(QWidget *parent) : QWidget(((MainWindow*)parent)->getWindowFacade()->getGameWindow(), Qt::FramelessWindowHint) {
     mainWindow = (MainWindow*)parent;

@@ -6,12 +6,6 @@
 
 #include <QtNetwork>
 
-#include <gamedatacontainer.h>
-#include <apisettings.h>
-#include <mainwindow.h>
-#include <maps/mapdata.h>
-#include <tcpclient.h>
-
 #include "log4qt/logger.h"
 
 struct ApiRequest {
@@ -23,6 +17,11 @@ class MapData;
 class TcpClient;
 class GridWindow;
 class Tray;
+class GameDataContainer;
+class MainWindow;
+class WindowFacade;
+class ApiSettings;
+class ClientSettings;
 
 class ScriptApiServer : public QObject {
     Q_OBJECT

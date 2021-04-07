@@ -1,4 +1,5 @@
 #include "mapnode.h"
+#include "maps/mapdestination.h"
 
 MapNode::MapNode() {
 

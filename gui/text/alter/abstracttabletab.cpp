@@ -1,5 +1,8 @@
 #include "abstracttabletab.h"
 
+#include "defaultvalues.h"
+#include "globaldefines.h"
+
 AbstractTableTab::AbstractTableTab() {
 
 }

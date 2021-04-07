@@ -2,19 +2,22 @@
 #define MAPFACADE_H
 
 #include <QObject>
+#include <QtGui>
 
-#include <mainwindow.h>
-#include <maps/mapwindowfactory.h>
-#include <maps/mapwindow.h>
-#include <maps/mapreader.h>
-#include <maps/mapdialog.h>
-#include <maps/mapdata.h>
+QT_BEGIN_NAMESPACE
+class QDockWidget;
+class QComboBox;
+class QLabel;
+QT_END_NAMESPACE
 
 class MainWindow;
 class MapReader;
 class MapWindowFactory;
 class MapDialog;
 class MapData;
+class MapWindow;
+class MapZone;
+class GeneralSettings;
 
 class MapFacade : public QObject {
     Q_OBJECT

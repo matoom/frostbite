@@ -10,7 +10,7 @@
 #include <QTextDocumentFragment>
 #include <QApplication>
 
-#include <windowinterface.h>
+class WindowInterface;
 
 class Snapshot : public QObject {
     Q_OBJECT

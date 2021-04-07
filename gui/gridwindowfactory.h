@@ -6,8 +6,6 @@
 #include <QDockWidget>
 #include <QHeaderView>
 
-#include <mainwindow.h>
-
 class MainWindow;
 class GeneralSettings;
 

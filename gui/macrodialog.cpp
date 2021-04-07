@@ -1,6 +1,8 @@
 #include "macrodialog.h"
 #include "ui_macrodialog.h"
 
+#include "macrosettings.h"
+
 MacroDialog::MacroDialog(QWidget *parent) : QDialog(parent), ui(new Ui::MacroDialog) {
     ui->setupUi(this);
 

@@ -1,5 +1,16 @@
 #include "genericwindow.h"
 
+#include <QFontDialog>
+
+#include "generalsettings.h"
+#include "dict/dictionarysettings.h"
+#include "dict/dictionaryservice.h"
+#include "mainwindow.h"
+#include "snapshot.h"
+#include "custom/contextmenu.h"
+#include "windowfacade.h"
+#include "defaultvalues.h"
+
 GenericWindow::GenericWindow(QString title, QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;
     settings = GeneralSettings::getInstance();

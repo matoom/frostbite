@@ -1,4 +1,6 @@
 #include "scriptwriterthread.h"
+#include "scriptservice.h"
+#include "textutils.h"
 
 ScriptWriterThread::ScriptWriterThread(QObject *parent) {
     scriptService = (ScriptService*)parent;

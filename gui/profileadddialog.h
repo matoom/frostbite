@@ -5,8 +5,6 @@
 #include <QDir>
 #include <QStandardPaths>
 
-#include <clientsettings.h>
-
 class ClientSettings;
 
 namespace Ui {

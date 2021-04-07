@@ -1,5 +1,11 @@
 #include "vitalsbar.h"
 
+#include <QHBoxLayout>
+#include <QAction>
+
+#include "mainwindow.h"
+#include "clientsettings.h"
+
 VitalsBar::VitalsBar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     clientSettings = ClientSettings::getInstance();

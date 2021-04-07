@@ -1,6 +1,9 @@
 #include "scriptsettingsdialog.h"
 #include "ui_scriptsettingsdialog.h"
 
+#include "mainwindow.h"
+#include "clientsettings.h"
+
 ScriptSettingsDialog::ScriptSettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ScriptSettingsDialog) {
     ui->setupUi(this);
 

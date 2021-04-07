@@ -3,7 +3,7 @@
 
 #include <QSettings>
 
-#include <clientsettings.h>
+class ClientSettings;
 
 class MacroSettings {
     friend class MacroSettingsInstance;

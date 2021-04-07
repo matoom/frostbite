@@ -1,5 +1,16 @@
 #include "gamewindow.h"
+
 #include <QDesktopServices>
+
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "generalsettings.h"
+#include "dict/dictionarysettings.h"
+#include "dict/dictionaryservice.h"
+#include "defaultvalues.h"
+#include "globaldefines.h"
+#include "snapshot.h"
+#include "custom/contextmenu.h"
 
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       

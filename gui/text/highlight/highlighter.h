@@ -2,13 +2,8 @@
 #define HIGHLIGHTER_H
 
 #include <QObject>
-#include <text/highlight/highlightsettings.h>
-#include <audio/audioplayer.h>
-#include <mainwindow.h>
-#include <textutils.h>
-#include <audio/audioplayer.h>
 
-#include <QSettings>
+#include "text/highlight/highlightsettingsentry.h"
 
 class HighlightSettings;
 class MainWindow;

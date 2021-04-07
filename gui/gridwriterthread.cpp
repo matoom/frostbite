@@ -1,4 +1,8 @@
 #include "gridwriterthread.h"
+#include "mainwindow.h"
+#include "gridwindow.h"
+#include "text/alter/alter.h"
+#include "text/highlight/highlighter.h"
 
 GridWriterThread::GridWriterThread(QObject *parent, GridWindow* window) {
     mainWindow = (MainWindow*)parent;

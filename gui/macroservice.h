@@ -5,12 +5,6 @@
 #include <QDebug>
 #include <QStringList>
 
-#include <commandline.h>
-#include <mainwindow.h>
-#include <macrothread.h>
-#include <macrosettings.h>
-
-class CommandLine;
 class MainWindow;
 class MacroThread;
 class MacroSettings;

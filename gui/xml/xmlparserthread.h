@@ -2,14 +2,14 @@
 #define XMLPARSERTHREAD_H
 
 #include <QObject>
+#include <QThread>
+#include <QMutex>
+#include <QDateTime>
 #include <QQueue>
 #include <QByteArray>
 #include <QFile>
+#include <QHash>
 #include <QtXml/QDomNode>
-
-#include <mainwindow.h>
-#include <gamedatacontainer.h>
-#include <text/highlight/highlighter.h>
 
 class MainWindow;
 class WindowFacade;

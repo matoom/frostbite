@@ -2,44 +2,9 @@
 #define WindowFacade_H
 
 #include <QDockWidget>
-
-#include <mainwindow.h>
-#include <genericwindowfactory.h>
-#include <gridwindowfactory.h>
-#include <gamewindow.h>
-#include <compass.h>
-#include <gamedatacontainer.h>
-#include <defaultvalues.h>
-#include <text/highlight/highlighter.h>
-#include <text/highlight/highlightsettings.h>
-#include <windowwriterthread.h>
-#include <gridwriterthread.h>
-#include <mainlogger.h>
-#include <thoughtslogger.h>
-#include <conversationslogger.h>
-#include <deathslogger.h>
-#include <arrivalslogger.h>
-#include <compass/compassview.h>
-
-#include <gridwindow.h>
-
-#include <maps/mapfacade.h>
-
-#include <window/roomwindow.h>
-#include <window/arrivalswindow.h>
-#include <window/deathswindow.h>
-#include <window/thoughtswindow.h>
-#include <window/expwindow.h>
-#include <window/conversationswindow.h>
-#include <window/familiarwindow.h>
-#include <window/spellwindow.h>
-#include <window/atmosphericswindow.h>
-#include <window/groupwindow.h>
-#include <window/combatwindow.h>
-#include <window/dictionarywindow.h>
-
 #include <QGraphicsPixmapItem>
 #include <QGraphicsProxyWidget>
+#include <QPlainTextEdit>
 
 class MainWindow;
 class GameWindow;
@@ -47,10 +12,14 @@ class GenericWindowFactory;
 class NavigationDisplay;
 class GameDataContainer;
 class ClientSettings;
+class GeneralSettings;
 class Highlighter;
+class HighlightSettings;
 class MainLogger;
 class MapFacade;
 class CompassView;
+class Compass;
+class WindowWriterThread;
 
 class RoomWindow;
 class ArrivalsWindow;

@@ -1,5 +1,8 @@
 #include "vitalsindicator.h"
 
+#include "toolbar/toolbardefines.h"
+#include "defaultvalues.h"
+
 VitalsIndicator::VitalsIndicator(QObject *parent) : QObject(parent) {
 }
 

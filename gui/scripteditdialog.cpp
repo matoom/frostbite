@@ -1,6 +1,10 @@
 #include "scripteditdialog.h"
 #include "ui_scripteditdialog.h"
 
+#include "clientsettings.h"
+#include "defaultvalues.h"
+
+
 ScriptEditDialog::ScriptEditDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ScriptEditDialog) {
     ui->setupUi(this);
 

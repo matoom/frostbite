@@ -2,12 +2,13 @@
 #define ROOMWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
-#include <genericwindow.h>
-#include <windowwriterthread.h>
+#include <QDockWidget>
 
+class MainWindow;
+class WindowFacade;
+class GenericWindow;
 class WindowWriterThread;
+class GameDataContainer;
 
 class RoomWindow : public QObject {
     Q_OBJECT

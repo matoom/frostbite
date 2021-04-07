@@ -3,15 +3,6 @@
 
 #include <QLineEdit>
 
-#include <mainwindow.h>
-#include <roundtimedisplay.h>
-#include <keyboardfilter.h>
-#include <macroservice.h>
-
-#include <wordcompleter.h>
-
-#include <genieutils.h>
-
 #define MAX_HISTORY_SIZE 50
 #define MAX_FILENAME_SIZE 30
 
@@ -19,6 +10,10 @@ class RoundTimeDisplay;
 class MacroService;
 class WordCompleter;
 class GenieUtils;
+class KeyboardFilter;
+class MainWindow;
+class WindowFacade;
+class GeneralSettings;
 
 class CommandLine : public QLineEdit {
     Q_OBJECT

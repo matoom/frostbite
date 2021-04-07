@@ -1,6 +1,10 @@
 #include "volumecontroldialog.h"
 #include "ui_volumecontroldialog.h"
 
+#include "mainwindow.h"
+#include "clientsettings.h"
+
+
 VolumeControlDialog::VolumeControlDialog(QWidget *parent) : QDialog(parent), ui(new Ui::VolumeControlDialog) {
     ui->setupUi(this);
 

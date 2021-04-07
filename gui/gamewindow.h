@@ -5,20 +5,15 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 
-#include <mainwindow.h>
-#include <windowfacade.h>
-#include <generalsettings.h>
-#include <dict/dictionarysettings.h>
-#include <defaultvalues.h>
-#include <windowinterface.h>
-#include <snapshot.h>
-#include <custom/contextmenu.h>
+#include "windowinterface.h"
 
 class MainWindow;
 class WindowFacade;
 class Snapshot;
 class Compass;
+class GeneralSettings;
 class DictionarySettings;
+class ContextMenu;
 
 class GameWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT

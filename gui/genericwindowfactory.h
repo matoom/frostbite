@@ -4,13 +4,10 @@
 #include <QObject>
 #include <QDockWidget>
 #include <QTextEdit>
-
-#include <mainwindow.h>
-#include <generalsettings.h>
-#include <genericwindow.h>
+#include <QPlainTextEdit>
 
 class MainWindow;
-class GenericWindow;
+class GeneralSettings;
 
 class GenericWindowFactory: public QObject {
     Q_OBJECT

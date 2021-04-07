@@ -3,9 +3,6 @@
 
 #include <QDialog>
 
-#include <mainwindow.h>
-#include <clientsettings.h>
-
 class MainWindow;
 class ClientSettings;
 

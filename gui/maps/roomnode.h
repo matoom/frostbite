@@ -9,9 +9,9 @@ public:
     RoomNode();
     RoomNode(QString zondeId, int level, int nodeId);
 
-    QString getZoneId();
-    int getLevel();
-    int getNodeId();
+    const QString& getZoneId() const;
+    int getLevel() const;
+    int getNodeId() const;
 
 private:
     QString zoneId;

@@ -1,5 +1,9 @@
 #include "eauthservice.h"
 
+#include "clientsettings.h"
+#include "authlogger.h"
+#include "tcpclient.h"
+
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     settings = ClientSettings::getInstance();
     tcpSocket = new QTcpSocket(this);

@@ -1,5 +1,6 @@
 #include "keyboardfilter.h"
 #include "commandline.h"
+#include "macrosettings.h"
 
 /* add all keys to map:key, modifier, flags and action text */
 KeyboardFilter::KeyboardFilter(QObject *parent) : QObject(parent) {

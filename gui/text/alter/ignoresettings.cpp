@@ -1,4 +1,7 @@
 #include "ignoresettings.h"
+
+#include "clientsettings.h"
+
 #include <QGlobalStatic>
 
 Q_GLOBAL_STATIC(IgnoreSettingsInstance, uniqueInstance)

@@ -1,11 +1,10 @@
 #ifndef SCRIPTWRITERTHREAD_H
 #define SCRIPTWRITERTHREAD_H
 
+#include <QThread>
 #include <QObject>
 #include <QQueue>
 #include <QMutex>
-
-#include <scriptservice.h>
 
 class ScriptService;
 

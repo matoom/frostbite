@@ -6,10 +6,10 @@
 #include <QDebug>
 #include <QWheelEvent>
 
-#include <maps/mapzone.h>
-#include <maps/mapfacade.h>
-
 class MapFacade;
+class MapZone;
+class ContextMenu;
+class GeneralSettings;
 
 class MapWindow : public QGraphicsView {
     Q_OBJECT
@@ -19,7 +19,7 @@ public:
     ~MapWindow();
 
 private:
-    void wheelEvent(QWheelEvent* zoomEvent);
+     void wheelEvent(QWheelEvent* zoomEvent);
     void contextMenuEvent(QContextMenuEvent* event);
 
     void scaleView(qreal);

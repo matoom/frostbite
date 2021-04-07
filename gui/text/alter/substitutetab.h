@@ -3,12 +3,12 @@
 
 #include <QObject>
 
-#include <text/alter/alterdialog.h>
-#include <text/alter/altersettingsentry.h>
-#include <text/alter/substitutionsettings.h>
-#include <text/alter/abstracttabletab.h>
+#include "text/alter/abstracttabletab.h"
 
 class AlterDialog;
+class AlterSettingsEntry;
+class SubstitutionSettings;
+class IgnoreSettings;
 
 class SubstituteTab : public QObject, AbstractTableTab {
     Q_OBJECT

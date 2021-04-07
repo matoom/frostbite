@@ -1,6 +1,15 @@
 #include "highlightdialog.h"
 #include "ui_highlightdialog.h"
 
+#include "mainwindow.h"
+#include "clientsettings.h"
+
+#include "text/highlight/highlightgeneraltab.h"
+#include "text/highlight/highlighttexttab.h"
+#include "text/highlight/highlightalerttab.h"
+
+#include "windowfacade.h"
+
 HighlightDialog::HighlightDialog(QWidget *parent) : QDialog(parent), ui(new Ui::HighlightDialog) {
     ui->setupUi(this);
 

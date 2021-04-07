@@ -2,12 +2,12 @@
 #define MAPDATA_H
 
 #include <QObject>
+#include <QReadWriteLock>
 
-#include <maps/mapreader.h>
-#include <maps/roomnode.h>
+#include "maps/roomnode.h"
 
 class MapReader;
-class RoomNode;
+class MapNode;
 
 class MapData : public QObject {
     Q_OBJECT
@@ -20,13 +20,13 @@ public:
 
     RoomNode findRoomNode(QString hash);
 
-    void setRoom(RoomNode roomNode);
-    RoomNode getRoom();
+    void setRoom(const RoomNode& roomNode);
+    const RoomNode& getRoom() const;
 
     RoomNode findLocation(QString keyword);
 
 private:
-    QReadWriteLock lock;
+    mutable QReadWriteLock lock;
 
     MapReader* mapReader;
     RoomNode roomNode;

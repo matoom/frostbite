@@ -6,8 +6,6 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <defaultvalues.h>
-
 class ActiveSpellIndicator : public QObject {
     Q_OBJECT
 public:

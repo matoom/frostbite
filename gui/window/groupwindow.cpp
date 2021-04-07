@@ -1,5 +1,12 @@
 #include "groupwindow.h"
 
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "genericwindow.h"
+#include "windowwriterthread.h"
+#include "defaultvalues.h"
+#include "genericwindowfactory.h"
+
 GroupWindow::GroupWindow(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = (WindowFacade*)mainWindow->getWindowFacade();

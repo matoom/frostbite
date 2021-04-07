@@ -3,25 +3,8 @@
 
 #include <QMainWindow>
 #include <QtGui>
-
-#include <windowfacade.h>
-#include <tcpclient.h>
-#include <toolbar/toolbar.h>
-#include <clientsettings.h>
-#include <commandline.h>
-#include <menuhandler.h>
-#include <scriptservice.h>
-#include <timerbar.h>
-#include <vitalsbar.h>
-#include <generalsettings.h>
-#include <tray.h>
-#include <scriptapiserver.h>
-#include <dict/dictionaryservice.h>
-//#include <compass/compassview.h>
-
-#include "cleanlooks/qcleanlooksstyle.h"
-
 #include <QtXml>
+#include <QReadWriteLock>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -48,7 +31,10 @@ class VitalsBar;
 class GeneralSettings;
 class Tray;
 class ScriptApiServer;
+class DictionaryService;
+class ClientSettings;
 //class CompassView;
+
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

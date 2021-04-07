@@ -1,5 +1,9 @@
 #include "highlightinserter.h"
 
+#include "mainwindow.h"
+#include "text/highlight/highlightsettings.h"
+#include "text/highlight/highlightsettingsentry.h"
+
 HighlightInserter::HighlightInserter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
 

@@ -3,8 +3,6 @@
 
 #include <QObject>
 
-#include <mainwindow.h>
-
 class MainWindow;
 
 class GenieUtils : public QObject {

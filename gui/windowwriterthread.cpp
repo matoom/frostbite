@@ -1,4 +1,10 @@
 #include "windowwriterthread.h"
+#include "text/highlight/highlighter.h"
+#include "text/alter/alter.h"
+#include "mainwindow.h"
+#include "windowinterface.h"
+#include "globaldefines.h"
+#include "genericwindow.h"
 
 WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window) {
     mainWindow = (MainWindow*)parent;

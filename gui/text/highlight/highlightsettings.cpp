@@ -1,4 +1,7 @@
 #include "highlightsettings.h"
+
+#include "clientsettings.h"
+
 #include <QGlobalStatic>
 
 Q_GLOBAL_STATIC(HighlightSettingsInstance, uniqueInstance)

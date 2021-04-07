@@ -1,5 +1,19 @@
 #include "mapreader.h"
 
+#include "globaldefines.h"
+
+#include "maps/mapzone.h"
+#include "maps/mapnode.h"
+#include "maps/maplabel.h"
+#include "maps/maprect.h"
+#include "maps/mapfacade.h"
+#include "maps/mapdata.h"
+#include "maps/mapdestination.h"
+
+#include "generalsettings.h"
+#include "textutils.h"
+#include "defaultvalues.h"
+
 MapReader::MapReader(QObject* parent) : QObject(parent) {
     mapFacade = (MapFacade*)parent;
     initialized = false;

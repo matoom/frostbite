@@ -2,8 +2,14 @@
 #define ARRIVALSWINDOW_H
 
 #include <QObject>
-#include <mainwindow.h>
-#include <windowfacade.h>
+#include <QDockWidget>
+
+class MainWindow;
+class WindowFacade;
+class GenericWindow;
+class WindowWriterThread;
+class ArrivalsLogger;
+class ClientSettings;
 
 class ArrivalsWindow : public QObject {
     Q_OBJECT

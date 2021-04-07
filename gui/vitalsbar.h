@@ -2,9 +2,11 @@
 #define VITALSBAR_H
 
 #include <QObject>
+#include <QtGui>
 #include <QProgressBar>
 
-#include <mainwindow.h>
+class MainWindow;
+class ClientSettings;
 
 class VitalsBar : public QObject {
     Q_OBJECT

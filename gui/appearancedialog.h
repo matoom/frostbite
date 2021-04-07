@@ -9,15 +9,11 @@
 #include <QColorDialog>
 #include <QFontDialog>
 
-#include <mainwindow.h>
-#include <defaultvalues.h>
-#include <generalsettings.h>
-#include <windowfacade.h>
-
 class MainWindow;
 class GeneralSettings;
 class WindowFacade;
 class RoundTimeDisplay;
+class CommandLine;
 
 namespace Ui {
     class AppearanceDialog;

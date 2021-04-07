@@ -1,5 +1,12 @@
 #include "quickbuttondisplay.h"
 
+#include "defaultvalues.h"
+#include "toolbar/toolbardefines.h"
+#include "toolbar/toolbar.h"
+#include "generalsettings.h"
+#include "toolbar/quickbuttondisplay.h"
+#include "toolbar/quickbuttoneditdialog.h"
+
 QuickButtonDisplay::QuickButtonDisplay(QObject *parent) : QObject(parent) {
     toolBar = (Toolbar*)parent;
     settings = GeneralSettings::getInstance();

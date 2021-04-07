@@ -1,6 +1,9 @@
 #include "highlighteditdialog.h"
 #include "ui_highlighteditdialog.h"
 
+#include "text/highlight/highlighttexttab.h"
+#include "text/highlight/highlightsettings.h"
+
 HighlightEditDialog::HighlightEditDialog(HighlightTextTab *textTab, QWidget *parent) :
         QDialog(parent), ui(new Ui::HighlightEditDialog) {
 

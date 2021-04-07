@@ -6,11 +6,6 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <toolbar/toolbardefines.h>
-#include <defaultvalues.h>
-
-#include <gamedatacontainer.h>
-
 class GameDataContainer;
 
 class StatusIndicator : public QObject {

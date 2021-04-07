@@ -1,5 +1,13 @@
 #include "highlightgeneraltab.h"
 
+#include "text/highlight/highlightdialog.h"
+#include "text/highlight/highlightsettings.h"
+#include "audio/audioplayer.h"
+#include "defaultvalues.h"
+#include "generalsettings.h"
+#include "custom/contextmenu.h"
+#include "mainwindow.h"
+
 HighlightGeneralTab::HighlightGeneralTab(QObject *parent) : QObject(parent) {
     highlightDialog = (HighlightDialog*)parent;
     settings = HighlightSettings::getInstance();

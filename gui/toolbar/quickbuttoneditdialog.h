@@ -5,8 +5,6 @@
 #include <QDebug>
 #include <QToolButton>
 
-#include <generalsettings.h>
-#include <clientsettings.h>
 
 class GeneralSettings;
 

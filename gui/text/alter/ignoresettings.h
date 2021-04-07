@@ -3,10 +3,11 @@
 
 #include <QObject>
 #include <QMutex>
+#include <QSettings>
 
-#include <text/alter/altersettingsentry.h>
-#include <clientsettings.h>
+#include "text/alter/altersettingsentry.h"
 
+class ClientSettings;
 
 class IgnoreSettings {
     friend class IgnoreSettingsInstance;

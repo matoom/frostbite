@@ -5,7 +5,8 @@
 #include <QHash>
 
 #include <maps/mapposition.h>
-#include <maps/mapdestination.h>
+
+class MapDestination;
 
 class MapNode {
 

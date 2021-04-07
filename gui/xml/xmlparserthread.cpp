@@ -1,5 +1,28 @@
 #include "xmlparserthread.h"
 
+#include "mainwindow.h"
+#include "gamedatacontainer.h"
+#include "windowfacade.h"
+#include "text/highlight/highlighter.h"
+#include "maps/mapwindow.h"
+#include "window/conversationswindow.h"
+#include "window/roomwindow.h"
+#include "window/expwindow.h"
+#include "window/deathswindow.h"
+#include "window/thoughtswindow.h"
+#include "window/arrivalswindow.h"
+#include "window/familiarwindow.h"
+#include "window/spellwindow.h"
+#include "window/atmosphericswindow.h"
+#include "window/groupwindow.h"
+#include "window/combatwindow.h"
+#include "toolbar/toolbar.h"
+#include "vitalsbar.h"
+#include "roundtimedisplay.h"
+#include "scriptservice.h"
+#include "commandline.h"
+#include "textutils.h"
+
 XmlParserThread::XmlParserThread(QObject *parent) {
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();

@@ -1,5 +1,8 @@
 #include "compass.h"
 
+#include "windowfacade.h"
+#include "navigationdefines.h"
+
 Compass::Compass(QObject *parent) : QObject(parent) {
     images = new QHash<bool, QList<QPixmap> >;
 

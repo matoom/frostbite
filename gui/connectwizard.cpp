@@ -1,6 +1,10 @@
 #include "connectwizard.h"
 #include "ui_connectwizard.h"
 
+#include "clientsettings.h"
+#include "mainwindow.h"
+#include "tcpclient.h"
+
 ConnectWizard::ConnectWizard(QWidget *parent) : QWizard(parent), ui(new Ui::ConnectWizard) {
     ui->setupUi(this);
 

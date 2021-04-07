@@ -1,9 +1,8 @@
 #ifndef COMPASS_H
 #define COMPASS_H
 
-#include <windowfacade.h>
-
-#include <navigationdefines.h>
+#include <QObject>
+#include <QtGui>
 
 class WindowFacade;
 

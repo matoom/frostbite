@@ -1,6 +1,16 @@
 #include "mapdialog.h"
 #include "ui_mapdialog.h"
 
+#include "maps/mapzone.h"
+#include "maps/mapfacade.h"
+#include "maps/mapreader.h"
+#include "maps/mapdata.h"
+#include "maps/roomnode.h"
+#include "maps/mapdestination.h"
+#include "maps/mapnode.h"
+#include "generalsettings.h"
+#include "globaldefines.h"
+
 MapDialog::MapDialog(MapFacade* mapFacade, QWidget *parent) : QDialog(parent), ui(new Ui::MapDialog) {
     ui->setupUi(this);
 
@@ -110,7 +120,7 @@ void MapDialog::showMap(QString zoneId, int level) {
     ui->mapView->setScene(mapFacade->getMapReader()->getScenes().value(zoneId).value(level).scene);
 }
 
-void MapDialog::center(RoomNode roomNode) {
+void MapDialog::center(const RoomNode& roomNode) {
     MapZone* zone = mapFacade->getMapReader()->getZones().value(roomNode.getZoneId());
     MapNode* node = zone->getNodes().value(roomNode.getNodeId());
     if(zone != NULL && node != NULL) {

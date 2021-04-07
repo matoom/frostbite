@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QProgressBar>
-
-#include <mainwindow.h>
+#include <QTimer>
+#include <QReadWriteLock>
 
 class MainWindow;
 

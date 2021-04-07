@@ -1,5 +1,21 @@
 #include "toolbar.h"
 
+#include "mainwindow.h"
+#include "toolbar/toolbardefines.h"
+#include "toolbar/vitalsindicator.h"
+#include "toolbar/statusindicator.h"
+#include "toolbar/wieldindicator.h"
+#include "toolbar/spellindicator.h"
+#include "toolbar/quickbuttondisplay.h"
+#include "toolbar/quickbuttoneditdialog.h"
+#include "toolbar/fullscreenbutton.h"
+#include "toolbar/activespellindicator.h"
+#include "toolbar/mutebutton.h"
+#include "gamedatacontainer.h"
+#include "clientsettings.h"
+#include "commandline.h"
+#include "textutils.h"
+
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     gameDataContainer = GameDataContainer::Instance();

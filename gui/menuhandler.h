@@ -4,20 +4,7 @@
 #include <QObject>
 #include <QAction>
 #include <QDebug>
-
-#include <mainwindow.h>
-#include <connectwizard.h>
-#include <text/highlight/highlightdialog.h>
-#include <macrodialog.h>
-#include <text/alter/alterdialog.h>
-#include <appearancedialog.h>
-#include <aboutdialog.h>
-#include <scripteditdialog.h>
-#include <profileadddialog.h>
-#include <clientsettings.h>
-#include <scriptsettingsdialog.h>
-#include <audio/volumecontroldialog.h>
-#include <dict/dictionarydialog.h>
+#include <QMenu>
 
 class ConnectWizard;
 class MainWindow;
@@ -30,6 +17,9 @@ class ProfileAddDialog;
 class ScriptSettingsDialog;
 class VolumeControlDialog;
 class DictionaryDialog;
+class ClientSettings;
+class WindowFacade;
+class MacroDialog;
 
 #define USER_GUIDE_URL "http://matoom.github.com/frostbite"
 

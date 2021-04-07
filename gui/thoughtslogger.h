@@ -8,7 +8,6 @@
 #include <QThread>
 
 #include <log4qt/logger.h>
-#include <textutils.h>
 
 class ThoughtsLogger : public QThread {
     Q_OBJECT

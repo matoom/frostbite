@@ -1,4 +1,5 @@
 #include "activespellindicator.h"
+#include "defaultvalues.h"
 
 ActiveSpellIndicator::ActiveSpellIndicator(QObject *parent) : QObject(parent) {    
 }

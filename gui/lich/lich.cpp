@@ -1,5 +1,10 @@
 #include "lich.h"
 
+#include "clientsettings.h"
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "defaultvalues.h"
+
 Lich::Lich(QObject *parent) : QObject(parent), lich_proc(new QProcess(this)) {
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();

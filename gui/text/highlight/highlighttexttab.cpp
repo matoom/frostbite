@@ -1,5 +1,16 @@
 #include "highlighttexttab.h"
 
+#include "text/highlight/highlightdialog.h"
+#include "text/highlight/highlightadddialog.h"
+#include "text/highlight/highlighteditdialog.h"
+#include "text/highlight/highlightsettings.h"
+
+#include "audio/audioplayer.h"
+#include "generalsettings.h"
+#include "defaultvalues.h"
+#include "custom/contextmenu.h"
+#include "mainwindow.h"
+
 HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {    
     highlightSettings = HighlightSettings::getInstance();
 

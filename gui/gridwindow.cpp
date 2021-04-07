@@ -1,5 +1,15 @@
 #include "gridwindow.h"
 
+#include <QHeaderView>
+#include <QFontDialog>
+
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "custom/contextmenu.h"
+#include "generalsettings.h"
+#include "defaultvalues.h"
+
+
 GridWindow::GridWindow(QString title, QWidget *parent) : QTableWidget(parent) {
     mainWindow = (MainWindow*)parent;
     settings = GeneralSettings::getInstance();

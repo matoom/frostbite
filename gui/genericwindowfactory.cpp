@@ -1,5 +1,9 @@
 #include "genericwindowfactory.h"
 
+#include "mainwindow.h"
+#include "generalsettings.h"
+#include "genericwindow.h"
+
 GenericWindowFactory::GenericWindowFactory(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     settings = GeneralSettings::getInstance();

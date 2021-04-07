@@ -14,16 +14,9 @@
 #include <QtConcurrent>
 
 #include <qdebug.h>
-#include <maps/mapzone.h>
-#include <maps/mapnode.h>
-#include <maps/maplabel.h>
-#include <maps/maprect.h>
 
-#include <maps/mapfacade.h>
-#include <maps/mapdata.h>
-#include <maps/roomnode.h>
-
-#include <globaldefines.h>
+#include "maps/mapposition.h"
+#include "maps/roomnode.h"
 
 struct MapGraphics {
     QGraphicsScene* scene;
@@ -32,6 +25,10 @@ struct MapGraphics {
 
 class MapFacade;
 class MapData;
+class MapZone;
+class MapNode;
+class MapLabel;
+class GeneralSettings;
 
 class MapReader : public QObject {
     Q_OBJECT

@@ -4,9 +4,8 @@
 #include <QDialog>
 #include <QFileDialog>
 
-#include <mainwindow.h>
-
 class MainWindow;
+class ClientSettings;
 
 namespace Ui {
     class ScriptSettingsDialog;

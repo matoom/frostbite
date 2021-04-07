@@ -5,8 +5,8 @@
 #include <QHash>
 #include <QSet>
 
-#include <maps/mapnode.h>
-#include <maps/maplabel.h>
+class MapNode;
+class MapLabel;
 
 class MapZone {
 
