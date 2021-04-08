@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QQueue>
 #include <QMutex>
+#include "concurrentqueue.h"
 
 class ScriptService;
 
@@ -18,14 +19,9 @@ public:
     virtual void run();
 
 private:
-    QQueue<QString> dataQueue;
+    ConcurrentQueue<QString> dataQueue;
     ScriptService* scriptService;
-    QMutex mMutex;
-    QString localData;
-
     QRegExp rxRemoveTags;
-
-    bool exit;
 
     void process(QString data);
     
