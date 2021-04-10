@@ -6,6 +6,7 @@
 #include <QPlainTextEdit>
 #include <QQueue>
 #include <QMutex>
+#include "concurrentqueue.h"
 
 class Highlighter;
 class Alter;
@@ -23,16 +24,14 @@ public:
     virtual void run();
 
 private:
-    QQueue<QString> dataQueue;
+    ConcurrentQueue<QString> dataQueue;
     QPlainTextEdit* textEdit;
 
     Highlighter* highlighter;
     Alter* alter;
 
     MainWindow* mainWindow;
-    QMutex mMutex;
     QRegExp rxRemoveTags;
-    QString localData;
     WindowInterface *window;
 
     void write(QString);

@@ -458,7 +458,6 @@ void WindowFacade::removeStreamWindow(QString id) {
     if(!streamWindows.contains(id)) return;
 
     WindowWriterThread* writer = streamWriters.value(id);
-    writer->requestInterruption();
     writer->wait();
     delete writer;
     streamWriters.remove(id);
@@ -503,13 +502,9 @@ void WindowFacade::unlockWindows() {
 
 WindowFacade::~WindowFacade() {
     delete compass;
-
     foreach(WindowWriterThread* writer, streamWriters) {
-        writer->terminate();
         delete writer;
     }
-
-    mainWriter->terminate();
     delete mainWriter;
 
     foreach(QDockWidget* dock, streamWindows) {

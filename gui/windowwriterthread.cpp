@@ -29,20 +29,17 @@ void WindowWriterThread::updateSettings() {
 }
 
 void WindowWriterThread::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
+    dataQueue.push(text);
 }
 
 void WindowWriterThread::run() {
     while(!this->isInterruptionRequested()) {
-        while(!dataQueue.isEmpty()) {
-            mMutex.lock();
-            localData = dataQueue.dequeue();
-            mMutex.unlock();
-            this->write(localData);
+        QString localData;
+        if (dataQueue.waitAndPop(localData)) {
+            write(localData);
+        } else {
+            break;
         }
-        msleep(200);
     }
 }
 
@@ -84,8 +81,10 @@ void WindowWriterThread::setText(QString text) {
                    "</span>");
 }
 
-WindowWriterThread::~WindowWriterThread() {    
+WindowWriterThread::~WindowWriterThread() {
     this->requestInterruption();
+    dataQueue.stop();
+
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");
         this->terminate();

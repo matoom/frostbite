@@ -23,7 +23,7 @@ private:
     ScriptService* scriptService;
     QRegExp rxRemoveTags;
 
-    void process(QString data);
+    void process(const QString& data);
     
 signals:
     void writeText(QByteArray);

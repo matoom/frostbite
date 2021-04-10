@@ -16,7 +16,7 @@ void ScriptWriterThread::addText(QString text) {
 }
 
 void ScriptWriterThread::run() {
-    while(true) {
+    while(!this->isInterruptionRequested()) {
         QString localData;
         if (dataQueue.waitAndPop(localData)) {
             process(localData);
@@ -26,7 +26,7 @@ void ScriptWriterThread::run() {
     }
 }
 
-void ScriptWriterThread::process(QString lines) {
+void ScriptWriterThread::process(const QString& lines) {
     foreach (QString line, lines.split("\n")) {
         line = line.remove(rxRemoveTags);
         TextUtils::htmlToPlain(line);
@@ -35,6 +35,7 @@ void ScriptWriterThread::process(QString lines) {
 }
 
 ScriptWriterThread::~ScriptWriterThread() {
+    this->requestInterruption();
     dataQueue.stop();
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");

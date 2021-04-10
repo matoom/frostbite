@@ -45,8 +45,8 @@ public:
     }
     
 private:
-    QWaitCondition queueCondition;
     mutable QMutex mutex;
+    QWaitCondition queueCondition;
     QQueue<T> queue;
     bool shouldStop = false;
 };
