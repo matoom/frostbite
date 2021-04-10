@@ -70,7 +70,6 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     connect(this, SIGNAL(writeStreamWindow(QString, QString)), windowFacade, SLOT(writeStreamWindow(QString, QString)));
     connect(this, SIGNAL(clearStreamWindow(QString)), windowFacade, SLOT(clearStreamWindow(QString)));
 
-    exit = false;
     bold = false;
     initRoundtime = false;
     initCastTime = false;
@@ -89,26 +88,23 @@ void XmlParserThread::updateHighlighterSettings() {
 }
 
 void XmlParserThread::addData(QByteArray buffer) {
-    mMutex.lock();
-    dataQueue.enqueue(buffer);
-    mMutex.unlock();
+    dataQueue.push(buffer);
 }
 
 void XmlParserThread::run() {
-    while(!exit) {
-        while(!dataQueue.isEmpty()) {
-            mMutex.lock();
-            localData = dataQueue.dequeue();
-            mMutex.unlock();
+    while(!this->isInterruptionRequested()) {
+        QByteArray localData;
+        if (dataQueue.waitAndPop(localData)) {
             cache(localData);
+        } else {
+            break;
         }
-        msleep(25);
     }
 }
 
 bool XmlParserThread::isCmgr() {
-    QMutexLocker ml(&mMutex);
-    return cmgr;
+    bool result = cmgr;
+    return result;
 }
 
 QString XmlParserThread::fixInputXml(QString data) {
@@ -730,7 +726,8 @@ QString XmlParserThread::wrapCdata(QString data) {
 }
 
 XmlParserThread::~XmlParserThread() {
-    this->exit = true;
+    this->requestInterruption();
+    dataQueue.stop();
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");
         this->terminate();

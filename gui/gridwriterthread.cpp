@@ -10,7 +10,6 @@ GridWriterThread::GridWriterThread(QObject *parent, GridWindow* window) {
     alter = new Alter();
 
     this->window = window;
-    this->exit = false;
 }
 
 void GridWriterThread::updateSettings() {
@@ -20,20 +19,17 @@ void GridWriterThread::updateSettings() {
 
 void GridWriterThread::addItem(QString name, QString text) {
     GridEntry gridEntry = {name, text};
-    mMutex.lock();
-    dataQueue.enqueue(gridEntry);
-    mMutex.unlock();
+    dataQueue.push(gridEntry);
 }
 
 void GridWriterThread::run() {
-    while(!this->exit) {
-        while(!dataQueue.isEmpty()) {
-            mMutex.lock();
-            localData = dataQueue.dequeue();
-            mMutex.unlock();
-            this->write(localData);
+    while (!this->isInterruptionRequested()) {
+        GridEntry localData;
+        if (dataQueue.waitAndPop(localData)) {
+            write(localData);
+        } else {
+            break;
         }
-        msleep(200);
     }
 }
 
@@ -53,7 +49,8 @@ void GridWriterThread::write(GridEntry gridEntry) {
 }
 
 GridWriterThread::~GridWriterThread() {
-    this->exit = true;
+    this->requestInterruption();
+    dataQueue.stop();
     if(!this->wait(1000)) {
         qWarning("Thread deadlock detected, terminating thread.");
         this->terminate();

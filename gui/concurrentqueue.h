@@ -39,8 +39,9 @@ public:
     }
 
     void stop() {
-        QMutexLocker lock(&mutex);
+        mutex.lock();
         shouldStop = true;
+        mutex.unlock();
         queueCondition.wakeOne();
     }
     

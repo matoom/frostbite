@@ -6,7 +6,8 @@
 #include <QQueue>
 #include <QMutex>
 #include <QMap>
- 
+#include "concurrentqueue.h"
+
 class Highlighter;
 class GridWindow;
 class MainWindow;
@@ -29,24 +30,20 @@ public:
     virtual void run();
 
 private:
-    QQueue<GridEntry> dataQueue;
+    ConcurrentQueue<GridEntry> dataQueue;
 
     Highlighter* highlighter;
     Alter* alter;
 
     MainWindow* mainWindow;
-    QMutex mMutex;
     bool append;
     QRegExp rxRemoveTags;
-    GridEntry localData;
     QMap<QString, QString> highlightedItems;
 
     GridWindow* window;
 
     void write(GridEntry);
     QString process(QString text, QString win);
-
-    bool exit;
 
 public slots:
     void addItem(QString, QString);

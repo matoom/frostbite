@@ -10,6 +10,9 @@
 #include <QFile>
 #include <QHash>
 #include <QtXml/QDomNode>
+#include <QAtomicInt>
+
+#include "concurrentqueue.h"
 
 class MainWindow;
 class WindowFacade;
@@ -34,8 +37,7 @@ public:
     void process(QString);
 
 private:
-    QQueue<QByteArray> dataQueue;
-    QMutex mMutex;
+    ConcurrentQueue<QByteArray> dataQueue;
 
     void cache(QByteArray data);    
 
@@ -65,7 +67,6 @@ private:
 
     QHash<QString, QVariant> scheduled;
 
-    bool exit;
     bool bold;
     bool initRoundtime;
     bool initCastTime;
@@ -74,7 +75,7 @@ private:
     QString streamCache;
 
     bool mono;
-    bool cmgr;
+    QAtomicInt cmgr;
 
     bool pushStream;
 
@@ -108,7 +109,6 @@ private:
 
     QRegExp rxDmg;
 
-    QByteArray localData;
 
 signals:
     void updateConversationsWindow(QString);
