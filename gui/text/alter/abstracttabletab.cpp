@@ -41,8 +41,8 @@ void AbstractTableTab::updateEntry(QTableWidgetItem* item) {
 
     if(data == "pattern") {
         entry.pattern = item->text();
-    } else if(data == "substitute") {
-        entry.substitute = item->text();
+    } else if(data == "value") {
+        entry.value = item->text();
     }
 
     if(QRegularExpression(entry.pattern).isValid()) {
@@ -55,13 +55,13 @@ void AbstractTableTab::updateEntry(QTableWidgetItem* item) {
     this->registerChange(row, TableChangeEvent::Update);
 }
 
-void AbstractTableTab::addNewTableRow() {
+void AbstractTableTab::addNewTableRow(const QStringList& targetList) {
     getTable()->blockSignals(true);
 
     int count = getTable()->rowCount();
     getTable()->insertRow(count);
 
-    AlterSettingsEntry entry(count, true, "", QStringList());
+    AlterSettingsEntry entry(count, true, "", targetList);
     settingEntries.insert(count, entry);
 
     this->populateTableRow(count, entry);

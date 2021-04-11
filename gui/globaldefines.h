@@ -12,6 +12,6 @@
 #define RT_COLOR_HEX "#E86850"
 #define CT_COLOR_HEX "#66A7C5"
 
-#define FROSTBITE_SCHEMA "frostbite"
+#define FROSTBITE_SCHEMA "f"
 
 #endif // GLOBALDEFINES_H

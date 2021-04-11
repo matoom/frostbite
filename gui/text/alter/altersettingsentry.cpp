@@ -14,16 +14,16 @@ AlterSettingsEntry::AlterSettingsEntry(const int& id, const bool& enabled, const
 }
 
 AlterSettingsEntry::AlterSettingsEntry(const int& id, const bool& enabled, const QString& pattern,
-        const QString& substitute, const QStringList& targetList) {
+        const QString& value, const QStringList& targetList) {
     this->id = id;
     this->enabled = enabled;
     this->pattern = pattern;
-    this->substitute = substitute;
+    this->value = value;
     this->targetList = targetList;
 }
 
 const QString AlterSettingsEntry::toString() {
     return "RegexpSettingsEntry:[ id => " + QString::number(this->id) +
             ", pattern => " + this->pattern +
-            ", substitute => " + this->substitute + " ]";
+            ", value => " + this->value + " ]";
 }

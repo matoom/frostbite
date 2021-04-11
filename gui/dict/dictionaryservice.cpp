@@ -1,14 +1,27 @@
 #include "dictionaryservice.h"
 #include "dictionarysettings.h"
 
+#include "mainlogger.h"
+#include "mainwindow.h"
+#include "windowfacade.h"
+#include "window/dictionarywindow.h"
+
 DictionaryService::DictionaryService(QObject* parent) :
     QObject(parent),
     settings(DictionarySettings::getInstance()),
     process(new QProcess(this)) {
+
+    mainWindow = (MainWindow*)parent;
+
     connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)),
             this, SLOT(processErrorOccurred(QProcess::ProcessError)));
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(processFinished(int, QProcess::ExitStatus)));
+
+    connect(this, SIGNAL(translationFinished(QString)),
+            mainWindow->getWindowFacade()->getDictionaryWindow(), SLOT(write(QString)));
+    connect(this, SIGNAL(translationFailed(QString)),
+            mainWindow->getWindowFacade()->getDictionaryWindow(), SLOT(write(QString)));
 }
 
 DictionaryService::~DictionaryService() {}

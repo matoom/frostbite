@@ -17,7 +17,7 @@ SubstituteTab::SubstituteTab(QObject *parent) : QObject(parent), AbstractTableTa
     settings = SubstitutionSettings::getInstance();
 
     QStringList labels;
-    labels << "Pattern" << "Substitute";
+    labels << "Regular expression" << "Substitute";
     substitutionTable->setColumnCount(labels.count());
     substitutionTable->setHorizontalHeaderLabels(labels);
 
@@ -46,7 +46,7 @@ void SubstituteTab::updateSettings() {
 }
 
 void SubstituteTab::addNewTableRow() {
-   AbstractTableTab::addNewTableRow();
+   AbstractTableTab::addNewTableRow(QStringList());
 }
 
 void SubstituteTab::removeTableRow() {
@@ -88,8 +88,8 @@ void SubstituteTab::populateTableRow(int row, AlterSettingsEntry entry) {
 
     substitutionTable->setItem(row, 0, patternItem);
 
-    QTableWidgetItem* substituteItem = new QTableWidgetItem(entry.substitute);
-    substituteItem->setData(Qt::UserRole, "substitute");
+    QTableWidgetItem* substituteItem = new QTableWidgetItem(entry.value);
+    substituteItem->setData(Qt::UserRole, "value");
     substitutionTable->setItem(row, 1, substituteItem);
 }
 

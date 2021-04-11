@@ -7,17 +7,15 @@ class AlterSettingsEntry {
 
 public:
     AlterSettingsEntry();
-
     AlterSettingsEntry(const int& id, const bool& enabled, const QString& pattern, const QStringList& targetList);
-
-    AlterSettingsEntry(const int& id, const bool& enabled, const QString& pattern, const QString& substitute, const QStringList& targetList);
+    AlterSettingsEntry(const int& id, const bool& enabled, const QString& pattern, const QString& value, const QStringList& targetList);
 
     const QString toString();
 
     int id;
     bool enabled;
     QString pattern;
-    QString substitute;
+    QString value;
     QStringList targetList;
 };
 

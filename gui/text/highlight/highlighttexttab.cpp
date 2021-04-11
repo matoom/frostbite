@@ -37,8 +37,6 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
     groupSelect = highlightDialog->getTextHighlightGroup();
     sortBySelect = highlightDialog->getTextHighlightSortBy();
     filterEdit = highlightDialog->getTextHighlightFilter();
-    commandBox = highlightDialog->getTextCommandGroup();
-    commandValueLine = highlightDialog->getTextCommandValue();
 
     playButton = highlightDialog->getTextPlayButton();
 
@@ -74,10 +72,6 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
             this, SLOT(timerValueChanged()));
     connect(timerActionSelect, SIGNAL(activated(const QString&)),
             this, SLOT(timerActionSelected(const QString&)));
-
-    connect(commandBox, SIGNAL(clicked(bool)), this, SLOT(commandSelected(bool)));
-    connect(commandValueLine, SIGNAL(editingFinished()),
-            this, SLOT(commandValueChanged()));
 
     connect(alertBox, SIGNAL(clicked(bool)), this, SLOT(alertSelected(bool)));
     connect(alertFileSelect, SIGNAL(activated(const QString&)), this, SLOT(alertFileSelected(const QString&)));
@@ -441,7 +435,6 @@ void HighlightTextTab::updateControls(QListWidgetItem *currentItem) {
 
         this->updateAlertControl(currentEntry.alert, currentEntry.alertValue);
         this->updateTimerControl(currentEntry.timer, currentEntry.timerValue, currentEntry.timerAction);
-        this->updateCommandControl(currentEntry.command, currentEntry.commandValue);
         this->updateOptionsControl(currentEntry.options);
 
         removeButton->setDisabled(false);
@@ -471,10 +464,6 @@ void HighlightTextTab::clearControls() {
 
     timerActionSelect->setCurrentIndex(0);
     timerValueLine->setText("");
-
-    commandBox->setDisabled(true);
-    commandBox->setChecked(false);
-    commandValueLine->setText("");
 
     alertBox->setDisabled(true);
     alertBox->setChecked(false);
@@ -538,12 +527,6 @@ void HighlightTextTab::updateTimerControl(bool timer, int timerValue, QString ac
     } else {
         timerActionSelect->setCurrentIndex(0);
     }
-}
-
-void HighlightTextTab::updateCommandControl(bool command, const QString& commandValue) {
-    commandBox->setDisabled(false);
-    commandBox->setChecked(command);
-    commandValueLine->setText(commandValue);
 }
 
 void HighlightTextTab::initSortBy() {
@@ -619,31 +602,6 @@ void HighlightTextTab::showEditDialog() {
         highlightEditDialog->show();
     }
 }
-
-
-void HighlightTextTab::commandSelected(bool value) {
-    if(listWidget->currentItem() != NULL) {
-        int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
-        currentEntry.command = value;
-
-        highlightList.replace(currentId, currentEntry);
-        this->registerChange();
-    }
-}
-
-void HighlightTextTab::commandValueChanged() {
-    if(listWidget->currentItem() != NULL) {
-        int currentId = listWidget->currentItem()->data(Qt::UserRole).toInt();
-
-        HighlightSettingsEntry currentEntry = highlightList.at(currentId);
-        currentEntry.commandValue = commandValueLine->text();
-
-        highlightList.replace(currentId, currentEntry);
-        this->registerChange();
-    }
-}
-
 
 HighlightTextTab::~HighlightTextTab() {
     delete audioPlayer;

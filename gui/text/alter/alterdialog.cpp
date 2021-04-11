@@ -16,11 +16,13 @@ AlterDialog::AlterDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AlterDia
 
     substituteTab = new SubstituteTab(this);    
     ignoreTab = new IgnoreTab(this);
+    linksTab = new LinksTab(this);
 }
 
 void AlterDialog::updateSettings() {
     substituteTab->updateSettings();
     ignoreTab->updateSettings();
+    linksTab->updateSettings();
 }
 
 QList<QDockWidget*> AlterDialog::getDockWindows() {
@@ -59,6 +61,18 @@ QCheckBox* AlterDialog::getIgnoreEnabled() {
     return ui->ignoreEnabled;
 }
 
+QTableWidget* AlterDialog::getLinksTable() {
+    return ui->linksTable;
+}
+
+QPushButton* AlterDialog::getLinksAddButton() {
+    return ui->lAddButton;
+}
+
+QPushButton* AlterDialog::getLinksRemoveButton() {
+    return ui->lRemoveButton;
+}
+
 void AlterDialog::reloadSettings() {
     mainWindow->getWindowFacade()->reloadWindowSettings();
 }
@@ -66,6 +80,7 @@ void AlterDialog::reloadSettings() {
 void AlterDialog::applyPressed() {
     substituteTab->saveChanges();
     ignoreTab->saveChanges();
+    linksTab->saveChanges();
     this->reloadSettings();
     ui->applyButton->setEnabled(false);
 }
@@ -73,6 +88,7 @@ void AlterDialog::applyPressed() {
 void AlterDialog::okPressed() {
     substituteTab->saveChanges();
     ignoreTab->saveChanges();
+    linksTab->saveChanges();
     this->reloadSettings();
     ui->applyButton->setEnabled(false);
     this->accept();
@@ -81,6 +97,7 @@ void AlterDialog::okPressed() {
 void AlterDialog::cancelPressed() {
     substituteTab->cancelChanges();
     ignoreTab->cancelChanges();
+    linksTab->cancelChanges();
     ui->applyButton->setEnabled(false);
     this->reject();
 }
@@ -88,5 +105,6 @@ void AlterDialog::cancelPressed() {
 AlterDialog::~AlterDialog() {
     delete substituteTab;
     delete ignoreTab;
+    delete linksTab;
     delete ui;
 }

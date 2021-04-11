@@ -5,6 +5,7 @@
 #include <QProcess>
 
 class DictionarySettings;
+class MainWindow;
 
 class DictionaryService : public QObject {
     Q_OBJECT
@@ -19,11 +20,14 @@ public:
     ~DictionaryService();
 
     void translate(const QString& word);
+
 signals:
     void translationFinished(QString translation);
     void translationFailed(QString reason);
 
 private:
+    MainWindow* mainWindow;
+
     void emitError(const QString& reason);
         
 private slots:

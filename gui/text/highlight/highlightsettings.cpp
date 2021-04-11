@@ -49,8 +49,6 @@ void HighlightSettings::addParameter(QString group, HighlightSettingsEntry entry
     settings->setValue("timer", entry.timer);
     settings->setValue("timerValue", entry.timerValue);
     settings->setValue("timerAction", entry.timerAction);
-    settings->setValue("command", entry.command);
-    settings->setValue("commandValue", entry.commandValue);
     settings->setValue("options", entry.options);
     settings->endArray();
 }
@@ -70,8 +68,6 @@ void HighlightSettings::setParameter(QString group, HighlightSettingsEntry entry
     settings->setValue("timer", entry.timer);
     settings->setValue("timerValue", entry.timerValue);
     settings->setValue("timerAction", entry.timerAction);
-    settings->setValue("command", entry.command);
-    settings->setValue("commandValue", entry.commandValue);
     settings->setValue("options", entry.options);
     settings->endArray();
 
@@ -103,8 +99,6 @@ QList<HighlightSettingsEntry> HighlightSettings::loadSettings(QString group) {
                 (const bool&)settings->value("timer", false).toBool(),
                 (const int&)settings->value("timerValue", 0).toInt(),
                 (const QString&)settings->value("timerAction", "").toString(),
-                (const bool&)settings->value("command", false).toBool(),
-                (const QString&)settings->value("commandValue", "").toString(),
                 (const QBitArray&)opts));
     }
     settings->endArray();
@@ -129,8 +123,6 @@ void HighlightSettings::setSettings(QString group, QList<HighlightSettingsEntry>
         settings->setValue("timer", entry.timer);
         settings->setValue("timerValue", entry.timerValue);
         settings->setValue("timerAction", entry.timerAction);
-        settings->setValue("command", entry.command);
-        settings->setValue("commandValue", entry.commandValue);
         settings->setValue("options", entry.options);
     }
     settings->endArray();

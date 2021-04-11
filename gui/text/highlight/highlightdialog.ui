@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>464</height>
+    <width>905</width>
+    <height>479</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -642,51 +642,6 @@
                 </item>
                 <item>
                  <widget class="QComboBox" name="tActionSelect"/>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="tCommandGroup">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="title">
-              <string>Command</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_101">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_71">
-                <item>
-                 <widget class="QLabel" name="onClickLabel">
-                  <property name="text">
-                   <string>On click command:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="tOnClickCommand">
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                 </widget>
                 </item>
                </layout>
               </item>

@@ -18,7 +18,7 @@ IgnoreTab::IgnoreTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     settings = IgnoreSettings::getInstance();
 
     QStringList labels;
-    labels << "Pattern";
+    labels << "Regular expression";
     ignoreTable->setColumnCount(labels.count());
     ignoreTable->setHorizontalHeaderLabels(labels);
 
@@ -50,7 +50,7 @@ void IgnoreTab::updateSettings() {
 }
 
 void IgnoreTab::addNewTableRow() {
-   AbstractTableTab::addNewTableRow();
+   AbstractTableTab::addNewTableRow(QStringList());
 }
 
 void IgnoreTab::removeTableRow() {
@@ -87,14 +87,14 @@ void IgnoreTab::initIgnoreList() {
 
 void IgnoreTab::populateTableRow(int row, AlterSettingsEntry entry) {
     QTableWidgetItem* patternItem = new QTableWidgetItem(entry.pattern);
+
     patternItem->setData(Qt::UserRole, "pattern");
 
     if(QRegularExpression(entry.pattern).isValid()) {
         patternItem->setBackgroundColor(QColor(Qt::transparent));
     } else {
         patternItem->setBackgroundColor(QColor(REGEX_ERROR_COLOR_HEX));
-    }
-
+    }  
     ignoreTable->setItem(row, 0, patternItem);
 }
 

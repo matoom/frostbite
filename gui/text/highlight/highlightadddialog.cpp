@@ -43,7 +43,7 @@ void HighlightAddDialog::okPressed() {
     if(!text.isEmpty()) {
         QColor color(textTab->bgColor.rgba()^0xffffff);
         HighlightSettingsEntry entry = HighlightSettingsEntry(0, text, group,
-                                                              color, QColor(), false, "", false, 0, "", false, "", QBitArray(5));
+                                                              color, QColor(), false, "", false, 0, "", QBitArray(5));
 
         settings->addParameter("TextHighlight", entry);
 

@@ -9,7 +9,6 @@
 #include "globaldefines.h"
 #include <QSettings>
 
-
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     highlightSettings = HighlightSettings::getInstance();
@@ -46,7 +45,7 @@ QString Highlighter::highlight(QString text) {
             if(index != -1) {
                 int count = rx.captureCount();
                 if(count == 0 || !entry.options.at(3)) {
-                    int pos = this->highlightText(entry, text, index, rx.cap(0));
+                    int pos = index;
                     while ((pos = rx.indexIn(text, pos)) != -1) {
                         pos += this->highlightText(entry, text, pos, rx.cap(0));
                     }
@@ -72,11 +71,6 @@ int Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int 
         startTag = "<span style=\"color:" % entry.color.name() % ";\">";
     }
     QString endTag = "</span>";
-    // handle clickable commands
-    if (entry.command && entry.commandValue.size()) {
-        startTag.append("<a href=\"" + createCommand(match, entry.commandValue) + "\">");
-        endTag.prepend("</a>");
-    }
 
     int startTagLength = startTag.length();
     int indexEnd = indexStart + startTagLength + match.length();
@@ -156,13 +150,6 @@ Qt::CaseSensitivity Highlighter::matchCase(bool value) {
         matchCase = Qt::CaseInsensitive;
     }
     return matchCase;
-}
-
-QString Highlighter::createCommand(const QString& text, const QString& command) {
-    QString cmd = command;
-    cmd.replace(QRegExp("\\$1"), text);
-    //return "frostbite://" + cmd.replace(QRegExp("\$1"), text), "", " ");
-    return FROSTBITE_SCHEMA + QString("://action/") + QUrl::toPercentEncoding(cmd, "", " "); 
 }
 
 Highlighter::~Highlighter() {

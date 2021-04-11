@@ -22,8 +22,6 @@ public:
                            const bool &timer,
                            const int &timerValue,
                            const QString &timerAction,
-                           const bool command,
-                           const QString &commandValue,
                            const QBitArray &options);
 
     int id;
@@ -36,8 +34,6 @@ public:
     bool timer;
     int timerValue;
     QString timerAction;
-    bool command;
-    QString commandValue;
     QBitArray options;
 
     const QString toString();

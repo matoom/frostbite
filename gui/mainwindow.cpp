@@ -177,16 +177,6 @@ void MainWindow::loadClient() {
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
-
-    connect(dictionaryService, SIGNAL(translationFinished(QString)),
-            windowFacade->getDictionaryWindow(), SLOT(write(QString)));
-    connect(dictionaryService, SIGNAL(translationFailed(QString)),
-            windowFacade->getDictionaryWindow(), SLOT(write(QString)));
-
-    connect(hyperlinkService, SIGNAL(actionCommand(const QString&)),
-            this, SLOT(actionCommand(const QString&)));
-    connect(hyperlinkService, SIGNAL(actionCommands(const QStringList&)),
-            this, SLOT(actionCommands(const QStringList&)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -394,8 +384,7 @@ void MainWindow::closeEvent(QCloseEvent*) {
 }
 
 void MainWindow::actionCommand(const QString& command) {
-    getCommandLine()->setText(command);
-    emit getCommandLine()->sendCommand();
+    getCommandLine()->writeCommand(command);
 }
 
 void MainWindow::actionCommands(const QStringList& commands) {

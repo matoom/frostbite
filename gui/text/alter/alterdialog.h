@@ -9,6 +9,7 @@
 #include <mainwindow.h>
 #include <text/alter/substitutetab.h>
 #include <text/alter/ignoretab.h>
+#include <text/alter/linkstab.h>
 
 namespace Ui {
     class AlterDialog;
@@ -16,6 +17,7 @@ namespace Ui {
 
 class SubstituteTab;
 class IgnoreTab;
+class LinksTab;
 
 class AlterDialog : public QDialog {
     Q_OBJECT
@@ -31,9 +33,13 @@ public:
     QTableWidget* getSubstitutionTable();
 
     QPushButton* getIgnoreAddButton();
-    QPushButton* getIgnoreRemoveButton();
+    QPushButton* getIgnoreRemoveButton();    
     QTableWidget* getIgnoreTable();
     QCheckBox* getIgnoreEnabled();
+
+    QTableWidget* getLinksTable();
+    QPushButton* getLinksAddButton();
+    QPushButton* getLinksRemoveButton();
 
     QList<QDockWidget*> getDockWindows();
 
@@ -45,6 +51,7 @@ private:
     MainWindow* mainWindow;
     SubstituteTab* substituteTab;
     IgnoreTab* ignoreTab;
+    LinksTab* linksTab;
 
 public slots:
     void applyPressed();

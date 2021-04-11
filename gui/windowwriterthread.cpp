@@ -47,7 +47,7 @@ void WindowWriterThread::run() {
 }
 
 QString WindowWriterThread::process(QString text, QString win) {
-    return highlighter->highlight(alter->substitute(text, win));
+    return highlighter->highlight(alter->addLink(alter->substitute(text, win), win));
 }
 
 void WindowWriterThread::write(QString data) {

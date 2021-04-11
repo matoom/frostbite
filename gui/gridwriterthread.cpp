@@ -38,7 +38,7 @@ void GridWriterThread::run() {
 }
 
 QString GridWriterThread::process(QString text, QString win) {
-    return highlighter->highlight(alter->substitute(text, win));
+    return highlighter->highlight(alter->addLink(alter->substitute(text, win), win));
 }
 
 void GridWriterThread::write(GridEntry gridEntry) {

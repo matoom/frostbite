@@ -1,34 +1,36 @@
-#include "substitutionsettings.h"
+#include "linksettings.h"
+
+#include "LinkSettings.h"
 
 #include "clientsettings.h"
 
 #include <QGlobalStatic>
 
-Q_GLOBAL_STATIC(SubstitutionSettingsInstance, uniqueInstance)
+Q_GLOBAL_STATIC(LinkSettingsInstance, uniqueInstance)
 
-SubstitutionSettings* SubstitutionSettings::getInstance() {
+LinkSettings* LinkSettings::getInstance() {
     return uniqueInstance;
 }
 
-SubstitutionSettings::SubstitutionSettings() {
+LinkSettings::LinkSettings() {
     clientSettings = ClientSettings::getInstance();
     this->create();
 }
 
-void SubstitutionSettings::reInit() {
+void LinkSettings::reInit() {
     QMutexLocker locker(&m_mutex);
     delete settings;
     this->create();
 }
 
-void SubstitutionSettings::create() {
-    settings = new QSettings(clientSettings->profilePath() + "substitutes.ini", QSettings::IniFormat);
+void LinkSettings::create() {
+    settings = new QSettings(clientSettings->profilePath() + "links.ini", QSettings::IniFormat);
 }
 
-void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
+void LinkSettings::setSettings(QList<AlterSettingsEntry> entries) {
     QMutexLocker locker(&m_mutex);
-    settings->remove("substitution");
-    settings->beginWriteArray("substitution");
+    settings->remove("links");
+    settings->beginWriteArray("links");
 
     for (int i = 0; i < entries.size(); ++i) {
         AlterSettingsEntry entry = entries.at(i);
@@ -36,47 +38,47 @@ void SubstitutionSettings::setSettings(QList<AlterSettingsEntry> entries) {
         settings->setArrayIndex(i);
         settings->setValue("enabled", entry.enabled);
         settings->setValue("pattern", entry.pattern);
-        settings->setValue("substitute", entry.value);
+        settings->setValue("link", entry.value);
         settings->setValue("target", entry.targetList);
     }
     settings->endArray();
 }
 
-void SubstitutionSettings::addParameter(AlterSettingsEntry entry) {
+void LinkSettings::addParameter(AlterSettingsEntry entry) {
     QMutexLocker locker(&m_mutex);
-    int id = settings->value("substitution/size").toInt();
+    int id = settings->value("links/size").toInt();
 
-    settings->beginWriteArray("substitution");
+    settings->beginWriteArray("links");
     settings->setArrayIndex(id);
     settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
-    settings->setValue("substitute", entry.value);
+    settings->setValue("link", entry.value);
     settings->setValue("target", entry.targetList);
     settings->endArray();
 }
 
-void SubstitutionSettings::setParameter(AlterSettingsEntry entry) {
+void LinkSettings::setParameter(AlterSettingsEntry entry) {
     QMutexLocker locker(&m_mutex);
-    int size = settings->value("substitution/size").toInt();
+    int size = settings->value("links/size").toInt();
 
-    settings->beginWriteArray("substitution");
+    settings->beginWriteArray("links");
     settings->setArrayIndex(entry.id);
     settings->setValue("enabled", entry.enabled);
     settings->setValue("pattern", entry.pattern);
-    settings->setValue("substitute", entry.value);
+    settings->setValue("link", entry.value);
     settings->setValue("target", entry.targetList);
     settings->endArray();
 
-    settings->setValue("substitution/size", size);
+    settings->setValue("links/size", size);
 }
 
-QList<AlterSettingsEntry> SubstitutionSettings::getSubstitutions() {
+QList<AlterSettingsEntry> LinkSettings::getLinks() {
     QList<AlterSettingsEntry> settingsCache = QList<AlterSettingsEntry>();
-    this->loadSettings("substitution", settingsCache);
+    this->loadSettings("links", settingsCache);
     return settingsCache;
 }
 
-void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
+void LinkSettings::loadSettings(QString group, QList<AlterSettingsEntry> &settingsList) {
     QMutexLocker locker(&m_mutex);
     int size = settings->beginReadArray(group);
     for (int i = 0; i < size; i++) {
@@ -84,12 +86,12 @@ void SubstitutionSettings::loadSettings(QString group, QList<AlterSettingsEntry>
         settingsList.append(AlterSettingsEntry((const int&)i,
                 (const bool&)settings->value("enabled", "").toBool(),
                 (const QString&)settings->value("pattern", "").toString(),
-                (const QString&)settings->value("substitute", "").toString(),
+                (const QString&)settings->value("link", "").toString(),
                 (const QStringList&)settings->value("target", QStringList()).value<QStringList>()));
     }
     settings->endArray();
 }
 
-SubstitutionSettings::~SubstitutionSettings() {
+LinkSettings::~LinkSettings() {
     delete settings;
 }

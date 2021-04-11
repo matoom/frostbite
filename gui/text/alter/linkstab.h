@@ -1,5 +1,5 @@
-#ifndef SUBSTITUTETAB_H
-#define SUBSTITUTETAB_H
+#ifndef LINKSTAB_H
+#define LINKSTAB_H
 
 #include <QObject>
 
@@ -7,14 +7,14 @@
 
 class AlterDialog;
 class AlterSettingsEntry;
-class SubstitutionSettings;
+class LinkSettings;
 
-class SubstituteTab : public QObject, AbstractTableTab {
+class LinksTab : public QObject, AbstractTableTab {
     Q_OBJECT
 
 public:
-    explicit SubstituteTab(QObject *parent = 0);
-    ~SubstituteTab();
+    explicit LinksTab(QObject *parent = 0);
+    ~LinksTab();
 
     void updateSettings();
     void saveChanges();
@@ -29,17 +29,15 @@ public:
 private:
     AlterDialog* alterDialog;
 
-    QTableWidget* substitutionTable;
+    QTableWidget* linksTable;
     QPushButton* addButton;
     QPushButton* removeButton;
 
-    SubstitutionSettings* settings;
+    LinkSettings* settings;
 
-    void initSubstitutionList();
+    void initLinksList();
 
     void populateTableRow(int row, AlterSettingsEntry entry);
-
-signals:
 
 public slots:
     void removeTableRow();
@@ -48,4 +46,4 @@ public slots:
     void updateEntry(QTableWidgetItem*);
 };
 
-#endif // SUBSTITUTETAB_H
+#endif // LINKSTAB_H

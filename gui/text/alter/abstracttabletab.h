@@ -33,7 +33,7 @@ public:
     void setSettingEntries(QList<AlterSettingsEntry> settingEntries);
 
     void updateEntry(QTableWidgetItem* item);
-    void addNewTableRow();
+    void addNewTableRow(const QStringList& targetList);
     void removeTableRow();
     void displayMenu(QPoint pos);
 

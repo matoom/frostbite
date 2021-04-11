@@ -28,7 +28,7 @@ void GenieUtils::addRegexHighlight(QString pattern, QString color) {
     opts.setBit(1, 1);
 
     HighlightSettingsEntry entry = HighlightSettingsEntry(0, pattern, "General",
-                                                          QColor(color), QColor(), false, "", false, 0, "", false, "", opts);
+                                                          QColor(color), QColor(), false, "", false, 0, "", opts);
 
     settings->addParameter("TextHighlight", entry);
 }
