@@ -1,7 +1,5 @@
 #include "linksettings.h"
 
-#include "LinkSettings.h"
-
 #include "clientsettings.h"
 
 #include <QGlobalStatic>
