@@ -155,7 +155,9 @@ HEADERS  += mainwindow.h \
     scriptsettingsdialog.h \
     compass.h \
     genieutils.h \
-    hyperlinkservice.h
+    hyperlinkservice.h \
+    concurrentqueue.h \
+    workqueuethread.h \
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

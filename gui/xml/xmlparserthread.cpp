@@ -88,19 +88,9 @@ void XmlParserThread::updateHighlighterSettings() {
 }
 
 void XmlParserThread::addData(QByteArray buffer) {
-    dataQueue.push(buffer);
+    Parent::addData(buffer);
 }
 
-void XmlParserThread::run() {
-    while(!this->isInterruptionRequested()) {
-        QByteArray localData;
-        if (dataQueue.waitAndPop(localData)) {
-            cache(localData);
-        } else {
-            break;
-        }
-    }
-}
 
 bool XmlParserThread::isCmgr() {
     bool result = cmgr;
@@ -123,7 +113,7 @@ void XmlParserThread::flushStream() {
 }
 
 /* cache streams */
-void XmlParserThread::cache(QByteArray data) {
+void XmlParserThread::onProcess(const QByteArray& data) {
     QString cache = QString::fromLocal8Bit(data);
 
     int lastPush = cache.lastIndexOf("<pushStream");
@@ -723,15 +713,4 @@ QString XmlParserThread::wrapRoot(QString data) {
 
 QString XmlParserThread::wrapCdata(QString data) {
     return "<![CDATA[" + data + "]]>";
-}
-
-XmlParserThread::~XmlParserThread() {
-    this->requestInterruption();
-    dataQueue.stop();
-    if(!this->wait(1000)) {
-        qWarning("Thread deadlock detected, terminating thread.");
-        this->terminate();
-        this->wait();
-    }
-    delete highlighter;
 }

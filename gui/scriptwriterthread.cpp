@@ -11,22 +11,7 @@ ScriptWriterThread::ScriptWriterThread(QObject *parent) {
             scriptService, SLOT(writeOutgoingMessage(QByteArray)));
 }
 
-void ScriptWriterThread::addText(QString text) {
-    dataQueue.push(text);
-}
-
-void ScriptWriterThread::run() {
-    while(!this->isInterruptionRequested()) {
-        QString localData;
-        if (dataQueue.waitAndPop(localData)) {
-            process(localData);
-        } else {
-            break;
-        }
-    }
-}
-
-void ScriptWriterThread::process(const QString& lines) {
+void ScriptWriterThread::onProcess(const QString& lines) {
     foreach (QString line, lines.split("\n")) {
         line = line.remove(rxRemoveTags);
         TextUtils::htmlToPlain(line);
@@ -34,12 +19,3 @@ void ScriptWriterThread::process(const QString& lines) {
     }
 }
 
-ScriptWriterThread::~ScriptWriterThread() {
-    this->requestInterruption();
-    dataQueue.stop();
-    if(!this->wait(1000)) {
-        qWarning("Thread deadlock detected, terminating thread.");
-        this->terminate();
-        this->wait();
-    }
-}

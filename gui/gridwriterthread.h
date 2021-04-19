@@ -1,12 +1,9 @@
 #ifndef GRIDHIGHLIGHTERTHREAD_H
 #define GRIDHIGHLIGHTERTHREAD_H
 
-#include <QObject>
-#include <QThread>
-#include <QQueue>
-#include <QMutex>
+#include <QString>
 #include <QMap>
-#include "concurrentqueue.h"
+#include "workqueuethread.h"
 
 class Highlighter;
 class GridWindow;
@@ -20,18 +17,17 @@ struct GridEntry {
 
 typedef QMap<QString, QString> GridItems;
 
-class GridWriterThread : public QThread {
+class GridWriterThread : public WorkQueueThread<GridEntry> {
     Q_OBJECT
-
+    using Parent = WorkQueueThread<GridEntry>;
 public:
     explicit GridWriterThread(QObject *parent, GridWindow* window);
-    ~GridWriterThread();
+    ~GridWriterThread() = default;
 
-    virtual void run();
-
+protected:
+    void onProcess(const GridEntry& data) override;
+    
 private:
-    ConcurrentQueue<GridEntry> dataQueue;
-
     Highlighter* highlighter;
     Alter* alter;
 

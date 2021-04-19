@@ -8,7 +8,7 @@ GridWriterThread::GridWriterThread(QObject *parent, GridWindow* window) {
     mainWindow = (MainWindow*)parent;
     highlighter = new Highlighter(parent);
     alter = new Alter();
-
+    connect(this, &GridWriterThread::finished, alter, &QObject::deleteLater);
     this->window = window;
 }
 
@@ -18,26 +18,14 @@ void GridWriterThread::updateSettings() {
 }
 
 void GridWriterThread::addItem(QString name, QString text) {
-    GridEntry gridEntry = {name, text};
-    dataQueue.push(gridEntry);
-}
-
-void GridWriterThread::run() {
-    while (!this->isInterruptionRequested()) {
-        GridEntry localData;
-        if (dataQueue.waitAndPop(localData)) {
-            write(localData);
-        } else {
-            break;
-        }
-    }
+    Parent::addData({name, text});
 }
 
 QString GridWriterThread::process(QString text, QString win) {
     return highlighter->highlight(alter->addLink(alter->substitute(text, win), win));
 }
 
-void GridWriterThread::write(GridEntry gridEntry) {
+void GridWriterThread::onProcess(const GridEntry& gridEntry) {
     if(alter->ignore(gridEntry.text, window->objectName())) return;
 
     if(gridEntry.text.isEmpty()) {
@@ -46,16 +34,4 @@ void GridWriterThread::write(GridEntry gridEntry) {
         highlightedItems.insert(gridEntry.name, this->process(gridEntry.text, window->objectName()));
     }
     emit writeGrid(highlightedItems);
-}
-
-GridWriterThread::~GridWriterThread() {
-    this->requestInterruption();
-    dataQueue.stop();
-    if(!this->wait(1000)) {
-        qWarning("Thread deadlock detected, terminating thread.");
-        this->terminate();
-        this->wait();
-    }
-    delete highlighter;
-    delete alter;
 }
