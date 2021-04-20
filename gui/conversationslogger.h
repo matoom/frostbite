@@ -1,30 +1,29 @@
 #ifndef CONVERSATIONSLOGGER_H
 #define CONVERSATIONSLOGGER_H
 
-#include <QObject>
-#include <QQueue>
-#include <QMutex>
-#include <QThread>
+#include <QString>
 #include <QRegExp>
 
 #include <log4qt/logger.h>
-#include <textutils.h>
 
-class ConversationsLogger : public QThread {
+#include "workqueuethread.h"
+
+class ConversationsLogger : public WorkQueueThread<QString> {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER
-
+    
+    using Parent = WorkQueueThread<QString>;
 public:
     explicit ConversationsLogger(QObject *parent = 0);
-    ~ConversationsLogger();
+    ~ConversationsLogger() = default;
 
-    virtual void run();
+protected:
+    void onProcess(const QString& text) override {
+        log(text);
+    }
 
 private:
-    QQueue<QString> dataQueue;
-    QMutex mMutex;
     QRegExp rxRemoveTags;
-    QString localData;
 
     void log(QString);
 

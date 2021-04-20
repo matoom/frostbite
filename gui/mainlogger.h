@@ -1,40 +1,37 @@
 #ifndef MAINLOGGER_H
 #define MAINLOGGER_H
 
-#include <QObject>
-#include <QQueue>
 #include <QDebug>
-#include <QMutex>
 #include <QRegExp>
-#include <QThread>
 
 #include <log4qt/logger.h>
 
-class Alter;
+#include "workqueuethread.h"
 
-class MainLogger : public QThread {
-    Q_OBJECT
-    LOG4QT_DECLARE_QCLASS_LOGGER
+
+class Alter;
 
 struct LogEntry {
     QString text;
     char type;
 };
 
+class MainLogger : public WorkQueueThread<LogEntry> {
+    Q_OBJECT
+    LOG4QT_DECLARE_QCLASS_LOGGER
+    
+    using Parent = WorkQueueThread<LogEntry>;
 public:
     explicit MainLogger(QObject *parent = 0);
-    ~MainLogger();
-
-    virtual void run();
+    ~MainLogger() = default;
 
     static const char COMMAND = 'c';
     static const char PROMPT = 'p';
-
+protected:
+    void onProcess(const LogEntry& entry) override;
+    
 private:
-    QQueue<LogEntry> dataQueue;
-    QMutex mMutex;
     QRegExp rxRemoveTags;
-    LogEntry localData;
     Alter* alter;
 
     void log(LogEntry);

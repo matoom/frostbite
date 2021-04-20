@@ -4,19 +4,10 @@ AuthLogger::AuthLogger(QObject*) {
 }
 
 void AuthLogger::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
+    Parent::addData(text);
 }
 
-void AuthLogger::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        logger()->info(localData);
-    }
+void AuthLogger::onProcess(const QString &text) {
+  logger()->info(text);
 }
 
-AuthLogger::~AuthLogger() {
-}

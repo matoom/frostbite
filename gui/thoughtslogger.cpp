@@ -6,24 +6,10 @@ ThoughtsLogger::ThoughtsLogger(QObject*) {
 }
 
 void ThoughtsLogger::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
-}
-
-void ThoughtsLogger::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        log(localData);
-    }
+    Parent::addData(text);
 }
 
 void ThoughtsLogger::log(QString logText) {
     TextUtils::htmlToPlain(logText);
     logger()->info(logText.remove(rxRemoveTags));
-}
-
-ThoughtsLogger::~ThoughtsLogger() {
 }

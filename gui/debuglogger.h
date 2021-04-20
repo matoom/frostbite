@@ -1,30 +1,24 @@
 #ifndef DEBUGLOGGER_H
 #define DEBUGLOGGER_H
 
-#include <QObject>
-#include <QQueue>
-#include <QMutex>
-#include <QThread>
+#include <QString>
 
 #include <log4qt/logger.h>
 
-class DebugLogger: public QThread {
+#include "workqueuethread.h"
+
+class DebugLogger: public WorkQueueThread<QString> {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER
 
+    using Parent = WorkQueueThread<QString>;
 public:
     explicit DebugLogger(QObject *parent = 0);
-    ~DebugLogger();
-
-    virtual void run();
-
-private:
-    QQueue<QString> dataQueue;
-    QMutex mMutex;
-    QString localData;
-
-signals:
-
+    ~DebugLogger() = default;
+    
+protected:
+    void onProcess(const QString& text) override;
+    
 public slots:
     void addText(QString);
 
