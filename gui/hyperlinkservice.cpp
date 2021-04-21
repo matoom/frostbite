@@ -35,21 +35,20 @@ void HyperlinkService::handleActionCommand(const QString &action) {
 }
 
 void HyperlinkService::addLink(QString &text, const QString &pattern, const QString &command) {
-    QRegExp rx;
-    rx.setPattern(pattern % "(?=[^>]*(<|$))");
-
-    int index = rx.indexIn(text);
-    if(index != -1) {
-        int count = rx.captureCount();
-        if(count == 0) {
-            int pos = index;
-            while ((pos = rx.indexIn(text, pos)) != -1) {
-                pos += HyperlinkService::createLink(text, command, pos, rx.cap(0));
-            }
-        } else {
-            int inserted = 0;
-            for(int i = 1; i < count + 1; i++) {
-                inserted += HyperlinkService::createLink(text, command, rx.pos(i) + inserted, rx.cap(i));
+    QRegularExpression re(pattern + "(?=[^>]*(<|$))");
+    QRegularExpressionMatchIterator matchIterator = re.globalMatch(text);
+    int global = 0;
+    while (matchIterator.hasNext()) {
+        QRegularExpressionMatch match = matchIterator.next();
+        if(match.hasMatch()) {
+            int count = re.captureCount();
+            if(count == 1) {
+                global = HyperlinkService::createLink(text, command, match.capturedStart(0) + global, match.captured(0));
+            } else {
+                int inserted = 0;
+                for(int i = 1; i < count; i++) {
+                    inserted += HyperlinkService::createLink(text, command, match.capturedStart(i) + inserted, match.captured(i));
+                }
             }
         }
     }
