@@ -21,9 +21,11 @@ bool KeyboardFilter::eventFilter(QObject *object, QEvent *event) {
             switch(keyEvent->key()) {
                 case Qt::Key_Up:
                     commandLine->historyBack();
+                    return true;
                 break;
                 case Qt::Key_Down:
                     commandLine->historyForward();
+                    return true;
                 break;
             }
             #endif
