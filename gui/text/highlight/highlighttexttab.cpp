@@ -1,5 +1,8 @@
 #include "highlighttexttab.h"
 
+#include <QFileDialog>
+#include <QMessageBox>
+
 #include "text/highlight/highlightdialog.h"
 #include "text/highlight/highlightadddialog.h"
 #include "text/highlight/highlighteditdialog.h"
@@ -10,6 +13,7 @@
 #include "defaultvalues.h"
 #include "custom/contextmenu.h"
 #include "mainwindow.h"
+#include "genieutils.h"
 
 HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {    
     highlightSettings = HighlightSettings::getInstance();
@@ -22,7 +26,8 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
 
     addButton = highlightDialog->getTextAddButton();
     applyButton = highlightDialog->getApplyButton();
-    removeButton = highlightDialog->getTextRemoveButton();    
+    removeButton = highlightDialog->getTextRemoveButton();
+    importGenieButton = highlightDialog->getTextImportGenieButton();
     alertBox = highlightDialog->getTextAlertGroup();
     alertFileSelect = highlightDialog->getTextFileSelect();    
     entireRowCheck = highlightDialog->getTextEntireRow();
@@ -98,6 +103,9 @@ HighlightTextTab::HighlightTextTab(QObject *parent) : QObject(parent) {
             this, SLOT(listWidgetMenuRequested(const QPoint &)));
     connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(showEditDialog()));
+    
+    importGenieButton->setEnabled(true);
+    connect(importGenieButton, SIGNAL(clicked()), this, SLOT(importGenie()));
 }
 
 void HighlightTextTab::initContextMenu() {
@@ -600,6 +608,20 @@ void HighlightTextTab::showEditDialog() {
         HighlightSettingsEntry currentEntry = highlightList.at(currentId);
         highlightEditDialog->setEntry(currentEntry);
         highlightEditDialog->show();
+    }
+}
+
+void HighlightTextTab::importGenie() {
+    QString fileName = QFileDialog::getOpenFileName(highlightDialog, tr("Open Genie Highlights File"),
+                                                "",
+                                                tr("Config files (*.cfg)"));
+    if (!fileName.isEmpty()) {
+        if (!highlightDialog->getMainWindow()->getGenieUtils()->importFile(fileName)) {
+            QMessageBox::warning(highlightDialog, "Unable to open file", "Unable to open file with Genie highlights");
+        } else {
+            QMessageBox::information(highlightDialog, "Imported", "Import succeeded");
+            this->reloadHighlightList();
+        }
     }
 }
 

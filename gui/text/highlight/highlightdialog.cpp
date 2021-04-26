@@ -72,8 +72,12 @@ QPushButton* HighlightDialog::getTextAddButton() {
     return ui->tAdd;
 }
 
-QPushButton* HighlightDialog::getTextRemoveButton() {
+QPushButton *HighlightDialog::getTextRemoveButton() {
     return ui->tRemove;
+}
+
+QPushButton* HighlightDialog::getTextImportGenieButton() {
+    return ui->tImportGenie;
 }
 
 QListWidget* HighlightDialog::getTextList() {

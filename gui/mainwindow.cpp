@@ -25,6 +25,7 @@
 #include "compass/compassview.h"
 #include "macrosettings.h"
 #include "hyperlinkservice.h"
+#include "genieutils.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -70,6 +71,10 @@ void MainWindow::appSetup() {
 
     // load tray
     tray = new Tray(this);
+
+    // Create Genie utils
+    genieUtils = new GenieUtils(this);
+    connect(genieUtils, SIGNAL(reloadSettings()), this, SLOT(reloadSettings()));
 }
 
 void MainWindow::toggleFullScreen() {
@@ -212,8 +217,12 @@ TimerBar* MainWindow::getTimerBar() {
     return this->timerBar;
 }
 
-Tray* MainWindow::getTray() {
+Tray *MainWindow::getTray() {
     return this->tray;
+}
+
+GenieUtils* MainWindow::getGenieUtils() {
+    return this->genieUtils;
 }
 
 void MainWindow::addWidgetMainLayout(QWidget* widget) {

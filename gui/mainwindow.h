@@ -35,7 +35,7 @@ class ScriptApiServer;
 class DictionaryService;
 class ClientSettings;
 class HyperlinkService;
-
+class GenieUtils;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -105,6 +105,7 @@ public:
     DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();
+    GenieUtils* getGenieUtils();
 
 private:
     Ui::MainWindow* ui;
@@ -119,6 +120,7 @@ private:
     ScriptApiServer* scriptApiServer;
     DictionaryService* dictionaryService;
     HyperlinkService* hyperlinkService;
+    GenieUtils* genieUtils;
     QMenu* commandMenu;
 
     Tray* tray;

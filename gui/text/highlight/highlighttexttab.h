@@ -49,6 +49,7 @@ private:
     QPushButton *addButton;
     QPushButton *applyButton;
     QPushButton *removeButton;
+    QPushButton *importGenieButton;
     QGroupBox *alertBox;
     QComboBox *alertFileSelect;
     QPushButton *playButton;
@@ -125,6 +126,7 @@ private slots:
     void playSound();
     void sortBySelected(int index);
     void filterList(const QString&);
+    void importGenie();
 
 public slots:
 

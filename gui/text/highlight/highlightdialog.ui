@@ -281,6 +281,16 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="tImportGenie">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Import from Genie...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="horizontalSpacer_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>

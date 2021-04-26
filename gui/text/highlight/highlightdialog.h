@@ -56,6 +56,7 @@ public:
     QComboBox* getTextHighlightGroup();
     QComboBox* getTextHighlightSortBy();
     QLineEdit* getTextHighlightFilter();
+    QPushButton* getTextImportGenieButton();
 
     /* alert tab items */
     QGroupBox* getBleedingGroup();

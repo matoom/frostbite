@@ -26,7 +26,7 @@ CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     keyboardFilter = new KeyboardFilter(this);
     settings = GeneralSettings::getInstance();
 
-    genieUtils = new GenieUtils(mainWindow);
+    genieUtils = mainWindow->getGenieUtils();
 
     historyCounter = -1;
 
