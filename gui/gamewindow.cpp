@@ -162,9 +162,11 @@ void GameWindow::mousePressEvent(QMouseEvent *e) {
 
 void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton &&
-        !clickedAnchor.isEmpty() &&
-        anchorAt(e->pos()) == clickedAnchor) {
-        QDesktopServices::openUrl(QUrl(clickedAnchor, QUrl::TolerantMode));
+        !clickedAnchor.isEmpty()) {
+        if (anchorAt(e->pos()) == clickedAnchor) {
+            QDesktopServices::openUrl(QUrl(clickedAnchor, QUrl::TolerantMode));
+        }
+        clickedAnchor.clear();
     }
     QPlainTextEdit::mouseReleaseEvent(e);
 }
