@@ -2,17 +2,25 @@
 #define HIGHLIGHTER_H
 
 #include <QObject>
+#include <QRegExp>
+#include <vector>
 
 #include "text/highlight/highlightsettingsentry.h"
 
 class HighlightSettings;
 class MainWindow;
-class HighlightSettingsEntry;
 class AudioPlayer;
 
 class Highlighter : public QObject {
     Q_OBJECT
-
+public:
+    struct Entry {
+        HighlightSettingsEntry entry;
+        QString htmlValue;
+        QString startTag;
+        QString endTag;
+        QRegExp re;
+    };
 public:
     explicit Highlighter(QObject *parent = 0);
     ~Highlighter();
@@ -30,15 +38,15 @@ private:
 
     bool healthAlert;    
 
-    int highlightText(HighlightSettingsEntry, QString&, int, QString);
-    void highlightAlert(HighlightSettingsEntry);
-    void highlightTimer(HighlightSettingsEntry);
+    int highlightText(const Entry&, QString&, int, int);
+    void highlightAlert(const HighlightSettingsEntry&);
+    void highlightTimer(const HighlightSettingsEntry&);
 
-    static QString createCommand(const QString& text, const QString& command);
-
+    static Entry createEntryFromHighlight(const HighlightSettingsEntry& highlight);
+    
     Qt::CaseSensitivity matchCase(bool);
 
-    QList<HighlightSettingsEntry> highlightList;
+    std::vector<Entry> highlightList;
 
 signals:
     void playAudio(QString);
