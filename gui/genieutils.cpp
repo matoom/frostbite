@@ -51,7 +51,7 @@ bool GenieUtils::importFile(QString fileName) {
 void GenieUtils::addRegexHighlight(const GenieUtils::GenieHighlight& highlight) {
     HighlightSettings* settings = HighlightSettings::getInstance();
 
-    QBitArray opts {};
+    QBitArray opts(5);
     opts.setBit(1, 1);
     if (highlight.type == "beginswith") {
         opts.setBit(0, 1);
