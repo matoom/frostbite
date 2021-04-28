@@ -124,6 +124,12 @@ void GameWindow::buildContextMenu() {
     clearAct = new QAction(tr("&Clear\t"), this);
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
+
+    distractionFreeModeAct = new QAction(tr("Distraction free mode\t"), this);
+    distractionFreeModeAct->setCheckable(true);
+    distractionFreeModeAct->setChecked(false);
+    menu->addAction(distractionFreeModeAct);
+    connect(distractionFreeModeAct, SIGNAL(changed()), mainWindow, SLOT(toggleDistractionFreeMode()));
 }
 
 void GameWindow::changeAppearance() {

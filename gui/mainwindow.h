@@ -14,6 +14,7 @@ class QTextEdit;
 class QTextBrowser;
 class QTextLine;
 class QStringList;
+class QVBoxLayout;
 QT_END_NAMESPACE
 
 namespace Ui {
@@ -108,6 +109,9 @@ public:
 
 private:
     Ui::MainWindow* ui;
+    QWidget* mainWidget;
+    QVBoxLayout* mainWidgetLayout;
+    Qt::WindowFlags mainWidgetWindowFlags;
     WindowFacade* windowFacade;
     Toolbar* toolBar;
     TcpClient* tcpClient;
@@ -148,6 +152,7 @@ public slots:
     void reloadSettings();
     void actionCommand(const QString&);
     void actionCommands(const QStringList&);
+    void toggleDistractionFreeMode();    
 };
 
 #endif // MAINWINDOW_H
