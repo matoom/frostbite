@@ -44,6 +44,10 @@ void CompassView::setCompassVisible(bool visible) {
     }
 }
 
+bool CompassView::isVisible() const {
+    return visible;
+}
+
 void CompassView::resetCompass() {
     QPlainTextEdit* gameWindow = mainWindow->getWindowFacade()->getGameWindow();
     this->move(gameWindow->width() / 2, gameWindow->height() / 2);

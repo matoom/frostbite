@@ -111,7 +111,11 @@ private:
     Ui::MainWindow* ui;
     QWidget* mainWidget;
     QVBoxLayout* mainWidgetLayout;
-    Qt::WindowFlags mainWidgetWindowFlags;
+    struct {
+        Qt::WindowFlags mainWidgetWindowFlags;
+        bool vitalsBarVisible;
+        bool compassVisible;
+    } distractionFreeModeParams;
     WindowFacade* windowFacade;
     Toolbar* toolBar;
     TcpClient* tcpClient;

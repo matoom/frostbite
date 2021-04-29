@@ -83,20 +83,28 @@ void MainWindow::toggleMaximized() {
 }
 
 void MainWindow::toggleDistractionFreeMode() {
-    mainWidgetWindowFlags = mainWidget->windowFlags();
     // if no parent in main widget, this means the main widget is
     // maximized
     if (mainWidget->parent()) { 
-        mainWidgetWindowFlags = mainWidget->windowFlags();
+        distractionFreeModeParams.mainWidgetWindowFlags = mainWidget->windowFlags();
+        distractionFreeModeParams.vitalsBarVisible = vitalsBar->isVisible();
+        distractionFreeModeParams.compassVisible = windowFacade->getCompassView()->isVisible();
+        // we want to hide both vitals bar and compass, but do not want to save this as a setting
+        vitalsBar->toggle(false, false);
+        windowFacade->getCompassView()->setCompassVisible(false);
         ui->mainLayout->removeWidget(mainWidget);
         mainWidget->setParent(nullptr);
         mainWidget->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+        windowFacade->getGameWindow()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         hide();
         mainWidget->showFullScreen();
     } else {        
         mainWidget->setParent(this);
-        mainWidget->setWindowFlags(mainWidgetWindowFlags);
+        mainWidget->setWindowFlags(distractionFreeModeParams.mainWidgetWindowFlags);
         mainWidget->showNormal();
+        vitalsBar->toggle(distractionFreeModeParams.vitalsBarVisible, false);
+        windowFacade->getCompassView()->setCompassVisible(distractionFreeModeParams.compassVisible);
+        windowFacade->getGameWindow()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         ui->mainLayout->addWidget(mainWidget);
         show();
     }
