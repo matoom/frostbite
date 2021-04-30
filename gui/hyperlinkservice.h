@@ -13,6 +13,7 @@ public:
     ~HyperlinkService();
 
     static void addLink(QString &text, const QString &pattern, const QString &command);
+    static QUrl createSearchElanthipediaUrl(const QString& text);
 
 public slots:
     void handleUrl(const QUrl &url);     

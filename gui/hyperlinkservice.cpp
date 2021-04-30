@@ -73,6 +73,11 @@ QString HyperlinkService::createCommand(QString text, QString command) {
     return FROSTBITE_SCHEMA + QString("://a/") + command.toLocal8Bit().toBase64();
 }
 
+QUrl HyperlinkService::createSearchElanthipediaUrl(const QString& text) {
+    return QUrl(QString("https://elanthipedia.play.net/index.php?search=") +
+                QUrl::toPercentEncoding(text, " ") + QString("&title=Special%3ASearch&go=Go"));
+}
+
 HyperlinkService::~HyperlinkService() {  
 }
 

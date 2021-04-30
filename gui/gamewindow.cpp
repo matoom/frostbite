@@ -7,6 +7,7 @@
 #include "generalsettings.h"
 #include "dict/dictionarysettings.h"
 #include "dict/dictionaryservice.h"
+#include "hyperlinkservice.h"
 #include "defaultvalues.h"
 #include "globaldefines.h"
 #include "snapshot.h"
@@ -103,6 +104,13 @@ void GameWindow::buildContextMenu() {
     menu->addAction(lookupDictAct);
     lookupDictAct->setEnabled(false);
     connect(lookupDictAct, SIGNAL(triggered()), this, SLOT(lookupInDictionary()));
+
+    lookupWikiAct = new QAction(tr("&Lookup in Elanthipedia\t"), this);
+    menu->addAction(lookupWikiAct);
+    lookupWikiAct->setEnabled(false);
+    connect(lookupWikiAct, SIGNAL(triggered()), this, SLOT(lookupInElanthipedia()));
+
+    menu->addSeparator();
     
     copyAct = new QAction(tr("&Copy\t"), this);
     menu->addAction(copyAct);
@@ -181,17 +189,28 @@ void GameWindow::mouseMoveEvent(QMouseEvent *e) {
 void GameWindow::enableCopy(bool enabled) {
     copyAct->setEnabled(enabled);
     lookupDictAct->setEnabled(enabled);
+    lookupWikiAct->setEnabled(enabled);
 }
 
 
 void GameWindow::lookupInDictionary() {
-  QTextCursor textCursor = this->textCursor();
-  if (textCursor.hasSelection()) {
-    QString word = textCursor.selectedText().trimmed().toLower();
-    if (word.size()) {
-        mainWindow->getDictionaryService()->translate(word);
+    QTextCursor textCursor = this->textCursor();
+    if (textCursor.hasSelection()) {
+        QString word = textCursor.selectedText().trimmed().toLower();
+        if (word.size()) {
+            mainWindow->getDictionaryService()->translate(word);
+        }
     }
-  }
+}
+
+void GameWindow::lookupInElanthipedia() {
+    QTextCursor textCursor = this->textCursor();
+    if (textCursor.hasSelection()) {
+        QString text = textCursor.selectedText().trimmed();
+        if (text.size()) {
+            QDesktopServices::openUrl(HyperlinkService::createSearchElanthipediaUrl(text));
+        }
+    }
 }
 
 void GameWindow::copySelected() {
@@ -205,6 +224,7 @@ void GameWindow::copySelected() {
 GameWindow::~GameWindow() {        
     delete appearanceAct;
     delete lookupDictAct;
+    delete lookupWikiAct;
     delete copyAct;
     delete selectAct;
     delete clearAct;
