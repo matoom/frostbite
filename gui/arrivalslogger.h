@@ -1,27 +1,24 @@
 #ifndef ARRIVALSLOGGER_H
 #define ARRIVALSLOGGER_H
 
-#include <QObject>
-#include <QQueue>
-#include <QMutex>
-#include <QThread>
+#include <QString>
+#include <QRegExp>
 
 #include <log4qt/logger.h>
 
-class ArrivalsLogger : public QThread {
+#include "workqueuethread.h"
+
+class ArrivalsLogger : public WorkQueueThread<QString> {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER
 
+    using Parent = WorkQueueThread<QString>;
 public:
     explicit ArrivalsLogger(QObject *parent = 0);
-    ~ArrivalsLogger();
-
-    virtual void run();
-
-private:
-    QQueue<QString> dataQueue;
-    QMutex mMutex;
-    QString localData;
+    ~ArrivalsLogger() = default;
+    
+protected:
+    void onProcess(const QString& text);
 
 signals:
 

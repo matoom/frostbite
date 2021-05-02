@@ -13,6 +13,7 @@ WindowWriterThread::WindowWriterThread(QObject *parent, WindowInterface* window)
 
     highlighter = new Highlighter(parent);
     alter = new Alter();
+    connect(this, &WindowWriterThread::finished, alter, &QObject::deleteLater);
 
     GenericWindow* genericWindow = dynamic_cast<GenericWindow*>(window);
     if(genericWindow != NULL) {
@@ -29,28 +30,14 @@ void WindowWriterThread::updateSettings() {
 }
 
 void WindowWriterThread::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
-}
-
-void WindowWriterThread::run() {
-    while(!this->isInterruptionRequested()) {
-        while(!dataQueue.isEmpty()) {
-            mMutex.lock();
-            localData = dataQueue.dequeue();
-            mMutex.unlock();
-            this->write(localData);
-        }
-        msleep(200);
-    }
+    Parent::addData(text);
 }
 
 QString WindowWriterThread::process(QString text, QString win) {
     return highlighter->highlight(alter->addLink(alter->substitute(text, win), win));
 }
 
-void WindowWriterThread::write(QString data) {
+void WindowWriterThread::onProcess(const QString& data) {
     if(alter->ignore(data, window->getObjectName())) return;
 
     if(window->stream()) {
@@ -82,15 +69,4 @@ void WindowWriterThread::setText(QString text) {
     emit writeText("<span class=\"body\">"
                    + (text.isEmpty() ? "&nbsp;" : text) +
                    "</span>");
-}
-
-WindowWriterThread::~WindowWriterThread() {    
-    this->requestInterruption();
-    if(!this->wait(1000)) {
-        qWarning("Thread deadlock detected, terminating thread.");
-        this->terminate();
-        this->wait();
-    }
-    delete highlighter;
-    delete alter;
 }

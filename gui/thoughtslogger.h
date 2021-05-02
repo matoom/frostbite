@@ -1,29 +1,30 @@
 #ifndef THOUGHTSLOGGER_H
 #define THOUGHTSLOGGER_H
 
-#include <QObject>
-#include <QQueue>
-#include <QMutex>
+#include <QString>
 #include <QRegExp>
-#include <QThread>
 
 #include <log4qt/logger.h>
 
-class ThoughtsLogger : public QThread {
+#include "workqueuethread.h"
+
+class ThoughtsLogger : public WorkQueueThread<QString> {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER
 
+    using Parent = WorkQueueThread<QString>;
 public:
     explicit ThoughtsLogger(QObject *parent = 0);
-    ~ThoughtsLogger();
+    ~ThoughtsLogger() = default;
 
-    virtual void run();
+protected:
+    void onProcess(const QString& text) override {
+        log(text);
+    }
+    
 
 private:
-    QQueue<QString> dataQueue;
-    QMutex mMutex;
     QRegExp rxRemoveTags;
-    QString localData;
 
     void log(QString);
 

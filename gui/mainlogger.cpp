@@ -6,6 +6,7 @@
 
 MainLogger::MainLogger(QObject*) {
     alter = new Alter();
+    connect(this, &MainLogger::finished, alter, &QObject::deleteLater);
 
     rxRemoveTags.setPattern("<[^>]*>|\\s+$");
     prevType = '\0';
@@ -16,23 +17,11 @@ void MainLogger::updateSettings() {
 }
 
 void MainLogger::addText(QString text, char type) {
-    LogEntry logEntry = {text, type};
-
-    mMutex.lock();
-    dataQueue.enqueue(logEntry);
-    mMutex.unlock();
+    Parent::addData({text, type});
 }
 
-void MainLogger::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        log(localData);
-    }
-}
-
-void MainLogger::log(LogEntry logEntry) {
+void MainLogger::onProcess(const LogEntry& entry) {
+    LogEntry logEntry{entry};
     QString text = TextUtils::htmlToPlain(logEntry.text.remove(rxRemoveTags));
     if(alter->ignore(text, WINDOW_TITLE_MAIN)) return;
     text = alter->substitute(text, WINDOW_TITLE_MAIN);
@@ -47,8 +36,4 @@ void MainLogger::log(LogEntry logEntry) {
         }
     }
     prevType = logEntry.type;
-}
-
-MainLogger::~MainLogger() {
-    delete alter;
 }

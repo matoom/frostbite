@@ -1,28 +1,15 @@
 #include "conversationslogger.h"
+#include "textutils.h"
 
 ConversationsLogger::ConversationsLogger(QObject*) {
     rxRemoveTags.setPattern("<[^>]*>");
 }
 
 void ConversationsLogger::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
-}
-
-void ConversationsLogger::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        log(localData);
-    }
+    Parent::addData(text);
 }
 
 void ConversationsLogger::log(QString logText) {
     TextUtils::htmlToPlain(logText);
     logger()->info(logText.remove(rxRemoveTags));
-}
-
-ConversationsLogger::~ConversationsLogger() {
 }

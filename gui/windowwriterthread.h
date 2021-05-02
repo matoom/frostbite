@@ -1,11 +1,10 @@
 #ifndef WINDOWWRITERTHREAD_H
 #define WINDOWWRITERTHREAD_H
 
-#include <QObject>
-#include <QThread>
+#include <QString>
 #include <QPlainTextEdit>
-#include <QQueue>
-#include <QMutex>
+
+#include "workqueuethread.h"
 
 class Highlighter;
 class Alter;
@@ -13,29 +12,25 @@ class WindowInterface;
 class MainWindow;
 class WindowInterface;
 
-class WindowWriterThread : public QThread {
+class WindowWriterThread : public WorkQueueThread<QString> {
     Q_OBJECT
-
+    using Parent = WorkQueueThread<QString>;
 public:
     WindowWriterThread(QObject *parent, WindowInterface* window);
-    ~WindowWriterThread();
-
-    virtual void run();
+    ~WindowWriterThread() = default;
+protected:
+    void onProcess(const QString& data) override;
 
 private:
-    QQueue<QString> dataQueue;
     QPlainTextEdit* textEdit;
 
     Highlighter* highlighter;
     Alter* alter;
 
     MainWindow* mainWindow;
-    QMutex mMutex;
     QRegExp rxRemoveTags;
-    QString localData;
     WindowInterface *window;
 
-    void write(QString);
     QString process(QString text, QString win);
 
     void setText(QString);

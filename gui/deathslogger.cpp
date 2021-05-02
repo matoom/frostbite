@@ -4,20 +4,9 @@ DeathsLogger::DeathsLogger(QObject*) {
 }
 
 void DeathsLogger::addText(QString text) {
-    mMutex.lock();
-    dataQueue.enqueue(text);
-    mMutex.unlock();
+    Parent::addData(text);
 }
 
-void DeathsLogger::run() {
-    while(!dataQueue.isEmpty()) {
-        mMutex.lock();
-        localData = dataQueue.dequeue();
-        mMutex.unlock();
-        logger()->info(localData);
-    }
-}
-
-DeathsLogger::~DeathsLogger() {
-
+void DeathsLogger::onProcess(const QString& text) {
+    logger()->info(text);
 }

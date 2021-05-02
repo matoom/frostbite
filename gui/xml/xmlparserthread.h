@@ -1,15 +1,16 @@
 #ifndef XMLPARSERTHREAD_H
 #define XMLPARSERTHREAD_H
 
-#include <QObject>
-#include <QThread>
-#include <QMutex>
 #include <QDateTime>
-#include <QQueue>
 #include <QByteArray>
 #include <QFile>
 #include <QHash>
+#include <QString>
+#include <QVariant>
 #include <QtXml/QDomNode>
+#include <QAtomicInt>
+
+#include "workqueuethread.h"
 
 class MainWindow;
 class WindowFacade;
@@ -21,23 +22,19 @@ class VitalsBar;
 
 typedef QList<QString> DirectionsList;
 
-class XmlParserThread : public QThread {
+class XmlParserThread : public WorkQueueThread<QByteArray> {
     Q_OBJECT
-
+    using Parent = WorkQueueThread<QByteArray>;
 public:
     explicit XmlParserThread(QObject *parent = 0);
-    ~XmlParserThread();
+    ~XmlParserThread() = default;
 
-    virtual void run();
     bool isCmgr();
 
     void process(QString);
-
+protected:
+    void onProcess(const QByteArray& data) override;
 private:
-    QQueue<QByteArray> dataQueue;
-    QMutex mMutex;
-
-    void cache(QByteArray data);    
 
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
@@ -65,7 +62,6 @@ private:
 
     QHash<QString, QVariant> scheduled;
 
-    bool exit;
     bool bold;
     bool initRoundtime;
     bool initCastTime;
@@ -74,7 +70,7 @@ private:
     QString streamCache;
 
     bool mono;
-    bool cmgr;
+    QAtomicInt cmgr;
 
     bool pushStream;
 
@@ -108,7 +104,6 @@ private:
 
     QRegExp rxDmg;
 
-    QByteArray localData;
 
 signals:
     void updateConversationsWindow(QString);

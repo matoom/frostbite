@@ -1,28 +1,25 @@
 #ifndef AUTHLOGGER_H
 #define AUTHLOGGER_H
 
-#include <QObject>
-#include <QQueue>
-#include <QMutex>
-#include <QThread>
+#include <QString>
+#include <QRegExp>
 
 #include <log4qt/logger.h>
 
-class AuthLogger: public QThread {
+#include "workqueuethread.h"
+
+class AuthLogger: public WorkQueueThread<QString> {
     Q_OBJECT
     LOG4QT_DECLARE_QCLASS_LOGGER
-
+    
+    using Parent = WorkQueueThread<QString>;
 public:
     explicit AuthLogger(QObject *parent = 0);
-    ~AuthLogger();
+    ~AuthLogger() = default;
 
-    virtual void run();
-
-private:
-    QQueue<QString> dataQueue;
-    QMutex mMutex;
-    QString localData;
-
+protected:
+    void onProcess(const QString& text) override;
+    
 signals:
 
 public slots:

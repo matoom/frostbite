@@ -100,7 +100,7 @@ void ScriptService::writeGameWindow(QByteArray command) {
 
 void ScriptService::writeScriptText(QByteArray text) {
     if(!text.isEmpty() && this->isScriptActive()) {
-        scriptWriter->addText(text.data());
+        scriptWriter->addData(text.data());
     }
 }
 
