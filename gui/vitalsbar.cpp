@@ -19,11 +19,17 @@ void VitalsBar::addToMenu() {
     mainWindow->addWindowMenuAction(action);
 }
 
-void VitalsBar::toggle(bool checked) {
+void VitalsBar::toggle(bool checked, bool saveSetting) {
     if(vitalsBar != NULL) {
         vitalsBar->setVisible(checked);
-        clientSettings->setParameter("Window/vitalsBar", checked);
+        if (saveSetting) {
+            clientSettings->setParameter("Window/vitalsBar", checked);
+        }
     }
+}
+
+bool VitalsBar::isVisible() const {
+    return vitalsBar && vitalsBar->isVisible();
 }
 
 QProgressBar* VitalsBar::toolBar(const char* obName, QString bgColor) {

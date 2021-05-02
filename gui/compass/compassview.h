@@ -23,7 +23,7 @@ public:
 
     void paint(Compass*);
     void gameWindowResizeEvent(GameWindow*);
-
+    bool isVisible() const;
 private:
     bool locked;
     bool visible;

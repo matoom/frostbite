@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QVBoxLayout>
+
 #include "cleanlooks/qcleanlooksstyle.h"
 
 #include "windowfacade.h"
@@ -80,6 +82,34 @@ void MainWindow::toggleMaximized() {
     setWindowState(Qt::WindowMaximized);
 }
 
+void MainWindow::toggleDistractionFreeMode() {
+    // if no parent in main widget, this means the main widget is
+    // maximized
+    if (mainWidget->parent()) { 
+        distractionFreeModeParams.mainWidgetWindowFlags = mainWidget->windowFlags();
+        distractionFreeModeParams.vitalsBarVisible = vitalsBar->isVisible();
+        distractionFreeModeParams.compassVisible = windowFacade->getCompassView()->isVisible();
+        // we want to hide both vitals bar and compass, but do not want to save this as a setting
+        vitalsBar->toggle(false, false);
+        windowFacade->getCompassView()->setCompassVisible(false);
+        ui->mainLayout->removeWidget(mainWidget);
+        mainWidget->setParent(nullptr);
+        mainWidget->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+        windowFacade->getGameWindow()->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        hide();
+        mainWidget->showFullScreen();
+    } else {        
+        mainWidget->setParent(this);
+        mainWidget->setWindowFlags(distractionFreeModeParams.mainWidgetWindowFlags);
+        mainWidget->showNormal();
+        vitalsBar->toggle(distractionFreeModeParams.vitalsBarVisible, false);
+        windowFacade->getCompassView()->setCompassVisible(distractionFreeModeParams.compassVisible);
+        windowFacade->getGameWindow()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        ui->mainLayout->addWidget(mainWidget);
+        show();
+    }
+}
+
 void MainWindow::updateScriptSettings() {
     scriptApiServer->reloadSettings();
 }
@@ -135,6 +165,14 @@ void MainWindow::initSettings() {
 }
 
 void MainWindow::loadClient() {
+    mainWidget = new QWidget(this);
+    mainWidget->setContentsMargins(0,0,0,0);
+    mainWidgetLayout = new QVBoxLayout(mainWidget);
+    mainWidgetLayout->setSpacing(0);
+    mainWidgetLayout->setContentsMargins(0,0,0,0);
+    ui->mainLayout->addWidget(mainWidget);
+
+    
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 
@@ -157,7 +195,7 @@ void MainWindow::loadClient() {
     vitalsBar->add();
 
     cmdLine = new CommandLine(this);
-    ui->mainLayout->addWidget(cmdLine);
+    addWidgetMainLayout(cmdLine);
 
     scriptService = new ScriptService(this);
 
@@ -217,7 +255,7 @@ Tray* MainWindow::getTray() {
 }
 
 void MainWindow::addWidgetMainLayout(QWidget* widget) {
-    ui->mainLayout->addWidget(widget);
+    mainWidgetLayout->addWidget(widget);    
 }
 
 void MainWindow::addDockWidgetMainWindow(Qt::DockWidgetArea area, QDockWidget *dock) {

@@ -19,6 +19,7 @@ public:
     void addToMenu();
     void load();
 
+    bool isVisible() const;
 private:
     MainWindow* mainWindow;
 
@@ -41,7 +42,7 @@ private:
 signals:
 
 public slots:
-    void toggle(bool checked);
+    void toggle(bool checked, bool saveSetting = true);
     void updateVitals(QString name, QString value);
 
 };

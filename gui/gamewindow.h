@@ -60,6 +60,7 @@ private:
     QAction* selectAct;
     QAction* clearAct;
     QAction* saveAct;
+    QAction* distractionFreeModeAct;
     ContextMenu* menu;
 
     bool _append;
