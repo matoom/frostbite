@@ -56,6 +56,7 @@ private:
 
     QAction* appearanceAct;
     QAction* lookupDictAct;
+    QAction* lookupWikiAct;
     QAction* copyAct;
     QAction* selectAct;
     QAction* clearAct;
@@ -71,6 +72,7 @@ signals:
 
 private slots:
     void lookupInDictionary();
+    void lookupInElanthipedia();
     void copySelected();
     void enableCopy(bool);
     void saveAsHtml();
