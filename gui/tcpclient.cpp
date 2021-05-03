@@ -1,7 +1,7 @@
 #include "tcpclient.h"
 
-#include "mainwindow.h"
-#include "windowfacade.h"
+#include <QTimer>
+
 #include "clientsettings.h"
 #include "eauthservice.h"
 #include "xml/xmlparserthread.h"
@@ -12,8 +12,6 @@
 TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
-    mainWindow = (MainWindow*)parent;
-    windowFacade = mainWindow->getWindowFacade();
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
@@ -22,7 +20,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
 
     debugLogger = new DebugLogger();
 
-    lich = new Lich(mainWindow);
+    lich = new Lich(parent);
 
     if(tcpSocket) {
         connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
@@ -33,8 +31,6 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     }    
 
-    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
-
     xmlParser = new XmlParserThread(parent);        
     connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
     connect(this, SIGNAL(diconnected()), xmlParser, SLOT(flushStream()));
@@ -43,7 +39,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
     connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), this, SLOT(writeDefaultSettings(QString)));
 
-    if(MainWindow::DEBUG) {
+    if(settings->isDebug()) {
         this->loadMockData();
     }
 }
@@ -156,18 +152,18 @@ void TcpClient::connectToLocalPort(QString port) {
 }
 
 void TcpClient::connectToHost(QString host, QString port) {
+    emit connectAvailable(false);
     this->api = false;
-    windowFacade->writeGameWindow("Connecting ...");
-    mainWindow->connectEnabled(false);
+    emit connectStarted();
     commandPrefix = "";
 
     tcpSocket->connectToHost(host, port.toInt());
 }
 
 bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
+    emit connectAvailable(false);    
+    emit connectStarted();
     this->api = false;
-    windowFacade->writeGameWindow("Connecting ...");
-    mainWindow->connectEnabled(false);
     commandPrefix = "<c>";
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
@@ -180,11 +176,11 @@ bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
 }
 
 void TcpClient::disconnectedFromHost() {
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
 }
 
 void TcpClient::connectedToHost() {
-    windowFacade->writeGameWindow("Connection established.<br/>");
+    emit connectSucceeded();
 }
 
 void TcpClient::setProxy(bool enabled, QString proxyHost, QString proxyPort) {
@@ -251,17 +247,13 @@ void TcpClient::socketError(QAbstractSocket::SocketError error) {
     } else if (error == QAbstractSocket::HostNotFoundError) {
         this->showError("Unable to resolve game host. [" + QTime::currentTime().toString("h:mm ap") + "]");
     }    
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
 
     qDebug() << error;
 }
 
 void TcpClient::showError(QString message) {
-    windowFacade->writeGameWindow("<br><br>"
-        "*<br>"
-        "* " + message.toLocal8Bit() + "<br>"
-        "*<br>"
-        "<br><br>");
+    emit connectFailed(message);
 }
 
 void TcpClient::logDebug(QByteArray buffer) {
@@ -279,7 +271,7 @@ void TcpClient::disconnectFromServer() {
         this->writeCommand("quit");
     }
     tcpSocket->disconnectFromHost();
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
     emit diconnected();
 }
 

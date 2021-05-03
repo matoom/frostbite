@@ -215,6 +215,13 @@ void MainWindow::loadClient() {
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
+
+    // Connect to TCP Client events and connect it to our events
+    connect(tcpClient, SIGNAL(connectAvailable(bool)), this, SLOT(connectEnabled(bool)));
+    connect(this, SIGNAL(profileChanged()), tcpClient, SLOT(reloadSettings()));
+    connect(tcpClient, SIGNAL(connectStarted()), this, SLOT(connectStarted()));
+    connect(tcpClient, SIGNAL(connectSucceeded()), this, SLOT(connectSucceeded()));
+    connect(tcpClient, SIGNAL(connectFailed(QString)), this, SLOT(connectFailed(QString)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -399,6 +406,23 @@ void MainWindow::setMainTitle(QString roomName) {
 void MainWindow::connectEnabled(bool enabled) {
     ui->actionConnect->setEnabled(enabled);
 }
+
+void MainWindow::connectStarted() {
+    windowFacade->writeGameWindow("Connecting ...");    
+}
+
+void MainWindow::connectSucceeded() {
+    windowFacade->writeGameWindow("Connection established.<br/>");
+}
+
+void MainWindow::connectFailed(QString reason) {
+    windowFacade->writeGameWindow("<br><br>"
+        "*<br>"
+        "* " + reason.toLocal8Bit() + "<br>"
+        "*<br>"
+        "<br><br>");    
+}
+
 
 void MainWindow::handleAppMessage(const QString& msg) {
     if(msg == "show") {

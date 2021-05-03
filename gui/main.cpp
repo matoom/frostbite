@@ -1,5 +1,6 @@
 #include <guiapplication.h>
 #include "mainwindow.h"
+#include "clientsettings.h"
 
 #include "log4qt/logger.h"
 #include <log4qt/propertyconfigurator.h>
@@ -11,8 +12,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #endif
-
-bool MainWindow::DEBUG = false;
 
 #ifdef __linux__
 void handler(int sig) {
@@ -79,7 +78,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if(!MainWindow::DEBUG) {
+    if(!ClientSettings::getInstance()->isDebug()) {
         w.openConnectDialog();
     }
     return a.exec();

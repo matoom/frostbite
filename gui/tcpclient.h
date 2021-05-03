@@ -5,8 +5,6 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QDebug>
 
-class MainWindow;
-class WindowFacade;
 class ClientSettings;
 class EAuthService;
 class XmlParserThread;
@@ -29,10 +27,8 @@ public:
                     QString game, QString character, bool apiLich);
 
 private:
-    MainWindow *mainWindow;
     QTcpSocket *tcpSocket;
     QByteArray buffer;
-    WindowFacade *windowFacade;
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
@@ -61,7 +57,10 @@ signals:
     void resetPassword();
     void enableGameSelect();
     void setGameList(QMap<QString, QString>);
-
+    void connectAvailable(bool);
+    void connectStarted();
+    void connectSucceeded();
+    void connectFailed(QString);
 public slots:
     void setProxy(bool, QString, QString);
     void socketReadyRead();

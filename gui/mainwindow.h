@@ -45,8 +45,6 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    static bool DEBUG;
-
     void addDockWidgetMainWindow(Qt::DockWidgetArea, QDockWidget*);
     void removeDockWidgetMainWindow(QDockWidget* dock);
     void addWindowMenuAction(QAction* action);
@@ -77,7 +75,6 @@ public:
     void setMenuMutedVisible(bool enabled);
 
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
-    void connectEnabled(bool);    
     void toggleFullScreen();
     void toggleMaximized();
     void updateProfileSettings(QString, QString);        
@@ -156,7 +153,11 @@ public slots:
     void reloadSettings();
     void actionCommand(const QString&);
     void actionCommands(const QStringList&);
-    void toggleDistractionFreeMode();    
+    void toggleDistractionFreeMode();
+    void connectEnabled(bool);    
+    void connectStarted();
+    void connectSucceeded();
+    void connectFailed(QString);
 };
 
 #endif // MAINWINDOW_H
