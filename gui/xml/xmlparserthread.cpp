@@ -1,5 +1,6 @@
 #include "xmlparserthread.h"
 
+#include "gui/hyperlinkservice.h"
 #include "mainwindow.h"
 #include "gamedatacontainer.h"
 #include "windowfacade.h"
@@ -22,6 +23,7 @@
 #include "scriptservice.h"
 #include "commandline.h"
 #include "textutils.h"
+#include "hyperlinkservice.h"
 
 XmlParserThread::XmlParserThread(QObject *parent) {
     mainWindow = (MainWindow*)parent;
@@ -175,7 +177,29 @@ QString XmlParserThread::processMonoOutput(QString line) {
 }
 
 QString XmlParserThread::processCommands(QString line) {
-    line.replace(QRegularExpression("<d cmd=\"(.*)\">(.*)</d>(.*)"), "\\2 \\3 <![CDATA[<span class=\"bold\">[\\1]</span>]]>");
+    // Replace all inside <d cmd="...">TEXT</d> with just TEXT
+    QRegularExpression re("<d cmd=\"(.*)\">(.*)</d>");
+    QRegularExpressionMatchIterator i = re.globalMatch(line);
+    if (i.hasNext()) {
+        QString newLine;
+        int lastPos = 0;
+        do {
+            QRegularExpressionMatch match = i.next();
+            auto startPos = match.capturedStart(0);
+            auto endPos = match.capturedEnd(0);
+            // append all between end of the last found match
+            // and beginning of a new match
+            newLine.append(QStringRef(&line, lastPos, startPos - lastPos));
+            lastPos = endPos;
+            QString cmd = match.captured(1);
+            QString text = match.captured(2);
+            HyperlinkService::createLink(text, cmd, 0, text);
+            newLine.append(text);
+        } while (i.hasNext());
+        // append the rest
+        newLine.append(QStringRef(&line, lastPos, line.length() - lastPos));
+        return newLine;
+    }
     return line;
 }
 
@@ -259,7 +283,9 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     /* Process game text between tags */
     } else if(e.tagName() == "d") {
         QString d = e.text().trimmed();
+        QString cmd  = e.attribute("cmd", d);
         TextUtils::plainToHtml(d);
+        HyperlinkService::createLink(d, cmd, 0, d);
         gameText += d;
     } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
         QString preset = e.text().trimmed();
