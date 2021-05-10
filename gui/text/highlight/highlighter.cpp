@@ -1,5 +1,8 @@
 #include "highlighter.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "text/highlight/highlightsettings.h"
 #include "audio/audioplayer.h"
 #include "mainwindow.h"
@@ -7,13 +10,13 @@
 #include "audio/audioplayer.h"
 #include "timerbar.h"
 #include "globaldefines.h"
-#include <QSettings>
+
+
 
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
-    highlightSettings = HighlightSettings::getInstance();
     audioPlayer = new AudioPlayer(mainWindow);
-    highlightList = highlightSettings->getTextHighlights();
+    reloadSettings();
 
     healthAlert = true;
 
@@ -23,78 +26,92 @@ Highlighter::Highlighter(QObject *parent) : QObject(parent) {
 
 void Highlighter::reloadSettings() {
     highlightSettings = HighlightSettings::getInstance();
-    highlightList = highlightSettings->getTextHighlights();
+    auto highlights = highlightSettings->getTextHighlights();
+    highlightList.clear();
+    std::transform(highlights.begin(), highlights.end(), std::back_inserter(highlightList), &Highlighter::createEntryFromHighlight);
+}
+
+Highlighter::Entry Highlighter::createEntryFromHighlight(const HighlightSettingsEntry &highlight) {
+    auto htmlValue = highlight.value;
+    TextUtils::plainToHtml(htmlValue);
+    QRegExp re;
+    // 0 - entire row; 1 - partial words; 2 - starting with; 3 - match groups; 4
+    // - case insensitive
+    if (highlight.options.at(1)) {
+        // do not match inside tags
+        re.setPattern(htmlValue % "(?=[^>]*(<|$))");
+    } else {
+        // do not match inside tags
+        re.setPattern("\\b" % htmlValue % "\\b(?=[^>]*(<|$))");
+    }
+    re.setCaseSensitivity(highlight.options.at(4) ? Qt::CaseInsensitive : Qt::CaseSensitive);
+
+    QString endTag = "</span>";
+    QString startTag;
+    if (highlight.bgColor.isValid()) {
+        startTag = "<span style=\"color:" % highlight.color.name() % ";background:"
+                % highlight.bgColor.name() % ";\">";
+    } else {
+        startTag = "<span style=\"color:" % highlight.color.name() % ";\">";
+    }
+
+    Entry entry {highlight, htmlValue, startTag, endTag, re};
+    return entry;
 }
 
 QString Highlighter::highlight(QString text) {        
     if(!text.isEmpty()) {
-        for(int i = 0; i < highlightList.size(); ++i) {
-            HighlightSettingsEntry entry = highlightList.at(i);
-            TextUtils::plainToHtml(entry.value);
-            // 0 - entire row; 1 - partial words; 2 - starting with; 3 - match groups; 4 - case insensitive
-            if(entry.options.at(1)) {
-                // do not match inside tags
-                rx.setPattern(entry.value % "(?=[^>]*(<|$))");
-            } else {
-                // do not match inside tags                 
-                rx.setPattern("\\b" % entry.value % "\\b(?=[^>]*(<|$))");
-            }
-            rx.setCaseSensitivity(entry.options.at(4) ? Qt::CaseInsensitive : Qt::CaseSensitive);
-
+        for(size_t i = 0; i < highlightList.size(); ++i) {
+            // copy regexp since it is mutable
+            auto rx = highlightList[i].re;
+            
             int index = rx.indexIn(text);
             if(index != -1) {
                 int count = rx.captureCount();
-                if(count == 0 || !entry.options.at(3)) {
+                if(count == 0 || !highlightList[i].entry.options.at(3)) {
                     int pos = index;
                     while ((pos = rx.indexIn(text, pos)) != -1) {
-                        pos += this->highlightText(entry, text, pos, rx.cap(0));
+                        pos += this->highlightText(highlightList[i], text, pos, rx.cap(0).length());
                     }
                 } else {
                     int inserted = 0;
                     for(int i = 1; i < count + 1; i++) {
-                        inserted += this->highlightText(entry, text, rx.pos(i) + inserted, rx.cap(i));
+                        inserted += this->highlightText(highlightList[i], text, rx.pos(i) + inserted, rx.cap(i).length());
                     }
                 }
-                this->highlightAlert(entry);
-                this->highlightTimer(entry);
+                this->highlightAlert(highlightList[i].entry);
+                this->highlightTimer(highlightList[i].entry);
             }
         }
     }
     return text;
 }
 
-int Highlighter::highlightText(HighlightSettingsEntry entry, QString &text, int indexStart, QString match) {
-    QString startTag;
-    if(entry.bgColor.isValid()) {
-        startTag = "<span style=\"color:" % entry.color.name() % ";background:" % entry.bgColor.name()% ";\">";
-    } else {
-        startTag = "<span style=\"color:" % entry.color.name() % ";\">";
-    }
-    QString endTag = "</span>";
+int Highlighter::highlightText(const Entry& entry, QString &text, int indexStart, int matchLength) {
 
-    int startTagLength = startTag.length();
-    int indexEnd = indexStart + startTagLength + match.length();
+    int startTagLength = entry.startTag.length();
+    int indexEnd = indexStart + startTagLength + matchLength;
     //entire row
-    if(entry.options.at(0) && !entry.options.at(3)) {
+    if(entry.entry.options.at(0) && !entry.entry.options.at(3)) {
         indexEnd = text.length() + startTagLength;
         // starting with
-        if(!entry.options.at(2)) {
+        if(!entry.entry.options.at(2)) {
             indexStart = 0;
         }
     }
-    text.insert(indexStart, startTag);
-    text.insert(indexEnd, endTag);
+    text.insert(indexStart, entry.startTag);
+    text.insert(indexEnd, entry.endTag);
 
-    return startTagLength + endTag.length();
+    return startTagLength + entry.endTag.length();
 }
 
-void Highlighter::highlightAlert(HighlightSettingsEntry entry) {
+void Highlighter::highlightAlert(const HighlightSettingsEntry& entry) {
     if(entry.alert) {
         emit playAudio(entry.alertValue);
     }
 }
 
-void Highlighter::highlightTimer(HighlightSettingsEntry entry) {
+void Highlighter::highlightTimer(const HighlightSettingsEntry& entry) {
     if(entry.timer) {
         if (entry.timerAction == "Ignore") {
             if(!mainWindow->getTimerBar()->isActive()){
