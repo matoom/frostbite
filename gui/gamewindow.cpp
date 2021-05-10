@@ -171,7 +171,9 @@ void GameWindow::mouseDoubleClickEvent(QMouseEvent *e) {
 void GameWindow::mousePressEvent(QMouseEvent *e) {
     clickedAnchor = (e->button() == Qt::LeftButton) ?
         anchorAt(e->pos()) : QString();
-    QPlainTextEdit::mousePressEvent(e);
+    // Here we do not call QPlainTextEdit::mousePressEvent(e);
+    // due to the bug in QPlainTextEdit which picks up
+    // the character format if the url was clicked.
 }
 
 void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
