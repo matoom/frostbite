@@ -13,6 +13,7 @@ public:
     ~HyperlinkService();
 
     static void addLink(QString &text, const QString &pattern, const QString &command);
+    static int createLink(QString &text, const QString &command, int indexStart, QString match);
     static QUrl createSearchElanthipediaUrl(const QString& text);
 
 public slots:
@@ -22,7 +23,6 @@ private:
     MainWindow* mainWindow;
     void handleActionCommand(const QString& action);
 
-    static int createLink(QString &text, const QString &command, int indexStart, QString match);
     static QString createCommand(QString text, QString command);
 
 signals:
