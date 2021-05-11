@@ -15,7 +15,7 @@ class TcpClient : public QObject {
     Q_OBJECT
 
 public:
-    TcpClient(QObject *parent = 0);
+    TcpClient(QObject *parent = 0, bool debug = false);
     ~TcpClient();
 
     void writeCommand(QString);

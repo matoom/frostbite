@@ -199,7 +199,7 @@ void MainWindow::loadClient() {
 
     scriptService = new ScriptService(this);
 
-    tcpClient = new TcpClient(this);
+    tcpClient = new TcpClient(this, DEBUG);
 
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();

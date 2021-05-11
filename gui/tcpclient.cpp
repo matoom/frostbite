@@ -9,7 +9,7 @@
 #include "lich/lich.h"
 #include "environment.h"
 
-TcpClient::TcpClient(QObject *parent) : QObject(parent) {
+TcpClient::TcpClient(QObject *parent, bool debug) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
     settings = ClientSettings::getInstance();
@@ -39,7 +39,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
     connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
     connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), this, SLOT(writeDefaultSettings(QString)));
 
-    if(settings->isDebug()) {
+    if(debug) {
         this->loadMockData();
     }
 }

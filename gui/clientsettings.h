@@ -23,17 +23,10 @@ public:
     bool hasValue(QString);
     QString profilePath();
 
-    bool isDebug() const {
-        return DEBUG;
-    }
-
 private:
     explicit ClientSettings();
-    // TODO: move to ini or command line?
-    bool DEBUG = false;
 };
 
-class ClientSettingsInstance : public ClientSettings {
-};
+class ClientSettingsInstance : public ClientSettings { };
 
 #endif // CLIENTSETTINGS_H

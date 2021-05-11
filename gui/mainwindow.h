@@ -103,6 +103,9 @@ public:
     DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();
+    
+public:
+    static bool DEBUG;
 
 private:
     Ui::MainWindow* ui;
