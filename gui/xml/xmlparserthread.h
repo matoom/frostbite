@@ -29,8 +29,6 @@ public:
     explicit XmlParserThread(QObject *parent = 0);
     ~XmlParserThread() = default;
 
-    bool isCmgr();
-
     void process(QString);
 protected:
     void onProcess(const QByteArray& data) override;
@@ -70,7 +68,6 @@ private:
     QString streamCache;
 
     bool mono;
-    QAtomicInt cmgr;
 
     bool pushStream;
 
@@ -142,7 +139,9 @@ signals:
 
     void registerStreamWindow(QString, QString);
     void writeStreamWindow(QString, QString);
-    void clearStreamWindow(QString);    
+    void clearStreamWindow(QString);
+
+    void gameModeIsCmgr(bool);
 
 public slots:
     void addData(QByteArray);

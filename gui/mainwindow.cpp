@@ -7,6 +7,7 @@
 
 #include "windowfacade.h"
 #include "tcpclient.h"
+#include "xml/xmlparserthread.h"
 #include "toolbar/toolbar.h"
 #include "clientsettings.h"
 #include "commandline.h"
@@ -27,6 +28,7 @@
 #include "compass/compassview.h"
 #include "macrosettings.h"
 #include "hyperlinkservice.h"
+#include "guisession.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -199,8 +201,11 @@ void MainWindow::loadClient() {
 
     scriptService = new ScriptService(this);
 
+    xmlParser = new XmlParserThread(this);        
     tcpClient = new TcpClient(this, DEBUG);
-
+    
+    session = new GUISession(this, tcpClient, xmlParser);
+        
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
 

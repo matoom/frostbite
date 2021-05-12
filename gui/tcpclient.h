@@ -15,8 +15,9 @@ class TcpClient : public QObject {
     Q_OBJECT
 
 public:
-    TcpClient(QObject *parent = 0, bool debug = false);
+    TcpClient(QObject *parent = 0, bool loadMock = false);
     ~TcpClient();
+    void init();
 
     void writeCommand(QString);
     void showError(QString);
@@ -32,7 +33,6 @@ private:
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
-    XmlParserThread* xmlParser;
     DebugLogger* debugLogger;
     QByteArray commandPrefix;
 
@@ -44,7 +44,9 @@ private:
     QString character;
     bool api;
     bool apiLich;
-
+    bool isCmgr = false;
+    bool useMock = false;
+    
 signals:
     void characterFound(QString, QString);
     void retrieveSessionKey(QString);
@@ -84,6 +86,7 @@ public slots:
     void writeDefaultSettings(QString);
     void writeModeSettings();
     void reloadSettings();
+    void setGameModeCmgr(bool);
 };
 
 

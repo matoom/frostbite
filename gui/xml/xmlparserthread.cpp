@@ -80,7 +80,6 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     charName = "";
 
     mono = false;
-    cmgr = false;
 
     pushStream = false;
 }
@@ -91,12 +90,6 @@ void XmlParserThread::updateHighlighterSettings() {
 
 void XmlParserThread::addData(QByteArray buffer) {
     Parent::addData(buffer);
-}
-
-
-bool XmlParserThread::isCmgr() {
-    bool result = cmgr;
-    return result;
 }
 
 QString XmlParserThread::fixInputXml(QString data) {
@@ -247,14 +240,14 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     /* Process game text with start tag only */        
     if(e.tagName() == "mode") {
         if(e.attribute("id") == "GAME") {
-            cmgr = false;
+            emit gameModeIsCmgr(false);
             stormfrontSettings = toString(n.nextSiblingElement()).trimmed();
         } else if(e.attribute("id") == "CMGR") {
-            cmgr = true;
+            emit gameModeIsCmgr(true);
             gameDataContainer->setRoomDesc("");
             emit updateRoomWindow();
         } else {
-            cmgr = false;
+            emit gameModeIsCmgr(false);
         }
     } if(e.tagName() == "settingsInfo") {
         emit writeModeSettings();

@@ -1,20 +1,21 @@
 #include "tcpclient.h"
 
 #include <QTimer>
+#include <QTime>
 
 #include "clientsettings.h"
 #include "eauthservice.h"
-#include "xml/xmlparserthread.h"
 #include "debuglogger.h"
 #include "lich/lich.h"
 #include "environment.h"
 
-TcpClient::TcpClient(QObject *parent, bool debug) : QObject(parent) {
+TcpClient::TcpClient(QObject *parent, bool loadMock) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
+    useMock = loadMock;
 
     commandPrefix = "<c>";
 
@@ -30,16 +31,10 @@ TcpClient::TcpClient(QObject *parent, bool debug) : QObject(parent) {
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
         tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
     }    
+}
 
-    xmlParser = new XmlParserThread(parent);        
-    connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
-    connect(this, SIGNAL(diconnected()), xmlParser, SLOT(flushStream()));
-    connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
-    connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
-    connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
-    connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), this, SLOT(writeDefaultSettings(QString)));
-
-    if(debug) {
+void TcpClient::init() {
+    if(useMock) {
         this->loadMockData();
     }
 }
@@ -59,10 +54,6 @@ void TcpClient::loadMockData() {
     QByteArray mockData = file.readAll();
 
     emit addToQueue(mockData);
-
-    if(!xmlParser->isRunning()) {
-        xmlParser->start();
-    }
 }
 
 void TcpClient::initEauthSession(QString host, QString port, QString user, QString password) {
@@ -219,12 +210,9 @@ void TcpClient::socketReadyRead() {
     this->logDebug(data);
 
     buffer.append(data);
-    if(buffer.endsWith("\n") || xmlParser->isCmgr()) {
+    if(buffer.endsWith("\n") || isCmgr) {
         // process raw data
         emit addToQueue(buffer);
-        if(!xmlParser->isRunning()) {
-            xmlParser->start();
-        }
         buffer.clear();
     }
 }
@@ -265,6 +253,10 @@ void TcpClient::logDebug(QByteArray buffer) {
     }
 }
 
+void TcpClient::setGameModeCmgr(bool cmgr) {
+    isCmgr = cmgr;
+}
+
 void TcpClient::disconnectFromServer() {
     if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
         showError("Disconnected from server.");
@@ -280,7 +272,7 @@ TcpClient::~TcpClient() {
 
     delete debugLogger;
     delete tcpSocket;
-    delete xmlParser;
     delete eAuth;
     delete lich;
 }
+
