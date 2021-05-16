@@ -42,6 +42,16 @@ void LinkSettings::setSettings(QList<AlterSettingsEntry> entries) {
     settings->endArray();
 }
 
+void LinkSettings::setEnabled(bool enabled) {
+    QMutexLocker locker(&m_mutex);
+    settings->setValue("settings/enabled", enabled);
+}
+
+bool LinkSettings::getEnabled() {
+    QMutexLocker locker(&m_mutex);
+    return settings->value("settings/enabled", true).toBool();
+}
+
 void LinkSettings::addParameter(AlterSettingsEntry entry) {
     QMutexLocker locker(&m_mutex);
     int id = settings->value("links/size").toInt();

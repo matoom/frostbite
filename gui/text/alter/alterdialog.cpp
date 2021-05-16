@@ -73,6 +73,10 @@ QPushButton* AlterDialog::getLinksRemoveButton() {
     return ui->lRemoveButton;
 }
 
+QCheckBox* AlterDialog::getLinksEnabled() {
+    return ui->linkEnabled;
+}
+
 void AlterDialog::reloadSettings() {
     mainWindow->getWindowFacade()->reloadWindowSettings();
 }

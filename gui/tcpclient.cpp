@@ -31,7 +31,7 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
         connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
         tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
         tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-    }    
+    }
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
 
