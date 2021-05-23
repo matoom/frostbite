@@ -26,11 +26,14 @@ private:
 private slots:
     void okPressed();
     void cancelPressed();
-
+    void onToggled(bool checked);
 
 private:
     QLineEdit* dictNameEdit;
     QLineEdit* dictArgumentsEdit;
+    QGroupBox* outputOptionsBox;
+    QRadioButton *dictionaryWinBtn;
+    QRadioButton *toolTipBtn;
     QGroupBox* hotkeyOptionsBox;
     
     DictionarySettings* settings;

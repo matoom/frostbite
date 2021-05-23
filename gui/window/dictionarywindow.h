@@ -29,7 +29,7 @@ private:
 
 public slots:
     void setVisible(bool);
-    void write(QString text);
+    void write(QString word, QString translation);
 
 };
 

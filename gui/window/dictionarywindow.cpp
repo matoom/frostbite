@@ -33,9 +33,10 @@ QDockWidget* DictionaryWindow::getDockWidget() {
     return dock;
 }
 
-void DictionaryWindow::write(QString text) {
+void DictionaryWindow::write(QString word, QString translation) {
+    (void)word;
     dock->setWindowTitle(visible ? DOCK_TITLE_DICTIONARY : DOCK_TITLE_DICTIONARY " *");
-    writer->addText(text);
+    writer->addText(translation);
     if(!writer->isRunning()) writer->start();
 }
 

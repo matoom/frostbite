@@ -21,11 +21,13 @@ public:
     QString getDictArguments() const;
     bool getDoubleClickEnabled() const;
     Qt::KeyboardModifier getDoubleClickModifier() const;
+    bool getEnableToolTip() const;
 
     DictionarySettings& setDictCommand(const QString& cmd);
     DictionarySettings& setDictArguments(const QString& args);
     DictionarySettings& setDoubleClickEnabled(bool enabled);
     DictionarySettings& setDoubleClickModifier(Qt::KeyboardModifier modifier);
+    DictionarySettings& setEnableToolTip(bool enabled);
     
 private:
     explicit DictionarySettings();

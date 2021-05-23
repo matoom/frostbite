@@ -61,6 +61,10 @@ Qt::KeyboardModifier DictionarySettings::getDoubleClickModifier() const {
 }
 
 
+bool DictionarySettings::getEnableToolTip() const {
+    return true;
+}
+
 DictionarySettings& DictionarySettings::setDictCommand(const QString &cmd) {
     clientSettings->setParameter(DICTIONARY_NAME_PATH, cmd);
     return *this;
@@ -81,3 +85,6 @@ DictionarySettings& DictionarySettings::setDoubleClickModifier(Qt::KeyboardModif
     return *this;
 }
 
+DictionarySettings& DictionarySettings::setEnableToolTip(bool enabled) {
+    return *this;
+}

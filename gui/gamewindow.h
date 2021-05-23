@@ -46,7 +46,8 @@ private:
     void buildContextMenu();
 
     void showEvent(QShowEvent*);
-
+    bool event(QEvent *event);
+    
     MainWindow* mainWindow;
     WindowFacade* windowFacade;
     GeneralSettings* settings;
@@ -68,6 +69,15 @@ private:
     bool _stream;
 
     QString clickedAnchor;
+
+    struct DictionaryEvent {
+        QString word;
+        QPoint point;
+        bool active;
+    };
+
+    DictionaryEvent currentDictEvent;
+    
 signals:    
 
 private slots:
@@ -77,6 +87,8 @@ private slots:
     void enableCopy(bool);
     void saveAsHtml();
     void changeAppearance();
+    void translationFinished(QString word, QString translation);
+    void translationFailed(QString reason);
 
 public slots:
 
