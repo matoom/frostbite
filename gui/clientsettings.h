@@ -23,6 +23,8 @@ public:
     bool hasValue(QString);
     QString profilePath();
 
+    void remove(QString name);
+
 private:
     explicit ClientSettings();
 

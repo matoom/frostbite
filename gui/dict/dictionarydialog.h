@@ -10,6 +10,8 @@ class QLineEdit;
 class DictionarySettings;
 class QGroupBox;
 
+class MainWindow;
+
 class DictionaryDialog : public QDialog {
     Q_OBJECT
 public:
@@ -29,9 +31,11 @@ private slots:
     void onToggled(bool checked);
 
 private:
+    MainWindow* mainWindow;
     QLineEdit* dictNameEdit;
     QLineEdit* dictArgumentsEdit;
     QGroupBox* outputOptionsBox;
+    QRadioButton *noOutputBtn;    
     QRadioButton *dictionaryWinBtn;
     QRadioButton *toolTipBtn;
     QGroupBox* hotkeyOptionsBox;

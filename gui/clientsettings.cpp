@@ -47,5 +47,9 @@ QString ClientSettings::profilePath() {
     return "";
 }
 
+void ClientSettings::remove(QString name) {
+    QSettings::remove(name);
+}
+
 ClientSettings::~ClientSettings() {        
 }

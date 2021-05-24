@@ -1,6 +1,4 @@
 #include "dictionarydialog.h"
-#include "dictionarysettings.h"
-#include "qnamespace.h"
 
 #include <QPushButton>
 #include <QGridLayout>
@@ -11,6 +9,10 @@
 #include <QRadioButton>
 
 #include <algorithm>
+
+#include "mainwindow.h"
+#include "dictionaryservice.h"
+#include "dictionarysettings.h"
 
 namespace {
 struct FindModifier {
@@ -24,6 +26,7 @@ struct FindModifier {
 
 
 DictionaryDialog::DictionaryDialog(QWidget *parent) : QDialog(parent), settings(DictionarySettings::getInstance()) {
+    mainWindow = (MainWindow*)qobject_cast<QObject *>(parent);
     setWindowTitle(tr("Dictionary settings"));
 
     QPushButton *okButton = new QPushButton(tr("Ok"), this);
@@ -36,14 +39,16 @@ DictionaryDialog::DictionaryDialog(QWidget *parent) : QDialog(parent), settings(
     dictArgumentsEdit = new QLineEdit("", this);
 
     outputOptionsBox = new QGroupBox(tr("Dictionary output type"), this);
-
+    noOutputBtn = new QRadioButton(tr("Disabled"), outputOptionsBox);
     dictionaryWinBtn = new QRadioButton(tr("Dictionary window (double click on a word)"), outputOptionsBox);
     toolTipBtn = new QRadioButton(tr("Tooltip (mouse over a word)"), outputOptionsBox);
 
+    connect(noOutputBtn, &QRadioButton::toggled, this, &DictionaryDialog::onToggled);
     connect(dictionaryWinBtn, &QRadioButton::toggled, this, &DictionaryDialog::onToggled);
     connect(toolTipBtn, &QRadioButton::toggled, this, &DictionaryDialog::onToggled);
     
     QVBoxLayout *vbox = new QVBoxLayout(this);
+    vbox->addWidget(noOutputBtn);
     vbox->addWidget(dictionaryWinBtn);
     vbox->addWidget(toolTipBtn);
     vbox->addStretch(1);
@@ -81,6 +86,7 @@ DictionaryDialog::~DictionaryDialog() {
 void DictionaryDialog::okPressed() {
     this->saveSettings();
     this->loadSettings();
+    mainWindow->getDictionaryService()->updateConnections();
     this->accept();
 }
 
@@ -92,10 +98,20 @@ void DictionaryDialog::cancelPressed() {
 void DictionaryDialog::loadSettings() {
     dictNameEdit->setText(settings->getDictCommand());
     dictArgumentsEdit->setText(settings->getDictArguments());
-    bool useDictWindow = settings->getDoubleClickEnabled();
-    hotkeyOptionsBox->setEnabled(useDictWindow);
-    dictionaryWinBtn->setChecked(useDictWindow);
-    toolTipBtn->setChecked(!useDictWindow);
+    auto outType = settings->getDictOutputType();
+    // Enable hotkey selection only when output type is a Dictionary Window
+    hotkeyOptionsBox->setEnabled(outType == DictionarySettings::OutputType::Window);
+    // Select appropriate radio button
+    switch (outType) {
+    case DictionarySettings::OutputType::Disabled:
+        noOutputBtn->setChecked(true);
+        break;
+    case DictionarySettings::OutputType::Window:
+        dictionaryWinBtn->setChecked(true);
+        break;
+    case DictionarySettings::OutputType::Tooltip:
+        toolTipBtn->setChecked(true);
+    }
     
     ButtonVector::iterator found = std::find_if(dblClkButtons.begin(),
                                                 dblClkButtons.end(),
@@ -114,15 +130,21 @@ void DictionaryDialog::saveSettings() {
         }
     }
 
+    DictionarySettings::OutputType output { DictionarySettings::OutputType::Disabled };
+    if (dictionaryWinBtn->isChecked())
+        output = DictionarySettings::OutputType::Window;
+    else if (toolTipBtn->isChecked())
+        output = DictionarySettings::OutputType::Tooltip;
+
     settings->setDictCommand(dictNameEdit->text())
         .setDictArguments(dictArgumentsEdit->text())
-        .setDoubleClickEnabled(dictionaryWinBtn->isChecked())
+        .setDictOutputType(output)
         .setDoubleClickModifier(modifier);
 }
 
 void DictionaryDialog::onToggled(bool checked) {
-    if(checked){
-        QRadioButton *btn = static_cast<QRadioButton *>(sender());
+    if (checked) {
+        QRadioButton* btn = static_cast<QRadioButton*>(sender());
         hotkeyOptionsBox->setEnabled(btn == dictionaryWinBtn);
     }
 }

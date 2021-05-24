@@ -177,11 +177,11 @@ void GenericWindow::contextMenuEvent(QContextMenuEvent* event) {
     menu->exec(point);
 }
 
-void GenericWindow::mouseDoubleClickEvent(QMouseEvent *e) {
+void GenericWindow::mouseDoubleClickEvent(QMouseEvent* e) {
     QPlainTextEdit::mouseDoubleClickEvent(e);
-    if (dictionarySettings->getDoubleClickEnabled() &&
-        e->button() == Qt::LeftButton &&
-        e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
+    if (dictionarySettings->getDictOutputType() == DictionarySettings::OutputType::Window
+        && e->button() == Qt::LeftButton
+        && e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
         lookupInDictionary();
     }
 }

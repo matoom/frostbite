@@ -1,7 +1,9 @@
 #include "dictionarysettings.h"
+#include "gui/clientsettings.h"
 
 #include <QSettings>
 #include <QGlobalStatic>
+
 #include <clientsettings.h>
 #include <defaultvalues.h>
 
@@ -12,6 +14,31 @@ const char* DICTIONARY_NAME_PATH = "Dictionary/Command";
 const char* DICTIONARY_ARGS_PATH = "Dictionary/Arguments";
 const char* DICTIONARY_DBLCLICK_PATH = "Dictionary/DoubleClickEnabled";
 const char* DICTIONARY_DBLCLICK_MOD_PATH = "Dictionary/DoubleClickModifier";
+const char* DICTIONARY_OUTPUTTYPE_PATH = "Dictionary/OutputType";
+
+DictionarySettings::OutputType outputTypeFromInt(int value) {
+    switch (value) {
+    case 1:
+        return DictionarySettings::OutputType::Window;
+    case 2:
+        return DictionarySettings::OutputType::Tooltip;
+    default:
+        return DictionarySettings::OutputType::Disabled;
+    }
+    return DictionarySettings::OutputType::Disabled;
+}
+
+int outputTypeToInt(DictionarySettings::OutputType type) {
+    switch (type) {
+    case DictionarySettings::OutputType::Disabled:
+        return 0;
+    case DictionarySettings::OutputType::Window:
+        return 1;
+    case DictionarySettings::OutputType::Tooltip:
+        return 2;
+    }
+    return 0;
+}
 }
 
 
@@ -35,15 +62,29 @@ QString DictionarySettings::getDictArguments() const {
                                         DEFAULT_DICT_ARGS).toString();
 }
 
-bool DictionarySettings::getDoubleClickEnabled() const {
-    return clientSettings->getParameter(DICTIONARY_DBLCLICK_PATH,
-                                        DEFAULT_DICT_DBLCLK_ENABLED).toBool();
+DictionarySettings::OutputType DictionarySettings::getDictOutputType() {
+    // fallback for the old setting
+    if (clientSettings->hasValue(DICTIONARY_DBLCLICK_PATH)) {
+        bool dblClickEnabled =
+                clientSettings->getParameter(DICTIONARY_DBLCLICK_PATH, DEFAULT_DICT_DBLCLK_ENABLED)
+                        .toBool();
+        // remove the old setting and set the new style setting
+        clientSettings->remove(DICTIONARY_DBLCLICK_PATH);
+        OutputType outputType = dblClickEnabled ? OutputType::Window : OutputType::Disabled;
+        setDictOutputType(outputType);
+        return outputType;
+    }
+    return outputTypeFromInt(clientSettings
+                                     ->getParameter(DICTIONARY_OUTPUTTYPE_PATH,
+                                                    outputTypeToInt(OutputType::Disabled))
+                                     .toInt());
 }
 
 Qt::KeyboardModifier DictionarySettings::getDoubleClickModifier() const {
     bool ok;
-    uint modifierVal = clientSettings->getParameter(DICTIONARY_DBLCLICK_MOD_PATH,
-                                                    DEFAULT_DICT_DBLCLK_MOD).toUInt(&ok);
+    uint modifierVal =
+            clientSettings->getParameter(DICTIONARY_DBLCLICK_MOD_PATH, DEFAULT_DICT_DBLCLK_MOD)
+                    .toUInt(&ok);
     // Accept only known modifiers
     Qt::KeyboardModifier modifier = DEFAULT_DICT_DBLCLK_MOD;
     if (ok) {
@@ -60,11 +101,6 @@ Qt::KeyboardModifier DictionarySettings::getDoubleClickModifier() const {
     return modifier;
 }
 
-
-bool DictionarySettings::getEnableToolTip() const {
-    return true;
-}
-
 DictionarySettings& DictionarySettings::setDictCommand(const QString &cmd) {
     clientSettings->setParameter(DICTIONARY_NAME_PATH, cmd);
     return *this;
@@ -75,16 +111,12 @@ DictionarySettings& DictionarySettings::setDictArguments(const QString& args) {
     return *this;
 }
 
-DictionarySettings& DictionarySettings::setDoubleClickEnabled(bool enabled) {
-    clientSettings->setParameter(DICTIONARY_DBLCLICK_PATH, enabled);
-    return *this;
-}
-
 DictionarySettings& DictionarySettings::setDoubleClickModifier(Qt::KeyboardModifier modifier) {
     clientSettings->setParameter(DICTIONARY_DBLCLICK_MOD_PATH, modifier);
     return *this;
 }
 
-DictionarySettings& DictionarySettings::setEnableToolTip(bool enabled) {
+DictionarySettings& DictionarySettings::setDictOutputType(DictionarySettings::OutputType type) {
+    clientSettings->setParameter(DICTIONARY_OUTPUTTYPE_PATH, outputTypeToInt(type));
     return *this;
 }

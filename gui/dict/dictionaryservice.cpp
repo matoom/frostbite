@@ -10,17 +10,7 @@ DictionaryService::DictionaryService(QObject* parent)
     : Parent(parent), settings(DictionarySettings::getInstance()) {
 
     mainWindow = (MainWindow*)parent;
-    connect(this, SIGNAL(translationFinished(QString, QString)),
-            mainWindow->getWindowFacade()->getDictionaryWindow(), SLOT(write(QString, QString)));
-    connect(this, SIGNAL(translationFailed(QString)),
-            mainWindow->getWindowFacade()->getDictionaryWindow(), SLOT(write(QString)));
-    if (settings->getEnableToolTip()) {
-        connect(this, SIGNAL(translationFinished(QString, QString)),
-                mainWindow->getWindowFacade()->getGameWindow(),
-                SLOT(translationFinished(QString, QString)));
-        connect(this, SIGNAL(translationFailed(QString)),
-                mainWindow->getWindowFacade()->getGameWindow(), SLOT(translationFailed(QString)));
-    }
+    updateConnections();
     start();
 }
 
@@ -59,4 +49,30 @@ void DictionaryService::onProcess(const QString& word) {
 
 void DictionaryService::emitError(const QString& reason) {
     emit translationFailed("(Error: " + reason + ")\n");
+}
+
+void DictionaryService::updateConnections() {
+    // remove all connections
+    disconnect(SIGNAL(translationFinished(QString, QString)));
+    disconnect(SIGNAL(translationFailed(QString)));
+
+    switch (settings->getDictOutputType()) {
+    case DictionarySettings::OutputType::Window:
+        connect(this, SIGNAL(translationFinished(QString, QString)),
+                mainWindow->getWindowFacade()->getDictionaryWindow(),
+                SLOT(write(QString, QString)));
+        connect(this, SIGNAL(translationFailed(QString)),
+                mainWindow->getWindowFacade()->getDictionaryWindow(), SLOT(write(QString)));
+        break;
+    case DictionarySettings::OutputType::Tooltip:
+        connect(this, SIGNAL(translationFinished(QString, QString)),
+                mainWindow->getWindowFacade()->getGameWindow(),
+                SLOT(translationFinished(QString, QString)));
+        connect(this, SIGNAL(translationFailed(QString)),
+                mainWindow->getWindowFacade()->getGameWindow(), SLOT(translationFailed(QString)));
+        break;
+    case DictionarySettings::OutputType::Disabled:
+        // Do nothing. We have already disconnected all signals
+        break;
+    }
 }

@@ -8,7 +8,12 @@ class ClientSettings;
 
 class DictionarySettings {
     friend class DictionarySettingsInstance;
-
+public:
+    enum class OutputType {
+        Disabled,
+        Window,
+        Tooltip
+    };
 public:
     static DictionarySettings* getInstance();
  
@@ -19,16 +24,14 @@ public:
 
     QString getDictCommand() const;
     QString getDictArguments() const;
-    bool getDoubleClickEnabled() const;
+    OutputType getDictOutputType();
     Qt::KeyboardModifier getDoubleClickModifier() const;
-    bool getEnableToolTip() const;
 
     DictionarySettings& setDictCommand(const QString& cmd);
     DictionarySettings& setDictArguments(const QString& args);
-    DictionarySettings& setDoubleClickEnabled(bool enabled);
     DictionarySettings& setDoubleClickModifier(Qt::KeyboardModifier modifier);
-    DictionarySettings& setEnableToolTip(bool enabled);
-    
+    DictionarySettings& setDictOutputType(OutputType type);
+
 private:
     explicit DictionarySettings();
 

@@ -24,6 +24,7 @@ public:
 
     void translate(const QString& word);
 
+    void updateConnections();
 protected:
     void onProcess(const QString& data) override;
     
@@ -32,10 +33,10 @@ signals:
     void translationFailed(QString reason);
 
 private:
-    MainWindow* mainWindow;
-
     void emitError(const QString& reason);
+
 private:
+    MainWindow* mainWindow;
     DictionarySettings *settings;
 };
 
