@@ -39,10 +39,6 @@ void TcpClient::init() {
     }
 }
 
-void TcpClient::reloadSettings() {
-    emit updateHighlighterSettings();
-}
-
 void TcpClient::loadMockData() {
     QFile file(MOCK_DATA_PATH);
 

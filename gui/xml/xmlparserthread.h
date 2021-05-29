@@ -146,7 +146,6 @@ signals:
 public slots:
     void addData(QByteArray);
     void flushStream();
-    void updateHighlighterSettings();
 };
 
 #endif // XMLPARSERTHREAD_H

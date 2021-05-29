@@ -84,10 +84,6 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     pushStream = false;
 }
 
-void XmlParserThread::updateHighlighterSettings() {
-    highlighter->reloadSettings();
-}
-
 void XmlParserThread::addData(QByteArray buffer) {
     Parent::addData(buffer);
 }

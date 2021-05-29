@@ -55,7 +55,6 @@ signals:
     void eAuthError(QString);
     void addToQueue(QByteArray);
     void diconnected();
-    void updateHighlighterSettings();
     void resetPassword();
     void enableGameSelect();
     void setGameList(QMap<QString, QString>);
@@ -85,7 +84,6 @@ public slots:
     void writeSettings();
     void writeDefaultSettings(QString);
     void writeModeSettings();
-    void reloadSettings();
     void setGameModeCmgr(bool);
 };
 
