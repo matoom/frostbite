@@ -4,11 +4,14 @@
 #include <QObject>
 #include <QProcess>
 
+#include "gui/workqueuethread.h"
+
 class DictionarySettings;
 class MainWindow;
 
-class DictionaryService : public QObject {
+class DictionaryService : public WorkQueueThread<QString> {
     Q_OBJECT
+    using Parent = WorkQueueThread<QString>;    
 public:
   enum ErrorCode {
     UnableToExecuteDict,
@@ -21,22 +24,20 @@ public:
 
     void translate(const QString& word);
 
+    void updateConnections();
+protected:
+    void onProcess(const QString& data) override;
+    
 signals:
-    void translationFinished(QString translation);
+    void translationFinished(QString word, QString translation);
     void translationFailed(QString reason);
 
 private:
-    MainWindow* mainWindow;
-
     void emitError(const QString& reason);
-        
-private slots:
-    void processErrorOccurred(QProcess::ProcessError error);
-    void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    
+
 private:
+    MainWindow* mainWindow;
     DictionarySettings *settings;
-    QProcess* process;
 };
 
 #endif // DICTIONARYSERVICE_H
