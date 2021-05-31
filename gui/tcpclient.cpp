@@ -154,12 +154,12 @@ bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString 
     commandPrefix = "<c>";
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
-    bool conntected = tcpSocket->waitForConnected();
+    bool connected = tcpSocket->waitForConnected();
 
     this->writeCommand(sessionKey);
     this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_UNKNOWN /XML");
 
-    return conntected;
+    return connected;
 }
 
 void TcpClient::disconnectedFromHost() {
