@@ -97,7 +97,7 @@ SOURCES += main.cpp\
     compass.cpp \
     genieutils.cpp \
     hyperlinkservice.cpp \
-    guisession.cpp
+    session.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -159,7 +159,7 @@ HEADERS  += mainwindow.h \
     hyperlinkservice.h \
     concurrentqueue.h \
     workqueuethread.h \
-    guisession.h
+    session.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

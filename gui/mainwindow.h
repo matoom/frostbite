@@ -37,7 +37,7 @@ class DictionaryService;
 class ClientSettings;
 class HyperlinkService;
 class XmlParserThread;
-class GUISession;
+class Session;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -121,7 +121,7 @@ private:
     Toolbar* toolBar;
     XmlParserThread* xmlParser;
     TcpClient* tcpClient;
-    GUISession* session;
+    Session* session;
     ClientSettings* settings;
     GeneralSettings* generalSettings;
     CommandLine* cmdLine;

@@ -12,6 +12,9 @@
 TcpClient::TcpClient(QObject *parent, bool loadMock) : QObject(parent) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
+    // TODO: Remove dependency on ClientSettings
+    // settings only needed to get the current debug flag.
+    // Probably emit a message instead ?
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
@@ -21,6 +24,7 @@ TcpClient::TcpClient(QObject *parent, bool loadMock) : QObject(parent) {
 
     debugLogger = new DebugLogger();
 
+    // TODO: We can use dependency injection here
     lich = new Lich(parent);
 
     if(tcpSocket) {

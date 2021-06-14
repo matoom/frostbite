@@ -28,7 +28,7 @@
 #include "compass/compassview.h"
 #include "macrosettings.h"
 #include "hyperlinkservice.h"
-#include "guisession.h"
+#include "session.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -204,7 +204,7 @@ void MainWindow::loadClient() {
     xmlParser = new XmlParserThread(this);        
     tcpClient = new TcpClient(this, DEBUG);
     
-    session = new GUISession(this, tcpClient, xmlParser);
+    session = new Session(this, tcpClient, xmlParser);
         
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
