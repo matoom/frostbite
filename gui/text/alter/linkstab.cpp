@@ -15,6 +15,7 @@ LinksTab::LinksTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     linksTable = alterDialog->getLinksTable();
     addButton = alterDialog->getLinksAddButton();
     removeButton = alterDialog->getLinksRemoveButton();
+    linksEnabled = alterDialog->getLinksEnabled();
 
     settings = LinkSettings::getInstance();
 
@@ -30,10 +31,13 @@ LinksTab::LinksTab(QObject *parent) : QObject(parent), AbstractTableTab() {
     linksTable->setSelectionMode(QAbstractItemView::SingleSelection);
     linksTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    linksEnabled->setChecked(settings->getEnabled());
+
     connect(addButton, SIGNAL(clicked()), this, SLOT(addNewTableRow()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(removeTableRow()));
     connect(linksTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(displayMenu(QPoint)));
     connect(linksTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateEntry(QTableWidgetItem*)));
+    connect(linksEnabled, SIGNAL(stateChanged(int)), this, SLOT(enabledChanged(int)));
 
     this->initLinksList();
 }
@@ -45,6 +49,11 @@ void LinksTab::updateSettings() {
 
 void LinksTab::print(QString text) {
     qDebug() << text;
+}
+
+void LinksTab::enabledChanged(int state)  {
+    settings->setEnabled(state == Qt::Checked);
+    alterDialog->reloadSettings();
 }
 
 void LinksTab::addNewTableRow() {

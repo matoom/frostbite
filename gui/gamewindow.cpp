@@ -1,6 +1,7 @@
 #include "gamewindow.h"
 
 #include <QDesktopServices>
+#include <QToolTip>
 
 #include "mainwindow.h"
 #include "windowfacade.h"
@@ -58,6 +59,27 @@ bool GameWindow::stream() {
 
 void GameWindow::showEvent(QShowEvent* event) {
     QPlainTextEdit::showEvent(event);
+}
+
+bool GameWindow::event(QEvent* event) {
+    if (event->type() == QEvent::ToolTip
+        && dictionarySettings->getDictOutputType() == DictionarySettings::OutputType::Tooltip) {
+        QHelpEvent* helpEvent = static_cast<QHelpEvent*>(event);
+        QTextCursor cursor = cursorForPosition(helpEvent->pos());
+        cursor.select(QTextCursor::WordUnderCursor);
+        if (!cursor.selectedText().isEmpty() && !currentDictEvent.active) {
+            currentDictEvent.active = true;
+            currentDictEvent.word = cursor.selectedText();
+            currentDictEvent.point = helpEvent->globalPos();
+
+            mainWindow->getDictionaryService()->translate(currentDictEvent.word);
+        } else {
+            QToolTip::hideText();
+            currentDictEvent.active = false;
+        }
+        return true;
+    }
+    return QPlainTextEdit::event(event);
 }
 
 void GameWindow::loadSettings() {
@@ -159,11 +181,11 @@ void GameWindow::resizeEvent(QResizeEvent *event) {
     QPlainTextEdit::resizeEvent(event);
 }
 
-void GameWindow::mouseDoubleClickEvent(QMouseEvent *e) {
+void GameWindow::mouseDoubleClickEvent(QMouseEvent* e) {
     QPlainTextEdit::mouseDoubleClickEvent(e);
-    if (dictionarySettings->getDoubleClickEnabled() &&
-        e->button() == Qt::LeftButton &&
-        e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
+    if (dictionarySettings->getDictOutputType() == DictionarySettings::OutputType::Window
+        && e->button() == Qt::LeftButton
+        && e->modifiers() == dictionarySettings->getDoubleClickModifier()) {
         lookupInDictionary();
     }
 }
@@ -233,6 +255,23 @@ void GameWindow::copySelected() {
     QTextCursor textCursor = this->textCursor();
     textCursor.clearSelection();
     this->setTextCursor(textCursor);
+}
+
+void GameWindow::translationFinished(QString word, QString translation) {
+    if (currentDictEvent.active && word == currentDictEvent.word) {
+        // cut the header
+        auto idx = translation.indexOf("  " + word);
+        if (idx != -1) {
+            QToolTip::showText(currentDictEvent.point, translation.mid(idx));
+        }
+        currentDictEvent.active = false;
+    }
+}
+
+void GameWindow::translationFailed(QString reason) {
+    (void)reason;
+    QToolTip::hideText();
+    currentDictEvent.active = false;    
 }
 
 GameWindow::~GameWindow() {        

@@ -2,6 +2,7 @@
 #define LINKSTAB_H
 
 #include <QObject>
+#include <QCheckBox>
 
 #include "text/alter/abstracttabletab.h"
 
@@ -32,6 +33,7 @@ private:
     QTableWidget* linksTable;
     QPushButton* addButton;
     QPushButton* removeButton;
+    QCheckBox* linksEnabled;
 
     LinkSettings* settings;
 
@@ -44,6 +46,7 @@ public slots:
     void addNewTableRow();
     void displayMenu(QPoint);
     void updateEntry(QTableWidgetItem*);
+    void enabledChanged(int state);
 };
 
 #endif // LINKSTAB_H

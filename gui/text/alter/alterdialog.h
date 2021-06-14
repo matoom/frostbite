@@ -40,6 +40,7 @@ public:
     QTableWidget* getLinksTable();
     QPushButton* getLinksAddButton();
     QPushButton* getLinksRemoveButton();
+    QCheckBox* getLinksEnabled();
 
     QList<QDockWidget*> getDockWindows();
 

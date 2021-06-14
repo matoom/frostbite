@@ -21,7 +21,7 @@ class ClientSettings;
 class WindowFacade;
 class MacroDialog;
 
-#define USER_GUIDE_URL "http://matoom.github.com/frostbite"
+#define USER_GUIDE_URL "https://matoom.github.io/frostbite"
 
 class MenuHandler : public QObject {
     Q_OBJECT
