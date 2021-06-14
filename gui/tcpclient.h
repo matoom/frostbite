@@ -15,7 +15,7 @@ class TcpClient : public QObject {
     Q_OBJECT
 
 public:
-    TcpClient(QObject *parent = 0, bool loadMock = false);
+    TcpClient(QObject *parent = 0, Lich* lichClient = 0, bool loadMock = false);
     ~TcpClient();
     void init();
 

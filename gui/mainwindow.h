@@ -36,7 +36,6 @@ class ScriptApiServer;
 class DictionaryService;
 class ClientSettings;
 class HyperlinkService;
-class XmlParserThread;
 class Session;
 
 class MainWindow : public QMainWindow {
@@ -119,8 +118,6 @@ private:
     } distractionFreeModeParams;
     WindowFacade* windowFacade;
     Toolbar* toolBar;
-    XmlParserThread* xmlParser;
-    TcpClient* tcpClient;
     Session* session;
     ClientSettings* settings;
     GeneralSettings* generalSettings;

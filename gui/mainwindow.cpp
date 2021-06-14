@@ -6,7 +6,6 @@
 #include "cleanlooks/qcleanlooksstyle.h"
 
 #include "windowfacade.h"
-#include "tcpclient.h"
 #include "xml/xmlparserthread.h"
 #include "toolbar/toolbar.h"
 #include "clientsettings.h"
@@ -142,11 +141,11 @@ void MainWindow::reloadSettings() {
 }
 
 void MainWindow::openConnection(QString host, QString port, QString key) {
-    tcpClient->connectToHost(host, port, key);
+    session->openConnection(host, port, key);
 }
 
 void MainWindow::openLocalConnection(QString port) {
-    tcpClient->connectToLocalPort(port);
+    session->openLocalConnection(port);
 }
 
 MenuHandler* MainWindow::getMenuHandler() {
@@ -201,10 +200,7 @@ void MainWindow::loadClient() {
 
     scriptService = new ScriptService(this);
 
-    xmlParser = new XmlParserThread(this);        
-    tcpClient = new TcpClient(this, DEBUG);
-    
-    session = new Session(this, tcpClient, xmlParser);
+    session = new Session(this, DEBUG);
         
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
@@ -221,12 +217,6 @@ void MainWindow::loadClient() {
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 
-    // Connect to TCP Client events and connect it to our events
-    connect(tcpClient, SIGNAL(connectAvailable(bool)), this, SLOT(connectEnabled(bool)));
-    connect(this, SIGNAL(profileChanged()), tcpClient, SLOT(reloadSettings()));
-    connect(tcpClient, SIGNAL(connectStarted()), this, SLOT(connectStarted()));
-    connect(tcpClient, SIGNAL(connectSucceeded()), this, SLOT(connectSucceeded()));
-    connect(tcpClient, SIGNAL(connectFailed(QString)), this, SLOT(connectFailed(QString)));
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -242,7 +232,7 @@ VitalsBar* MainWindow::getVitalsBar() {
 }
 
 TcpClient* MainWindow::getTcpClient() {
-    return tcpClient;
+    return session->getTcpClient();
 }
 
 CommandLine* MainWindow::getCommandLine() {
@@ -466,7 +456,6 @@ void MainWindow::actionCommands(const QStringList& commands) {
 }
 
 MainWindow::~MainWindow() {
-    delete tcpClient;
     delete ui;
     delete toolBar;
     delete windowFacade;

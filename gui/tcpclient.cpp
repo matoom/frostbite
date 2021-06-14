@@ -9,7 +9,8 @@
 #include "lich/lich.h"
 #include "environment.h"
 
-TcpClient::TcpClient(QObject *parent, bool loadMock) : QObject(parent) {
+TcpClient::TcpClient(QObject* parent, Lich* lichClient, bool loadMock)
+    : QObject(parent), lich(lichClient), useMock(loadMock) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
     // TODO: Remove dependency on ClientSettings
@@ -18,23 +19,18 @@ TcpClient::TcpClient(QObject *parent, bool loadMock) : QObject(parent) {
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
-    useMock = loadMock;
 
     commandPrefix = "<c>";
 
     debugLogger = new DebugLogger();
 
-    // TODO: We can use dependency injection here
-    lich = new Lich(parent);
-
-    if(tcpSocket) {
-        connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
-        connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-        connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
-        connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
-        tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-        tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-    }    
+    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this,
+            SLOT(socketError(QAbstractSocket::SocketError)));
+    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
+    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
+    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
 }
 
 void TcpClient::init() {
