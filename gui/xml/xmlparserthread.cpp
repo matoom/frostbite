@@ -144,27 +144,26 @@ void XmlParserThread::process(QString data) {
         }
 
         if(lines.at(i).startsWith("<pushStream")) {
-            int count = 0;
-            QString pushStream = lines.at(i) + "\n";
-            while(i < lines.size() - 1) {
-                count += lines.at(i).count("<pushStream") - lines.at(i).count("</pushStream>");
-                if(count <= 0) break;
-                pushStream += lines.at(++i) + "\n";
-            }
-            this->processPushStream(pushStream);
+            processPushStream(aggregateXml("pushStream", lines, i));
         } else if(lines.at(i).startsWith("<dynaStream")) {
-            int count = 0;
-            QString dynaStream = lines.at(i) + "\n";
-            while(i < lines.size() - 1) {
-                count += lines.at(i).count("<dynaStream") - lines.at(i).count("</dynaStream>");
-                if(count <= 0) break;
-                dynaStream += lines.at(++i) + "\n";
-            }
-            processDynaStream(dynaStream);
+            processDynaStream(aggregateXml("dynaStream", lines, i));
+        } else if(lines.at(i).startsWith("<component")) {
+            processGameData(aggregateXml("component", lines, i));
         } else {
             processGameData(lines.at(i));
         }
     }
+}
+
+QString XmlParserThread::aggregateXml(QString tag, QList<QString> lines, int &i) {
+    int count = 0;
+    QString xml = lines.at(i) + "\n";
+    while(i < lines.size() - 1) {
+        count += lines.at(i).count("<" + tag) - lines.at(i).count("</" + tag + ">");
+        if(count <= 0) break;
+        xml += lines.at(++i) + "\n";
+    }
+    return xml;
 }
 
 QString XmlParserThread::processMonoOutput(QString line) {
@@ -237,7 +236,6 @@ void XmlParserThread::processGameData(QString data) {
 
         n = n.nextSibling();
     }
-
     if(!empty) emit writeText(gameText.toLocal8Bit(), prompt);
 }
 
@@ -272,9 +270,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     } else if(n.isText()) {
         // compensate for qdomnode discarding &lt
         QString textData = n.toText().data();
-
         if(!mono) TextUtils::plainToHtml(textData);
-
         if(bold) {
             gameText += "<span class=\"bold\">" + textData + "</span>";
         } else {
