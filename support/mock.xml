@@ -332,7 +332,8 @@ A town guard walks in, glancing about with a false look of boredom on his face.
 <popStream/><prompt time="1324895960">&gt;</prompt>
 <component id='room players'></component>
 <prompt time="1324895961">&gt;</prompt>
-<nav/>
+<
+nav/>
 <streamWindow id='main' title='Story' subtitle=" - [Mycthengelde, Flatlands]" location='center' target='drop'/>
 <streamWindow id='room' title='Room' subtitle=" - [Mycthengelde, Flatlands]" location='center' target='drop' ifClosed='' resident='true'/>
 <component id='room desc'>Well-worn paths lead through a grove of trees to a gate in The Crossing's western wall.  Now and again you hear birds calling to one another in the branches, or the bustling of a merchant's cart as it makes its way past.  A handful of adventurers nod at you in greeting as they make their way into town.  An aromatic mix of wildflowers mingles with wyndwood, oak and juniper trees as the grove stretches north and south, while to the west, you can see grassy flatlands through a small clearing.</component>
@@ -1199,3 +1200,20 @@ Reading: <mode id="GAME"/><output class="" />
 [Roundtime 3 sec.]
 <popStream id="combat" />
 <prompt time="1615727006">&gt;</prompt>
+
+A stocky acolyte leads you clockwise.
+<nav/>
+<streamWindow id='main' title='Story' subtitle=" - [The Crossing Temple, Hallway]" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [The Crossing Temple, Hallway]" location='center' target='drop' ifClosed='' resident='true'/>
+<component id='room desc'>Light streams out from a torch set into a pedestal in the center of the room, creating distorted shadows on the curved walls.  Securely mounted along the outer curve is a display of battle-worn weapons, all old but obviously well cared for.  The presence of such items within the peaceful solemnity of the Temple acts as a grim reminder of the dangers in the outside world.</component>
+<component id='room objs'>You also see <pushBold/>a stocky acolyte<popBold/>.</component>
+<component id='room players'></component>
+<component id='room exits'>Obvious paths: clockwise, widdershins.
+<compass></compass></component>
+<component id='room extra'></component>
+<resource picture="0"/><style id="roomName" />[The Crossing Temple, Hallway]
+<style id=""/><preset id='roomDesc'>Light streams out from a torch set into a pedestal in the center of the room, creating distorted shadows on the curved walls.  Securely mounted along the outer curve is a display of battle-worn weapons, all old but obviously well cared for.  The presence of such items within the peaceful solemnity of the Temple acts as a grim reminder of the dangers in the outside world.</preset>  You also see <pushBold/>a stocky acolyte<popBold/>.
+Obvious paths: clockwise, widdershins.
+<compass></compass><component id='room objs'>You also see <pushBold/>a stocky acolyte<popBold/>.</component>
+<component id='room players'></component>
+<prompt time="1623185006">&gt;</prompt>

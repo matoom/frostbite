@@ -75,6 +75,7 @@ private:
 
     QString processMonoOutput(QString line);
     QString processCommands(QString line);
+    QString aggregateXml(QString tag, QList<QString> lines, int &i);
 
     void processPushStream(QString);
     void processDynaStream(QString);
