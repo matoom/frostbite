@@ -20,8 +20,15 @@ public:
     void openConnection(QString host, QString port, QString key);
     void openLocalConnection(QString port);
 private:
-    void setupParserAndClient();
-    void setupClientStatus();
+    void bindParserAndClient();
+    void bindClientStatus();
+    void bindVitalsBar();
+    void bindToolBar();
+    void bindCommandLine();
+    void bindWindowFacade();
+    void bindWindows();
+    void bindScriptService();
+    void bindMainWindow();
 
     Lich* lich;
     TcpClient* tcpClient;

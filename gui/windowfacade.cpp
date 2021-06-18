@@ -442,8 +442,9 @@ void WindowFacade::logGameText(QByteArray text, char type) {
 }
 
 void WindowFacade::registerStreamWindow(QString id, QString title) {
-    if(streamWindows.contains(id)) return;
-
+    // Check if window has been registered (or it is a static window)
+    if(streamWindows.contains(id) || staticWindows.contains(id)) return;
+    
     QDockWidget* streamWindow = genericWindowFactory->createWindow(title.toLatin1().constData());
     ((GenericWindow*)streamWindow->widget())->setStream(true);
     mainWindow->addDockWidgetMainWindow(Qt::RightDockWidgetArea, streamWindow);
@@ -483,7 +484,10 @@ void WindowFacade::writeStreamWindow(QString id, QString text) {
 }
 
 void WindowFacade::clearStreamWindow(QString id) {
-    this->writeStreamWindow(id, "{clear}");
+    // Do not clear static windows
+    if (!staticWindows.contains(id)) {
+        this->writeStreamWindow(id, "{clear}");
+    }
 }
 
 void WindowFacade::lockWindows() {

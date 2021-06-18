@@ -6,9 +6,15 @@
 #include "defaultvalues.h"
 
 Lich::Lich(QObject *parent) : QObject(parent), lich_proc(new QProcess(this)) {
+    // TODO: Remove this dependency from MainWindow.
+    // The MainWindow only used to get windowFacade, while
+    // windowFacade is only used to call its method
+    // writeGameWindow, which could be converted to
+    // emitting signal as well.
     mainWindow = (MainWindow*)parent;
     windowFacade = mainWindow->getWindowFacade();
 
+    // ClientSettigs only used in ::run method
     clientSettings = ClientSettings::getInstance();
 
     connect(lich_proc, SIGNAL(readyReadStandardOutput()), this, SLOT(displayOutputMsg()));
@@ -19,6 +25,9 @@ Lich::Lich(QObject *parent) : QObject(parent), lich_proc(new QProcess(this)) {
 }
 
 void Lich::run(QString host, QString port) {
+    // TODO: Probably supply these settings as arguments?
+    // Then the dependency on both clientsettings.h and
+    // defaultvalues.h could be removed.
     QString lichLocation = clientSettings->getQStringNotBlank("Script/lichLocation", SCRIPT_LICH_LOCATION);
     QString ruby = clientSettings->getQStringNotBlank("Script/lichRuby", SCRIPT_LICH_RUBY);
     QString lichArgs = clientSettings->getQStringNotBlank("Script/lichArguments", SCRIPT_LICH_ARGS);
