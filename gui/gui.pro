@@ -97,6 +97,7 @@ SOURCES += main.cpp\
     compass.cpp \
     genieutils.cpp \
     hyperlinkservice.cpp \
+    hyperlinkutils.cpp \
     session.cpp
 
 HEADERS  += mainwindow.h \
@@ -157,6 +158,7 @@ HEADERS  += mainwindow.h \
     compass.h \
     genieutils.h \
     hyperlinkservice.h \
+    hyperlinkutils.h \
     concurrentqueue.h \
     workqueuethread.h \
     session.h

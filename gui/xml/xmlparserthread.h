@@ -20,7 +20,7 @@ class XmlParserThread : public WorkQueueThread<QByteArray> {
     Q_OBJECT
     using Parent = WorkQueueThread<QByteArray>;
 public:
-    explicit XmlParserThread(QObject *parent = 0);
+    explicit XmlParserThread(QObject *parent, GameDataContainer* dataContainer);
     ~XmlParserThread() = default;
 
     void process(QString);

@@ -4,6 +4,7 @@
 #include "tcpclient.h"
 #include "xml/xmlparserthread.h"
 #include "lich/lich.h"
+#include "gamedatacontainer.h"
 
 // classes we connect events from xmlparser to
 #include "vitalsbar.h"
@@ -28,7 +29,7 @@ Session::Session(MainWindow* parent, bool debug)
     : QObject(parent), mainWindow(static_cast<MainWindow*>(parent)) {
     lich = new Lich(mainWindow);
     tcpClient = new TcpClient(this, lich, debug);
-    xmlParser = new XmlParserThread(mainWindow);
+    xmlParser = new XmlParserThread(mainWindow, GameDataContainer::Instance());
 
     bindParserAndClient();
     bindClientStatus();

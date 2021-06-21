@@ -4,11 +4,9 @@
 
 #include "gamedatacontainer.h"
 #include "textutils.h"
-#include "hyperlinkservice.h"
+#include "hyperlinkutils.h"
 
-XmlParserThread::XmlParserThread(QObject *parent) : Parent(parent) {
-    gameDataContainer = GameDataContainer::Instance();
-
+XmlParserThread::XmlParserThread(QObject *parent, GameDataContainer* dataContainer) : Parent(parent), gameDataContainer(dataContainer) {
     rxDmg.setPattern("\\bat you\\..*\\blands\\b");
     
     bold = false;
@@ -120,7 +118,7 @@ QString XmlParserThread::processCommands(QString line) {
             lastPos = endPos;
             QString cmd = match.captured(1);
             QString text = match.captured(2);
-            HyperlinkService::createLink(text, cmd, 0, text);
+            HyperlinkUtils::createLink(text, cmd, 0, text);
             newLine.append(text);
         } while (i.hasNext());
         // append the rest
@@ -209,7 +207,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         QString d = e.text().trimmed();
         QString cmd  = e.attribute("cmd", d);
         TextUtils::plainToHtml(d);
-        HyperlinkService::createLink(d, cmd, 0, d);
+        HyperlinkUtils::createLink(d, cmd, 0, d);
         gameText += d;
     } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
         QString preset = e.text().trimmed();
@@ -269,10 +267,10 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             }
             qSort(directions);
 
-            GameDataContainer::Instance()->setCompassDirections(directions);
+            gameDataContainer->setCompassDirections(directions);
 
-            QString text = GameDataContainer::Instance()->getRoomName() +
-                    TextUtils::stripMapSpecial(GameDataContainer::Instance()->getRoomDesc())
+            QString text = gameDataContainer->getRoomName() +
+                    TextUtils::stripMapSpecial(gameDataContainer->getRoomDesc())
                     + directions.join("");
 
             QString hash = TextUtils::toHash(text);
