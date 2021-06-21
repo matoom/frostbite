@@ -12,9 +12,7 @@
 
 #include "workqueuethread.h"
 
-class MainWindow;
 class GameDataContainer;
-class Highlighter;
 
 typedef QList<QString> DirectionsList;
 
@@ -33,9 +31,7 @@ private:
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
 
-    MainWindow* mainWindow;
     GameDataContainer* gameDataContainer;
-    Highlighter* highlighter;
     QStringList inventory;
 
     QString gameText;

@@ -173,12 +173,14 @@ void MainWindow::loadClient() {
     mainWidgetLayout->setContentsMargins(0,0,0,0);
     ui->mainLayout->addWidget(mainWidget);
 
-    
+    // Timer bar created before the Toolbar because
+    // alert highlighter used in Toolbar connects to it.
+    timerBar = new TimerBar(this);
+    timerBar->load();
+
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 
-    timerBar = new TimerBar(this);
-    timerBar->load();
 
     vitalsBar = new VitalsBar(this);
     vitalsBar->load();

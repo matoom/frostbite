@@ -1,17 +1,13 @@
 #include "xmlparserthread.h"
 
-#include "mainwindow.h"
+#include <QXmlStreamReader>
+
 #include "gamedatacontainer.h"
-#include "text/highlight/highlighter.h"
 #include "textutils.h"
 #include "hyperlinkservice.h"
 
-XmlParserThread::XmlParserThread(QObject *parent) {
-    mainWindow = (MainWindow*)parent;
+XmlParserThread::XmlParserThread(QObject *parent) : Parent(parent) {
     gameDataContainer = GameDataContainer::Instance();
-    // TODO: Do we really need Highlighter as a part of a parser?
-    // Maybe emit a signal when appropriate?
-    highlighter = new Highlighter(parent);
 
     rxDmg.setPattern("\\bat you\\..*\\blands\\b");
     
@@ -306,7 +302,6 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
             emit updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
-            highlighter->alert(vitalsElement.attribute("id"), vitalsElement.attribute("value").toInt());
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "spellChoose") {
             QDomElement closeButton = e.firstChildElement("closeButton");
             gameText += closeButton.attribute("value") + ": [<span class=\"bold\">" + closeButton.attribute("cmd") + "</span>]";
@@ -314,9 +309,6 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
             emit updateStatus(e.attribute("visible"), e.attribute("id"));
-            if(e.attribute("visible") == "y") {
-                highlighter->alert(e.attribute("id"));
-            }
         } else if(e.tagName() == "left") {
             /* filter player wielding in left hand */
             emit updateWieldLeft(e.text());
