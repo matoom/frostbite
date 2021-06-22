@@ -92,6 +92,7 @@ public:
     void showMaps();
 
     void enableMapsMenu(bool enabled);
+    void enableConnectButton(bool enabled);
 
     MenuHandler* getMenuHandler();
     WindowFacade* getWindowFacade();
@@ -157,10 +158,6 @@ public slots:
     void actionCommand(const QString&);
     void actionCommands(const QStringList&);
     void toggleDistractionFreeMode();
-    void connectEnabled(bool);    
-    void connectStarted();
-    void connectSucceeded();
-    void connectFailed(QString);
 };
 
 #endif // MAINWINDOW_H

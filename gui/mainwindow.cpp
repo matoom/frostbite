@@ -400,26 +400,9 @@ void MainWindow::setMainTitle(QString roomName) {
     setWindowTitle("The Frostbite Client" + roomName);
 }
 
-void MainWindow::connectEnabled(bool enabled) {
-    ui->actionConnect->setEnabled(enabled);
+void MainWindow::enableConnectButton(bool enable) {
+    ui->actionConnect->setEnabled(enable);
 }
-
-void MainWindow::connectStarted() {
-    windowFacade->writeGameWindow("Connecting ...");    
-}
-
-void MainWindow::connectSucceeded() {
-    windowFacade->writeGameWindow("Connection established.<br/>");
-}
-
-void MainWindow::connectFailed(QString reason) {
-    windowFacade->writeGameWindow("<br><br>"
-        "*<br>"
-        "* " + reason.toLocal8Bit() + "<br>"
-        "*<br>"
-        "<br><br>");    
-}
-
 
 void MainWindow::handleAppMessage(const QString& msg) {
     if(msg == "show") {

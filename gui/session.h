@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-
 class MainWindow;
 class TcpClient;
 class XmlParserThread;
@@ -19,6 +18,14 @@ public:
 
     void openConnection(QString host, QString port, QString key);
     void openLocalConnection(QString port);
+
+private slots:
+    // Connect statuses from tcp client
+    void connectAvailable(bool);
+    void connectStarted();
+    void connectSucceeded();
+    void connectFailed(QString);
+
 private:
     void bindParserAndClient();
     void bindClientStatus();
@@ -35,8 +42,6 @@ private:
     XmlParserThread* xmlParser;
 
     MainWindow* mainWindow;
-signals:
-    
 };
 
 #endif

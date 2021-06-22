@@ -60,12 +60,12 @@ void Session::bindParserAndClient() {
 }
 
 void Session::bindClientStatus() {
-    // Connect TCP Client events to main window events, to
+    // Connect TCP Client events to Session slots, to
     // report status
-    connect(tcpClient, SIGNAL(connectAvailable(bool)), mainWindow, SLOT(connectEnabled(bool)));
-    connect(tcpClient, SIGNAL(connectStarted()), mainWindow, SLOT(connectStarted()));
-    connect(tcpClient, SIGNAL(connectSucceeded()), mainWindow, SLOT(connectSucceeded()));
-    connect(tcpClient, SIGNAL(connectFailed(QString)), mainWindow, SLOT(connectFailed(QString)));
+    connect(tcpClient, SIGNAL(connectAvailable(bool)), this, SLOT(connectAvailable(bool)));
+    connect(tcpClient, SIGNAL(connectStarted()), this, SLOT(connectStarted()));
+    connect(tcpClient, SIGNAL(connectSucceeded()), this, SLOT(connectSucceeded()));
+    connect(tcpClient, SIGNAL(connectFailed(QString)), this, SLOT(connectFailed(QString)));
 }
 
 TcpClient* Session::getTcpClient() {
@@ -165,4 +165,26 @@ void Session::bindScriptService() {
 void Session::bindMainWindow() {
     // Connect events from xmlparser to MainWindow.
     connect(xmlParser, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
+}
+
+void Session::connectAvailable(bool enable) {
+    mainWindow->enableConnectButton(enable);
+}
+
+void Session::connectStarted() {
+    mainWindow->getWindowFacade()->writeGameWindow("Connecting ...");
+}
+
+void Session::connectSucceeded() {
+    mainWindow->getWindowFacade()->writeGameWindow("Connection established.<br/>");
+}
+
+void Session::connectFailed(QString reason) {
+    mainWindow->getWindowFacade()->writeGameWindow("<br><br>"
+                                                   "*<br>"
+                                                   "* "
+                                                   + reason.toLocal8Bit()
+                                                   + "<br>"
+                                                     "*<br>"
+                                                     "<br><br>");
 }
