@@ -32,7 +32,6 @@ private:
     bool filterDataTags(QDomElement, QDomNode);
 
     GameDataContainer* gameDataContainer;
-    QStringList inventory;
 
     QString gameText;
     QDateTime time;    
