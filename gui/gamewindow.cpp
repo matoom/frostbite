@@ -8,7 +8,7 @@
 #include "generalsettings.h"
 #include "dict/dictionarysettings.h"
 #include "dict/dictionaryservice.h"
-#include "hyperlinkservice.h"
+#include "hyperlinkutils.h"
 #include "defaultvalues.h"
 #include "globaldefines.h"
 #include "snapshot.h"
@@ -244,7 +244,7 @@ void GameWindow::lookupInElanthipedia() {
     if (textCursor.hasSelection()) {
         QString text = textCursor.selectedText().trimmed();
         if (text.size()) {
-            QDesktopServices::openUrl(HyperlinkService::createSearchElanthipediaUrl(text));
+            QDesktopServices::openUrl(HyperlinkUtils::createSearchElanthipediaUrl(text));
         }
     }
 }

@@ -16,6 +16,7 @@ class StatusIndicator;
 class ActiveSpellIndicator;
 class SpellIndicator;
 class ClientSettings;
+class Highlighter;
 
 class Toolbar : public QObject {
     Q_OBJECT
@@ -47,6 +48,7 @@ private:
     SpellIndicator* spell;
     ActiveSpellIndicator* activeSpell;
     MuteButton* muteButton;
+    Highlighter* highlighter;
 
     ClientSettings* clientSettings;
 

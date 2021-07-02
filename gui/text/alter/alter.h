@@ -35,7 +35,6 @@ private:
      LinkSettings* linkSettings;
      bool ignoreEnabled;
 
-     int createLink(AlterSettingsEntry entry, QString &text, int indexStart, QString match);
      QString createCommand(QString text, QString command);
 
 signals:

@@ -15,6 +15,7 @@
 #include "clientsettings.h"
 #include "commandline.h"
 #include "textutils.h"
+#include "text/highlight/highlighter.h"
 
 Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
@@ -28,8 +29,9 @@ Toolbar::Toolbar(QObject *parent) : QObject(parent) {
     wieldRight = new WieldIndicator(this, RHAND_ICO);
     spell = new SpellIndicator(this);            
     activeSpell = new ActiveSpellIndicator(this);
+    highlighter = new Highlighter(parent);
 
-    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));   
+    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
 }
 
 void Toolbar::reloadSettings() {
@@ -160,10 +162,14 @@ void Toolbar::updateVitals(QString name, QString value) {
         vitalsIndicator->manaBar->setToolTip("Mana: " + value + "%");
         vitalsIndicator->manaBar->repaint();
     }
+    highlighter->alert(name, intValue);
 }
 
 void Toolbar::updateStatus(QString visible, QString icon) {
     statusIndicator->updateStatus(visible, icon);
+    if (visible == "y") {
+        highlighter->alert(icon);
+    }
 }
 
 int Toolbar::getHealthValue() {

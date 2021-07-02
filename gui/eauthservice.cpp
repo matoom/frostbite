@@ -5,6 +5,7 @@
 #include "tcpclient.h"
 
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
+    // TODO: Settings used only to get the debug state
     settings = ClientSettings::getInstance();
     tcpSocket = new QTcpSocket(this);
     tcpClient = (TcpClient*)parent;
