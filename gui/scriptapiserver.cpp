@@ -12,6 +12,7 @@
 #include "clientsettings.h"
 #include "textutils.h"
 #include "maps/mapfacade.h"
+#include "scriptservice.h"
 
 ScriptApiServer::ScriptApiServer(QObject *parent) : QObject(parent), networkSession(0) {
     mainWindow = (MainWindow*)parent;
@@ -248,6 +249,20 @@ void ScriptApiServer::readyRead() {
                 } else {
                     this->write(socket, tr("0\\0"));
                 }
+            }
+        } else if(line.startsWith("PUT")) {
+            ApiRequest request = parseRequest(line.mid(strlen("PUT")).trimmed());
+            QString message = request.args.join(" ");
+            // send the command to the ScriptService to execute
+            // prepending with prefixes as it is coming from the script
+            if(request.name == "COMMAND") {
+                mainWindow->getScriptService()->processCommand(("put#" + message).toLatin1());
+                this->write(socket, tr("1\\0"));
+            } else if (request.name == "ECHO") {
+                mainWindow->getScriptService()->processCommand(("echo#" + message).toLatin1());
+                this->write(socket, tr("1\\0"));
+            } else {            // unknown command
+                this->write(socket, tr("0\\0"));
             }
         } else {
             this->write(socket, tr("\\0"));
