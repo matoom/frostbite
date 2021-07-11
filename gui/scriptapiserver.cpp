@@ -65,7 +65,7 @@ void ScriptApiServer::openSession() {
     if(tcpServer->isListening()) tcpServer->close();
     if (!tcpServer->listen(QHostAddress::LocalHost, clientSettings->getParameter("Script/apiPort", 0).toInt())) {
         Log4Qt::Logger::logger(QLatin1String("ErrorLogger"))->
-                info("Unable to start server" + tcpServer->errorString());
+                info("Unable to start API server" + tcpServer->errorString());
         return;
     }
     apiSettings->setParameter("ApiServer/port", tcpServer->serverPort());

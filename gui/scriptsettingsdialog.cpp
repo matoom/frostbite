@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 #include "clientsettings.h"
+#include "defaultvalues.h"
 
 ScriptSettingsDialog::ScriptSettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ScriptSettingsDialog) {
     ui->setupUi(this);
@@ -19,6 +20,8 @@ ScriptSettingsDialog::ScriptSettingsDialog(QWidget *parent) : QDialog(parent), u
     ui->lichLocationInput->setObjectName("lichLocation");
     ui->lichRubyInput->setObjectName("lichRuby");
     ui->lichArgumentsInput->setObjectName("lichArguments");
+    ui->streamingServerEnabled->setObjectName("streamingServerEnabled");
+    ui->streamingPortInput->setObjectName("streamingServerPort");
 
     ui->scriptInterpreterButton->setProperty("input", QVariant::fromValue<QLineEdit*>(ui->scriptInterpreterInput));
     ui->scriptEntryButton->setProperty("input", QVariant::fromValue<QLineEdit*>(ui->scriptEntryInput));
@@ -26,8 +29,9 @@ ScriptSettingsDialog::ScriptSettingsDialog(QWidget *parent) : QDialog(parent), u
     ui->lichRubyButton->setProperty("input", QVariant::fromValue<QLineEdit*>(ui->lichRubyInput));
     ui->lichLocationButton->setProperty("input", QVariant::fromValue<QLineEdit*>(ui->lichLocationInput));
 
-    ui->scriptPortInput->setValidator(new QRegExpValidator(QRegExp("^(\\s*|\\d+)$"), this));
-
+    auto portValidator = new QRegExpValidator(QRegExp("^(\\s*|\\d+)$"), this);
+    ui->scriptPortInput->setValidator(portValidator);
+    ui->streamingPortInput->setValidator(portValidator);
     ui->applyButton->setDisabled(true);
 
     this->loadSettings();
@@ -41,12 +45,18 @@ ScriptSettingsDialog::ScriptSettingsDialog(QWidget *parent) : QDialog(parent), u
 
     QList<QLineEdit*> inputs;
     inputs << ui->scriptInterpreterInput << ui->scriptEntryInput << ui->scriptPathInput << ui->scriptExtensionInput << ui->scriptPortInput
-            << ui->lichRubyInput << ui->lichLocationInput << ui->lichArgumentsInput;
+           << ui->lichRubyInput << ui->lichLocationInput << ui->lichArgumentsInput << ui->streamingPortInput;
 
     foreach(QLineEdit* input, inputs) {
         connect(input, &QLineEdit::editingFinished, this, &ScriptSettingsDialog::inputChanged);
         connect(input, &QLineEdit::textEdited, this, &ScriptSettingsDialog::inputEdited);
     }
+
+    connect(ui->streamingServerEnabled, &QCheckBox::stateChanged, [=](int newState) {
+        this->changeList.insert("Script/" + this->ui->streamingServerEnabled->objectName(),
+                                QVariant(newState == Qt::Checked));
+        this->ui->applyButton->setEnabled(true);
+    });
 
     connect(ui->okButton, &QAbstractButton::clicked, this, &ScriptSettingsDialog::okPressed);
     connect(ui->applyButton, &QAbstractButton::clicked, this, &ScriptSettingsDialog::applyPressed);
@@ -62,6 +72,12 @@ void ScriptSettingsDialog::loadSettings() {
     ui->lichRubyInput->setText(settings->getParameter("Script/lichRuby", "").toString());
     ui->lichLocationInput->setText(settings->getParameter("Script/lichLocation", "").toString());
     ui->lichArgumentsInput->setText(settings->getParameter("Script/lichArguments", "").toString());
+    ui->streamingServerEnabled->setCheckState(
+            settings->getParameter("Script/streamingServerEnabled", SCRIPT_STREAMING_ENABLED)
+                            .toBool()
+                    ? Qt::Checked
+                    : Qt::Unchecked);
+    ui->streamingPortInput->setText(settings->getParameter("Script/streamingServerPort", "").toString());
 }
 
 void ScriptSettingsDialog::browse() {
