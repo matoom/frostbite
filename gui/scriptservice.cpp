@@ -8,6 +8,7 @@
 #include "windowfacade.h"
 #include "defaultvalues.h"
 #include "clientsettings.h"
+#include "scriptstreamserver.h"
 
 ScriptService::ScriptService(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
@@ -24,6 +25,8 @@ ScriptService::ScriptService(QObject *parent) : QObject(parent) {
 
     connect(this, SIGNAL(killScript()), script, SLOT(killScript()));
     connect(this, SIGNAL(sendMessage(QByteArray)), script, SLOT(sendMessage(QByteArray)));
+    connect(scriptWriter, SIGNAL(writeText(QByteArray)),
+            this, SLOT(writeOutgoingMessage(QByteArray)));
 }
 
 bool ScriptService::isScriptActive() {
@@ -99,8 +102,13 @@ void ScriptService::writeGameWindow(QByteArray command) {
 }
 
 void ScriptService::writeScriptText(QByteArray text) {
-    if(!text.isEmpty() && this->isScriptActive()) {
-        scriptWriter->addData(text.data());
+    if (!text.isEmpty()) {
+        // Script Service delivers script text to both streaming
+        // server and the running script
+        mainWindow->getScriptStreamServer()->writeData(text);
+        if (this->isScriptActive()) {
+            scriptWriter->addData(text.data());
+        }
     }
 }
 

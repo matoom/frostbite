@@ -6,9 +6,6 @@ ScriptWriterThread::ScriptWriterThread(QObject *parent) {
     scriptService = (ScriptService*)parent;
 
     rxRemoveTags.setPattern("<[^>]*>");
-
-    connect(this, SIGNAL(writeText(QByteArray)),
-            scriptService, SLOT(writeOutgoingMessage(QByteArray)));
 }
 
 void ScriptWriterThread::onProcess(const QString& lines) {
