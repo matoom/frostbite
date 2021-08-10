@@ -36,7 +36,7 @@ class ScriptApiServer;
 class DictionaryService;
 class ClientSettings;
 class HyperlinkService;
-
+class Session;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -44,8 +44,6 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-    static bool DEBUG;
 
     void addDockWidgetMainWindow(Qt::DockWidgetArea, QDockWidget*);
     void removeDockWidgetMainWindow(QDockWidget* dock);
@@ -77,7 +75,6 @@ public:
     void setMenuMutedVisible(bool enabled);
 
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
-    void connectEnabled(bool);    
     void toggleFullScreen();
     void toggleMaximized();
     void updateProfileSettings(QString, QString);        
@@ -95,6 +92,7 @@ public:
     void showMaps();
 
     void enableMapsMenu(bool enabled);
+    void enableConnectButton(bool enabled);
 
     MenuHandler* getMenuHandler();
     WindowFacade* getWindowFacade();
@@ -106,6 +104,9 @@ public:
     DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();
+    
+public:
+    static bool DEBUG;
 
 private:
     Ui::MainWindow* ui;
@@ -118,7 +119,7 @@ private:
     } distractionFreeModeParams;
     WindowFacade* windowFacade;
     Toolbar* toolBar;
-    TcpClient* tcpClient;
+    Session* session;
     ClientSettings* settings;
     GeneralSettings* generalSettings;
     CommandLine* cmdLine;
@@ -156,7 +157,7 @@ public slots:
     void reloadSettings();
     void actionCommand(const QString&);
     void actionCommands(const QStringList&);
-    void toggleDistractionFreeMode();    
+    void toggleDistractionFreeMode();
 };
 
 #endif // MAINWINDOW_H

@@ -1,19 +1,21 @@
 #include "tcpclient.h"
 
-#include "mainwindow.h"
-#include "windowfacade.h"
+#include <QTimer>
+#include <QTime>
+
 #include "clientsettings.h"
 #include "eauthservice.h"
-#include "xml/xmlparserthread.h"
 #include "debuglogger.h"
 #include "lich/lich.h"
 #include "environment.h"
 
-TcpClient::TcpClient(QObject *parent) : QObject(parent) {
+TcpClient::TcpClient(QObject* parent, Lich* lichClient, bool loadMock)
+    : QObject(parent), lich(lichClient), useMock(loadMock) {
     tcpSocket = new QTcpSocket(this);
     eAuth = new EAuthService(this);
-    mainWindow = (MainWindow*)parent;
-    windowFacade = mainWindow->getWindowFacade();
+    // TODO: Remove dependency on ClientSettings
+    // settings only needed to get the current debug flag.
+    // Probably emit a message instead ?
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
@@ -22,34 +24,19 @@ TcpClient::TcpClient(QObject *parent) : QObject(parent) {
 
     debugLogger = new DebugLogger();
 
-    lich = new Lich(mainWindow);
-
-    if(tcpSocket) {
-        connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
-        connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-        connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
-        connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
-        tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
-        tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-    }
-
-    connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
-
-    xmlParser = new XmlParserThread(parent);        
-    connect(this, SIGNAL(addToQueue(QByteArray)), xmlParser, SLOT(addData(QByteArray)));
-    connect(this, SIGNAL(diconnected()), xmlParser, SLOT(flushStream()));
-    connect(this, SIGNAL(updateHighlighterSettings()), xmlParser, SLOT(updateHighlighterSettings()));
-    connect(xmlParser, SIGNAL(writeSettings()), this, SLOT(writeSettings()));
-    connect(xmlParser, SIGNAL(writeModeSettings()), this, SLOT(writeModeSettings()));
-    connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), this, SLOT(writeDefaultSettings(QString)));
-
-    if(MainWindow::DEBUG) {
-        this->loadMockData();
-    }
+    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this,
+            SLOT(socketError(QAbstractSocket::SocketError)));
+    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
+    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
+    tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
+    tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
 }
 
-void TcpClient::reloadSettings() {
-    emit updateHighlighterSettings();
+void TcpClient::init() {
+    if(useMock) {
+        this->loadMockData();
+    }
 }
 
 void TcpClient::loadMockData() {
@@ -63,10 +50,6 @@ void TcpClient::loadMockData() {
     QByteArray mockData = file.readAll();
 
     emit addToQueue(mockData);
-
-    if(!xmlParser->isRunning()) {
-        xmlParser->start();
-    }
 }
 
 void TcpClient::initEauthSession(QString host, QString port, QString user, QString password) {
@@ -156,35 +139,35 @@ void TcpClient::connectToLocalPort(QString port) {
 }
 
 void TcpClient::connectToHost(QString host, QString port) {
+    emit connectAvailable(false);
     this->api = false;
-    windowFacade->writeGameWindow("Connecting ...");
-    mainWindow->connectEnabled(false);
+    emit connectStarted();
     commandPrefix = "";
 
     tcpSocket->connectToHost(host, port.toInt());
 }
 
 bool TcpClient::connectToHost(QString sessionHost, QString sessionPort, QString sessionKey) {
+    emit connectAvailable(false);    
+    emit connectStarted();
     this->api = false;
-    windowFacade->writeGameWindow("Connecting ...");
-    mainWindow->connectEnabled(false);
     commandPrefix = "<c>";
 
     tcpSocket->connectToHost(sessionHost, sessionPort.toInt());
-    bool conntected = tcpSocket->waitForConnected();
+    bool connected = tcpSocket->waitForConnected();
 
     this->writeCommand(sessionKey);
     this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_UNKNOWN /XML");
 
-    return conntected;
+    return connected;
 }
 
 void TcpClient::disconnectedFromHost() {
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
 }
 
 void TcpClient::connectedToHost() {
-    windowFacade->writeGameWindow("Connection established.<br/>");
+    emit connectSucceeded();
 }
 
 void TcpClient::setProxy(bool enabled, QString proxyHost, QString proxyPort) {
@@ -223,12 +206,9 @@ void TcpClient::socketReadyRead() {
     this->logDebug(data);
 
     buffer.append(data);
-    if(buffer.endsWith("\n") || xmlParser->isCmgr()) {
+    if(buffer.endsWith("\n") || isCmgr) {
         // process raw data
         emit addToQueue(buffer);
-        if(!xmlParser->isRunning()) {
-            xmlParser->start();
-        }
         buffer.clear();
     }
 }
@@ -251,17 +231,13 @@ void TcpClient::socketError(QAbstractSocket::SocketError error) {
     } else if (error == QAbstractSocket::HostNotFoundError) {
         this->showError("Unable to resolve game host. [" + QTime::currentTime().toString("h:mm ap") + "]");
     }    
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
 
     qDebug() << error;
 }
 
 void TcpClient::showError(QString message) {
-    windowFacade->writeGameWindow("<br><br>"
-        "*<br>"
-        "* " + message.toLocal8Bit() + "<br>"
-        "*<br>"
-        "<br><br>");
+    emit connectFailed(message);
 }
 
 void TcpClient::logDebug(QByteArray buffer) {
@@ -273,13 +249,17 @@ void TcpClient::logDebug(QByteArray buffer) {
     }
 }
 
+void TcpClient::setGameModeCmgr(bool cmgr) {
+    isCmgr = cmgr;
+}
+
 void TcpClient::disconnectFromServer() {
     if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
         showError("Disconnected from server.");
         this->writeCommand("quit");
     }
     tcpSocket->disconnectFromHost();
-    mainWindow->connectEnabled(true);
+    emit connectAvailable(true);
     emit diconnected();
 }
 
@@ -288,7 +268,7 @@ TcpClient::~TcpClient() {
 
     delete debugLogger;
     delete tcpSocket;
-    delete xmlParser;
     delete eAuth;
     delete lich;
 }
+

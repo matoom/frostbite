@@ -27,10 +27,8 @@ public:
 
 private:
     explicit ClientSettings();
-
 };
 
-class ClientSettingsInstance : public ClientSettings {
-};
+class ClientSettingsInstance : public ClientSettings { };
 
 #endif // CLIENTSETTINGS_H

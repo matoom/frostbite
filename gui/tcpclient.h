@@ -5,8 +5,6 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QDebug>
 
-class MainWindow;
-class WindowFacade;
 class ClientSettings;
 class EAuthService;
 class XmlParserThread;
@@ -17,8 +15,9 @@ class TcpClient : public QObject {
     Q_OBJECT
 
 public:
-    TcpClient(QObject *parent = 0);
+    TcpClient(QObject *parent = 0, Lich* lichClient = 0, bool loadMock = false);
     ~TcpClient();
+    void init();
 
     void writeCommand(QString);
     void showError(QString);
@@ -29,14 +28,11 @@ public:
                     QString game, QString character, bool apiLich);
 
 private:
-    MainWindow *mainWindow;
     QTcpSocket *tcpSocket;
     QByteArray buffer;
-    WindowFacade *windowFacade;
     ClientSettings *settings;
     EAuthService *eAuth;
     QString sessionKey;
-    XmlParserThread* xmlParser;
     DebugLogger* debugLogger;
     QByteArray commandPrefix;
 
@@ -48,7 +44,9 @@ private:
     QString character;
     bool api;
     bool apiLich;
-
+    bool isCmgr = false;
+    bool useMock = false;
+    
 signals:
     void characterFound(QString, QString);
     void retrieveSessionKey(QString);
@@ -57,11 +55,13 @@ signals:
     void eAuthError(QString);
     void addToQueue(QByteArray);
     void diconnected();
-    void updateHighlighterSettings();
     void resetPassword();
     void enableGameSelect();
     void setGameList(QMap<QString, QString>);
-
+    void connectAvailable(bool);
+    void connectStarted();
+    void connectSucceeded();
+    void connectFailed(QString);
 public slots:
     void setProxy(bool, QString, QString);
     void socketReadyRead();
@@ -84,7 +84,7 @@ public slots:
     void writeSettings();
     void writeDefaultSettings(QString);
     void writeModeSettings();
-    void reloadSettings();
+    void setGameModeCmgr(bool);
 };
 
 

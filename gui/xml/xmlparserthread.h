@@ -12,13 +12,7 @@
 
 #include "workqueuethread.h"
 
-class MainWindow;
-class WindowFacade;
-class Toolbar;
-class CommandLine;
 class GameDataContainer;
-class Highlighter;
-class VitalsBar;
 
 typedef QList<QString> DirectionsList;
 
@@ -26,10 +20,8 @@ class XmlParserThread : public WorkQueueThread<QByteArray> {
     Q_OBJECT
     using Parent = WorkQueueThread<QByteArray>;
 public:
-    explicit XmlParserThread(QObject *parent = 0);
+    explicit XmlParserThread(QObject *parent, GameDataContainer* dataContainer);
     ~XmlParserThread() = default;
-
-    bool isCmgr();
 
     void process(QString);
 protected:
@@ -39,14 +31,7 @@ private:
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
 
-    MainWindow* mainWindow;
-    WindowFacade* windowFacade;
-    Toolbar* toolBar;
-    VitalsBar* vitalsBar;
-    CommandLine* commandLine;
     GameDataContainer* gameDataContainer;
-    Highlighter* highlighter;
-    QStringList inventory;
 
     QString gameText;
     QDateTime time;    
@@ -70,7 +55,6 @@ private:
     QString streamCache;
 
     bool mono;
-    QAtomicInt cmgr;
 
     bool pushStream;
 
@@ -142,12 +126,13 @@ signals:
 
     void registerStreamWindow(QString, QString);
     void writeStreamWindow(QString, QString);
-    void clearStreamWindow(QString);    
+    void clearStreamWindow(QString);
+
+    void gameModeIsCmgr(bool);
 
 public slots:
     void addData(QByteArray);
     void flushStream();
-    void updateHighlighterSettings();
 };
 
 #endif // XMLPARSERTHREAD_H

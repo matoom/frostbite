@@ -6,7 +6,7 @@
 #include "cleanlooks/qcleanlooksstyle.h"
 
 #include "windowfacade.h"
-#include "tcpclient.h"
+#include "xml/xmlparserthread.h"
 #include "toolbar/toolbar.h"
 #include "clientsettings.h"
 #include "commandline.h"
@@ -27,6 +27,7 @@
 #include "compass/compassview.h"
 #include "macrosettings.h"
 #include "hyperlinkservice.h"
+#include "session.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -140,11 +141,11 @@ void MainWindow::reloadSettings() {
 }
 
 void MainWindow::openConnection(QString host, QString port, QString key) {
-    tcpClient->connectToHost(host, port, key);
+    session->openConnection(host, port, key);
 }
 
 void MainWindow::openLocalConnection(QString port) {
-    tcpClient->connectToLocalPort(port);
+    session->openLocalConnection(port);
 }
 
 MenuHandler* MainWindow::getMenuHandler() {
@@ -172,12 +173,14 @@ void MainWindow::loadClient() {
     mainWidgetLayout->setContentsMargins(0,0,0,0);
     ui->mainLayout->addWidget(mainWidget);
 
-    
+    // Timer bar created before the Toolbar because
+    // alert highlighter used in Toolbar connects to it.
+    timerBar = new TimerBar(this);
+    timerBar->load();
+
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 
-    timerBar = new TimerBar(this);
-    timerBar->load();
 
     vitalsBar = new VitalsBar(this);
     vitalsBar->load();
@@ -199,8 +202,8 @@ void MainWindow::loadClient() {
 
     scriptService = new ScriptService(this);
 
-    tcpClient = new TcpClient(this);
-
+    session = new Session(this, DEBUG);
+        
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
 
@@ -215,6 +218,7 @@ void MainWindow::loadClient() {
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
+
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -230,7 +234,7 @@ VitalsBar* MainWindow::getVitalsBar() {
 }
 
 TcpClient* MainWindow::getTcpClient() {
-    return tcpClient;
+    return session->getTcpClient();
 }
 
 CommandLine* MainWindow::getCommandLine() {
@@ -396,8 +400,8 @@ void MainWindow::setMainTitle(QString roomName) {
     setWindowTitle("The Frostbite Client" + roomName);
 }
 
-void MainWindow::connectEnabled(bool enabled) {
-    ui->actionConnect->setEnabled(enabled);
+void MainWindow::enableConnectButton(bool enable) {
+    ui->actionConnect->setEnabled(enable);
 }
 
 void MainWindow::handleAppMessage(const QString& msg) {
@@ -437,7 +441,6 @@ void MainWindow::actionCommands(const QStringList& commands) {
 }
 
 MainWindow::~MainWindow() {
-    delete tcpClient;
     delete ui;
     delete toolBar;
     delete windowFacade;

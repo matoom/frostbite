@@ -1,77 +1,14 @@
 #include "xmlparserthread.h"
 
-#include "gui/hyperlinkservice.h"
-#include "mainwindow.h"
+#include <QXmlStreamReader>
+
 #include "gamedatacontainer.h"
-#include "windowfacade.h"
-#include "text/highlight/highlighter.h"
-#include "maps/mapwindow.h"
-#include "window/conversationswindow.h"
-#include "window/roomwindow.h"
-#include "window/expwindow.h"
-#include "window/deathswindow.h"
-#include "window/thoughtswindow.h"
-#include "window/arrivalswindow.h"
-#include "window/familiarwindow.h"
-#include "window/spellwindow.h"
-#include "window/atmosphericswindow.h"
-#include "window/groupwindow.h"
-#include "window/combatwindow.h"
-#include "toolbar/toolbar.h"
-#include "vitalsbar.h"
-#include "roundtimedisplay.h"
-#include "scriptservice.h"
-#include "commandline.h"
 #include "textutils.h"
-#include "hyperlinkservice.h"
+#include "hyperlinkutils.h"
 
-XmlParserThread::XmlParserThread(QObject *parent) {
-    mainWindow = (MainWindow*)parent;
-    windowFacade = mainWindow->getWindowFacade();
-    toolBar = mainWindow->getToolbar();
-    vitalsBar = mainWindow->getVitalsBar();
-    commandLine = mainWindow->getCommandLine();
-    gameDataContainer = GameDataContainer::Instance();
-    highlighter = new Highlighter(parent);
-
+XmlParserThread::XmlParserThread(QObject *parent, GameDataContainer* dataContainer) : Parent(parent), gameDataContainer(dataContainer) {
     rxDmg.setPattern("\\bat you\\..*\\blands\\b");
-
-    connect(this, SIGNAL(updateNavigationDisplay(DirectionsList)), windowFacade, SLOT(updateNavigationDisplay(DirectionsList)));
-    connect(this, SIGNAL(updateConversationsWindow(QString)), windowFacade->getConversationsWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateRoomWindow()), windowFacade->getRoomWindow(), SLOT(write()));
-    connect(this, SIGNAL(updateRoomWindowTitle(QString)), windowFacade->getRoomWindow(), SLOT(setTitle(QString)));
-    connect(this, SIGNAL(updateMapWindow(QString)), windowFacade, SLOT(updateMapWindow(QString)));
-    connect(this, SIGNAL(updateExpWindow(QString, QString)), windowFacade->getExpWindow(), SLOT(write(QString, QString)));
-    connect(this, SIGNAL(updateDeathsWindow(QString)), windowFacade->getDeathsWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateThoughtsWindow(QString)), windowFacade->getThoughtsWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateArrivalsWindow(QString)), windowFacade->getArrivalsWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateFamiliarWindow(QString)), windowFacade->getFamiliarWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateSpellWindow(QString)), windowFacade->getSpellWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateAtmosphericsWindow(QString)), windowFacade->getAtmosphericsWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateGroupWindow(QString)), windowFacade->getGroupWindow(), SLOT(write(QString)));
-    connect(this, SIGNAL(updateCombatWindow(QString)), windowFacade->getCombatWindow(), SLOT(write(QString)));
-
-    connect(this, SIGNAL(updateVitals(QString, QString)), toolBar, SLOT(updateVitals(QString, QString)));
-    connect(this, SIGNAL(updateVitals(QString, QString)), vitalsBar, SLOT(updateVitals(QString, QString)));
-
-    connect(this, SIGNAL(updateStatus(QString, QString)), toolBar, SLOT(updateStatus(QString, QString)));
-    connect(this, SIGNAL(updateWieldLeft(QString)), toolBar, SLOT(updateWieldLeft(QString)));
-    connect(this, SIGNAL(updateWieldRight(QString)), toolBar, SLOT(updateWieldRight(QString)));
-    connect(this, SIGNAL(updateSpell(QString)), toolBar, SLOT(updateSpell(QString)));
-    connect(this, SIGNAL(updateActiveSpells(QStringList)), toolBar, SLOT(updateActiveSpells(QStringList)));
-    connect(this, SIGNAL(clearActiveSpells()), toolBar, SLOT(clearActiveSpells()));
-
-    connect(this, SIGNAL(setTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setTimer(int)));
-    connect(this, SIGNAL(setCastTimer(int)), commandLine->getRoundtimeDisplay(), SLOT(setCastTimer(int)));
-
-    connect(this, SIGNAL(writeScriptMessage(QByteArray)), mainWindow->getScriptService(), SLOT(writeScriptText(QByteArray)));
-    connect(this, SIGNAL(setMainTitle(QString)), mainWindow, SLOT(setMainTitle(QString)));
-    connect(this, SIGNAL(writeText(QByteArray, bool)), windowFacade, SLOT(writeGameText(QByteArray, bool)));
-
-    connect(this, SIGNAL(registerStreamWindow(QString, QString)), windowFacade, SLOT(registerStreamWindow(QString, QString)));
-    connect(this, SIGNAL(writeStreamWindow(QString, QString)), windowFacade, SLOT(writeStreamWindow(QString, QString)));
-    connect(this, SIGNAL(clearStreamWindow(QString)), windowFacade, SLOT(clearStreamWindow(QString)));
-
+    
     bold = false;
     initRoundtime = false;
     initCastTime = false;
@@ -80,23 +17,12 @@ XmlParserThread::XmlParserThread(QObject *parent) {
     charName = "";
 
     mono = false;
-    cmgr = false;
 
     pushStream = false;
 }
 
-void XmlParserThread::updateHighlighterSettings() {
-    highlighter->reloadSettings();
-}
-
 void XmlParserThread::addData(QByteArray buffer) {
     Parent::addData(buffer);
-}
-
-
-bool XmlParserThread::isCmgr() {
-    bool result = cmgr;
-    return result;
 }
 
 QString XmlParserThread::fixInputXml(QString data) {
@@ -217,14 +143,14 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
     /* Process game text with start tag only */        
     if(e.tagName() == "mode") {
         if(e.attribute("id") == "GAME") {
-            cmgr = false;
+            emit gameModeIsCmgr(false);
             stormfrontSettings = toString(n.nextSiblingElement()).trimmed();
         } else if(e.attribute("id") == "CMGR") {
-            cmgr = true;
+            emit gameModeIsCmgr(true);
             gameDataContainer->setRoomDesc("");
             emit updateRoomWindow();
         } else {
-            cmgr = false;
+            emit gameModeIsCmgr(false);
         }
     } if(e.tagName() == "settingsInfo") {
         emit writeModeSettings();
@@ -253,7 +179,7 @@ bool XmlParserThread::filterPlainText(QDomElement root, QDomNode n) {
         QString d = e.text().trimmed();
         QString cmd  = e.attribute("cmd", d);
         TextUtils::plainToHtml(d);
-        HyperlinkService::createLink(d, cmd, 0, d);
+        HyperlinkUtils::createLink(d, cmd, 0, d);
         gameText += d;
     } else if(e.tagName() == "preset" && e.attribute("id") == "roomDesc") {
         QString preset = e.text().trimmed();
@@ -313,10 +239,10 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             }
             qSort(directions);
 
-            GameDataContainer::Instance()->setCompassDirections(directions);
+            gameDataContainer->setCompassDirections(directions);
 
-            QString text = GameDataContainer::Instance()->getRoomName() +
-                    TextUtils::stripMapSpecial(GameDataContainer::Instance()->getRoomDesc())
+            QString text = gameDataContainer->getRoomName() +
+                    TextUtils::stripMapSpecial(gameDataContainer->getRoomDesc())
                     + directions.join("");
 
             QString hash = TextUtils::toHash(text);
@@ -346,7 +272,6 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
             emit updateVitals(vitalsElement.attribute("id"), vitalsElement.attribute("value"));
-            highlighter->alert(vitalsElement.attribute("id"), vitalsElement.attribute("value").toInt());
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "spellChoose") {
             QDomElement closeButton = e.firstChildElement("closeButton");
             gameText += closeButton.attribute("value") + ": [<span class=\"bold\">" + closeButton.attribute("cmd") + "</span>]";
@@ -354,9 +279,6 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>
             emit updateStatus(e.attribute("visible"), e.attribute("id"));
-            if(e.attribute("visible") == "y") {
-                highlighter->alert(e.attribute("id"));
-            }
         } else if(e.tagName() == "left") {
             /* filter player wielding in left hand */
             emit updateWieldLeft(e.text());
@@ -434,9 +356,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 scheduled.insert(e.attribute("id"), QStringList());
                 this->group.clear();
             } else {
-                if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
-                    emit clearStreamWindow(e.attribute("id"));
-                }
+                emit clearStreamWindow(e.attribute("id"));
             }
         } else if (e.tagName() == "pushBold") {
             bold = true;
@@ -446,9 +366,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
         } else if (e.tagName() == "a") {
             gameText += "<a href=\"" + e.attribute("href") + "\">" + e.text() + "</a>";
         } else if (e.tagName() == "streamWindow") {
-            if(!WindowFacade::staticWindows.contains(e.attribute("id"))) {
-                emit registerStreamWindow(e.attribute("id"), e.attribute("title"));
-            }
+            emit registerStreamWindow(e.attribute("id"), e.attribute("title"));
         }
     }
     return gameText == "";
