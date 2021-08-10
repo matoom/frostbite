@@ -1201,6 +1201,12 @@ Reading: <mode id="GAME"/><output class="" />
 <popStream id="combat" />
 <prompt time="1615727006">&gt;</prompt>
 
+
+
+Directions towards Barana's Shipyard: <d cmd="South">South</d>, <d cmd="South">South</d>, <d cmd="East">East</d>, <d cmd="East">East</d>, <d cmd="East">East</d>, <d cmd="GO shipyard gate">GO shipyard gate</d>, and you're there.
+<prompt time="1624214458">&gt;</prompt>
+
+
 A stocky acolyte leads you clockwise.
 <nav/>
 <streamWindow id='main' title='Story' subtitle=" - [The Crossing Temple, Hallway]" location='center' target='drop'/>

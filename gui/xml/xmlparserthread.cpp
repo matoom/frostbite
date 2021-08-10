@@ -175,36 +175,8 @@ QString XmlParserThread::processMonoOutput(QString line) {
     return line;
 }
 
-QString XmlParserThread::processCommands(QString line) {
-    // Replace all inside <d cmd="...">TEXT</d> with just TEXT
-    QRegularExpression re("<d cmd=\"(.*)\">(.*)</d>");
-    QRegularExpressionMatchIterator i = re.globalMatch(line);
-    if (i.hasNext()) {
-        QString newLine;
-        int lastPos = 0;
-        do {
-            QRegularExpressionMatch match = i.next();
-            auto startPos = match.capturedStart(0);
-            auto endPos = match.capturedEnd(0);
-            // append all between end of the last found match
-            // and beginning of a new match
-            newLine.append(QStringRef(&line, lastPos, startPos - lastPos));
-            lastPos = endPos;
-            QString cmd = match.captured(1);
-            QString text = match.captured(2);
-            HyperlinkService::createLink(text, cmd, 0, text);
-            newLine.append(text);
-        } while (i.hasNext());
-        // append the rest
-        newLine.append(QStringRef(&line, lastPos, line.length() - lastPos));
-        return newLine;
-    }
-    return line;
-}
-
 void XmlParserThread::processGameData(QString data) {
     data = processMonoOutput(data);
-    if(mono) data = processCommands(data);
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                
@@ -492,7 +464,6 @@ QString XmlParserThread::fixUnclosedStreamTags(QString data) {
 }
 
 void XmlParserThread::processPushStream(QString data) {
-    data = processCommands(data);
     data = this->wrapRoot(data);
 
     QDomDocument doc("pushStream");
@@ -633,7 +604,6 @@ QString XmlParserThread::traverseXmlNode(QDomElement element, QString text) {
 
 void XmlParserThread::processDynaStream(QString data) {    
     data = this->processMonoOutput(data);
-    data = this->processCommands(data);
     data = this->wrapRoot(data);
 
     QDomDocument doc("dynaStream");
