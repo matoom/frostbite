@@ -113,15 +113,22 @@ QPlainTextEdit* GameWindow::getMainWindow() {
     return this;
 }
 
-void GameWindow::buildContextMenu() {
+void GameWindow::buildContextMenu() {      
     menu = new ContextMenu(this);
+
+    distractionFreeModeAct = new QAction(tr("Distraction free mode\t"), this);
+    distractionFreeModeAct->setCheckable(true);
+    distractionFreeModeAct->setChecked(false);
+    menu->addAction(distractionFreeModeAct);
+
+    menu->addSeparator();
+
     appearanceAct = new QAction(tr("&Appearance\t"), this);
     menu->addAction(appearanceAct);
     connect(appearanceAct, SIGNAL(triggered()), this, SLOT(changeAppearance()));
 
     menu->addSeparator();
 
-    
     lookupDictAct = new QAction(tr("&Lookup in Dictionary\t"), this);
     menu->addAction(lookupDictAct);
     lookupDictAct->setEnabled(false);
@@ -155,10 +162,7 @@ void GameWindow::buildContextMenu() {
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
 
-    distractionFreeModeAct = new QAction(tr("Distraction free mode\t"), this);
-    distractionFreeModeAct->setCheckable(true);
-    distractionFreeModeAct->setChecked(false);
-    menu->addAction(distractionFreeModeAct);
+
     connect(distractionFreeModeAct, SIGNAL(changed()), mainWindow, SLOT(toggleDistractionFreeMode()));
 }
 
@@ -274,7 +278,8 @@ void GameWindow::translationFailed(QString reason) {
     currentDictEvent.active = false;    
 }
 
-GameWindow::~GameWindow() {        
+GameWindow::~GameWindow() {
+    delete distractionFreeModeAct;
     delete appearanceAct;
     delete lookupDictAct;
     delete lookupWikiAct;

@@ -8,6 +8,7 @@
 
 Alter::Alter(QObject *parent) : QObject(parent) {
     ignoreSettings = IgnoreSettings::getInstance();
+
     ignoreList = ignoreSettings->getIgnores();
     ignoreEnabled = ignoreSettings->getEnabled();
 
@@ -16,16 +17,20 @@ Alter::Alter(QObject *parent) : QObject(parent) {
 
     linkSettings = LinkSettings::getInstance();
     linkList = linkSettings->getLinks();
+    linksEnabled = linkSettings->getEnabled();
 }
 
 void Alter::reloadSettings() {
-    ignoreSettings->reInit();
+    ignoreSettings->reInit(); 
     ignoreList = ignoreSettings->getIgnores();
+
     substituteSettings->reInit();
     subsList = substituteSettings->getSubstitutions();
     ignoreEnabled = ignoreSettings->getEnabled();
+
     linkSettings->reInit();
     linkList = linkSettings->getLinks();
+    linksEnabled = linkSettings->getEnabled();
 }
 
 QString Alter::substitute(QString text, QString window) {
@@ -52,6 +57,7 @@ bool Alter::ignore(QString text, QString window) {
 }
 
 QString Alter::addLink(QString text, QString window) {
+    if(!linksEnabled) return text;
     if(!text.isEmpty()) {
         for(AlterSettingsEntry entry : linkList) {
             if(!entry.enabled || entry.pattern.isEmpty() || entry.value.isEmpty()) continue;

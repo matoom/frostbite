@@ -34,6 +34,7 @@ private:
      SubstitutionSettings* substituteSettings;
      LinkSettings* linkSettings;
      bool ignoreEnabled;
+     bool linksEnabled;
 
      QString createCommand(QString text, QString command);
 
