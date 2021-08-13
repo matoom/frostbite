@@ -98,7 +98,8 @@ SOURCES += main.cpp\
     genieutils.cpp \
     hyperlinkservice.cpp \
     hyperlinkutils.cpp \
-    session.cpp
+    session.cpp \
+    scriptstreamserver.cpp
 
 HEADERS  += mainwindow.h \
     clientsettings.h \
@@ -161,7 +162,8 @@ HEADERS  += mainwindow.h \
     hyperlinkutils.h \
     concurrentqueue.h \
     workqueuethread.h \
-    session.h
+    session.h \
+    scriptstreamserver.h
 
 FORMS    += mainwindow.ui \
     macrodialog.ui \

@@ -37,6 +37,7 @@ class DictionaryService;
 class ClientSettings;
 class HyperlinkService;
 class Session;
+class ScriptStreamServer;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -101,6 +102,7 @@ public:
     TcpClient* getTcpClient();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
+    ScriptStreamServer* getScriptStreamServer();
     DictionaryService* getDictionaryService();
     TimerBar* getTimerBar();
     Tray* getTray();
@@ -126,6 +128,7 @@ private:
     MenuHandler* menuHandler;
     ScriptService* scriptService;
     ScriptApiServer* scriptApiServer;
+    ScriptStreamServer* scriptStreamServer;
     DictionaryService* dictionaryService;
     HyperlinkService* hyperlinkService;
     QMenu* commandMenu;

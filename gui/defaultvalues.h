@@ -94,6 +94,8 @@
 #define SCRIPT_LICH_RUBY "ruby"
 #define SCRIPT_LICH_ARGS "--dragonrealms --frostbite -g $host:$port"
 
+#define SCRIPT_STREAMING_ENABLED false
+
 #define WINDOW_FONT_ID "windowFont"
 #define WINDOW_FONT_SET "Set Font"
 #define WINDOW_FONT_CLEAR "Clear Font"

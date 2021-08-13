@@ -28,6 +28,7 @@
 #include "macrosettings.h"
 #include "hyperlinkservice.h"
 #include "session.h"
+#include "scriptstreamserver.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -113,6 +114,7 @@ void MainWindow::toggleDistractionFreeMode() {
 
 void MainWindow::updateScriptSettings() {
     scriptApiServer->reloadSettings();
+    scriptStreamServer->reloadSettings();
 }
 
 void MainWindow::menuVolumeChanged(int volume) {
@@ -208,6 +210,7 @@ void MainWindow::loadClient() {
     menuHandler->loadProfilesMenu();
 
     scriptApiServer = new ScriptApiServer(this);
+    scriptStreamServer = new ScriptStreamServer(this);
 
     dictionaryService = new DictionaryService(this);
 
@@ -218,7 +221,6 @@ void MainWindow::loadClient() {
     
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
-
 }
 
 WindowFacade* MainWindow::getWindowFacade() {
@@ -243,6 +245,10 @@ CommandLine* MainWindow::getCommandLine() {
 
 ScriptService* MainWindow::getScriptService() {
     return scriptService;
+}
+
+ScriptStreamServer* MainWindow::getScriptStreamServer() {
+    return scriptStreamServer;
 }
 
 DictionaryService* MainWindow::getDictionaryService() {
