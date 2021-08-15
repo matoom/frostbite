@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>410</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="tabsClosable">
       <bool>false</bool>
@@ -296,42 +296,40 @@
        </item>
       </layout>
      </widget>
-
-
      <widget class="QWidget" name="streamingServerTab">
-       <attribute name="title">
-         <string>Streaming API Server</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
-           <item>
-            <widget class="QCheckBox" name="streamingServerEnabled">
-             <property name="text">
-              <string>Enabled</string>
-             </property>
-            </widget>
-           </item>
-         <item>
-           <widget class="QGroupBox" name="groupBox_9">
-             <property name="title">
-               <string>Streaming Server TCP port</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_13">
-               <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_13">
-                   <item>
-                     <widget class="QLineEdit" name="streamingPortInput">
-                       <property name="placeholderText">
-                         <string>auto 1024 - 65535 </string>
-                       </property>
-                     </widget>
-                   </item>
-                 </layout>
-               </item>
-             </layout>
-           </widget>
-         </item>
+      <attribute name="title">
+       <string>Streaming API Server</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
-        <spacer name="verticalSpacer">
+        <widget class="QCheckBox" name="streamingServerEnabled">
+         <property name="text">
+          <string>Enabled</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Streaming Server TCP port</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_13">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <item>
+             <widget class="QLineEdit" name="streamingPortInput">
+              <property name="placeholderText">
+               <string>auto 1024 - 65535 </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -342,8 +340,8 @@
           </size>
          </property>
         </spacer>
-       </item>         
-       </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
