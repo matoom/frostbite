@@ -3,9 +3,6 @@
 
 #include <QLineEdit>
 
-#define MAX_HISTORY_SIZE 50
-#define MAX_FILENAME_SIZE 30
-
 class RoundTimeDisplay;
 class MacroService;
 class WordCompleter;

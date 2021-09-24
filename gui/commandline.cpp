@@ -16,6 +16,10 @@
 #include "mainlogger.h"
 #include "maps/mapfacade.h"
 
+namespace {
+const int MAX_HISTORY_SIZE = 50;
+const int MAX_SCRIPT_COMMAND_LENGTH = 8192;
+}
 
 CommandLine::CommandLine(QWidget *parent) : QLineEdit(parent) {
     mainWindow = (MainWindow*)parent;
@@ -255,7 +259,7 @@ void CommandLine::sendCommand() {
 
 bool CommandLine::filterCommand(QString text) {
     if(text.startsWith(".")){
-        if(text.size() > 1 && text.size() < MAX_FILENAME_SIZE) {
+        if(text.size() > 1 && text.size() < MAX_SCRIPT_COMMAND_LENGTH) {
             mainWindow->getScriptService()->runScript(text.mid(1));
             this->clear();
             return true;
