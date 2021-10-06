@@ -459,9 +459,9 @@ void WindowFacade::removeStreamWindow(QString id) {
     if(!streamWindows.contains(id)) return;
 
     WindowWriterThread* writer = streamWriters.value(id);
-    writer->wait();
-    delete writer;
     streamWriters.remove(id);
+    delete writer;
+
 
     QDockWidget* window = streamWindows.value(id);
     mainWindow->removeDockWidgetMainWindow(window);
