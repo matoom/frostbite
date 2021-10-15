@@ -1,6 +1,6 @@
 require 'socket'
 
-file_path = 'mock.xml'
+file_path = 'perf1.xml'
 
 server = TCPServer.new("127.0.0.1", 7900)
 
@@ -30,19 +30,22 @@ loop {
       client.puts "L	OK	UPPORT=5535	GAME=STORM	GAMECODE=DR	FULLGAMENAME=StormFront	GAMEFILE=STORMFRONT.EXE	GAMEHOST=127.0.0.1	GAMEPORT=7900	KEY=830aeadfdc81a8e4cb629994880db3f3"
     elsif line.start_with? "<c>/FE:STORMFRONT"
       i, chunk = 0, ''
-      File.open(file_path).read.each_line do |row|
-        if row.include? "<prompt"
-          chunk += row.gsub!(/\n$/, "\r\n")
-          client.puts chunk
-          chunk.clear
-          sleep 0.2
-        else
-          chunk += row.gsub!(/\n$/, "\r\n")
-        end
-        i += 1
+      while true do
+          File.open(file_path).read.each_line do |row|
+            if row.include? "<prompt"
+              chunk += row.gsub!(/\n$/, "\r\n")
+              client.puts chunk
+              chunk.clear
+              sleep 0.01
+            else
+              chunk += row.gsub!(/\n$/, "\r\n")
+            end
+            i += 1
+          end
+          puts "Iteration: #{i}"
+          sleep 10
       end
     end
-
     break if line =~ /^\s*$/
   end
 }
