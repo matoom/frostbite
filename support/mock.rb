@@ -1,6 +1,6 @@
 require 'socket'
 
-file_path = 'perf1.xml'
+file_path = 'mock.xml'
 
 server = TCPServer.new("127.0.0.1", 7900)
 
@@ -42,8 +42,7 @@ loop {
             end
             i += 1
           end
-          puts "Iteration: #{i}"
-          sleep 10
+          sleep 1
       end
     end
     break if line =~ /^\s*$/
