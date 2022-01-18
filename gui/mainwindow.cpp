@@ -417,6 +417,14 @@ void MainWindow::handleAppMessage(const QString& msg) {
     }
 }
 
+void MainWindow::restoreLayout(QString state) {
+    restoreState(QByteArray::fromBase64(state.toLocal8Bit()));
+}
+
+void MainWindow::saveLayout() {
+    emit writeMainWindow("<br/><span class=\"echo\">" + saveState().toBase64() + "</span><br/>");
+}
+
 void MainWindow::saveWindow() {
     settings->setParameter("MainWindow/state", saveState());
     settings->setParameter("MainWindow/geometry", QVariant(geometry()));

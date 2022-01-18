@@ -85,6 +85,9 @@ public:
     void openAppearanceDialog();
     void saveWindow();
 
+    void restoreLayout(QString state);
+    void saveLayout();
+
     void setCompassLocked(bool);
     void setCompassAnchored(bool);
     void setCompassVisible(bool);
@@ -150,6 +153,7 @@ signals:
     void profileChanged();
     void volumeChanged(int);
     void volumeMuted(bool);
+    void writeMainWindow(QByteArray);
 
 public slots:
     void setMainTitle(QString);

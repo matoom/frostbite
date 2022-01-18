@@ -103,6 +103,7 @@ QString XmlParserThread::processMonoOutput(QString line) {
 
 void XmlParserThread::processGameData(QString data) {
     data = processMonoOutput(data);
+    data = fixCmdUnescapedTags(data);
 
     QDomDocument doc("gameData");
     if(!doc.setContent(this->wrapRoot(data))) {                
@@ -298,6 +299,8 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
                 gameDataContainer->setRoomName(title.mid(3));
                 emit setMainTitle(" (" + this->charName + ")" + title);
                 //emit updateRoomWindowTitle(title);
+            } else {
+                emit registerStreamWindow(e.attribute("id"), e.attribute("title"));
             }
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");
@@ -365,12 +368,28 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             bold = false;
         } else if (e.tagName() == "a") {
             gameText += "<a href=\"" + e.attribute("href") + "\">" + e.text() + "</a>";
-        } else if (e.tagName() == "streamWindow") {
-            emit registerStreamWindow(e.attribute("id"), e.attribute("title"));
         }
     }
     return gameText == "";
 }
+
+QString XmlParserThread::fixCmdUnescapedTags(QString data) {
+    if(data.contains("<d cmd='")) {
+        QRegularExpression rx("<d cmd=(').*(')>");
+        QRegularExpressionMatchIterator i = rx.globalMatch(data);
+        while (i.hasNext()) {
+            QRegularExpressionMatch match = i.next();
+            if (match.hasMatch()) {
+                TextUtils::escapeDoubleQuotes(data);
+                data.replace(match.capturedStart(1), 1, "\"");
+                data.replace(match.capturedStart(2), 1, "\"");
+                TextUtils::escapeSingleQuotes(data);
+            }
+        }
+    }
+    return data;
+}
+
 
 QString XmlParserThread::fixUnclosedStreamTags(QString data) {
     int tagCount = data.count("<pushStream") - data.count("</pushStream>");

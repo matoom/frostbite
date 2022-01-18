@@ -57,7 +57,8 @@ WindowFacade::WindowFacade(QObject *parent) : QObject(parent) {
     writePrompt = true;
 
     connect(mainWindow, SIGNAL(profileChanged()), this, SLOT(reloadSettings()));
-    connect(this, SIGNAL(updateWindowSettings()), mainLogger, SLOT(updateSettings()));
+    connect(this, SIGNAL(updateWindowSettings()), mainLogger, SLOT(updateSettings()));    
+    connect(mainWindow, SIGNAL(writeMainWindow(QByteArray)), this, SLOT(writeGameWindow(QByteArray)));
 }
 
 void WindowFacade::reloadSettings() {

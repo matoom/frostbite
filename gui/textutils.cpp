@@ -60,6 +60,14 @@ void TextUtils::plainToHtml(QString& data) {
             .replace("<", "&lt;").replace(">", "&gt;");
 }
 
+void TextUtils::escapeDoubleQuotes(QString& data) {
+    data.replace("\"", "&quot;");
+}
+
+void TextUtils::escapeSingleQuotes(QString& data) {
+    data.replace("\'", "&apos;");
+}
+
 QString TextUtils::toHash(QString text) {
     return QString(QCryptographicHash::hash(text.toLocal8Bit(), QCryptographicHash::Md5).toHex());
 }

@@ -273,6 +273,10 @@ bool CommandLine::filterCommand(QString text) {
             mainWindow->getWindowFacade()->getMapFacade()->hideMapDialog();
         } else if(text.startsWith("#highlight")) {
             genieUtils->importHighlights(text);
+        } else if(text.startsWith("#saveLayout")) {
+            mainWindow->saveLayout();
+        } else if(text.startsWith("#restoreLayout")) {
+            mainWindow->restoreLayout(text.mid(14).trimmed());
         }
         this->clear();
         return true;

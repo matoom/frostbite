@@ -67,6 +67,7 @@ private:
     void processDynaStream(QString);
 
     QString fixUnclosedStreamTags(QString data);
+    QString fixCmdUnescapedTags(QString data);
 
     void warnUnknownEntity(QString ref, QString xml);
     void warnInvalidXml(QString ref, QString xml);

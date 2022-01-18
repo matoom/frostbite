@@ -23,6 +23,8 @@ public:
     static QString findLowestActiveValue(QStringList list);
     static QString htmlToPlain(QString& data);
     static void plainToHtml(QString& data);
+    static void escapeDoubleQuotes(QString& data);
+    static void escapeSingleQuotes(QString& data);
 
     static QString toHash(QString text);
     static QString toBrief(QString direction);
