@@ -443,7 +443,7 @@ void WindowFacade::logGameText(QByteArray text, char type) {
 }
 
 void WindowFacade::registerStreamWindow(QString id, QString title) {
-    // Check if window has been registered (or it is a static window)
+    // check if a custom window has already been registered or if it's static
     if(streamWindows.contains(id) || staticWindows.contains(id)) return;
     
     QDockWidget* streamWindow = genericWindowFactory->createWindow(title.toLatin1().constData());

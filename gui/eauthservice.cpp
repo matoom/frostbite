@@ -5,21 +5,21 @@
 #include "tcpclient.h"
 
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
-    // TODO: Settings used only to get the debug state
-    settings = ClientSettings::getInstance();
-    tcpSocket = new QTcpSocket(this);
+    settings = ClientSettings::getInstance();   
+
+    sslSocket = new QSslSocket(this);
+    sslSocket->setProtocol(QSsl::AnyProtocol);
+    sslSocket->setPeerVerifyMode(QSslSocket::VerifyNone);
+
+    connect(sslSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
+    connect(sslSocket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(socketError(QAbstractSocket::SocketError)));
+    connect(sslSocket, SIGNAL(encrypted()), this, SLOT(startSession()));
+    connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError>)),
+            this, SLOT(logAndIgnoreSslErrors(const QList<QSslError>)));
+
     tcpClient = (TcpClient*)parent;
     authLogger = new AuthLogger();
-
-    if(tcpSocket) {
-        connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
-
-        connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
-                this, SLOT(socketError(QAbstractSocket::SocketError)));
-
-        connect(tcpSocket, SIGNAL(connected()),
-                this, SLOT(startSession()));
-    }
 
     connect(this, SIGNAL(selectGame(QMap<QString, QString>)),
             tcpClient, SLOT(selectGame(QMap<QString, QString>)));
@@ -49,31 +49,38 @@ void EAuthService::init(QString user, QString key) {
 }
 
 void EAuthService::resetSession() {
-    tcpSocket->disconnectFromHost();
+    sslSocket->disconnectFromHost();
 }
 
 void EAuthService::initSession(QString host, QString port) {
-    if(tcpSocket->state() == QAbstractSocket::UnconnectedState) {
-        tcpSocket->connectToHost(host, port.toInt());
+    if(sslSocket->state() == QAbstractSocket::UnconnectedState) {
+        sslSocket->connectToHostEncrypted(host, port.toInt());
     }
+}
+
+void EAuthService::logAndIgnoreSslErrors(const QList<QSslError>& errors) {
+    for(QSslError error : errors) {
+        qDebug() << error.errorString();
+    }
+    sslSocket->ignoreSslErrors(errors);
 }
 
 void EAuthService::startSession() {
     this->log("Negotiate session: ");
-    this->write("K\n");
+    this->write("K");
 }
 
 void EAuthService::retrieveSessionKey(QString id) {
-    if(tcpSocket) {
-        this->write("L\t" + id.toLocal8Bit() + "\tSTORM\n");
+    if(sslSocket) {
+        this->write("L\t" + id.toLocal8Bit() + "\tSTORM");
     }
 }
 
 void EAuthService::gameSelected(QString id) {
     this->gameId = id;
 
-    if(tcpSocket) {
-        this->write("F\t" + id.toLocal8Bit() + "\n");
+    if(sslSocket) {
+        this->write("F\t" + id.toLocal8Bit());
     }
 }
 
@@ -110,7 +117,7 @@ void EAuthService::log(QByteArray buffer) {
 
 void EAuthService::write(QByteArray buffer) {
     this->log("> " + buffer);
-    tcpSocket->write(buffer);
+    sslSocket->write(buffer);
 }
 
 void EAuthService::negotiateSession(QByteArray buffer) {
@@ -121,15 +128,15 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         QByteArray aAction = aResponse.takeLast().trimmed();
         if(aAction == "REJECT") {
             emit connectionError("Subscription error.");
-            tcpSocket->disconnectFromHost();
+            sslSocket->disconnectFromHost();
             return;
         } else if(aAction == "PASSWORD") {
             emit connectionError("Invalid user or password.");
             emit authError();
-            tcpSocket->disconnectFromHost();
+            sslSocket->disconnectFromHost();
             return;
         }
-        this->write("M\n");
+        this->write("M");
     } else if(buffer.startsWith("M\t")) {
         QList<QByteArray> mResponse = buffer.trimmed().split('\t');
         mResponse.removeFirst();
@@ -156,15 +163,15 @@ void EAuthService::negotiateSession(QByteArray buffer) {
         QByteArray msg = fResponse.takeLast().trimmed();
         if(msg == "NEW_TO_GAME" || msg == "NEED_BILL") {
             emit connectionError("Account error; character not found;");
-            tcpSocket->disconnectFromHost();
+            sslSocket->disconnectFromHost();
             return;
         }
-        this->write("G\t" + this->gameId.toLocal8Bit() + "\n");
+        this->write("G\t" + this->gameId.toLocal8Bit());
     } else if(buffer.startsWith("G\t")) {
-        this->write("P\t" + this->gameId.toLocal8Bit() + "\n");
+        this->write("P\t" + this->gameId.toLocal8Bit());
     } else if(buffer.startsWith("P\t")) {
-        this->write("C\n");
-    } else if(buffer.startsWith("C\t")) {        
+        this->write("C");
+    } else if(buffer.startsWith("C\t")) {
         QList<QByteArray> list = buffer.split('\t');
         QList<QByteArray> accounts = list.mid(5);
 
@@ -186,19 +193,20 @@ void EAuthService::negotiateSession(QByteArray buffer) {
 
         emit sessionRetrieved(gamehost, gamePort, key);
 
-        tcpSocket->disconnectFromHost();
+        sslSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
         emit connectionError("Unknown error; please refer to auth log.");
         emit authError();
-        tcpSocket->disconnectFromHost();
+        sslSocket->disconnectFromHost();
     } else {
-        if (buffer.size() == 33) {        
+        if (buffer.size() == 32) {
             QByteArray enc = qt_sge_encrypt_password(key, buffer);
-            QString response = "A\t" + user.toUpper() + "\t" + enc + "\n";
+            QString response = "A\t" + user.toUpper() + "\t" + enc;
             this->write(response.toLatin1());
         } else {
             this->log("Encountered unknown error!");
             emit connectionError("Unable to obtain session key. Try again.");
+            sslSocket->disconnectFromHost();
         }
     }
 }
@@ -214,7 +222,7 @@ QByteArray EAuthService::extractValue(QByteArray key, QList<QByteArray> valueLis
 }
 
 void EAuthService::socketReadyRead() {
-    this->negotiateSession(tcpSocket->readAll());
+    this->negotiateSession(sslSocket->readAll());
 }
 
 void EAuthService::socketError(QAbstractSocket::SocketError error) {
@@ -229,12 +237,11 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
     } else {
         emit connectionError("Network error.");
     }
-
     qDebug() << "EAUTH: " <<  error;
 }
 
 EAuthService::~EAuthService() {
-    tcpSocket->disconnectFromHost();
-    delete tcpSocket;
+    sslSocket->disconnectFromHost();
+    delete sslSocket;
     delete authLogger;
 }

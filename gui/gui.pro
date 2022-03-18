@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-RELEASE_VERSION = 1.14.0b
+RELEASE_VERSION = 1.15.0b
 
 DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
 
@@ -204,17 +204,26 @@ ICON = images/shield.icns
 CONFIG(release, debug|release) {
 
     win32 {
+        # OpenSSL deployment - qt intallation specific, sensitive to build environment changes
+        OPEN_SSL_DIR = $$shell_quote($$shell_path($$[QT_INSTALL_DATA]/../../Tools/mingw492_32/opt/bin))
+        LIBEAY32_PATH = $$shell_quote($$shell_path($$OPEN_SSL_DIR/libeay32.dll))
+        SSLEAY_PATH = $$shell_quote($$shell_path($$OPEN_SSL_DIR/ssleay32.dll))
+
         DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/common))
         DEPLOY_FILES_WIN = $$shell_quote($$shell_path($$PWD/../deploy/win))
         RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/Frostbite-$$RELEASE_VERSION))
-        PLUGINS_PATH = $$shell_quote($$shell_path($$RELEASE_PATH/plugins))        
+        PLUGINS_PATH = $$shell_quote($$shell_path($$RELEASE_PATH/plugins))
         BIN = $$shell_quote($$shell_path($$OUT_PWD/../Frostbite.exe))
         DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/windeployqt))
 
         postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &
         postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES_WIN $$RELEASE_PATH &
+        postbuild.commands += $(COPY_FILE) $$LIBEAY32_PATH $$RELEASE_PATH &
+        postbuild.commands += $(COPY_FILE) $$SSLEAY_PATH $$RELEASE_PATH &
         postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &
         postbuild.commands += $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
+
+        TOOLS_PATH = $$shell_quote($$shell_path($$QT_HOST_DATA/../../))
     }
 
     macx {

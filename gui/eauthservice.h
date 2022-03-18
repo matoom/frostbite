@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QDebug>
 #include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QSslSocket>
+#include <QSslCipher>
 
 class ClientSettings;
 class TcpClient;
@@ -22,7 +24,7 @@ public:
 
 private:
     ClientSettings* settings;
-    QTcpSocket *tcpSocket;
+    QSslSocket *sslSocket;
     QByteArray buffer;
     TcpClient *tcpClient;
     AuthLogger* authLogger;
@@ -58,6 +60,7 @@ private slots:
     void socketReadyRead();
     void socketError(QAbstractSocket::SocketError error);
     void startSession();
+    void logAndIgnoreSslErrors(const QList<QSslError> &errors);
 };
 
 #endif // EAUTHSERVICE_H

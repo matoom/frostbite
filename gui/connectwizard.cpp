@@ -149,7 +149,12 @@ void ConnectWizard::initProxy() {
 void ConnectWizard::init() {
     ui->authHostEdit->setText(settings->getParameter("Login/authHost", "eaccess.play.net").toString());
     ui->authHostEdit->setModified(true);
-    ui->authPortEdit->setText(settings->getParameter("Login/authPort", "7900").toString());
+    QString port = settings->getParameter("Login/authPort", "7910").toString();
+    //TODO: migrate old settings to ssl port; remove in later versions;
+    if(port == "7900") {
+        port = "7910";
+    }
+    ui->authPortEdit->setText(port);
     ui->authPortEdit->setModified(true);
     ui->lichBox->setChecked(settings->getParameter("Login/lichEnabled", false).toBool());
 

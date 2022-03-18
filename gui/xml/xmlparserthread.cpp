@@ -358,6 +358,10 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             } else if(e.attribute("id") == "group") {
                 scheduled.insert(e.attribute("id"), QStringList());
                 this->group.clear();
+            } else if(e.attribute("id") == "experience") {
+                foreach(QString key, gameDataContainer->getExp().keys()) {
+                    emit updateExpWindow(key, "");
+                }
             } else {
                 emit clearStreamWindow(e.attribute("id"));
             }
@@ -430,10 +434,6 @@ void XmlParserThread::processPushStream(QString data) {
         emit updateArrivalsWindow(addTime(root.text().trimmed()));
     } else if(e.attribute("id") == "inv") {
         gameDataContainer->setInventory(root.text().split("\n"));
-    } else if(e.attribute("id") == "experience") {
-        foreach(QString key, gameDataContainer->getExp().keys()) {
-            emit updateExpWindow(key, "");
-        }
     } else if(e.attribute("id") == "room") {
         // ignored
         // <compDef id='room desc'/> ..
