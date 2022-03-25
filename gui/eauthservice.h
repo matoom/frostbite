@@ -6,6 +6,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QSslSocket>
 #include <QSslCipher>
+#include <QSslConfiguration>
 
 class ClientSettings;
 class TcpClient;
@@ -43,6 +44,8 @@ private:
     void write(QByteArray);
     void log(QByteArray );
 
+    void loadSslCertificate();
+
     QByteArray extractValue(QByteArray, QList<QByteArray>);
 
 signals:
@@ -50,6 +53,7 @@ signals:
      void addCharacter(QString, QString);
      void selectGame(QMap<QString, QString>);
      void connectionError(QString);
+     void connectionWarning(QString);
      void authError();
 
 public slots:

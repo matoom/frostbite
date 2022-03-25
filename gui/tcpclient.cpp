@@ -12,10 +12,16 @@
 TcpClient::TcpClient(QObject* parent, Lich* lichClient, bool loadMock)
     : QObject(parent), lich(lichClient), useMock(loadMock) {
     tcpSocket = new QTcpSocket(this);
+
+    session = (Session*)parent;
+
+    connect(this, SIGNAL(connectAvailable(bool)), session, SLOT(connectAvailable(bool)));
+    connect(this, SIGNAL(connectStarted()), session, SLOT(connectStarted()));
+    connect(this, SIGNAL(connectSucceeded()), session, SLOT(connectSucceeded()));
+    connect(this, SIGNAL(showMessage(QString)), session, SLOT(writeMessage(QString)));
+
     eAuth = new EAuthService(this);
-    // TODO: Remove dependency on ClientSettings
-    // settings only needed to get the current debug flag.
-    // Probably emit a message instead ?
+
     settings = ClientSettings::getInstance();
     api = false;
     apiLich = false;
@@ -29,6 +35,7 @@ TcpClient::TcpClient(QObject* parent, Lich* lichClient, bool loadMock)
             SLOT(socketError(QAbstractSocket::SocketError)));
     connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnectedFromHost()));
     connect(tcpSocket, SIGNAL(connected()), this, SLOT(connectedToHost()));
+
     tcpSocket->setSocketOption(QAbstractSocket::LowDelayOption, 1);
     tcpSocket->setSocketOption(QAbstractSocket::KeepAliveOption, 1);
 }
@@ -41,15 +48,11 @@ void TcpClient::init() {
 
 void TcpClient::loadMockData() {
     QFile file(MOCK_DATA_PATH);
-
     if(!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Unable to open mock data file!";
         return;
     }
-
-    QByteArray mockData = file.readAll();
-
-    emit addToQueue(mockData);
+    emit addToQueue(file.readAll());
 }
 
 void TcpClient::initEauthSession(QString host, QString port, QString user, QString password) {
@@ -108,7 +111,11 @@ void TcpClient::eAuthSessionRetrieved(QString host, QString port, QString sessio
 void TcpClient::connectWizardError(QString errorMsg) {
     this->api = false;
     emit eAuthError(errorMsg);
-    this->showError(errorMsg);
+    emit showMessage(errorMsg);
+}
+
+void TcpClient::connectionWarning(QString warnMsg) {
+    emit showMessage(warnMsg);
 }
 
 void TcpClient::authError() {
@@ -222,22 +229,18 @@ void TcpClient::writeCommand(QString cmd) {
 
 void TcpClient::socketError(QAbstractSocket::SocketError error) {
     if(error == QAbstractSocket::RemoteHostClosedError) {        
-        this->showError("Disconnected from server. [" + QTime::currentTime().toString("h:mm ap") + "]");
+        emit showMessage("Disconnected from server. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
-        this->showError("Unable to connect to server. Please check your internet connection "
+        emit showMessage("Unable to connect to server. Please check your internet connection "
                         "and try again later. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::NetworkError) {
-        this->showError("Connection timed out. [" + QTime::currentTime().toString("h:mm ap") + "]");
+        emit showMessage("Connection timed out. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::HostNotFoundError) {
-        this->showError("Unable to resolve game host. [" + QTime::currentTime().toString("h:mm ap") + "]");
+        emit showMessage("Unable to resolve game host. [" + QTime::currentTime().toString("h:mm ap") + "]");
     }    
     emit connectAvailable(true);
 
     qDebug() << error;
-}
-
-void TcpClient::showError(QString message) {
-    emit connectFailed(message);
 }
 
 void TcpClient::logDebug(QByteArray buffer) {
@@ -255,7 +258,7 @@ void TcpClient::setGameModeCmgr(bool cmgr) {
 
 void TcpClient::disconnectFromServer() {
     if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
-        showError("Disconnected from server.");
+        emit showMessage("Disconnected from server.");
         this->writeCommand("quit");
     }
     tcpSocket->disconnectFromHost();

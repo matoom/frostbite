@@ -32,7 +32,6 @@ Session::Session(MainWindow* parent, bool debug)
     xmlParser = new XmlParserThread(mainWindow, GameDataContainer::Instance());
 
     bindParserAndClient();
-    bindClientStatus();
     bindVitalsBar();
     bindToolBar();
     bindCommandLine();
@@ -57,15 +56,6 @@ void Session::bindParserAndClient() {
     connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), tcpClient,
             SLOT(writeDefaultSettings(QString)));
     connect(xmlParser, SIGNAL(gameModeIsCmgr(bool)), tcpClient, SLOT(setGameModeCmgr(bool)));
-}
-
-void Session::bindClientStatus() {
-    // Connect TCP Client events to Session slots, to
-    // report status
-    connect(tcpClient, SIGNAL(connectAvailable(bool)), this, SLOT(connectAvailable(bool)));
-    connect(tcpClient, SIGNAL(connectStarted()), this, SLOT(connectStarted()));
-    connect(tcpClient, SIGNAL(connectSucceeded()), this, SLOT(connectSucceeded()));
-    connect(tcpClient, SIGNAL(connectFailed(QString)), this, SLOT(connectFailed(QString)));
 }
 
 TcpClient* Session::getTcpClient() {
@@ -179,7 +169,7 @@ void Session::connectSucceeded() {
     mainWindow->getWindowFacade()->writeGameWindow("Connection established.<br/>");
 }
 
-void Session::connectFailed(QString reason) {
+void Session::writeMessage(QString reason) {
     mainWindow->getWindowFacade()->writeGameWindow("<br><br>"
                                                    "*<br>"
                                                    "* "

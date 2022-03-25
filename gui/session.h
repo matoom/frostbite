@@ -24,11 +24,10 @@ private slots:
     void connectAvailable(bool);
     void connectStarted();
     void connectSucceeded();
-    void connectFailed(QString);
+    void writeMessage(QString);
 
 private:
     void bindParserAndClient();
-    void bindClientStatus();
     void bindVitalsBar();
     void bindToolBar();
     void bindCommandLine();

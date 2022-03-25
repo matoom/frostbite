@@ -4,12 +4,14 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QNetworkProxy>
 #include <QDebug>
+#include <session.h>
 
 class ClientSettings;
 class EAuthService;
 class XmlParserThread;
 class DebugLogger;
 class Lich;
+class Session;
 
 class TcpClient : public QObject {
     Q_OBJECT
@@ -20,7 +22,6 @@ public:
     void init();
 
     void writeCommand(QString);
-    void showError(QString);
     void logDebug(QByteArray buffer);
     void disconnectFromServer();
 
@@ -35,6 +36,7 @@ private:
     QString sessionKey;
     DebugLogger* debugLogger;
     QByteArray commandPrefix;
+    Session* session;
 
     Lich* lich;
 
@@ -61,7 +63,7 @@ signals:
     void connectAvailable(bool);
     void connectStarted();
     void connectSucceeded();
-    void connectFailed(QString);
+    void showMessage(QString);
 public slots:
     void setProxy(bool, QString, QString);
     void socketReadyRead();
@@ -80,6 +82,7 @@ public slots:
     void retrieveEauthSession(QString);
     void eAuthSessionRetrieved(QString, QString, QString);
     void connectWizardError(QString);
+    void connectionWarning(QString warnMsg);
     void authError();
     void writeSettings();
     void writeDefaultSettings(QString);

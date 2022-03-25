@@ -7,17 +7,6 @@
 EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     settings = ClientSettings::getInstance();   
 
-    sslSocket = new QSslSocket(this);
-    sslSocket->setProtocol(QSsl::AnyProtocol);
-    sslSocket->setPeerVerifyMode(QSslSocket::VerifyNone);
-
-    connect(sslSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
-    connect(sslSocket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(socketError(QAbstractSocket::SocketError)));
-    connect(sslSocket, SIGNAL(encrypted()), this, SLOT(startSession()));
-    connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError>)),
-            this, SLOT(logAndIgnoreSslErrors(const QList<QSslError>)));
-
     tcpClient = (TcpClient*)parent;
     authLogger = new AuthLogger();
 
@@ -39,8 +28,21 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
     connect(this, SIGNAL(connectionError(QString)),
             tcpClient, SLOT(connectWizardError(QString)));
 
+    connect(this, SIGNAL(connectionWarning(QString)),
+            tcpClient, SLOT(connectionWarning(QString)));
+
     connect(this, SIGNAL(authError()),
             tcpClient, SLOT(authError()));
+
+    sslSocket = new QSslSocket(this);
+    sslSocket->setProtocol(QSsl::AnyProtocol);
+
+    connect(sslSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
+    connect(sslSocket, SIGNAL(error(QAbstractSocket::SocketError)),
+            this, SLOT(socketError(QAbstractSocket::SocketError)));
+    connect(sslSocket, SIGNAL(encrypted()), this, SLOT(startSession()));
+
+    loadSslCertificate();
 }
 
 void EAuthService::init(QString user, QString key) {
@@ -58,9 +60,27 @@ void EAuthService::initSession(QString host, QString port) {
     }
 }
 
+void EAuthService::loadSslCertificate() {
+    const QString serverCertPath(QApplication::applicationDirPath() + "/security/auth-service.pem");
+    QList<QSslCertificate> serverCert = QSslCertificate::fromPath(serverCertPath, QSsl::Pem);
+    if(serverCert.isEmpty()) {
+        emit connectionWarning("WARNING: Unable to load auth service SSL certificate from " + serverCertPath + "; SSL verification turned off.");
+        sslSocket->setPeerVerifyMode(QSslSocket::VerifyNone);
+        connect(sslSocket, SIGNAL(sslErrors(QList<QSslError>)),
+                this, SLOT(logAndIgnoreSslErrors(QList<QSslError>)));
+    } else {
+        sslSocket->setPeerVerifyMode(QSslSocket::VerifyPeer);
+        QList<QSslError> verifiedErrors;
+        verifiedErrors << QSslError(QSslError::HostNameMismatch, serverCert.at(0));
+        verifiedErrors << QSslError(QSslError::SelfSignedCertificate, serverCert.at(0));
+        sslSocket->ignoreSslErrors(verifiedErrors);
+    }
+}
+
 void EAuthService::logAndIgnoreSslErrors(const QList<QSslError>& errors) {
     for(QSslError error : errors) {
-        qDebug() << error.errorString();
+        this->log(error.errorString().toLocal8Bit());
+        emit connectionWarning("WARNING: " + error.errorString());
     }
     sslSocket->ignoreSslErrors(errors);
 }
@@ -156,7 +176,6 @@ void EAuthService::negotiateSession(QByteArray buffer) {
             gameList.insert("Dragonrealms Prime Test", "DRT");
             gameList.insert("Dragonrealms Platinum", "DRX");
         }
-
         emit selectGame(gameList);
     } else if(buffer.startsWith("F\t")) {
         QList<QByteArray> fResponse = buffer.split('\t');
@@ -192,7 +211,6 @@ void EAuthService::negotiateSession(QByteArray buffer) {
                           + gamePort + " with key \"" + key + "\"").toLocal8Bit());
 
         emit sessionRetrieved(gamehost, gamePort, key);
-
         sslSocket->disconnectFromHost();
     } else if(buffer.startsWith("X\t")) {
         emit connectionError("Unknown error; please refer to auth log.");
@@ -235,7 +253,7 @@ void EAuthService::socketError(QAbstractSocket::SocketError error) {
     } else if (error == QAbstractSocket::HostNotFoundError) {
         emit connectionError("Unable to connect to auth server. Host not found.");
     } else {
-        emit connectionError("Network error.");
+        emit connectionError("Network error: QAbstractSocket::" + QVariant::fromValue(error).toString());
     }
     qDebug() << "EAUTH: " <<  error;
 }
