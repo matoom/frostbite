@@ -47,6 +47,7 @@ private:
     void loadSslCertificate();
 
     QByteArray extractValue(QByteArray, QList<QByteArray>);
+    void socketDisconnect();
 
 signals:
      void sessionRetrieved(QString, QString, QString);
