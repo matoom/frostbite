@@ -11,8 +11,6 @@
 #include "timerbar.h"
 #include "globaldefines.h"
 
-
-
 Highlighter::Highlighter(QObject *parent) : QObject(parent) {
     mainWindow = (MainWindow*)parent;
     audioPlayer = new AudioPlayer(mainWindow);
