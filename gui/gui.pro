@@ -236,12 +236,10 @@ CONFIG(release, debug|release) {
         DEPLOY_PATH = $$shell_quote($$shell_path($$BIN/Contents/MacOS))
         DEPLOY_QT = $$shell_quote($$shell_path($$[QT_INSTALL_BINS]/macdeployqt))
 
-        prebuild.commands = rm -rf $$DEPLOY_PATH
-
         postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$DEPLOY_PATH &&
-        postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES_MAC $$DEPLOY_PATH &&
-        postbuild.commands += $$DEPLOY_QT $$APP_PATH -dmg &&
-        postbuild.commands += $(COPY_FILE) $$DMG $$RELEASE_FILE
+        postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES_MAC $$DEPLOY_PATH
+
+        DEPLOY = $$DEPLOY_QT $$APP_PATH -dmg && $(COPY_FILE) $$DMG $$RELEASE_FILE
     }
 
     unix:!macx {
@@ -283,10 +281,11 @@ CONFIG(release, debug|release) {
         postbuild.commands += "tar -C $$RELEASE_PATH/../ -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_DIR"
     }
 
-    prebuild.target = cleandeploy
     QMAKE_EXTRA_TARGETS += prebuild
-    PRE_TARGETDEPS = cleandeploy
+    PRE_TARGETDEPS = prebuild
 
-    first.depends = $(first) postbuild
-    QMAKE_EXTRA_TARGETS += first postbuild
+    QMAKE_EXTRA_TARGETS += postbuild
+    POST_TARGETDEPS += postbuild
+
+    QMAKE_POST_LINK += $$DEPLOY
 }
