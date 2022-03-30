@@ -88,7 +88,7 @@ QString XmlParserThread::aggregateXml(QString tag, QList<QString> lines, int &i)
         count += lines.at(i).count("<" + tag) - lines.at(i).count("</" + tag + ">");
         if(count <= 0) break;
         xml += lines.at(++i) + "\n";
-    }
+    }       
     return xml;
 }
 
@@ -304,7 +304,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
             }
         } else if(e.tagName() == "nav") {
             emit writeScriptMessage("{nav}");
-        } else if(e.tagName() == "component") {
+        } else if(e.tagName() == "component") {                        
             if(e.attribute("id").startsWith("exp")) {
                 QString text = e.text();
                 QString id = e.attribute("id").mid(4);
@@ -377,23 +377,28 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
     return gameText == "";
 }
 
-QString XmlParserThread::fixCmdUnescapedTags(QString data) {
-    if(data.contains("<d cmd='")) {
-        QRegularExpression rx("<d cmd=(').*(')>");
-        QRegularExpressionMatchIterator i = rx.globalMatch(data);
+/*
+ * in: <d cmd='urchin guide Leth Deriel, Sana'ati Dyaus Drui'tas'>Leth Deriel, Sana'ati Dyaus Drui'tas</d>
+ * out: <d cmd='urchin guide Leth Deriel, Sana&apos;ati Dyaus Drui&apos;tas'>Leth Deriel, Sana'ati Dyaus Drui'tas</d>
+ */
+QString XmlParserThread::fixCmdUnescapedTags(QString text) {
+    if(text.contains("<d cmd='")) {
+        QRegularExpression rx("<d cmd='(.*)'>");
+        QRegularExpressionMatchIterator i = rx.globalMatch(text);
         while (i.hasNext()) {
             QRegularExpressionMatch match = i.next();
             if (match.hasMatch()) {
-                TextUtils::escapeDoubleQuotes(data);
-                data.replace(match.capturedStart(1), 1, "\"");
-                data.replace(match.capturedStart(2), 1, "\"");
-                TextUtils::escapeSingleQuotes(data);
+                int start = match.capturedStart(1);
+                int end = match.capturedEnd(1);
+                text.remove(start, end - start);
+                QString captured = match.captured(1);
+                TextUtils::escapeSingleQuotes(captured);
+                text.insert(start, captured);
             }
         }
     }
-    return data;
+    return text;
 }
-
 
 QString XmlParserThread::fixUnclosedStreamTags(QString data) {
     int tagCount = data.count("<pushStream") - data.count("</pushStream>");
