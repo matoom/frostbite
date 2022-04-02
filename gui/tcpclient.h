@@ -24,6 +24,7 @@ public:
     void writeCommand(QString);
     void logDebug(QByteArray buffer);
     void disconnectFromServer();
+    void quitGame();
 
     void connectApi(QString host, QString port, QString user, QString password,
                     QString game, QString character, bool apiLich);

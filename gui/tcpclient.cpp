@@ -257,18 +257,15 @@ void TcpClient::setGameModeCmgr(bool cmgr) {
 }
 
 void TcpClient::disconnectFromServer() {
-    if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
-        emit showMessage("Disconnected from server.");
-        this->writeCommand("quit");
-    }
-    tcpSocket->disconnectFromHost();
+    this->writeCommand("quit");
     emit connectAvailable(true);
     emit diconnected();
 }
 
 TcpClient::~TcpClient() {
-    this->disconnectFromServer();
-
+    if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
+        tcpSocket->disconnectFromHost();
+    }
     delete debugLogger;
     delete tcpSocket;
     delete eAuth;
