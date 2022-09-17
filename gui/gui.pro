@@ -250,8 +250,8 @@ CONFIG(release, debug|release) {
         RELEASE_DIR = Frostbite-$$RELEASE_VERSION
         RELEASE_PATH = $$shell_quote($$shell_path($$OUT_PWD/../release/$$RELEASE_DIR))
         QT_CONFIG_FILE = $$shell_quote($$shell_path($$OUT_PWD/../release/$$RELEASE_DIR/qt.conf))
-        RELEASE_LIBRARIES = libQt5Core.so.5 libQt5Gui.so.5 libQt5Multimedia.so.5 libQt5Network.so.5 libQt5Widgets.so.5 \
-                            libQt5Xml.so.5 libQt5DBus.so.5 libQt5XcbQpa.so.5 libicudata.so.56 libicuuc.so.56 libicui18n.so.56
+        RELEASE_LIBRARIES = libQt5Widgets.so.5 libQt5Multimedia.so.5 libQt5Gui.so.5 libQt5Network.so.5 libQt5Xml.so.5 libQt5Core.so.5 \
+                            libicui18n.so.66 llibicuuc.so.66 libicudata.so.66 libpng16.so.16
 
         # make release directory
         postbuild.commands = $$QMAKE_MKDIR $$RELEASE_PATH ;
@@ -265,17 +265,14 @@ CONFIG(release, debug|release) {
         # copy libraries
         postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/lib/ ;
         for(var, RELEASE_LIBRARIES) {
-            postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../lib/$$var $$RELEASE_PATH/lib/ ;
+            postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_LIBS]/$$var $$RELEASE_PATH/lib/ ;
         }
         # copy plugins
         postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/platforms/ ;
-        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/platforms/libqxcb.so $$RELEASE_PATH/plugins/platforms/ ;
+        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_PLUGINS]/platforms/libqxcb.so $$RELEASE_PATH/plugins/platforms/ ;
 
         postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/imageformats/ ;
-        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/imageformats/*.so $$RELEASE_PATH/plugins/imageformats/ ;
-
-        postbuild.commands += $$QMAKE_MKDIR $$RELEASE_PATH/plugins/audio/ ;
-        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_BINS]/../plugins/audio/*.so $$RELEASE_PATH/plugins/audio/ ;
+        postbuild.commands += $(COPY_FILE) -L $$[QT_INSTALL_PLUGINS]/imageformats/*.so $$RELEASE_PATH/plugins/imageformats/ ;
 
         #compress package
         postbuild.commands += "tar -C $$RELEASE_PATH/../ -zcvf $$RELEASE_PATH/../frostbite-debian64.tar.gz $$RELEASE_DIR"
