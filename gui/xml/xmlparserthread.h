@@ -23,11 +23,12 @@ public:
     explicit XmlParserThread(QObject *parent, GameDataContainer* dataContainer);
     ~XmlParserThread() = default;
 
-    void process(QString);
+#ifndef QT_TESTLIB_LIB
 protected:
+#endif    
     void onProcess(const QByteArray& data) override;
 private:
-
+    void process(QString);
     bool filterPlainText(QDomElement, QDomNode);
     bool filterDataTags(QDomElement, QDomNode);
 

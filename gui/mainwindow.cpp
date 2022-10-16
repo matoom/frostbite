@@ -6,7 +6,6 @@
 #include "cleanlooks/qcleanlooksstyle.h"
 
 #include "windowfacade.h"
-#include "xml/xmlparserthread.h"
 #include "toolbar/toolbar.h"
 #include "clientsettings.h"
 #include "commandline.h"

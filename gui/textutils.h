@@ -1,5 +1,5 @@
-#ifndef DATACONVERSIONSERVICE_H
-#define DATACONVERSIONSERVICE_H
+#ifndef TEXTUTILS_H
+#define TEXTUTILS_H
 
 #include <QObject>
 #include <QDebug>
@@ -14,7 +14,7 @@ class TextUtils : public QObject {
 
 public:
     explicit TextUtils(QObject *parent = 0);
-    ~TextUtils();
+    virtual ~TextUtils();
 
     static int expStateToNumeric(QString);
     static int expBriefToNumeric(QString);
@@ -43,4 +43,4 @@ public slots:
     
 };
 
-#endif // DATACONVERSIONSERVICE_H
+#endif // TEXTUTILS_H
