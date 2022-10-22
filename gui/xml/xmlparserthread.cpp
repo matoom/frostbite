@@ -382,7 +382,7 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
  * out: <d cmd='urchin guide Leth Deriel, Sana&apos;ati Dyaus Drui&apos;tas'>Leth Deriel, Sana'ati Dyaus Drui'tas</d>
  */
 QString XmlParserThread::fixCmdUnescapedTags(QString text) {
-    if(text.contains("<d cmd='")) {
+    if (text.contains("<d cmd='")) {
         QRegularExpression rx("<d cmd='(.*)'>");
         QRegularExpressionMatchIterator i = rx.globalMatch(text);
         while (i.hasNext()) {

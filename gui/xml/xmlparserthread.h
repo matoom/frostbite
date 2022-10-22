@@ -22,6 +22,13 @@ class XmlParserThread : public WorkQueueThread<QByteArray> {
 public:
     explicit XmlParserThread(QObject *parent, GameDataContainer* dataContainer);
     ~XmlParserThread() = default;
+#ifndef QT_TESTLIB_LIB
+private:
+#else
+public:
+#endif
+    static QString fixUnclosedStreamTags(QString data);
+    static QString fixCmdUnescapedTags(QString data);
 
 #ifndef QT_TESTLIB_LIB
 protected:
@@ -66,9 +73,6 @@ private:
 
     void processPushStream(QString);
     void processDynaStream(QString);
-
-    QString fixUnclosedStreamTags(QString data);
-    QString fixCmdUnescapedTags(QString data);
 
     void warnUnknownEntity(QString ref, QString xml);
     void warnInvalidXml(QString ref, QString xml);
