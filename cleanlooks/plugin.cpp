@@ -62,4 +62,4 @@ QStyle *QCleanlooksStylePlugin::create(const QString &key)
 
 QT_END_NAMESPACE
 
-#include "plugin.moc"
+//#include "plugin.moc" // missing in qt 5.12 build?
