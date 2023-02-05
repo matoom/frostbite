@@ -383,19 +383,23 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
  */
 QString XmlParserThread::fixCmdUnescapedTags(QString text) {
     if (text.contains("<d cmd='")) {
-        QRegularExpression rx("<d cmd='(.*)'>");
-        QRegularExpressionMatchIterator i = rx.globalMatch(text);
-        while (i.hasNext()) {
-            QRegularExpressionMatch match = i.next();
-            if (match.hasMatch()) {
-                int start = match.capturedStart(1);
-                int end = match.capturedEnd(1);
-                text.remove(start, end - start);
-                QString captured = match.captured(1);
-                TextUtils::escapeSingleQuotes(captured);
-                text.insert(start, captured);
+        QStringList cmds = text.split("</d>");
+        for(int i = 0; i < cmds.length(); i++) {
+            QRegularExpression rx("<d cmd='(.*)'>");
+            QRegularExpressionMatchIterator matchIterator = rx.globalMatch(cmds[i]);
+            while (matchIterator.hasNext()) {
+                QRegularExpressionMatch match = matchIterator.next();
+                if (match.hasMatch()) {
+                    int start = match.capturedStart(1);
+                    int end = match.capturedEnd(1);
+                    cmds[i].remove(start, end - start);
+                    QString captured = match.captured(1);
+                    TextUtils::escapeSingleQuotes(captured);
+                    cmds[i].insert(start, captured);
+                }
             }
         }
+        text = cmds.join("</d>");
     }
     return text;
 }

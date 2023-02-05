@@ -297,6 +297,8 @@ bool CommandLine::filterCommand(QString text) {
                 this->write(this->text());
                 return true;
             }
+        } else if(text.startsWith("{ToggleDistractionFreeMode}")) {
+            mainWindow->toggleDistractionFreeMode();
         }
         this->clear();
         return true;

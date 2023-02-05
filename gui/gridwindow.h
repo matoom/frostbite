@@ -30,7 +30,7 @@ private:
     WindowFacade* wm;
 
     QStringList tracked;
-    QFont font;
+    QFont gridFont;
     QColor textColor;
     QColor backgroundColor;
 
@@ -44,6 +44,7 @@ private:
     void buildContextMenu();
 
     void updateFont();
+    void updateSize();
 
     QAction* appearanceAct;
     QAction* fontAct;
@@ -57,7 +58,6 @@ public slots:
     void updateSettings();
     void track(QString skillName);
     void clearTracked();
-    void resize(int, int);
     void changeAppearance();
     void selectFont();
     void clearFont();

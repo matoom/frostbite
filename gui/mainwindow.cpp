@@ -107,6 +107,7 @@ void MainWindow::toggleDistractionFreeMode() {
         windowFacade->getCompassView()->setCompassVisible(distractionFreeModeParams.compassVisible);
         windowFacade->getGameWindow()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         ui->mainLayout->addWidget(mainWidget);
+        cmdLine->focus();
         show();
     }
 }

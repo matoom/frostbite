@@ -32,13 +32,14 @@ QProgressBar* VitalsIndicator::vitalsProgress(const char* obName, const char* im
 }
 
 QFrame* VitalsIndicator::vitalsFrame(QProgressBar* bar) {
-    QFrame* bgFrame = new QFrame();
+    QFrame* bgFrame = new QFrame();    
     bgFrame->setStyleSheet("QFrame {"
                            "margin: -7px;"
                            "background-image: url(:/images/vitals_frame.png);"
                            "background-position: center center;"
                            "background-repeat: no-repeat;}");
     QHBoxLayout* bgFLay = new QHBoxLayout(bgFrame);
+    bgFLay->setContentsMargins(5, 0, 5, 0);
     bgFLay->addWidget(bar);
 
     return bgFrame;
@@ -48,6 +49,7 @@ QWidget* VitalsIndicator::create() {
     vitalsWidget = new QWidget;
     QHBoxLayout* hLayout = new QHBoxLayout(vitalsWidget);
     hLayout->setContentsMargins(25, 0, 25, 0);
+    hLayout->setSpacing(0);
 
     healthBar = vitalsProgress("health", HEALTH, 100);
     QFrame* healthIndicator = vitalsFrame(healthBar);

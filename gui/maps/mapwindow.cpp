@@ -12,8 +12,6 @@
 #include "textutils.h"
 #include "gamedatacontainer.h"
 
-
-
 MapWindow::MapWindow(MapFacade *parent) : QGraphicsView() {
     mapFacade = parent;
     selected = NULL;
@@ -51,7 +49,7 @@ void MapWindow::scaleView(qreal step) {
 
 void MapWindow::wheelEvent(QWheelEvent* event) {
     int delta = event->delta();
-    if(delta != 0 && event->phase() == Qt::ScrollUpdate) {
+    if(delta != 0) {
         scaleView(delta / qFabs(delta * 2));
     }
 }

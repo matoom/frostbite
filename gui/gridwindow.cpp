@@ -18,10 +18,10 @@ GridWindow::GridWindow(QString title, QWidget *parent) : QTableWidget(parent) {
     this->windowId = title.simplified().remove(' ') + "Window";
 
     this->buildContextMenu();
-    this->loadSettings();    
+    this->loadSettings();
+    this->updateSize();
 
     connect(this, SIGNAL(cellDoubleClicked(int, int)), this, SLOT(addRemoveTracked(int, int)));
-    connect(this->verticalHeader(), SIGNAL(sectionCountChanged(int, int)), this, SLOT(resize(int, int)));
     connect(mainWindow->getWindowFacade(), SIGNAL(updateWindowSettings()), this, SLOT(updateSettings()));
 
     this->setFocusPolicy(Qt::NoFocus);
@@ -32,30 +32,32 @@ void GridWindow::updateSettings() {
     this->loadSettings();
     this->clearTracked();
     this->updateFont();
+    this->updateSize();
 }
 
 void GridWindow::loadSettings() {        
     QVariant fontValue = settings->getParameter(windowId + "/font", QVariant());
     if(!fontValue.isNull()) {
-       font = fontValue.value<QFont>();
-       this->setProperty(WINDOW_FONT_ID, font);
-       fontAct->setText(font.family() + " " + QString::number(font.pointSize()));
+       gridFont = fontValue.value<QFont>();
+       this->setProperty(WINDOW_FONT_ID, gridFont);
+       fontAct->setText(gridFont.family() + " " + QString::number(gridFont.pointSize()));
     } else {
-       font = settings->dockWindowFont();
+       gridFont = settings->dockWindowFont();
        this->setProperty(WINDOW_FONT_ID, QVariant());
        fontAct->setText(WINDOW_FONT_SET);
     }
-    font.setStyleStrategy(QFont::PreferAntialias);
-    this->setFont(font);
+    gridFont.setStyleStrategy(QFont::PreferAntialias);
+    this->setFont(gridFont);
 
     textColor = settings->dockWindowFontColor();
     backgroundColor = settings->dockWindowBackground();
 }
 
-void GridWindow::resize(int, int) {
+void GridWindow::updateSize() {
+    int height = this->fontMetrics().height();
+    this->verticalHeader()->setDefaultSectionSize(height + 2);
+    this->verticalHeader()->setMaximumSectionSize(height + 2);
     this->resizeRowsToContents();
-    int height = this->verticalHeader()->fontMetrics().height();
-    this->verticalHeader()->setDefaultSectionSize(height + 4);
 }
 
 QColor GridWindow::getBgColor() {
@@ -68,7 +70,7 @@ QColor GridWindow::getTextColor() {
 
 QLabel* GridWindow::gridValueLabel(QWidget* parent) {
     QLabel* label = new QLabel(parent);    
-    label->setFont(font);
+    label->setFont(gridFont);
 
     QPalette p = label->palette();
     p.setColor(QPalette::Text, textColor);
@@ -77,7 +79,7 @@ QLabel* GridWindow::gridValueLabel(QWidget* parent) {
 
     label->setTextFormat(Qt::RichText);
     label->setAutoFillBackground(true);
-    label->setProperty("tracked", 0);
+    label->setProperty("tracked", 0);   
     return label;
 }
 
@@ -180,11 +182,11 @@ void GridWindow::buildContextMenu() {
 
 void GridWindow::selectFont() {
     bool ok;
-    QFont windowFont = QFontDialog::getFont(&ok, font, this);
+    QFont windowFont = QFontDialog::getFont(&ok, gridFont, this);
     if(ok) {
         fontAct->setText(windowFont.family() + " " + QString::number(windowFont.pointSize()));
         settings->setParameter(windowId + "/font", windowFont);
-        font = windowFont;
+        gridFont = windowFont;
         this->setProperty(WINDOW_FONT_ID, windowFont);
         this->setFont(windowFont);
         this->updateFont();
@@ -194,7 +196,7 @@ void GridWindow::selectFont() {
 void GridWindow::clearFont() {
     QFont windowFont = settings->getParameter("DockWindow/font",
         QFont(DEFAULT_DOCK_FONT, DEFAULT_DOCK_FONT_SIZE)).value<QFont>();
-    font = windowFont;
+    gridFont = windowFont;
     this->setFont(windowFont);
     fontAct->setText(WINDOW_FONT_SET);
     settings->setParameter(windowId + "/font", QVariant());
@@ -206,9 +208,10 @@ void GridWindow::updateFont() {
     for(int i = 0; i < this->rowCount(); i++) {
         QWidget* widget = this->cellWidget(i, 0);
         if(widget != NULL) {
-            ((QLabel*)widget)->setFont(font);
+            ((QLabel*)widget)->setFont(gridFont);
         }
     }
+    this->updateSize();
 }
 
 void GridWindow::changeAppearance() {

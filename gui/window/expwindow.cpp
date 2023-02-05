@@ -43,7 +43,7 @@ void ExpWindow::writeExpWindow(GridItems items) {
 
     int i = 0;
     foreach(QString key, items.keys()) {
-        QString text = "<span style=\"white-space:pre-wrap;\">";
+        QString text = "<span style=\"white-space:pre-wrap; \">";
         if(gameDataContainer->isExpGained(key)) {
             text += "(+)";
         } else {
@@ -51,9 +51,9 @@ void ExpWindow::writeExpWindow(GridItems items) {
         }
         text += items.value(key) + "</span>";
 
-        QLabel* item = (QLabel*)table->cellWidget(i, 0);
-        if(item == NULL) {
-            item = window->gridValueLabel(table);
+        QLabel* item = (QLabel*)table->cellWidget(i, 0);        
+        if(item == NULL) {            
+            item = window->gridValueLabel(table);            
             table->setCellWidget(i, 0, item);
         }
         item->setText(text);

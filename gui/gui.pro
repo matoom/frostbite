@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-RELEASE_VERSION = 1.15.1b
+RELEASE_VERSION = 1.16.0b
 
 DEFINES += RELEASE_VERSION=\\\"$$RELEASE_VERSION\\\"
 
@@ -204,10 +204,11 @@ ICON = images/shield.icns
 CONFIG(release, debug|release) {
 
     win32 {
+        #QT 5.12.12
         # OpenSSL deployment - qt intallation specific, sensitive to build environment changes
-        OPEN_SSL_DIR = $$shell_quote($$shell_path($$[QT_INSTALL_DATA]/../../Tools/mingw492_32/opt/bin))
-        LIBEAY32_PATH = $$shell_quote($$shell_path($$OPEN_SSL_DIR/libeay32.dll))
-        SSLEAY_PATH = $$shell_quote($$shell_path($$OPEN_SSL_DIR/ssleay32.dll))
+        OPEN_SSL_DIR = $$shell_quote($$shell_path($$[QT_INSTALL_DATA]/../../Tools/QtCreator/bin))
+        LIB_CRYPTO = $$shell_quote($$shell_path($$OPEN_SSL_DIR/libcrypto-1_1-x64.dll))
+        LIB_SSL = $$shell_quote($$shell_path($$OPEN_SSL_DIR/libssl-1_1-x64.dll))
 
         DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/common))
         DEPLOY_FILES_WIN = $$shell_quote($$shell_path($$PWD/../deploy/win))
@@ -218,15 +219,14 @@ CONFIG(release, debug|release) {
 
         postbuild.commands = $(COPY_DIR) $$DEPLOY_FILES $$RELEASE_PATH &
         postbuild.commands += $(COPY_DIR) $$DEPLOY_FILES_WIN $$RELEASE_PATH &
-        postbuild.commands += $(COPY_FILE) $$LIBEAY32_PATH $$RELEASE_PATH &
-        postbuild.commands += $(COPY_FILE) $$SSLEAY_PATH $$RELEASE_PATH &
-        postbuild.commands += $(COPY_FILE) $$BIN $$RELEASE_PATH &
-        postbuild.commands += $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
+        postbuild.commands += $(COPY_FILE) $$LIB_CRYPTO $$RELEASE_PATH &
+        postbuild.commands += $(COPY_FILE) $$LIB_SSL $$RELEASE_PATH
 
-        TOOLS_PATH = $$shell_quote($$shell_path($$QT_HOST_DATA/../../))
+        DEPLOY = $(COPY_FILE) $$BIN $$RELEASE_PATH & $$DEPLOY_QT $$RELEASE_PATH --no-translations --no-webkit2 --no-opengl-sw --no-angle --plugindir $$PLUGINS_PATH
     }
 
     macx {
+        #QT 5.12
         APP_PATH = ../Frostbite.app
         DEPLOY_FILES = $$shell_quote($$shell_path($$PWD/../deploy/common/))
         DEPLOY_FILES_MAC = $$shell_quote($$shell_path($$PWD/../deploy/mac/))
@@ -280,7 +280,6 @@ CONFIG(release, debug|release) {
 
     QMAKE_EXTRA_TARGETS += prebuild
     PRE_TARGETDEPS = prebuild
-
     QMAKE_EXTRA_TARGETS += postbuild
     POST_TARGETDEPS += postbuild
 
