@@ -104,10 +104,10 @@ void WindowFacade::setGameWindowFont(QFont font) {
     gameWindow->setFont(font);
 }
 
-void WindowFacade::setGameWindowFontColor(QColor color) {
-    QPalette p = gameWindow->viewport()->palette();
+void WindowFacade::setGameWindowFontColor(QColor color) {    
+    QPalette p = gameWindow->palette();
     p.setColor(QPalette::Text, color);
-    gameWindow->viewport()->setPalette(p);    
+    gameWindow->setPalette(p);
 }
 
 void WindowFacade::setGameWindowBackground(QColor color) {
@@ -120,9 +120,9 @@ void WindowFacade::setDockFontColor(QColor fontColor) {
     QPalette p;
     foreach(QDockWidget* dock, dockWindows) {
         if(qobject_cast<QPlainTextEdit*>(dock->widget()) != NULL) {
-            p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+            p = ((QPlainTextEdit*)dock->widget())->palette();
             p.setColor(QPalette::Text, fontColor);
-            ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+            ((QPlainTextEdit*)dock->widget())->setPalette(p);
         } else if(qobject_cast<QTableWidget*>(dock->widget()) != NULL) {
             QTableWidget* tableWidget = (QTableWidget*)dock->widget();
             for(int i = 0; i < tableWidget->rowCount(); i++) {
@@ -135,9 +135,9 @@ void WindowFacade::setDockFontColor(QColor fontColor) {
     }
 
     foreach(QDockWidget* dock, streamWindows) {
-        p = ((QPlainTextEdit*)dock->widget())->viewport()->palette();
+        p = ((QPlainTextEdit*)dock->widget())->palette();
         p.setColor(QPalette::Text, fontColor);
-        ((QPlainTextEdit*)dock->widget())->viewport()->setPalette(p);
+        ((QPlainTextEdit*)dock->widget())->setPalette(p);
     }
 }
 

@@ -87,7 +87,7 @@ void GameWindow::loadSettings() {
     font.setStyleStrategy(QFont::PreferAntialias);
     this->setFont(font);
 
-    QPalette p = this->viewport()->palette();
+    QPalette p = this->palette();
     p.setColor(QPalette::Text, settings->gameWindowFontColor());
     p.setColor(QPalette::Base, settings->gameWindowBackground());
     this->setPalette(p);
