@@ -17,7 +17,7 @@
 GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     mainWindow = (MainWindow*)parent;       
     windowFacade = mainWindow->getWindowFacade();
-    settings = GeneralSettings::getInstance();
+    settings = GeneralSettings::getInstance();    
     dictionarySettings = DictionarySettings::getInstance();
     snapshot = new Snapshot(this);
 
@@ -207,14 +207,22 @@ void GameWindow::mousePressEvent(QMouseEvent *e) {
 }
 
 void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
-    if (e->button() == Qt::LeftButton &&
-        !clickedAnchor.isEmpty()) {
+    if (e->button() == Qt::LeftButton && !clickedAnchor.isEmpty()) {
         if (anchorAt(e->pos()) == clickedAnchor) {
+            this->resetWindow();
             QDesktopServices::openUrl(QUrl(clickedAnchor, QUrl::TolerantMode));
         }
         clickedAnchor.clear();
+        return;
     }
     QPlainTextEdit::mouseReleaseEvent(e);
+}
+
+void GameWindow::resetWindow() {
+    QTextCursor cursor = textCursor();
+    cursor.clearSelection();
+    cursor.movePosition(QTextCursor::End);
+    setTextCursor(cursor);
 }
 
 void GameWindow::mouseMoveEvent(QMouseEvent *e) {

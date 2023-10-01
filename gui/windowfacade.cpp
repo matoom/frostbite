@@ -76,12 +76,11 @@ void WindowFacade::reloadWindowSettings() {
     emit updateWindowSettings();
 }
 
-
 QPlainTextEdit* WindowFacade::getGameWindow() {
     return this->gameWindow;
 }
 
-void WindowFacade::updateWindowColors() {
+void WindowFacade::updateWindowColors() {   
     this->setGameWindowFontColor(generalSettings->gameWindowFontColor());
     this->setGameWindowFont(generalSettings->gameWindowFont());
     this->setGameWindowBackground(generalSettings->gameWindowBackground());
@@ -212,6 +211,7 @@ void WindowFacade::updateWindowStyle() {
             ".script {color: " + textColor(SCRIPT, SCRIPT_COLOR_HEX) + ";background:" + bgColor(SCRIPT) + ";}\n"
             ".bold {color: " + textColor(GAME_MESSAGE, GAME_MESSAGE_COLOR_HEX) + ";background:" + bgColor(GAME_MESSAGE) + ";}\n"
             ".damage {color: " + textColor(DAMAGE, DAMAGE_COLOR_HEX) + ";background:" + bgColor(DAMAGE) + ";}\n"
+            "a {color: " + textColor(LINK, LINK_COLOR_HEX) + ";background:" + bgColor(LINK) + ";}\n"
             "span {white-space:pre-wrap;}";
 
     foreach(QDockWidget* dock, dockWindows) {

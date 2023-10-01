@@ -21,6 +21,8 @@
 #define SCRIPT_COLOR_RGB 151, 0, 128
 #define DAMAGE_COLOR_HEX "#FF557F"
 #define DAMAGE_COLOR_RGB 255, 85, 127
+#define LINK_COLOR_HEX "#0097a7"
+#define LINK_COLOR_RGB 0, 151, 167
 
 #define ROOM_NAME "a_roomName"
 #define GAME_MESSAGE "b_gameMessage"
@@ -32,6 +34,7 @@
 #define PENALTY "h_penalty"
 #define SCRIPT "i_script"
 #define ECHO "j_echo"
+#define LINK "k_link"
 
 #ifdef Q_OS_WIN
 #define DEFAULT_FONT "Consolas"

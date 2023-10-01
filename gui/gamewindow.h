@@ -42,6 +42,8 @@ private:
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent*);
     
+    void resetWindow();
+
     void loadSettings();
     void buildContextMenu();
 
@@ -78,7 +80,7 @@ private:
 
     DictionaryEvent currentDictEvent;
     
-signals:    
+signals:
 
 private slots:
     void lookupInDictionary();

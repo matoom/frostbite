@@ -62,7 +62,8 @@ void HighlightGeneralTab::loadSettings() {
     highlightList.insert(BONUS, readSettings(BONUS, "Stat bonus", QColor(BOOST_COLOR_HEX)));
     highlightList.insert(PENALTY, readSettings(PENALTY, "Stat penalty", QColor(PENALTY_COLOR_HEX)));
     highlightList.insert(SCRIPT, readSettings(SCRIPT, "Script commands", QColor(SCRIPT_COLOR_HEX)));
-    highlightList.insert(ECHO, readSettings(ECHO, "Script echo", QColor(ECHO_COLOR_HEX)));    
+    highlightList.insert(ECHO, readSettings(ECHO, "Script echo", QColor(ECHO_COLOR_HEX)));
+    highlightList.insert(LINK, readSettings(LINK, "Links", QColor(LINK_COLOR_HEX)));
 }
 
 void HighlightGeneralTab::initContextMenu() {
@@ -153,21 +154,21 @@ void HighlightGeneralTab::prepareList() {
     }
 }
 
-QHash<QString, QVariant> HighlightGeneralTab::readSettings(QString id, QString name, QColor color) {
-    QString nameSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/name", "").toString();
-    QColor colorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/color", DEFAULT_MAIN_FONT_COLOR).value<QColor>();
-    QColor bgColorSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/bgColor", QColor()).value<QColor>();
-    QString alertSetting = settings->getSingleParameter("GeneralHighlight/" + id + "/alert", "").toString();
+QHash<QString, QVariant> HighlightGeneralTab::readSettings(QString id, QString name, QColor defaultColor) {
+    QString nameValue = settings->getSingleParameter("GeneralHighlight/" + id + "/name", "").toString();
+    QColor colorValue = settings->getSingleParameter("GeneralHighlight/" + id + "/color", DEFAULT_MAIN_FONT_COLOR).value<QColor>();
+    QColor bgColorValue = settings->getSingleParameter("GeneralHighlight/" + id + "/bgColor", QColor()).value<QColor>();
+    QString alertValue = settings->getSingleParameter("GeneralHighlight/" + id + "/alert", "").toString();
 
     QHash<QString, QVariant> item;
     item.insert("name", name);
-    item.insert("color", colorSetting.isValid() ? colorSetting : color);
-    item.insert("bgColor", bgColorSetting);
-    item.insert("alert", alertSetting);
+    item.insert("color", nameValue.isEmpty() ? defaultColor : colorValue);
+    item.insert("bgColor", bgColorValue);
+    item.insert("alert", alertValue);
 
-    if(nameSetting.isEmpty()) {
+    if(nameValue.isEmpty()) {
         settings->setSingleParameter("GeneralHighlight/" + id + "/name", name);
-        settings->setSingleParameter("GeneralHighlight/" + id + "/color", color);
+        settings->setSingleParameter("GeneralHighlight/" + id + "/color", defaultColor);
     }
     return item;
 }

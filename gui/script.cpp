@@ -36,7 +36,8 @@ void Script::execute(QString fileName, QList<QString> userArgs) {
     this->fileName = fileName;
 
     QStringList arguments;
-    arguments << path << file << userArgs;      
+    arguments << path << file << userArgs;
+
     script_proc->start(rubyPath, arguments, QProcess::Unbuffered | QProcess::ReadWrite);
 }
 
