@@ -6,6 +6,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#define T_STATUS_W 32
+#define T_STATUS_H 32
+
 class GameDataContainer;
 
 class StatusIndicator : public QObject {
@@ -16,6 +19,7 @@ public:
     ~StatusIndicator();
 
     QWidget *create();
+    void setScale(float scale);
 
     void updateStatus(QString visible, QString icon);
     QHash<QString, bool> getFullStatus();
@@ -24,7 +28,7 @@ private:
     GameDataContainer* gameDataContainer;
 
     QLabel *playerStatusLabel(const char*, const char*, bool);    
-    void updatePosture(const char*, QString );
+    void updatePosture(const char*, QString);
     void updateCondition(const char*, QString);
 
     void setInvisible(bool);

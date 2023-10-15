@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "gamewindow.h"
 #include "ui_mainwindow.h"
 
 #include <QVBoxLayout>
@@ -183,7 +184,6 @@ void MainWindow::loadClient() {
     toolBar = new Toolbar(this);
     toolBar->loadToolbar();
 
-
     vitalsBar = new VitalsBar(this);
     vitalsBar->load();
 
@@ -205,7 +205,7 @@ void MainWindow::loadClient() {
     scriptService = new ScriptService(this);
 
     session = new Session(this, DEBUG);
-        
+
     menuHandler = new MenuHandler(this);
     menuHandler->loadProfilesMenu();
 
@@ -218,7 +218,10 @@ void MainWindow::loadClient() {
 
     // setup menu for Hyperlink service
     commandMenu = new QMenu(this);
-    
+
+    connect(((GameWindow*)windowFacade->getGameWindow())->getUnstuck(),
+            SIGNAL(triggered()), session, SLOT(unstuck()));
+
     connect(ui->menuBar, SIGNAL(triggered(QAction*)), menuHandler, SLOT(menuTriggered(QAction*)));
     connect(ui->menuBar, SIGNAL(hovered(QAction*)), menuHandler, SLOT(menuHovered(QAction*)));
 }
@@ -231,8 +234,16 @@ Toolbar* MainWindow::getToolbar() {
     return toolBar;
 }
 
+void MainWindow::setToolbarScale(float scale) {
+    toolBar->setScale(scale);
+}
+
 VitalsBar* MainWindow::getVitalsBar() {
     return vitalsBar;
+}
+
+Session* MainWindow::getSession() {
+    return session;
 }
 
 TcpClient* MainWindow::getTcpClient() {
@@ -371,6 +382,17 @@ void MainWindow::setMenuVitalsVisible(bool enabled) {
 
 void MainWindow::setMenuMutedVisible(bool enabled) {
     ui->actionToolMute->setChecked(enabled);
+}
+
+void MainWindow::setFullScreenVisible(bool enabled) {
+    ui->actionToolFullScreen->setChecked(enabled);
+}
+
+void MainWindow::setToolSize(QString size) {
+    ui->actionToolLarge->setChecked(size == "large");
+    ui->actionToolNormal->setChecked(size == "normal");
+    ui->actionToolSmall->setChecked(size == "small");
+    ui->actionToolXsmall->setChecked(size == "x-small");
 }
 
 void MainWindow::setToolbarAllowedAreas(Qt::ToolBarAreas areas) {

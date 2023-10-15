@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QToolButton>
 
+#define T_MUTE_W 26
+#define T_MUTE_H 26
+
 class Toolbar;
 class ClientSettings;
 class MainWindow;
@@ -13,6 +16,8 @@ class MuteButton : QToolButton {
 
 public:
     explicit MuteButton(QWidget *parent = 0);
+
+    void setScale(float scale);
 
 private:
     Toolbar* toolBar;

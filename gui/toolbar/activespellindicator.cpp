@@ -11,15 +11,14 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     spellLabel->setAlignment(Qt::AlignCenter);
     spellLabel->setTextFormat(Qt::RichText);
     spellLabel->setWordWrap(true);
-    spellLabel->setFixedWidth(120);
-    spellLabel->setFixedHeight(34);
+    spellLabel->setFixedWidth(T_AS_W);
+    spellLabel->setFixedHeight(T_AS_H);
     spellLabel->setStyleSheet("QLabel {"
                               "border: 1px solid rgb(190, 190, 190);"
                               "background: #383533;"
                               "padding-right: 5px;"
                               "padding-left: 5px;"
                               "color: #E0E0E0;"
-                              "min-width: 23px;"
                               "border-radius: 5px;"
                               "}"
                               "QToolTip {"
@@ -29,9 +28,7 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
                               "border: 2px outset #2a82da;"
                               "padding: 2px;"
                               "}");
-
-    QFont f(DEFAULT_FONT, 14, QFont::Bold);
-    spellLabel->setFont(f);
+    setFontScale(1);
 
     this->setText("-");
     this->setToolTip("None");
@@ -39,6 +36,19 @@ QLabel* ActiveSpellIndicator::createSpellLabel() {
     spellLabel->setCursor(Qt::WhatsThisCursor);
 
     return spellLabel;
+}
+
+void ActiveSpellIndicator::setScale(float scale) {
+    spellLabel->setFixedWidth(T_AS_W * scale);
+    spellLabel->setFixedHeight(T_AS_H * scale);
+    setFontScale(scale);
+}
+
+void ActiveSpellIndicator::setFontScale(float scale) {
+    QFont f(DEFAULT_FONT);
+    f.setWeight(QFont::Bold);
+    f.setPixelSize(T_AS_W * scale / 2);
+    spellLabel->setFont(f);
 }
 
 QWidget* ActiveSpellIndicator::create() {    

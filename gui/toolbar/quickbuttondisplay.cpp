@@ -26,7 +26,7 @@ void QuickButtonDisplay::reloadSettings() {
 
 QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* icon, QString value) {
     QToolButton* toolButton = new QToolButton();
-    toolButton->setIconSize(QSize(32, 32));
+    toolButton->setIconSize(QSize(T_QB_W, T_QB_H));
     toolButton->setObjectName(objName);
     toolButton->setIcon(QIcon(icon));
     toolButton->setText(value);
@@ -51,52 +51,63 @@ QToolButton* QuickButtonDisplay::actionButton(const char* objName, const char* i
     return toolButton;
 }
 
+void QuickButtonDisplay::setScale(float scale) {
+    sword->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    bow->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    shield->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    bag->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    xsword->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    xbow->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+    xshield->setIconSize(QSize(T_QB_W * scale, T_QB_H * scale));
+}
+
 QWidget* QuickButtonDisplay::create() {
     buttonWidget = new QWidget;
     hLayout = new QHBoxLayout(buttonWidget);
-    hLayout->setContentsMargins(25, 0, 25, 0);
+    hLayout->setContentsMargins(20, 0, 20, 0);
+    hLayout->setSpacing(0);
 
     sword = actionButton("sword", BUTTON_AXE_ICO,
         settings->getParameter("QuickButton/sword", "").toString());
     hLayout->addWidget(sword);
-    connect(sword, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(swordButtonEdit(const QPoint&)));
+    connect(sword, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(swordButtonEdit(QPoint)));
 
     bow = actionButton("bow", BUTTON_BOW_ICO,
         settings->getParameter("QuickButton/bow", "").toString());
     hLayout->addWidget(bow);
-    connect(bow, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(bowButtonEdit(const QPoint&)));
+    connect(bow, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(bowButtonEdit(QPoint)));
 
     shield = actionButton("shield", BUTTON_SHIELD_ICO,
         settings->getParameter("QuickButton/shield", "").toString());
     hLayout->addWidget(shield);
-    connect(shield, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(shieldButtonEdit(const QPoint&)));
+    connect(shield, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(shieldButtonEdit(QPoint)));
 
     bag = actionButton("bag", BUTTON_BAG_ICO,
         settings->getParameter("QuickButton/bag", "").toString());
     hLayout->addWidget(bag);
-    connect(bag, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(bagButtonEdit(const QPoint&)));
+    connect(bag, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(bagButtonEdit(QPoint)));
 
     xsword = actionButton("xsword", BUTTON_XAXE_ICO,
         settings->getParameter("QuickButton/xsword", "").toString());
     hLayout->addWidget(xsword);
-    connect(xsword, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(xswordButtonEdit(const QPoint&)));
+    connect(xsword, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(xswordButtonEdit(QPoint)));
 
     xbow = actionButton("xbow", BUTTON_XBOW_ICO,
         settings->getParameter("QuickButton/xbow", "").toString());
     hLayout->addWidget(xbow);
-    connect(xbow, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(xbowButtonEdit(const QPoint&)));
+    connect(xbow, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(xbowButtonEdit(QPoint)));
 
     xshield = actionButton("xshield", BUTTON_XSHIELD_ICO,
         settings->getParameter("QuickButton/xshield", "").toString());
     hLayout->addWidget(xshield);
-    connect(xshield, SIGNAL(customContextMenuRequested(const QPoint &)),
-            this, SLOT(xshieldButtonEdit(const QPoint&)));
+    connect(xshield, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(xshieldButtonEdit(QPoint)));
 
     buttonWidget->setLayout(hLayout);
 

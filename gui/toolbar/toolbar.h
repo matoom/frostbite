@@ -34,10 +34,13 @@ public:
     int getFatigueValue();
     int getSpiritValue();
 
+    void setScale(float scale);
+
     QHash<QString, bool> getStatus();
 
 private:
     MainWindow* mainWindow;
+    FullscreenButton* fullScreenButton;
     VitalsIndicator* vitalsIndicator;
     StatusIndicator* statusIndicator;
     GameDataContainer* gameDataContainer;
@@ -60,6 +63,7 @@ private:
     QAction* buttonsAction;
     QAction* vitalsAction;
     QAction* muteButtonAction;
+    QAction* fullScreenAction;
 
     void addFullScreenButton();
     void addMuteButton();
@@ -84,6 +88,7 @@ public slots:
     void setButtonsVisible(bool visible);
     void setVitalsVisible(bool visible);
     void setMuteVisible(bool visible);
+    void setFullScreenVisible(bool visible);
 
     void reloadSettings();
 };

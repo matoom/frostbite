@@ -20,7 +20,8 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
     }
 
     statusLabel->setAlignment(Qt::AlignCenter);
-    statusLabel->setFixedWidth(32);
+    statusLabel->setFixedWidth(T_STATUS_W);
+    statusLabel->setFixedHeight(T_STATUS_H);
 
     statusLabel->setStyleSheet("QLabel {"
                                "border: 1px solid rgb(190, 190, 190);"
@@ -33,8 +34,27 @@ QLabel *StatusIndicator::playerStatusLabel(const char* oName, const char* img, b
                                "border: 2px outset #2a82da;"
                                "padding: 2px; "
                                "}");
-
     return statusLabel;
+}
+
+void StatusIndicator::setScale(float scale) {
+    invisible->setFixedWidth(T_STATUS_W * scale);
+    invisible->setFixedHeight(T_STATUS_H * scale);
+
+    immobile->setFixedWidth(T_STATUS_W * scale);
+    immobile->setFixedHeight(T_STATUS_H * scale);
+
+    joined->setFixedWidth(T_STATUS_W * scale);
+    joined->setFixedHeight(T_STATUS_H * scale);
+
+    hidden->setFixedWidth(T_STATUS_W * scale);
+    hidden->setFixedHeight(T_STATUS_H * scale);
+
+    condition->setFixedWidth(T_STATUS_W * scale);
+    condition->setFixedHeight(T_STATUS_H * scale);
+
+    posture->setFixedWidth(T_STATUS_W * scale);
+    posture->setFixedHeight(T_STATUS_H * scale);
 }
 
 QHash<QString, bool> StatusIndicator::getFullStatus() {
@@ -44,24 +64,30 @@ QHash<QString, bool> StatusIndicator::getFullStatus() {
 QWidget* StatusIndicator::create() {
     QWidget *widget = new QWidget;
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
-    hLayout->setContentsMargins(25, 10, 25, 10);
+    hLayout->setContentsMargins(20, 10, 20, 10);
 
     invisible = this->playerStatusLabel("invisible", INVISIBLE_ICO, false);
+    invisible->setScaledContents(true);
     hLayout->addWidget(invisible);
 
     immobile = this->playerStatusLabel("immobile", IMMOBILE_ICO, false);
+    immobile->setScaledContents(true);
     hLayout->addWidget(immobile);
 
     joined = this->playerStatusLabel("joined", GROUP_ICO, false);
+    joined->setScaledContents(true);
     hLayout->addWidget(joined);
 
     hidden = this->playerStatusLabel("hidden", HIDDEN_ICO, false);
+    hidden->setScaledContents(true);
     hLayout->addWidget(hidden);
 
     condition = this->playerStatusLabel("condition", STUNNED_ICO, false);
+    condition->setScaledContents(true);
     hLayout->addWidget(condition);
 
     posture = this->playerStatusLabel("posture", STANDING_ICO, false);
+    posture->setScaledContents(true);
     hLayout->addWidget(posture);
 
     widget->setLayout(hLayout);
@@ -130,6 +156,7 @@ bool StatusIndicator::visibleToBool(QString visible) {
 void StatusIndicator::setInvisible(bool visible) {
     if(visible) {
         invisible->setPixmap(QPixmap(INVISIBLE_ICO));
+        invisible->adjustSize();
         invisible->setToolTip(tr("Invisible"));
     } else {
         invisible->setToolTip("");

@@ -6,6 +6,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#define T_WIELD_W 150
+#define T_WIELD_H 32
+
 class WieldIndicator : public QObject {
     Q_OBJECT
 public:
@@ -13,6 +16,7 @@ public:
     ~WieldIndicator();
 
     QWidget *create();
+    void setScale(float scale);
 
     QLabel *textLabel;
     QLabel *imageLabel;

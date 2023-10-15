@@ -6,6 +6,9 @@
 #include <QProgressBar>
 #include <QHBoxLayout>
 
+#define T_VITALS_W 18
+#define T_VITALS_H 32
+
 class VitalsIndicator : public QObject {
     Q_OBJECT
 public:
@@ -13,6 +16,7 @@ public:
     ~VitalsIndicator();
 
     QWidget* create();
+    void setScale(float scale);
 
     QWidget* vitalsWidget;
     QProgressBar* healthBar;
@@ -20,6 +24,12 @@ public:
     QProgressBar* fatigueBar;
     QProgressBar* spiritBar;
     QProgressBar* manaBar;
+
+    QFrame* healthIndicator;
+    QFrame* manaIndicator;
+    QFrame* concentrationIndicator;
+    QFrame* fatigueIndicator;
+    QFrame* spiritIndicator;
 
 private:
     QProgressBar* vitalsProgress(const char*, const char*, qint8);

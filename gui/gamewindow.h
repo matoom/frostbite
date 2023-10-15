@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 
+#include "session.h"
 #include "windowinterface.h"
 
 class MainWindow;
@@ -14,6 +15,7 @@ class Compass;
 class GeneralSettings;
 class DictionarySettings;
 class ContextMenu;
+class Session;
 
 class GameWindow : public QPlainTextEdit, public WindowInterface {
     Q_OBJECT
@@ -33,6 +35,8 @@ public:
 
     void setStream(bool stream);
     bool stream();
+
+    QAction* getUnstuck();
 
 private:
     void contextMenuEvent(QContextMenuEvent* event);
@@ -64,6 +68,7 @@ private:
     QAction* selectAct;
     QAction* clearAct;
     QAction* saveAct;
+    QAction* unstuckAct;
     QAction* distractionFreeModeAct;
     ContextMenu* menu;
 

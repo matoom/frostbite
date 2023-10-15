@@ -262,6 +262,10 @@ void TcpClient::disconnectFromServer() {
     emit diconnected();
 }
 
+Session* TcpClient::getSession() {
+    return session;
+}
+
 TcpClient::~TcpClient() {
     if(tcpSocket && tcpSocket->state() == QAbstractSocket::ConnectedState) {
         tcpSocket->disconnectFromHost();

@@ -23,11 +23,15 @@ void FullscreenButton::init() {
                   "border: 2px outset #2a82da;"
                   "padding: 2px; "
                   "}");
-    setIconSize(QSize(28, 28));
+    setIconSize(QSize(T_FS_W, T_FS_H));
     setObjectName("Fullscreen");
     setCursor(Qt::PointingHandCursor);
 
     setButtonMode(mainWindow->isFullScreen());
+}
+
+void FullscreenButton::setScale(float scale) {
+    setIconSize(QSize(T_FS_W * scale, T_FS_H * scale));
 }
 
 void FullscreenButton::setButtonMode(bool fullScreen) {

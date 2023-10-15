@@ -10,8 +10,8 @@ QLabel *WieldIndicator::wieldTextLabel(const char* text) {
     textLabel = new QLabel;
     textLabel->setToolTip("Empty");
     textLabel->setObjectName("text");
-    textLabel->setFixedWidth(150);
-    textLabel->setFixedHeight(34);
+    textLabel->setFixedWidth(T_WIELD_W);
+    textLabel->setFixedHeight(T_WIELD_H);
     textLabel->setWordWrap(true);
     textLabel->setAlignment(Qt::AlignCenter);
     textLabel->setStyleSheet("QLabel {"
@@ -35,7 +35,12 @@ QLabel *WieldIndicator::wieldTextLabel(const char* text) {
     return textLabel;
 }
 
-QLabel *WieldIndicator::wieldImageLabel(const char* img) {
+void WieldIndicator::setScale(float scale) {
+    textLabel->setFixedWidth(T_WIELD_W * scale);
+    textLabel->setFixedHeight(T_WIELD_H * scale);
+}
+
+QLabel* WieldIndicator::wieldImageLabel(const char* img) {
     imageLabel = new QLabel;
     imageLabel->setObjectName("image");
     imageLabel->setAlignment(Qt::AlignCenter);
@@ -44,7 +49,7 @@ QLabel *WieldIndicator::wieldImageLabel(const char* img) {
     return imageLabel;
 }
 
-QWidget *WieldIndicator::create() {
+QWidget* WieldIndicator::create() {
     QWidget *widget = new QWidget;
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     hLayout->setContentsMargins(0, 10, 10, 10);

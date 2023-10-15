@@ -19,16 +19,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#mainToolBar {
-/*     background-color: beige;
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;*/
     min-width: 10em;
     background-image: url(:/images/bar.png);
-
-
-
   /* background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                   stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
                                   stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);*/
@@ -171,7 +163,7 @@ QTabBar {
      <x>0</x>
      <y>0</y>
      <width>1091</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -246,6 +238,15 @@ QTabBar {
     <property name="title">
      <string>Toolbar</string>
     </property>
+    <widget class="QMenu" name="menuSize">
+     <property name="title">
+      <string>Size</string>
+     </property>
+     <addaction name="actionToolXsmall"/>
+     <addaction name="actionToolSmall"/>
+     <addaction name="actionToolNormal"/>
+     <addaction name="actionToolLarge"/>
+    </widget>
     <addaction name="actionToolWieldLeft"/>
     <addaction name="actionToolWieldRight"/>
     <addaction name="actionToolSpell"/>
@@ -254,6 +255,9 @@ QTabBar {
     <addaction name="actionToolMute"/>
     <addaction name="actionToolButtons"/>
     <addaction name="actionToolVitals"/>
+    <addaction name="actionToolFullScreen"/>
+    <addaction name="separator"/>
+    <addaction name="menuSize"/>
    </widget>
    <widget class="QMenu" name="menuMap">
     <property name="title">
@@ -319,10 +323,6 @@ QTabBar {
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionConnect">
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/connect.png</normaloff>:/window/images/connect.png</iconset>
-   </property>
    <property name="text">
     <string>Connect</string>
    </property>
@@ -331,10 +331,6 @@ QTabBar {
    </property>
   </action>
   <action name="actionDisconnect">
-   <property name="icon">
-    <iconset resource="window.qrc">
-     <normaloff>:/window/images/disconnect.png</normaloff>:/window/images/disconnect.png</iconset>
-   </property>
    <property name="text">
     <string>Disconnect</string>
    </property>
@@ -601,6 +597,46 @@ QTabBar {
    </property>
    <property name="text">
     <string>Mute</string>
+   </property>
+  </action>
+  <action name="actionToolFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Full Screen</string>
+   </property>
+  </action>
+  <action name="actionToolXsmall">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>x-small</string>
+   </property>
+  </action>
+  <action name="actionToolSmall">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>small</string>
+   </property>
+  </action>
+  <action name="actionToolNormal">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>normal</string>
+   </property>
+  </action>
+  <action name="actionToolLarge">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>large</string>
    </property>
   </action>
  </widget>

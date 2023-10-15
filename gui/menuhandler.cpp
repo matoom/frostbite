@@ -144,6 +144,25 @@ void MenuHandler::menuTriggered(QAction* action) {
     } else if(action->objectName() == "actionToolMute") {
         clientSettings->setParameter("Toolbar/muted", action->isChecked());
         mainWindow->getToolbar()->setMuteVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolFullScreen") {
+        clientSettings->setParameter("Toolbar/fullScreen", action->isChecked());
+        mainWindow->getToolbar()->setFullScreenVisible(action->isChecked());
+    } else if(action->objectName() == "actionToolLarge") {
+        clientSettings->setParameter("Toolbar/size", "large");
+        mainWindow->setToolSize("large");
+        mainWindow->setToolbarScale(1.1);
+    } else if(action->objectName() == "actionToolNormal") {
+        clientSettings->setParameter("Toolbar/size", "normal");
+        mainWindow->setToolSize("normal");
+        mainWindow->setToolbarScale(1);
+    } else if(action->objectName() == "actionToolSmall") {
+        clientSettings->setParameter("Toolbar/size", "small");
+        mainWindow->setToolSize("small");
+        mainWindow->setToolbarScale(0.9);
+    } else if(action->objectName() == "actionToolXsmall") {
+        clientSettings->setParameter("Toolbar/size", "x-small");
+        mainWindow->setToolSize("x-small");
+        mainWindow->setToolbarScale(0.8);
     } else if(action->objectName() == "actionMapReload") {
         mainWindow->reloadMaps();
     } else if(action->objectName() == "actionMapShow") {
@@ -251,6 +270,8 @@ void MenuHandler::loadToolbarMenu() {
     mainWindow->setMenuButtonsVisible(clientSettings->getParameter("Toolbar/buttons", true).toBool());
     mainWindow->setMenuVitalsVisible(clientSettings->getParameter("Toolbar/vitals", true).toBool());
     mainWindow->setMenuMutedVisible(clientSettings->getParameter("Toolbar/muted", false).toBool());
+    mainWindow->setFullScreenVisible(clientSettings->getParameter("Toolbar/fullScreen", false).toBool());
+    mainWindow->setToolSize(clientSettings->getParameter("Toolbar/size", "normal").toString());
 }
 
 void MenuHandler::loadWindowMenu() {

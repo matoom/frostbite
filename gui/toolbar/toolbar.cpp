@@ -44,11 +44,12 @@ MainWindow* Toolbar::getMainWindow() {
 
 void Toolbar::addMuteButton() {
     muteButton = new MuteButton(mainWindow);
+    muteButton->setScale(clientSettings->getParameter("Toolbar/mutedScale", 1).toFloat());
     QWidget* buttonWidget = new QWidget(mainWindow);
     QHBoxLayout* hLayout = new QHBoxLayout(buttonWidget);
     buttonWidget->setLayout(hLayout);
     hLayout->addWidget((QToolButton*)muteButton);
-    hLayout->setContentsMargins(25, 0, 25, 0);
+    hLayout->setContentsMargins(20, 0, 20, 0);
 
     muteButtonAction = mainWindow->addToolbarWidget(buttonWidget);    
 
@@ -64,56 +65,88 @@ void Toolbar::addFullScreenButton() {
     mainWindow->addToolbarWidget(spacerWidget);
 
     /* fullscreen button */
-    FullscreenButton* fullScreenButton = new FullscreenButton(mainWindow);
-    QWidget* buttonWidget = new QWidget(mainWindow);
-    QHBoxLayout* hLayout = new QHBoxLayout(buttonWidget);
-    buttonWidget->setLayout(hLayout);
+    fullScreenButton = new FullscreenButton(mainWindow);
+    fullScreenButton->setScale(clientSettings->getParameter("Toolbar/fullScreenScale", 1).toFloat());
+    QWidget* fullScreenWidget = new QWidget(mainWindow);
+    QHBoxLayout* hLayout = new QHBoxLayout(fullScreenWidget);
+    fullScreenWidget->setLayout(hLayout);
     hLayout->addWidget((QToolButton*)fullScreenButton);
-    mainWindow->addToolbarWidget(buttonWidget);
+    fullScreenAction = mainWindow->addToolbarWidget(fullScreenWidget);
+
+    bool visible = clientSettings->getParameter("Toolbar/fullScreen", true).toBool();
+    fullScreenAction->setVisible(visible);
 }
 
 void Toolbar::loadToolbar() {
     mainWindow->setToolbarAllowedAreas(Qt::TopToolBarArea | Qt::BottomToolBarArea);
 
     QWidget* wieldLeftWidget = wieldLeft->create();
+    wieldLeft->setScale(clientSettings->getParameter("Toolbar/wieldLeftScale", 1).toFloat());
     wieldLeftWidget->setContentsMargins(QMargins(20, 0, 0, 0));
     bool wieldLeftVisible = clientSettings->getParameter("Toolbar/wieldLeft", true).toBool();
-    if(!wieldLeftVisible) wieldLeftWidget->setVisible(wieldLeftVisible);
+    wieldLeftWidget->setVisible(wieldLeftVisible);
     wieldLeftAction = mainWindow->addToolbarWidget(wieldLeftWidget);
 
     QWidget* wieldRightWidget = wieldRight->create();
+    wieldRight->setScale(clientSettings->getParameter("Toolbar/wieldRightScale", 1).toFloat());
     bool wieldRightVisible = clientSettings->getParameter("Toolbar/wieldRight", true).toBool();
-    if(!wieldRightVisible) wieldRightWidget->setVisible(wieldRightVisible);
+    wieldRightWidget->setVisible(wieldRightVisible);
     wieldRightAction = mainWindow->addToolbarWidget(wieldRightWidget);
 
     QWidget* spellWidget = spell->create();
+    spell->setScale(clientSettings->getParameter("Toolbar/spellScale", 1).toFloat());
     bool spellVisible = clientSettings->getParameter("Toolbar/spell", true).toBool();
-    if(!spellVisible) spellWidget->setVisible(spellVisible);
+    spellWidget->setVisible(spellVisible);
     spellAction = mainWindow->addToolbarWidget(spellWidget);
 
     QWidget* activeSpellsWidget = activeSpell->create();
+    activeSpell->setScale(clientSettings->getParameter("Toolbar/activeSpellsScale", 1).toFloat());
     bool activeSpellsVisible = clientSettings->getParameter("Toolbar/activeSpells", true).toBool();
-    if(!activeSpellsVisible) activeSpellsWidget->setVisible(activeSpellsVisible);
+    activeSpellsWidget->setVisible(activeSpellsVisible);
     activeSpellAction = mainWindow->addToolbarWidget(activeSpellsWidget);
 
     QWidget* statusWidget = statusIndicator->create();
+    statusIndicator->setScale(clientSettings->getParameter("Toolbar/statusScale", 1).toFloat());
     bool statusVisible = clientSettings->getParameter("Toolbar/status", true).toBool();
-    if(!statusVisible) statusWidget->setVisible(statusVisible);
+    statusWidget->setVisible(statusVisible);
     statusAction = mainWindow->addToolbarWidget(statusWidget);
 
     this->addMuteButton();
 
-    QWidget* buttonsWidget = quickButtonDisplay->create();
+    QWidget* buttonsWidget = quickButtonDisplay->create();    
+    quickButtonDisplay->setScale(clientSettings->getParameter("Toolbar/buttonsScale", 1).toFloat());
     bool buttonsVisible = clientSettings->getParameter("Toolbar/buttons", true).toBool();
-    if(!buttonsVisible) buttonsWidget->setVisible(buttonsVisible);
+    buttonsWidget->setVisible(buttonsVisible);
     buttonsAction = mainWindow->addToolbarWidget(buttonsWidget);
 
     QWidget* vitalsWidget = vitalsIndicator->create();
+    vitalsIndicator->setScale(clientSettings->getParameter("Toolbar/vitalsScale", 1).toFloat());
     bool vitalsVisible = clientSettings->getParameter("Toolbar/vitals", true).toBool();
     if(!vitalsVisible) vitalsWidget->setVisible(vitalsVisible);
     vitalsAction = mainWindow->addToolbarWidget(vitalsWidget);
 
     this->addFullScreenButton();
+}
+
+void Toolbar::setScale(float scale) {
+    wieldLeft->setScale(scale);
+    clientSettings->setParameter("Toolbar/wieldLeftScale", QString::number(scale));
+    wieldRight->setScale(scale);
+    clientSettings->setParameter("Toolbar/wieldRightScale", QString::number(scale));
+    spell->setScale(scale);
+    clientSettings->setParameter("Toolbar/spellScale", QString::number(scale));
+    activeSpell->setScale(scale);
+    clientSettings->setParameter("Toolbar/activeSpellsScale", QString::number(scale));
+    statusIndicator->setScale(scale);
+    clientSettings->setParameter("Toolbar/statusScale", QString::number(scale));
+    muteButton->setScale(scale);
+    clientSettings->setParameter("Toolbar/muteScale", QString::number(scale));
+    quickButtonDisplay->setScale(scale);
+    clientSettings->setParameter("Toolbar/buttonsScale", QString::number(scale));
+    vitalsIndicator->setScale(scale);
+    clientSettings->setParameter("Toolbar/vitalsScale", QString::number(scale));
+    fullScreenButton->setScale(scale);
+    clientSettings->setParameter("Toolbar/fullScreenScale", QString::number(scale));
 }
 
 void Toolbar::updateWieldLeft(QString value) {
@@ -225,6 +258,10 @@ void Toolbar::setVitalsVisible(bool visible) {
 
 void Toolbar::setMuteVisible(bool visible) {
     muteButtonAction->setVisible(visible);
+}
+
+void Toolbar::setFullScreenVisible(bool visible) {
+    fullScreenAction->setVisible(visible);
 }
 
 void Toolbar::updateActiveSpells(QStringList activeSpells) {

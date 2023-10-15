@@ -158,12 +158,20 @@ void GameWindow::buildContextMenu() {
 
     menu->addSeparator();
 
+    unstuckAct = new QAction(tr("&Unstuck\t"), this);
+    menu->addAction(unstuckAct);
+
+    menu->addSeparator();
+
     clearAct = new QAction(tr("&Clear\t"), this);
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
 
-
     connect(distractionFreeModeAct, SIGNAL(changed()), mainWindow, SLOT(toggleDistractionFreeMode()));
+}
+
+QAction* GameWindow::getUnstuck() {
+    return unstuckAct;
 }
 
 void GameWindow::changeAppearance() {
@@ -295,6 +303,7 @@ GameWindow::~GameWindow() {
     delete selectAct;
     delete clearAct;
     delete saveAct;
+    delete unstuckAct;
     delete menu;
     delete snapshot;
 }

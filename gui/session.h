@@ -19,12 +19,18 @@ public:
     void openConnection(QString host, QString port, QString key);
     void openLocalConnection(QString port);
 
+public slots:
+    void unstuck();
+
 private slots:
     // Connect statuses from tcp client
     void connectAvailable(bool);
     void connectStarted();
     void connectSucceeded();
     void writeMessage(QString);
+
+signals:
+    void flushCache();
 
 private:
     void bindParserAndClient();

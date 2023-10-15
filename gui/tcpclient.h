@@ -26,6 +26,8 @@ public:
     void disconnectFromServer();
     void quitGame();
 
+    Session* getSession();
+
     void connectApi(QString host, QString port, QString user, QString password,
                     QString game, QString character, bool apiLich);
 

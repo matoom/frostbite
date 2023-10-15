@@ -6,6 +6,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#define T_SPELL_W 150
+#define T_SPELL_H 32
+
 class SpellIndicator : public QObject {
     Q_OBJECT
 
@@ -16,6 +19,8 @@ public:
     QWidget* create();
     void setToolTip(QString text);
     void setText(QString text);
+
+    void setScale(float scale);
 
     QLabel* imageLabel;
     QLabel* textLabel;

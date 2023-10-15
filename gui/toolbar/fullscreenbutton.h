@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QToolButton>
 
+#define T_FS_W 28
+#define T_FS_H 28
+
 class Toolbar;
 class MainWindow;
 
@@ -13,6 +16,8 @@ class FullscreenButton : QToolButton {
 public:
     explicit FullscreenButton(QWidget *parent = 0);
     
+    void setScale(float scale);
+
 private:
     MainWindow* mainWindow;
 

@@ -45,6 +45,8 @@ Session::Session(MainWindow* parent, bool debug)
     }
 
     tcpClient->init();
+
+    connect(this, SIGNAL(flushCache()), xmlParser, SLOT(flushStream()));
 }
 
 void Session::bindParserAndClient() {
@@ -55,7 +57,7 @@ void Session::bindParserAndClient() {
     connect(xmlParser, SIGNAL(writeModeSettings()), tcpClient, SLOT(writeModeSettings()));
     connect(xmlParser, SIGNAL(writeDefaultSettings(QString)), tcpClient,
             SLOT(writeDefaultSettings(QString)));
-    connect(xmlParser, SIGNAL(gameModeIsCmgr(bool)), tcpClient, SLOT(setGameModeCmgr(bool)));
+    connect(xmlParser, SIGNAL(gameModeIsCmgr(bool)), tcpClient, SLOT(setGameModeCmgr(bool)));      
 }
 
 TcpClient* Session::getTcpClient() {
@@ -177,4 +179,9 @@ void Session::writeMessage(QString reason) {
                                                    + "<br>"
                                                      "*<br>"
                                                      "<br><br>");
+}
+
+void Session::unstuck() {
+    mainWindow->getWindowFacade()->writeGameWindow("Attempting to unstuck ...");
+    emit flushCache();
 }

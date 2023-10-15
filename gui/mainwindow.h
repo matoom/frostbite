@@ -38,6 +38,7 @@ class ClientSettings;
 class HyperlinkService;
 class Session;
 class ScriptStreamServer;
+class GameWindow;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -74,6 +75,8 @@ public:
     void setMenuButtonsVisible(bool enabled);
     void setMenuVitalsVisible(bool enabled);
     void setMenuMutedVisible(bool enabled);
+    void setFullScreenVisible(bool enabled);
+    void setToolSize(QString size);
 
     void setToolbarAllowedAreas(Qt::ToolBarAreas);
     void toggleFullScreen();
@@ -98,11 +101,14 @@ public:
     void enableMapsMenu(bool enabled);
     void enableConnectButton(bool enabled);
 
+    void setToolbarScale(float scale);
+
     MenuHandler* getMenuHandler();
     WindowFacade* getWindowFacade();
     Toolbar* getToolbar();
     VitalsBar* getVitalsBar();
     TcpClient* getTcpClient();
+    Session* getSession();
     CommandLine* getCommandLine();
     ScriptService* getScriptService();
     ScriptStreamServer* getScriptStreamServer();

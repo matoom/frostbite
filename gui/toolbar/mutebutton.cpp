@@ -11,7 +11,7 @@ MuteButton::MuteButton(QWidget *parent) : QToolButton(parent) {
     mainWindow = (MainWindow*)parent;
     clientSettings = ClientSettings::getInstance();
 
-    setIconSize(QSize(32, 32));
+    setIconSize(QSize(T_MUTE_W, T_MUTE_H));
     setObjectName("muted");
     setCursor(Qt::PointingHandCursor);
 
@@ -33,6 +33,10 @@ MuteButton::MuteButton(QWidget *parent) : QToolButton(parent) {
 
     connect(this, SIGNAL(volumeMuted(bool)), mainWindow, SLOT(menuVolumeMuted(bool)));
     connect(mainWindow, SIGNAL(volumeMuted(bool)), this, SLOT(setMuted(bool)));
+}
+
+void MuteButton::setScale(float scale) {
+    setIconSize(QSize(T_MUTE_W * scale, T_MUTE_H * scale));
 }
 
 void MuteButton::clicked() {        

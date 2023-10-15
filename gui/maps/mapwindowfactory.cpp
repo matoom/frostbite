@@ -8,8 +8,6 @@
 #include "maps/mapfacade.h"
 #include "generalsettings.h"
 
-
-
 MapWindowFactory::MapWindowFactory(MapFacade *parent) : QObject(parent) {
     mapFacade = parent;
     mapWindow = new MapWindow(mapFacade);
@@ -86,7 +84,6 @@ QComboBox* MapWindowFactory::createMapSelect(QWidget* parent, QString name) {
    QComboBox* combo = new QComboBox(parent);
    combo->setObjectName(name + "Select");
    combo->setDisabled(true);
-   combo->setMinimumWidth(150);
    connect(combo, SIGNAL(activated(int)), mapFacade, SLOT(mapSelected(int)));
    return combo;
 }

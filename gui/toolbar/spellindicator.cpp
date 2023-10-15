@@ -25,8 +25,8 @@ QLabel *SpellIndicator::spellImageLabel(const char* img) {
 QLabel* SpellIndicator::spellTextLabel() {
     textLabel = new QLabel;
     textLabel->setObjectName("spells");
-    textLabel->setFixedWidth(150);
-    textLabel->setFixedHeight(34);
+    textLabel->setFixedWidth(T_SPELL_W);
+    textLabel->setFixedHeight(T_SPELL_H);
     textLabel->setWordWrap(true);
     textLabel->setAlignment(Qt::AlignCenter);
     textLabel->setTextFormat(Qt::RichText);
@@ -59,6 +59,11 @@ void SpellIndicator::setToolTip(QString text) {
 void SpellIndicator::setText(QString text) {
     this->setToolTip(text);
     textLabel->setText(text);
+}
+
+void SpellIndicator::setScale(float scale) {
+    textLabel->setFixedWidth(T_SPELL_W * scale);
+    textLabel->setFixedHeight(T_SPELL_H * scale);
 }
 
 QWidget* SpellIndicator::create() {

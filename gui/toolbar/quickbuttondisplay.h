@@ -6,6 +6,9 @@
 #include <QToolButton>
 #include <QHBoxLayout>
 
+#define T_QB_W 28
+#define T_QB_H 28
+
 class Toolbar;
 class GeneralSettings;
 class QuickButtonEditDialog;
@@ -18,6 +21,8 @@ public:
     ~QuickButtonDisplay();
 
     QWidget *create();
+
+    void setScale(float scale);
 
     void reloadSettings();
 
