@@ -24,6 +24,10 @@ public:
 
     void track(QString skillName, QWidget* widget);  
 
+    ContextMenu* getMenu();
+    void setWindowParameter(QString parameter, QVariant value);
+    QVariant getWindowParameter(QString parameter, QVariant defaultValue);
+
 private:
     MainWindow* mainWindow;
     GeneralSettings* settings;

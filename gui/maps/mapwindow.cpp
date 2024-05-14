@@ -44,22 +44,24 @@ void MapWindow::scaleView(qreal step) {
     qreal scaleFactor = (scale + step) / (qreal)scale;
 
     this->scale(scaleFactor, scaleFactor);
-    mapFacade->setZoom(QString::number(scale * scaleFactor) + "x");
+
+    QString zoomLabel = QString("%1x").arg(scale * scaleFactor, 0, 'f', 2);
+    mapFacade->setZoom(zoomLabel);
 }
 
 void MapWindow::wheelEvent(QWheelEvent* event) {
     int delta = event->delta();
     if(delta != 0) {
-        scaleView(delta / qFabs(delta * 2));
+        scaleView(delta / qFabs(delta * 4));
     }
 }
 
 void MapWindow::zoomIn() {
-    scaleView(0.5);
+    scaleView(0.25);
 }
 
 void MapWindow::zoomOut() {
-    scaleView(-0.5);
+    scaleView(-0.25);
 }
 
 void MapWindow::reset() {

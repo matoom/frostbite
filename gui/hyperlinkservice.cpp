@@ -24,6 +24,8 @@ void HyperlinkService::handleUrl(const QUrl &url) {
         QString action = url.toDisplayString(QUrl::RemoveScheme).remove("//a/");
         handleActionCommand(QByteArray::fromBase64(action.toLocal8Bit()));
     }
+
+    //QDesktopServices::unsetUrlHandler(FROSTBITE_SCHEMA);
 }
 
 void HyperlinkService::handleActionCommand(const QString &action) {

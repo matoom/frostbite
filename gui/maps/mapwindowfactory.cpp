@@ -99,7 +99,7 @@ QLabel* MapWindowFactory::createMapIdLabel(QWidget* parent, QString name) {
 QLabel* MapWindowFactory::createZoomLabel(QWidget* parent, QString name) {
     QLabel* label = new QLabel(parent);
     label->setObjectName(name + "ZoomLabel");
-    label->setText("1x");
+    label->setText("1.00x");
     label->setToolTip("Zoom level");
     return label;
 }

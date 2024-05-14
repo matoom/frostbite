@@ -48,15 +48,17 @@ void MapDialog::scaleView(qreal step) {
     qreal scaleFactor = (scale + step) / (qreal)scale;
 
     ui->mapView->scale(scaleFactor, scaleFactor);
-    ui->zoomLabel->setText(QString::number(scale * scaleFactor) + "x");
+
+    QString zoomLabel = QString("%1x").arg(scale * scaleFactor, 0, 'f', 2);
+    ui->zoomLabel->setText(zoomLabel);
 }
 
 void MapDialog::zoomIn() {
-    scaleView(0.5);
+    scaleView(0.25);
 }
 
 void MapDialog::zoomOut() {
-    scaleView(-0.5);
+    scaleView(-0.25);
 }
 
 void MapDialog::reset() {

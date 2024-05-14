@@ -39,7 +39,7 @@ $rt_adjust = 0
 module API
   #constants
   AUTH_HOST = "eaccess.play.net"
-  AUTH_PORT = "7900"
+  AUTH_PORT = "7910"
   AUTH_GAMES = {:prime => 'DR', :test => 'DRT', :plat => 'DRX', :fallen => 'DRF'}
 
   API_PUT_PREFIX = "put#"

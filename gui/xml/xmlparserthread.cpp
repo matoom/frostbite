@@ -37,6 +37,11 @@ QString XmlParserThread::fixInputXml(QString data) {
 
 void XmlParserThread::flushStream() {
     pushStream = false;
+    if(!streamCache.isEmpty()) {
+        TextUtils::plainToHtml(streamCache);
+        emit writeText("Error: Unable to parse - " +
+                       streamCache.toLocal8Bit(), false);
+    }
     streamCache.clear();
 }
 
@@ -269,6 +274,12 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "castTime") {
             castTime.setTime_t(e.attribute("value").toInt());
             initCastTime = true;
+        } else if(e.tagName() == "openDialog") {
+            QString id = e.attribute("id");
+            if(!id.startsWith("quick") && !id.startsWith("mini")) {
+                QString title = root.firstChildElement("openDialog").attribute("title");
+                gameText += title + "\n";
+            }
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "minivitals") {
             /* filter vitals */
             QDomElement vitalsElement = root.firstChildElement("dialogData").firstChildElement("progressBar");
@@ -276,6 +287,16 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
         } else if(e.tagName() == "dialogData" && e.attribute("id") == "spellChoose") {
             QDomElement closeButton = e.firstChildElement("closeButton");
             gameText += closeButton.attribute("value") + ": [<span class=\"bold\">" + closeButton.attribute("cmd") + "</span>]";
+        } else if(e.tagName() == "dialogData") {
+            QDomElement data = root.firstChildElement("dialogData");
+            QDomNodeList labels = data.elementsByTagName("label");
+            for(int i = 0; i < labels.count(); i++) {
+                QDomNode label = labels.at(i);
+                if(label.isElement()) {
+                    QString value = label.toElement().attribute("value");
+                    gameText += value + " ";
+                }
+            }
         } else if(e.tagName() == "indicator") {
             /* filter player status indicator */
             //<indicator id="IconKNEELING" visible="n"/><indicator id="IconPRONE" visible="n"/>

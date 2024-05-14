@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>290</height>
+    <width>350</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>450</width>
-    <height>250</height>
+    <width>350</width>
+    <height>200</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -65,8 +65,8 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>200</width>
-        <height>150</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="tabPosition">
@@ -76,7 +76,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="connectTab">
        <property name="enabled">
@@ -109,7 +109,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -141,7 +141,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -170,7 +170,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -287,7 +287,7 @@
                <widget class="QLineEdit" name="gameHostEdit">
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -313,7 +313,7 @@
                <widget class="QLineEdit" name="sessionKeyEdit">
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -430,7 +430,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>100</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>
@@ -547,7 +547,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>75</width>
                   <height>25</height>
                  </size>
                 </property>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>357</height>
+    <width>416</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,7 +125,7 @@
        <item>
         <widget class="QLabel" name="zoomLabel">
          <property name="text">
-          <string>1x</string>
+          <string>1.00x</string>
          </property>
         </widget>
        </item>

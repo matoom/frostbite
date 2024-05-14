@@ -113,7 +113,7 @@ void AppearanceDialog::populateMainBox() {
 
     hLayout->addWidget(label("Text:"));
 
-    mainFontSelect = selectButton(200, 22, "Click here to pick a new font.");
+    mainFontSelect = selectButton(150, 22, "Click here to pick a new font.");
     connect(mainFontSelect, SIGNAL(clicked()), this, SLOT(selectMainFont()));
     hLayout->addWidget(mainFontSelect);
 
@@ -138,7 +138,7 @@ void AppearanceDialog::populateDockBox() {
 
     hLayout->addWidget(label("Text:"));
 
-    dockFontSelect = selectButton(200, 22, "Click here to pick a new font.");
+    dockFontSelect = selectButton(150, 22, "Click here to pick a new font.");
     connect(dockFontSelect, SIGNAL(clicked()), this, SLOT(selectDockFont()));
     hLayout->addWidget(dockFontSelect);
 
@@ -180,7 +180,7 @@ void AppearanceDialog::populateCmdBox() {
     hLayout = new QHBoxLayout();
     hLayout->addWidget(label("Text:"));
 
-    cmdFontSelect = selectButton(200, 22, "Click here to pick a new font.");
+    cmdFontSelect = selectButton(150, 22, "Click here to pick a new font.");
     connect(cmdFontSelect, SIGNAL(clicked()), this, SLOT(selectCmdFont()));
     hLayout->addWidget(cmdFontSelect);
 

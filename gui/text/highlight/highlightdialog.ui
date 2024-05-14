@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>905</width>
-    <height>479</height>
+    <width>547</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,6 +46,18 @@
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -58,6 +70,18 @@
             <widget class="QPushButton" name="gRemove">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="text">
               <string>Remove</string>
@@ -74,11 +98,21 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
-               <height>20</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>search</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -95,6 +129,19 @@
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QCheckBox" name="gStartingWith">
              <property name="enabled">
               <bool>false</bool>
@@ -105,7 +152,20 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="gGroupsMatch">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -113,6 +173,19 @@
               <string>Highlight regex groups</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QCheckBox" name="gPartialMatch">
@@ -125,7 +198,20 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox_2">
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="gCaseInsensitive">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -176,14 +262,8 @@
                <widget class="QLabel" name="label_2">
                 <property name="minimumSize">
                  <size>
-                  <width>55</width>
+                  <width>0</width>
                   <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>55</width>
-                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="text">
@@ -193,6 +273,12 @@
               </item>
               <item>
                <widget class="QComboBox" name="gFileSelect">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="palette">
                  <palette>
                   <active>
@@ -234,11 +320,11 @@
               </item>
               <item>
                <widget class="QPushButton" name="gPlay">
-                <property name="maximumSize">
-                 <size>
-                  <width>80</width>
-                  <height>16777215</height>
-                 </size>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
                 <property name="text">
                  <string>Play</string>
@@ -265,6 +351,18 @@
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
             <widget class="QPushButton" name="tAdd">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>Add</string>
              </property>
@@ -274,6 +372,18 @@
             <widget class="QPushButton" name="tRemove">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="text">
               <string>Remove</string>
@@ -287,14 +397,32 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
-               <height>20</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
             </spacer>
            </item>
            <item>
             <widget class="QLineEdit" name="tFilterEdit">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="placeholderText">
               <string>search</string>
              </property>
@@ -397,6 +525,19 @@
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QCheckBox" name="tStartingWith">
              <property name="enabled">
               <bool>false</bool>
@@ -405,6 +546,19 @@
               <string>Highlight starting with</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QCheckBox" name="tGroupsMatch">
@@ -417,6 +571,19 @@
             </widget>
            </item>
            <item>
+            <spacer name="horizontalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QCheckBox" name="tPartialMatch">
              <property name="enabled">
               <bool>false</bool>
@@ -425,6 +592,19 @@
               <string>Partial matching</string>
              </property>
             </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <widget class="QCheckBox" name="tCaseInsensitive">
@@ -453,7 +633,7 @@
               <bool>false</bool>
              </property>
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -478,18 +658,6 @@
                <layout class="QHBoxLayout" name="horizontalLayout_9">
                 <item>
                  <widget class="QLabel" name="label_4">
-                  <property name="minimumSize">
-                   <size>
-                    <width>55</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>55</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
                   <property name="text">
                    <string>Sound File:</string>
                   </property>
@@ -497,6 +665,12 @@
                 </item>
                 <item>
                  <widget class="QComboBox" name="tFileSelect">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="palette">
                    <palette>
                     <active>
@@ -551,18 +725,6 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="tPlay">
-                  <property name="minimumSize">
-                   <size>
-                    <width>80</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>80</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
                   <property name="text">
                    <string>Play</string>
                   </property>
@@ -577,6 +739,12 @@
             <widget class="QGroupBox" name="tTimerGroup">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
@@ -604,19 +772,15 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="tTimerValue">
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                 </widget>
+                 <widget class="QLineEdit" name="tTimerValue"/>
                 </item>
                 <item>
                  <widget class="QLabel" name="label_3">
-                  <property name="text">
+                  <property name="toolTip">
                    <string>Seconds</string>
+                  </property>
+                  <property name="text">
+                   <string>s</string>
                   </property>
                  </widget>
                 </item>
@@ -641,7 +805,14 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="tActionSelect"/>
+                 <widget class="QComboBox" name="tActionSelect">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -673,12 +844,6 @@
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QSlider" name="healthSlider">
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="sliderPosition">
              <number>99</number>
             </property>
@@ -705,11 +870,11 @@
           </item>
           <item>
            <widget class="QComboBox" name="healthPlaySelect">
-            <property name="minimumSize">
-             <size>
-              <width>150</width>
-              <height>0</height>
-             </size>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="palette">
              <palette>
@@ -752,6 +917,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="healthPlayButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Play</string>
             </property>
@@ -774,6 +945,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_14">
           <item>
            <widget class="QComboBox" name="deathPlaySelect">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="palette">
              <palette>
               <active>
@@ -816,7 +993,7 @@
           <item>
            <widget class="QPushButton" name="deathPlayButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -843,6 +1020,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_12">
           <item>
            <widget class="QComboBox" name="stunPlaySelect">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="palette">
              <palette>
               <active>
@@ -885,7 +1068,7 @@
           <item>
            <widget class="QPushButton" name="stunPlayButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -912,6 +1095,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_13">
           <item>
            <widget class="QComboBox" name="bleedingPlaySelect">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="palette">
              <palette>
               <active>
@@ -954,7 +1143,7 @@
           <item>
            <widget class="QPushButton" name="bleedingPlayButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -981,6 +1170,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_15">
           <item>
            <widget class="QComboBox" name="webbedPlaySelect">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="palette">
              <palette>
               <active>
@@ -1023,7 +1218,7 @@
           <item>
            <widget class="QPushButton" name="webbedPlayButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1057,6 +1252,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="okButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Ok</string>
        </property>
@@ -1067,6 +1268,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Cancel</string>
        </property>
@@ -1076,6 +1283,12 @@
       <widget class="QPushButton" name="applyButton">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="text">
         <string>Apply</string>

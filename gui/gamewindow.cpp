@@ -41,6 +41,12 @@ GameWindow::GameWindow(QWidget *parent) : QPlainTextEdit(parent) {
     setViewportMargins(0, 0, 0, -6);
 }
 
+void GameWindow::enableLinks() {
+    viewport()->setCursor(Qt::IBeamCursor);
+    this->linksEnabled = linksEnabledAct->isChecked();
+    settings->setParameter("GameWindow/linksEnabled", this->linksEnabled);
+}
+
 void GameWindow::setAppend(bool append) {
     this->_append = append;
 }
@@ -91,6 +97,8 @@ void GameWindow::loadSettings() {
     p.setColor(QPalette::Text, settings->gameWindowFontColor());
     p.setColor(QPalette::Base, settings->gameWindowBackground());
     this->setPalette(p);
+
+    linksEnabled = settings->getParameter("GameWindow/linksEnabled", true).value<bool>();
 }
 
 QColor GameWindow::getBgColor() {
@@ -163,6 +171,14 @@ void GameWindow::buildContextMenu() {
 
     menu->addSeparator();
 
+    linksEnabledAct = new QAction(tr("&Enable Links\t"), this);
+    linksEnabledAct->setCheckable(true);
+    linksEnabledAct->setChecked(linksEnabled);
+    menu->addAction(linksEnabledAct);
+    connect(linksEnabledAct, SIGNAL(triggered()), this, SLOT(enableLinks()));
+
+    menu->addSeparator();
+
     clearAct = new QAction(tr("&Clear\t"), this);
     menu->addAction(clearAct);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
@@ -203,19 +219,21 @@ void GameWindow::mouseDoubleClickEvent(QMouseEvent* e) {
 }
 
 void GameWindow::mousePressEvent(QMouseEvent *e) {
-    auto anchor = anchorAt(e->pos());
-    if (e->button() == Qt::LeftButton && !anchor.isEmpty()) {
-        clickedAnchor = anchor;
-        // Here we do not call QPlainTextEdit::mousePressEvent(e);
-        // due to the bug in QPlainTextEdit which picks up
-        // the character format if the url was clicked.
-        return;
+    if(linksEnabled) {
+        auto anchor = anchorAt(e->pos());
+        if (e->button() == Qt::LeftButton && !anchor.isEmpty()) {
+            clickedAnchor = anchor;
+            // Here we do not call QPlainTextEdit::mousePressEvent(e);
+            // due to the bug in QPlainTextEdit which picks up
+            // the character format if the url was clicked.
+            return;
+        }
     }
     QPlainTextEdit::mousePressEvent(e);
 }
 
 void GameWindow::mouseReleaseEvent(QMouseEvent *e) {
-    if (e->button() == Qt::LeftButton && !clickedAnchor.isEmpty()) {
+    if (linksEnabled && e->button() == Qt::LeftButton && !clickedAnchor.isEmpty()) {
         if (anchorAt(e->pos()) == clickedAnchor) {
             this->resetWindow();
             QDesktopServices::openUrl(QUrl(clickedAnchor, QUrl::TolerantMode));
@@ -234,10 +252,12 @@ void GameWindow::resetWindow() {
 }
 
 void GameWindow::mouseMoveEvent(QMouseEvent *e) {
-    if(!anchorAt(e->pos()).isEmpty()) {
-        viewport()->setCursor(Qt::PointingHandCursor);
-    } else {
-        viewport()->unsetCursor();
+    if(linksEnabled) {
+        if(!anchorAt(e->pos()).isEmpty()) {
+            viewport()->setCursor(Qt::PointingHandCursor);
+        } else {
+            viewport()->setCursor(Qt::IBeamCursor);
+        }
     }
     QPlainTextEdit::mouseMoveEvent(e);
 }
@@ -247,7 +267,6 @@ void GameWindow::enableCopy(bool enabled) {
     lookupDictAct->setEnabled(enabled);
     lookupWikiAct->setEnabled(enabled);
 }
-
 
 void GameWindow::lookupInDictionary() {
     QTextCursor textCursor = this->textCursor();
@@ -304,6 +323,7 @@ GameWindow::~GameWindow() {
     delete clearAct;
     delete saveAct;
     delete unstuckAct;
+    delete linksEnabledAct;
     delete menu;
     delete snapshot;
 }

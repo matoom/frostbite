@@ -35,6 +35,14 @@ void GridWindow::updateSettings() {
     this->updateSize();
 }
 
+void GridWindow::setWindowParameter(QString parameter, QVariant value) {
+    settings->setParameter(windowId + "/" + parameter, value);
+}
+
+QVariant GridWindow::getWindowParameter(QString parameter, QVariant defaultValue) {
+    return settings->getParameter(windowId + "/" + parameter, defaultValue);
+}
+
 void GridWindow::loadSettings() {        
     QVariant fontValue = settings->getParameter(windowId + "/font", QVariant());
     if(!fontValue.isNull()) {
@@ -155,6 +163,10 @@ void GridWindow::contextMenuEvent(QContextMenuEvent* event) {
     QPoint point = event->globalPos();
     point.rx()--; point.ry()--;
     menu->exec(point);
+}
+
+ContextMenu* GridWindow::getMenu() {
+    return menu;
 }
 
 void GridWindow::buildContextMenu() {

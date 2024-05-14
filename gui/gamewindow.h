@@ -69,6 +69,7 @@ private:
     QAction* clearAct;
     QAction* saveAct;
     QAction* unstuckAct;
+    QAction* linksEnabledAct;
     QAction* distractionFreeModeAct;
     ContextMenu* menu;
 
@@ -76,6 +77,8 @@ private:
     bool _stream;
 
     QString clickedAnchor;
+
+    bool linksEnabled;
 
     struct DictionaryEvent {
         QString word;
@@ -92,6 +95,7 @@ private slots:
     void lookupInElanthipedia();
     void copySelected();
     void enableCopy(bool);
+    void enableLinks();
     void saveAsHtml();
     void changeAppearance();
     void translationFinished(QString word, QString translation);
