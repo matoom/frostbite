@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Maps&lt;/h2&gt; | Frostbite</title>
+<title>Maps | Frostbite</title>
 <meta name="generator" content="Jekyll v3.9.5" />
-<meta property="og:title" content="Maps&lt;/h2&gt;" />
+<meta property="og:title" content="Maps" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="MUD client for dragonrealms." />
 <meta property="og:description" content="MUD client for dragonrealms." />
@@ -17,12 +17,12 @@
 <meta property="og:site_name" content="Frostbite" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Maps&lt;/h2&gt;" />
+<meta property="twitter:title" content="Maps" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"MUD client for dragonrealms.","headline":"Maps&lt;/h2&gt;","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/logo.png"}},"url":"http://localhost:4000/user_interface/maps.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"MUD client for dragonrealms.","headline":"Maps","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/logo.png"}},"url":"http://localhost:4000/user_interface/maps.html"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=4b0d7792a1f0f952f9d21ed1464549364aa41c25">
+    <link rel="stylesheet" href="/assets/css/style.css?v=a094b754aaa9b43a4e7fd9b2adf347b4695a5343">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -42,6 +42,7 @@
     <div class="wrapper">
       <header>
         <h1><a href="http://localhost:4000/">Frostbite</a></h1>
+        <h2><a href="http://localhost:4000/">User Guide</a></h1>
 
         
           <a href="http://localhost:4000/">
@@ -68,10 +69,10 @@
         </ol>
         <a href="http://localhost:4000/scripting">Scripting</a>
         <ol>
-          <li><a href="http://localhost:4000/basics">Basics</a></li>
-          <li><a href="http://localhost:4000/api">Scripting API</a></li>
-          <li><a href="http://localhost:4000/lich">Scripting with Lich</a></li>
-          <li><a href="http://localhost:4000/development">Development</a></li>
+          <li><a href="http://localhost:4000/scripting/basics">Basics</a></li>
+          <li><a href="http://localhost:4000/scripting/api">Scripting API</a></li>
+          <li><a href="http://localhost:4000/scripting/lich">Scripting with Lich</a></li>
+          <li><a href="http://localhost:4000/scripting/development">Development</a></li>
         </ol>
         <br>
 
@@ -96,7 +97,7 @@
       </header>
       <section>
 
-      <h1 id="mapsh2">Maps&lt;/h2&gt;</h1>
+      <h2 id="maps">Maps</h2>
 
 <p>Frostbite frontend loosely follows the Genie Map <a href="xsd/map.xsd">schema</a> to process and display maps.
 Map files have to be placed in the maps folder during application start up and any changes to map files require
@@ -106,44 +107,15 @@ a restart to take effect.</p>
 <a href="https://github.com/GenieClient/Maps">https://github.com/GenieClient/Maps</a>
 -&gt; Download a zip of all the maps.</p>
 
-<h2 id="map">Map</h2>
+<h3 id="map">Map</h3>
 
 <p>To open the map dialog window press right click on the map window and open view maps option.</p>
 
 <p><img src="/assets/img/map.png" alt="Screenshot of map" /></p>
 
-<h2 id="legend">Legend</h2>
+<p><img src="/assets/img/map_legend.png" alt="Map Legend" /></p>
 
-<table>
-  <tbody>
-    <tr>
-      <td><img src="/assets/img/map_location.png" alt="" /> Current/selected location</td>
-      <td>&lt;div class="small-rect aqua"&gt;&lt;/div&gt; Homes</td>
-      <td>&lt;div class="small-rect lime"&gt;&lt;/div&gt; Point of interest</td>
-      <td>&lt;div class="small-rect pink"&gt;&lt;/div&gt; Resting area</td>
-    </tr>
-    <tr>
-      <td><img src="/assets/img/map_connect.png" alt="" /> Connecting node</td>
-      <td>&lt;div class="small-rect yellow"&gt;&lt;/div&gt;Trainer</td>
-      <td>&lt;div class="small-rect blue"&gt;&lt;/div&gt;Water</td>
-      <td>&lt;div class="small-rect orange"&gt;&lt;/div&gt;Guild</td>
-    </tr>
-    <tr>
-      <td><img src="/assets/img/map_id.png" alt="" /> Node ID</td>
-      <td>&lt;div class="small-rect fuchsia"&gt;&lt;/div&gt;Portal</td>
-      <td>&lt;div class="small-rect dark-blue"&gt;&lt;/div&gt;Deep water</td>
-      <td>&lt;div class="small-rect red"&gt;&lt;/div&gt;Shop</td>
-    </tr>
-    <tr>
-      <td>&lt;div class="small-rect light-blue"&gt;&lt;/div&gt; Altar</td>
-      <td>&lt;div class="small-rect teal"&gt;&lt;/div&gt;Lumber</td>
-      <td>&lt;div class="small-rect olive"&gt;&lt;/div&gt;Mine</td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="map-movement-and-functions">Map movement and functions</h2>
+<h3 id="map-movement-and-functions">Map movement and functions</h3>
 
 <p>Map consists of nodes (rooms) and arcs (movement paths).
 Map nodes can be selected using the left mouse click.

@@ -1,6 +1,6 @@
-# Introduction
+## Introduction
 
-Frostbite is a desktop frontend designed for [Dragonrealms MUD](http://www.play.net/dr/)".
+Frostbite is a desktop frontend designed for [Dragonrealms MUD](http://www.play.net/dr/).
 It is free to use and follows open source principles.
 
 The application software is developed in C++ using [Qt](https://www.qt.io/).

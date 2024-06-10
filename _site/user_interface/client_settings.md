@@ -1,4 +1,4 @@
-# Client settings
+## Client settings
 
 The Frostbite frontend is still a work in progress and not all functions in the
 application can be configured.
@@ -10,7 +10,7 @@ filter highlighted text, add text substitutions or ignores and set quick button 
 > in the source code.
 > To make changes to the source code refer to the [development](/development) page.
 
-## Appearance dialog
+### Appearance dialog
 
 Can be opened from the main menu (preferences for Max OS X).
 It allows users to change text color, font and background color of game windows.
@@ -19,7 +19,7 @@ system fonts but the game text formatting expects a monospace/fixed-width font t
 
 ![Screenshot of appearance dialogue](/assets/img/appearance.png)
 
-## Highlight dialog
+### Highlight dialog
 
 Can be opened from the main menu and it allows to set text color highlighting.
 The highlight dialog is split up into three subcategories.
@@ -35,7 +35,7 @@ Users can add new highlights by clicking on the add button.
 To change highlight text color click the right mouse button on the highlight
 item and choose "Change color" from the context menu.
 
-## Text alterations
+### Text alterations
 
 > Some caution is advised when adding text alterations. As a result text can completely disappear from view or
 > cause malformed text to appear. It is important to note that text contains hidden HTML symbols and entities
@@ -55,7 +55,7 @@ entire line if text match is found.
 Text matching in alterations is based on a Perl-compatible regular expression engine. All invalid regular
 expressions are treated as void entries and displayed as red background on the input field.
 
-## Common characters and abbreviations
+### Common characters and abbreviations
 
 |**c** |Character represents itself unless it has a special regexp meaning.|**\d**|Matches a digit.|                        |
 |**\c**|A character that follows a backslash matches the character itself. |**\D**|Matches a non-digit.                     |
@@ -66,7 +66,7 @@ expressions are treated as void entries and displayed as red background on the i
 |**\t**|Matches the ASCII horizontal tab (HT, 0x09).                       |**\n**|The n-th backreference, e.g. \1, \2, etc.|
 |**.** |(dot)	Matches any character (including newline).                 |      |                                         |
 
-## Macros/Sequences
+### Macros/Sequences
 
 Macros allow users to bind game commands to specified key combinations. In addition to macros Frostbite frontend
 also supports key sequences, meaning that you can delay a predetermined amount of time between each command, which
@@ -77,7 +77,7 @@ will wait before executing the last command for a
 predetermined amount of time.
 The sequence timer can be configured from the macro dialog.
 
-## Keywords used in macros
+### Keywords used in macros
 
 * $n - new line
 * $s - new sequence line (pauses for sequence time and then puts a new line)
@@ -85,7 +85,7 @@ The sequence timer can be configured from the macro dialog.
 
 ![Screenshot of macro sequences](/assets/img/macros.png)
 
-## Quick button actions
+### Quick button actions
 
 Quick button actions can be changed by clicking the right mouse button on the target button.
 

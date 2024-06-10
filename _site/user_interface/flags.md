@@ -1,4 +1,4 @@
-# Server-side flags and settings
+## Server-side flags and settings
 
 The Dragonrealms MUD has a number of server-side settings which are specifically created for the official
 game clients. As the Frostbite frontend is based on Stormfront network protocol, it accommodates the
@@ -10,7 +10,7 @@ that some of the settings might not affect the GUI but they could still be used 
 For example the inventory list which cannot be seen in the GUI but it can still be accessed from the scripts
 created for the Frostbite frontend.
 
-## Flags
+### Flags
 
 The following commands are available from the game server
 
@@ -48,7 +48,7 @@ Syntax - `flag ConciseThoughts on`
 |ConciseThoughts|ON    |Gweth messages will be shorter.
 
 
-## Set
+### Set
 
 Syntax - `set LogOn" or "set !LogOn"`
 

@@ -1,4 +1,4 @@
-# User Interface
+## User Interface
 
 The Frostbite application has a number of GUI elements such as the toolbar, movable game windows,
 navigation compass, round time display and the timer bar. This chapter describes Frostbite client
@@ -7,19 +7,19 @@ GUI in more detail.
 The user interface is suited to run at resolutions 1366x768 and up however it is recommended to use it at
 full hd resolution or higher (1920x1080).
 
-## Toolbar
+### Toolbar
 
 The toolbar is located on the top of the main story window by default but can be moved to the bottom of the
 screen and can be completely hidden from the right-click context menu. Toolbar gives a quick overview of the
 character status and provides some control functions for the client.
 
-### Items held in left or right hand.
+#### Items held in left or right hand.
 
 ![Screenshot of left hand item](/assets/img/wield-left.png)
 ![Screenshot of right hand item](/assets/img/wield-right.png)
 
 
-### Prepared spells (only visible in a mouse cursor activated tooltip).
+#### Prepared spells (only visible in a mouse cursor activated tooltip).
 
 ![Screenshot of spell](/assets/img/spell.png)
 
@@ -28,7 +28,7 @@ active spells when hovered over with the mouse cursor.
 
 ![Screenshot of active spells](/assets/img/active_spells.png)
 
-### Status
+#### Status
 
 ![Screenshot of status bar](/assets/img/statusbar.png)
 
@@ -45,7 +45,7 @@ clicking on the buttons.
 
 ![Screenshot of quick action bar](/assets/img/quick-button.png)
 
-### Character vitals
+#### Character vitals
 
 |                                           |                                       |                                                         |                                             |                                           |
 |![Screenshot](/assets/img/health.png) health|![Screenshot](/assets/img/mana.png) mana|![Screenshot](/assets/img/concentration.png) concentration|![Screenshot](/assets/img/fatigue.png) fatigue|![Screenshot](/assets/img/spirit.png) spirit|
@@ -56,7 +56,7 @@ available screen space.
 
 ![Screenshot of fullscreen](/assets/img/fullscreen.png)
 
-### Dock windows
+#### Dock windows
 
 The detachable dock windows display continuous stream data separately from the main story window. They're utilized
 to show real time data such as player experience, conversations, familiars, active spells, room descriptions etc.
@@ -70,7 +70,7 @@ left or right of the screen.
 
 ![Screenshot of quick action bar](/assets/img/window.png)
 
-### Navigation compass
+#### Navigation compass
 
 The navigation compass helps to better understand and visualize available movement paths in
 the game. It can be found in the bottom right corner of the main story window.
@@ -80,7 +80,7 @@ status. Active mode is indicated by red color -- meaning that a script is activa
 
 ![Screenshot of quick action bar](/assets/img/compass.png)
 
-## Timer bar
+### Timer bar
 
 The timer bar enables to displays timers for actions that are not regulated by in-game round times. For example
 boat travel or aiming a ranged weapon. Timers can be triggered by any text highlighter event, configured

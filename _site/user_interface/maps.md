@@ -1,4 +1,4 @@
-# Maps</h2>
+## Maps
 
 Frostbite frontend loosely follows the Genie Map <a href="xsd/map.xsd">schema</a> to process and display maps.
 Map files have to be placed in the maps folder during application start up and any changes to map files require
@@ -8,20 +8,15 @@ Genie Map files are available to download at
 [https://github.com/GenieClient/Maps](https://github.com/GenieClient/Maps)
 -> Download a zip of all the maps.
 
-## Map
+### Map
 
 To open the map dialog window press right click on the map window and open view maps option.
 
 ![Screenshot of map](/assets/img/map.png)
 
-## Legend
+![Map Legend](/assets/img/map_legend.png)
 
-|![](/assets/img/map_location.png) Current/selected location|<div class="small-rect aqua"></div> Homes   |<div class="small-rect lime"></div> Point of interest|<div class="small-rect pink"></div> Resting area|
-|![](/assets/img/map_connect.png) Connecting node           |<div class="small-rect yellow"></div>Trainer|<div class="small-rect blue"></div>Water             |<div class="small-rect orange"></div>Guild      |
-|![](/assets/img/map_id.png) Node ID                        |<div class="small-rect fuchsia"></div>Portal|<div class="small-rect dark-blue"></div>Deep water   |<div class="small-rect red"></div>Shop          |
-|<div class="small-rect light-blue"></div> Altar            |<div class="small-rect teal"></div>Lumber   |<div class="small-rect olive"></div>Mine             |                                                |
-
-## Map movement and functions
+### Map movement and functions
 
 Map consists of nodes (rooms) and arcs (movement paths).
 Map nodes can be selected using the left mouse click.

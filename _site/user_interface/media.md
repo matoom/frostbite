@@ -1,4 +1,4 @@
-# Media - screenshots
+## Media - screenshots
 
 ![Screeshot](/assets/img/screenshots/screenshot1.png)
 

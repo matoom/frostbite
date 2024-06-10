@@ -1,4 +1,4 @@
-# Profiles
+## Profiles
 
 The Frostbite application has support for client profiles. Each client profile is a set of settings that
 contain application properties for macros, text highlights, text alterations, quick buttons and window colors.
@@ -6,7 +6,7 @@ It's important to note that not all settings take effect retrospectively when pr
 applies to settings that affect the way game text is handled in real time such as text alterations and
 highlights. Once text is substituted or ignored it's not possible to revert it by changing a profile.
 
-## Creating a new profile
+### Creating a new profile
 
 * navigate to "Profiles" menu from the main menu bar
 * press "Create new profile"
