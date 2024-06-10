@@ -4,30 +4,24 @@
 
 ## A frontend for Dragonrealms MUD
 
-## Table of contents
-
 [Introduction](introduction.html)
 
-1. Installation
+## Table of contents
 
+1. Installation
   * Application software
   * Change log
   * Getting started
-
 2. User interface
-
   * Client settings
   * Maps
   * Profiles
   * Server-side flags and settings
   * Media - screenshots
-
 3. Scripting
-
   * Basics
   * Scripting API
   * Scripting with Lich
-
 4. Development
 
 ## About
