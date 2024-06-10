@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Installing from source | Frostbite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Installing from source" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="MUD client for dragonrealms." />
+<meta property="og:description" content="MUD client for dragonrealms." />
+<link rel="canonical" href="http://localhost:4000/introduction/installing_from_source.html" />
+<meta property="og:url" content="http://localhost:4000/introduction/installing_from_source.html" />
+<meta property="og:site_name" content="Frostbite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Installing from source" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"MUD client for dragonrealms.","headline":"Installing from source","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/logo.png"}},"url":"http://localhost:4000/introduction/installing_from_source.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4b0d7792a1f0f952f9d21ed1464549364aa41c25">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/">Frostbite</a></h1>
+
+        
+          <a href="http://localhost:4000/">
+            <img src="/assets/img/logo.png" alt="Logo" />
+          </a>
+        
+
+        <p>MUD client for dragonrealms.</p>
+
+        <a href="http://localhost:4000/">Introduction</a>
+        <ol>
+          <li><a href="http://localhost:4000/introduction/installation">Installation</a></li>
+          <li><a href="http://localhost:4000/introduction/application_software">Application software</a></li>
+          <li><a href="http://localhost:4000/introduction/change_log">Change log</a></li>
+          <li><a href="http://localhost:4000/introduction/getting_started">Getting started</a></li>
+        </ol>
+        <a href="http://localhost:4000/user_interface">User interface</a>
+        <ol>
+          <li><a href="http://localhost:4000/user_interface/client_settings">Client settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/maps">Maps</a></li>
+          <li><a href="http://localhost:4000/user_interface/profiles">Profiles</a></li>
+          <li><a href="http://localhost:4000/user_interface/flags">Server-side flags and settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/media">Media - screenshots</a></li>
+        </ol>
+        <a href="http://localhost:4000/scripting">Scripting</a>
+        <ol>
+          <li><a href="http://localhost:4000/basics">Basics</a></li>
+          <li><a href="http://localhost:4000/api">Scripting API</a></li>
+          <li><a href="http://localhost:4000/lich">Scripting with Lich</a></li>
+          <li><a href="http://localhost:4000/development">Development</a></li>
+        </ol>
+        <br>
+
+        
+        <p class="view"><a href="https://github.com/DancingPete/frostbite">View the Project on GitHub <small>DancingPete/frostbite</small></a></p>
+        
+
+        
+
+        
+        <ul class="downloads">
+          <li><a href="https://github.com/matoom/frostbite/releases">Browse <strong>Releases</strong></a></li>
+          <li><a href="https://github.com/matoom/frostbite/archive/refs/tags/v1.17.0-beta.tar.gz">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/DancingPete/frostbite">View On <strong>GitHub</strong></a></li>
+        </ul>
+        
+
+        
+        <p>This project is maintained by <a href="https://github.com/DancingPete">DancingPete</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </header>
+      <section>
+
+      <h1 id="installing-from-source">Installing from source</h1>
+
+<p>There are six steps to building your own executable:</p>
+
+<ol>
+  <li><a href="https://github.com/matoom/frostbite/releases">Download</a> the .zip or .tar.gz archives</li>
+  <li>Extract the source.</li>
+  <li>Move the extracted project to any preferred location within your home directory.</li>
+  <li>Install the Qt5 depencies.</li>
+  <li>Prepare the build for your computer.</li>
+  <li>Build the project.</li>
+</ol>
+
+<h2 id="detailed-instructions-for-fedora-40">Detailed Instructions for Fedora 40</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/Downloads <span class="c"># You may alternatively change into any directory within $HOME</span>
+<span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>wget <span class="nb">tar </span>qt5-<span class="k">*</span><span class="nt">-devel</span> <span class="nt">-y</span>
+<span class="nv">$ </span>wget https://github.com/matoom/frostbite/archive/refs/tags/[version].tar.gz
+<span class="nv">$ </span><span class="nb">tar</span> <span class="nt">-xzf</span> <span class="o">[</span>version].tar.gz
+<span class="nv">$ </span><span class="nb">cd </span>frostbite-[version]
+<span class="nv">$ </span>qmake-qt5
+<span class="nv">$ </span>make
+</code></pre></div></div>
+<p>For those using the Gnome desktop environment you may add a branded
+icon triggering the binary by adding a file named
+<code class="language-plaintext highlighter-rouge">frostbite.desktop</code> to <code class="language-plaintext highlighter-rouge">$HOME/.local/share/applications</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Type=Application
+Version=1.0
+Name=Frostbite
+Comment=Dragonrealms MUD Frontend
+Icon=[full path to project directory]/gui/images/shield.png
+Exec=[full path to project directory]/Frostbite
+Terminal=false
+</code></pre></div></div>
+
+
+      </section>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>User Interface | Frostbite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="User Interface" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="MUD client for dragonrealms." />
+<meta property="og:description" content="MUD client for dragonrealms." />
+<link rel="canonical" href="http://localhost:4000/user_interface.html" />
+<meta property="og:url" content="http://localhost:4000/user_interface.html" />
+<meta property="og:site_name" content="Frostbite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="User Interface" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"MUD client for dragonrealms.","headline":"User Interface","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/logo.png"}},"url":"http://localhost:4000/user_interface.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4b0d7792a1f0f952f9d21ed1464549364aa41c25">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/">Frostbite</a></h1>
+
+        
+          <a href="http://localhost:4000/">
+            <img src="/assets/img/logo.png" alt="Logo" />
+          </a>
+        
+
+        <p>MUD client for dragonrealms.</p>
+
+        <a href="http://localhost:4000/">Introduction</a>
+        <ol>
+          <li><a href="http://localhost:4000/introduction/installation">Installation</a></li>
+          <li><a href="http://localhost:4000/introduction/application_software">Application software</a></li>
+          <li><a href="http://localhost:4000/introduction/change_log">Change log</a></li>
+          <li><a href="http://localhost:4000/introduction/getting_started">Getting started</a></li>
+        </ol>
+        <a href="http://localhost:4000/user_interface">User interface</a>
+        <ol>
+          <li><a href="http://localhost:4000/user_interface/client_settings">Client settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/maps">Maps</a></li>
+          <li><a href="http://localhost:4000/user_interface/profiles">Profiles</a></li>
+          <li><a href="http://localhost:4000/user_interface/flags">Server-side flags and settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/media">Media - screenshots</a></li>
+        </ol>
+        <a href="http://localhost:4000/scripting">Scripting</a>
+        <ol>
+          <li><a href="http://localhost:4000/basics">Basics</a></li>
+          <li><a href="http://localhost:4000/api">Scripting API</a></li>
+          <li><a href="http://localhost:4000/lich">Scripting with Lich</a></li>
+          <li><a href="http://localhost:4000/development">Development</a></li>
+        </ol>
+        <br>
+
+        
+        <p class="view"><a href="https://github.com/DancingPete/frostbite">View the Project on GitHub <small>DancingPete/frostbite</small></a></p>
+        
+
+        
+
+        
+        <ul class="downloads">
+          <li><a href="https://github.com/matoom/frostbite/releases">Browse <strong>Releases</strong></a></li>
+          <li><a href="https://github.com/matoom/frostbite/archive/refs/tags/v1.17.0-beta.tar.gz">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/DancingPete/frostbite">View On <strong>GitHub</strong></a></li>
+        </ul>
+        
+
+        
+        <p>This project is maintained by <a href="https://github.com/DancingPete">DancingPete</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </header>
+      <section>
+
+      <h1 id="user-interface">User Interface</h1>
+
+<p>The Frostbite application has a number of GUI elements such as the toolbar, movable game windows,
+navigation compass, round time display and the timer bar. This chapter describes Frostbite client
+GUI in more detail.</p>
+
+<p>The user interface is suited to run at resolutions 1366x768 and up however it is recommended to use it at
+full hd resolution or higher (1920x1080).</p>
+
+<h2 id="toolbar">Toolbar</h2>
+
+<p>The toolbar is located on the top of the main story window by default but can be moved to the bottom of the
+screen and can be completely hidden from the right-click context menu. Toolbar gives a quick overview of the
+character status and provides some control functions for the client.</p>
+
+<h3 id="items-held-in-left-or-right-hand">Items held in left or right hand.</h3>
+
+<p><img src="/assets/img/wield-left.png" alt="Screenshot of left hand item" />
+<img src="/assets/img/wield-right.png" alt="Screenshot of right hand item" /></p>
+
+<h3 id="prepared-spells-only-visible-in-a-mouse-cursor-activated-tooltip">Prepared spells (only visible in a mouse cursor activated tooltip).</h3>
+
+<p><img src="/assets/img/spell.png" alt="Screenshot of spell" /></p>
+
+<p>Spell timer of the lowest active spell on toolbar and is only fully visible as a list of
+active spells when hovered over with the mouse cursor.</p>
+
+<p><img src="/assets/img/active_spells.png" alt="Screenshot of active spells" /></p>
+
+<h3 id="status">Status</h3>
+
+<p><img src="/assets/img/statusbar.png" alt="Screenshot of status bar" /></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>invisible</td>
+      <td>webbed</td>
+      <td>grouped</td>
+      <td>hidden</td>
+      <td>bleeding</td>
+      <td>standing</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>stunned</td>
+      <td>kneeling</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>dead</td>
+      <td>sitting</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td>prone</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Configurable quick-buttons can be invoked by left mouse click and actions can be edited by right
+clicking on the buttons.</p>
+
+<p><img src="/assets/img/quick-button.png" alt="Screenshot of quick action bar" /></p>
+
+<h3 id="character-vitals">Character vitals</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><img src="/assets/img/health.png" alt="Screenshot" /> health</td>
+      <td><img src="/assets/img/mana.png" alt="Screenshot" /> mana</td>
+      <td><img src="/assets/img/concentration.png" alt="Screenshot" /> concentration</td>
+      <td><img src="/assets/img/fatigue.png" alt="Screenshot" /> fatigue</td>
+      <td><img src="/assets/img/spirit.png" alt="Screenshot" /> spirit</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Full screen button allows to enter into full screen mode to make the full use out of all the
+available screen space.</p>
+
+<p><img src="/assets/img/fullscreen.png" alt="Screenshot of fullscreen" /></p>
+
+<h3 id="dock-windows">Dock windows</h3>
+
+<p>The detachable dock windows display continuous stream data separately from the main story window. They’re utilized
+to show real time data such as player experience, conversations, familiars, active spells, room descriptions etc.
+The information about thoughts, arrivals and deaths are only shown in the dock windows and are not displayed
+anywhere else on the screen. Data for dock windows is always being collected regardless of the windows being
+open or closed and any previously collected data will be again visible once a dock window is reopened.</p>
+
+<p>The standard Qt GUI allows to stack dock windows on top of each
+other and place them adjacently to each side. In the main window area, the dock windows can be placed on top,
+left or right of the screen.</p>
+
+<p><img src="/assets/img/window.png" alt="Screenshot of quick action bar" /></p>
+
+<h3 id="navigation-compass">Navigation compass</h3>
+
+<p>The navigation compass helps to better understand and visualize available movement paths in
+the game. It can be found in the bottom right corner of the main story window.</p>
+
+<p>The center area of the navigation compass is reserved for the auto-pilot indicator. It shows script
+status. Active mode is indicated by red color – meaning that a script is activated and executing.</p>
+
+<p><img src="/assets/img/compass.png" alt="Screenshot of quick action bar" /></p>
+
+<h2 id="timer-bar">Timer bar</h2>
+
+<p>The timer bar enables to displays timers for actions that are not regulated by in-game round times. For example
+boat travel or aiming a ranged weapon. Timers can be triggered by any text highlighter event, configured
+from the highlighting menu.</p>
+
+<p><img src="/assets/img/timer.png" alt="Screenshot of timer" /></p>
+
+
+      </section>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>

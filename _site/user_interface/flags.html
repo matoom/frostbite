@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Server-side flags and settings | Frostbite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Server-side flags and settings" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="MUD client for dragonrealms." />
+<meta property="og:description" content="MUD client for dragonrealms." />
+<link rel="canonical" href="http://localhost:4000/user_interface/flags.html" />
+<meta property="og:url" content="http://localhost:4000/user_interface/flags.html" />
+<meta property="og:site_name" content="Frostbite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Server-side flags and settings" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"MUD client for dragonrealms.","headline":"Server-side flags and settings","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/logo.png"}},"url":"http://localhost:4000/user_interface/flags.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4b0d7792a1f0f952f9d21ed1464549364aa41c25">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/">Frostbite</a></h1>
+
+        
+          <a href="http://localhost:4000/">
+            <img src="/assets/img/logo.png" alt="Logo" />
+          </a>
+        
+
+        <p>MUD client for dragonrealms.</p>
+
+        <a href="http://localhost:4000/">Introduction</a>
+        <ol>
+          <li><a href="http://localhost:4000/introduction/installation">Installation</a></li>
+          <li><a href="http://localhost:4000/introduction/application_software">Application software</a></li>
+          <li><a href="http://localhost:4000/introduction/change_log">Change log</a></li>
+          <li><a href="http://localhost:4000/introduction/getting_started">Getting started</a></li>
+        </ol>
+        <a href="http://localhost:4000/user_interface">User interface</a>
+        <ol>
+          <li><a href="http://localhost:4000/user_interface/client_settings">Client settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/maps">Maps</a></li>
+          <li><a href="http://localhost:4000/user_interface/profiles">Profiles</a></li>
+          <li><a href="http://localhost:4000/user_interface/flags">Server-side flags and settings</a></li>
+          <li><a href="http://localhost:4000/user_interface/media">Media - screenshots</a></li>
+        </ol>
+        <a href="http://localhost:4000/scripting">Scripting</a>
+        <ol>
+          <li><a href="http://localhost:4000/basics">Basics</a></li>
+          <li><a href="http://localhost:4000/api">Scripting API</a></li>
+          <li><a href="http://localhost:4000/lich">Scripting with Lich</a></li>
+          <li><a href="http://localhost:4000/development">Development</a></li>
+        </ol>
+        <br>
+
+        
+        <p class="view"><a href="https://github.com/DancingPete/frostbite">View the Project on GitHub <small>DancingPete/frostbite</small></a></p>
+        
+
+        
+
+        
+        <ul class="downloads">
+          <li><a href="https://github.com/matoom/frostbite/releases">Browse <strong>Releases</strong></a></li>
+          <li><a href="https://github.com/matoom/frostbite/archive/refs/tags/v1.17.0-beta.tar.gz">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/DancingPete/frostbite">View On <strong>GitHub</strong></a></li>
+        </ul>
+        
+
+        
+        <p>This project is maintained by <a href="https://github.com/DancingPete">DancingPete</a></p>
+        
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </header>
+      <section>
+
+      <h1 id="server-side-flags-and-settings">Server-side flags and settings</h1>
+
+<p>The Dragonrealms MUD has a number of server-side settings which are specifically created for the official
+game clients. As the Frostbite frontend is based on Stormfront network protocol, it accommodates the
+same shared server-side settings as the Stormfront client and any changes in those settings will be reflected
+in both game clients.</p>
+
+<p>The crossed out settings will not have any effect in the Frostbite frontend and it is important to note
+that some of the settings might not affect the GUI but they could still be used by the scripting engine.
+For example the inventory list which cannot be seen in the GUI but it can still be accessed from the scripts
+created for the Frostbite frontend.</p>
+
+<h2 id="flags">Flags</h2>
+
+<p>The following commands are available from the game server</p>
+
+<p>Syntax - <code class="language-plaintext highlighter-rouge">flag ConciseThoughts on</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Status</th>
+      <th>Behavior for this setting</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LogOn</td>
+      <td>ON</td>
+      <td>Show logon messages.</td>
+    </tr>
+    <tr>
+      <td>LogOff</td>
+      <td>ON</td>
+      <td>Show logoff messages.</td>
+    </tr>
+    <tr>
+      <td><del>Disconnect</del></td>
+      <td><del>OFF</del></td>
+      <td><del>Do not show disconnection messages.</del></td>
+    </tr>
+    <tr>
+      <td>ShowDeaths</td>
+      <td>ON</td>
+      <td>Show death messages when someone dies.</td>
+    </tr>
+    <tr>
+      <td>RoomNames</td>
+      <td>ON</td>
+      <td>Display the name of the room in which you are located.</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>ON</td>
+      <td>Display room descriptions.</td>
+    </tr>
+    <tr>
+      <td>RoomBrief</td>
+      <td>OFF</td>
+      <td>Display the full text of the room description.</td>
+    </tr>
+    <tr>
+      <td>BattleBrief</td>
+      <td>OFF</td>
+      <td>Display normal battle descriptions.</td>
+    </tr>
+    <tr>
+      <td>CombatBrief</td>
+      <td>OFF</td>
+      <td>Display normal battle messages for yourself and others.</td>
+    </tr>
+    <tr>
+      <td>MonsterBold</td>
+      <td>OFF</td>
+      <td>Do not highlight monster names.</td>
+    </tr>
+    <tr>
+      <td>Inactivity</td>
+      <td>ON</td>
+      <td>Increase time before the system logs you off when inactive.</td>
+    </tr>
+    <tr>
+      <td><del>Portrait</del></td>
+      <td><del>OFF</del></td>
+      <td><del>Do not view character portraits.</del></td>
+    </tr>
+    <tr>
+      <td><del>Dialogs</del></td>
+      <td><del>OFF</del></td>
+      <td><del>Do not display most dialog boxes.</del></td>
+    </tr>
+    <tr>
+      <td>Inventory</td>
+      <td>ON</td>
+      <td>Display all inventory and container windows.</td>
+    </tr>
+    <tr>
+      <td>AvoidJoiners</td>
+      <td>OFF</td>
+      <td>Allow people to join your group.</td>
+    </tr>
+    <tr>
+      <td>AvoidHolders</td>
+      <td>OFF</td>
+      <td>Allow people to hold your hand and adding you to their group.</td>
+    </tr>
+    <tr>
+      <td>AvoidDancers</td>
+      <td>OFF</td>
+      <td>Allow people to dance with you, and add you to their group.</td>
+    </tr>
+    <tr>
+      <td>AvoidWhispers</td>
+      <td>OFF</td>
+      <td>Allow people to whisper to you.</td>
+    </tr>
+    <tr>
+      <td>AvoidDraggers</td>
+      <td>ON</td>
+      <td>Prevent people from dragging your body.</td>
+    </tr>
+    <tr>
+      <td>AvoidTeachers</td>
+      <td>OFF</td>
+      <td>Allow people to teach you.</td>
+    </tr>
+    <tr>
+      <td>AvoidSinging</td>
+      <td>OFF</td>
+      <td>Allow yourself to sing.</td>
+    </tr>
+    <tr>
+      <td>NoHarnessShare</td>
+      <td>OFF</td>
+      <td>Allow the shareing of harness with your group.</td>
+    </tr>
+    <tr>
+      <td>HarnessWarning</td>
+      <td>ON</td>
+      <td>Receive notifications about harness limitations.</td>
+    </tr>
+    <tr>
+      <td>HarnessVerbose</td>
+      <td>ON</td>
+      <td>Receive detailed notifications about harness limitations.</td>
+    </tr>
+    <tr>
+      <td>Autosneak</td>
+      <td>OFF</td>
+      <td>Do not automatically sneak from room to room when in hiding.</td>
+    </tr>
+    <tr>
+      <td>BriefExp</td>
+      <td>OFF</td>
+      <td>Display verbose information in the Field Experience window in Stormfront.</td>
+    </tr>
+    <tr>
+      <td>ConciseThoughts</td>
+      <td>ON</td>
+      <td>Gweth messages will be shorter.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="set">Set</h2>
+
+<p>Syntax - <code class="language-plaintext highlighter-rouge">set LogOn" or "set !LogOn"</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Behaviour for the setting</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LogOn</td>
+      <td>(receive messages when someone logs on)</td>
+    </tr>
+    <tr>
+      <td>LogOff</td>
+      <td>(receive messages when someone logs off)</td>
+    </tr>
+    <tr>
+      <td>!Disconnect</td>
+      <td>(receive messages when someone disconnects)</td>
+    </tr>
+    <tr>
+      <td>Death</td>
+      <td>(receive messages when someone dies)</td>
+    </tr>
+    <tr>
+      <td>RoomNames</td>
+      <td>(displays the name of the room you are in)</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>(determines if room descriptions are displayed or not)</td>
+    </tr>
+    <tr>
+      <td>!RoomBrief</td>
+      <td>(will shorten the output of the room description)</td>
+    </tr>
+    <tr>
+      <td>!BattleBrief</td>
+      <td>(shortens messages during battle)</td>
+    </tr>
+    <tr>
+      <td>!CombatBrief</td>
+      <td>(leaves your battle messages full while shortening others)</td>
+    </tr>
+    <tr>
+      <td>!MonsterBold</td>
+      <td>(highlights monster names, requires ANSI emulation)</td>
+    </tr>
+    <tr>
+      <td>!StatusPrompt</td>
+      <td>(displays status information in front of the prompt)</td>
+    </tr>
+    <tr>
+      <td>!DesignerNotes</td>
+      <td>(determines inclusion in this game’s mailing lists)</td>
+    </tr>
+    <tr>
+      <td>!Profession</td>
+      <td>(toggles display of your profession)</td>
+    </tr>
+    <tr>
+      <td>Inactivity</td>
+      <td>(increases time before system logs you off when inactive)</td>
+    </tr>
+  </tbody>
+</table>
+
+
+      </section>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% seo %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    {% include head-custom.html %}
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
+
+        {% if site.logo %}
+          <a href="{{ "/" | absolute_url }}">
+            <img src="{{site.logo | relative_url}}" alt="Logo" />
+          </a>
+        {% endif %}
+
+        <p>{{ site.description | default: site.github.project_tagline }}</p>
+
+        <a href="{{ "/" | absolute_url }}">Introduction</a>
+        <ol>
+          <li><a href="{{ "/introduction/installation" | absolute_url }}">Installation</a></li>
+          <li><a href="{{ "/introduction/application_software" | absolute_url }}">Application software</a></li>
+          <li><a href="{{ "/introduction/change_log" | absolute_url }}">Change log</a></li>
+          <li><a href="{{ "/introduction/getting_started" | absolute_url }}">Getting started</a></li>
+        </ol>
+        <a href="{{ "/user_interface" | absolute_url }}">User interface</a>
+        <ol>
+          <li><a href="{{ "/user_interface/client_settings" | absolute_url }}">Client settings</a></li>
+          <li><a href="{{ "/user_interface/maps" | absolute_url }}">Maps</a></li>
+          <li><a href="{{ "/user_interface/profiles" | absolute_url }}">Profiles</a></li>
+          <li><a href="{{ "/user_interface/flags" | absolute_url }}">Server-side flags and settings</a></li>
+          <li><a href="{{ "/user_interface/media" | absolute_url }}">Media - screenshots</a></li>
+        </ol>
+        <a href="{{ "/scripting" | absolute_url }}">Scripting</a>
+        <ol>
+          <li><a href="{{ "/basics" | absolute_url }}">Basics</a></li>
+          <li><a href="{{ "/api" | absolute_url }}">Scripting API</a></li>
+          <li><a href="{{ "/lich" | absolute_url }}">Scripting with Lich</a></li>
+          <li><a href="{{ "/development" | absolute_url }}">Development</a></li>
+        </ol>
+        <br>
+
+        {% if site.github.is_project_page %}
+        <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
+        {% endif %}
+
+        {% if site.github.is_user_page %}
+        <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
+        {% endif %}
+
+        {% if site.show_downloads %}
+        <ul class="downloads">
+          <li><a href="{{ site.github.releases }}">Browse <strong>Releases</strong></a></li>
+          <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
+        </ul>
+        {% endif %}
+
+        {% if site.github.is_project_page %}
+        <p>This project is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
+        {% endif %}
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </header>
+      <section>
+
+      {{ content }}
+
+      </section>
+    </div>
+    <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+  </body>
+</html>

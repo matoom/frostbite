@@ -1,0 +1,341 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<!-- the "no-js" class is for Modernizr. -->
+
+<head id="frostbite" data-template-set="html5-reset">
+
+	<meta charset="utf-8">
+	
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Scripting - basics</title>
+	
+	<meta name="title" content="">
+	<meta name="description" content="">
+	<!-- Google will often use this as its description of your page/site. Make it good. -->
+	
+	<meta name="google-site-verification" content="">
+	<!-- Speaking of Google, don't forget to set your site up: http://google.com/webmasters -->
+	
+	<!-- Dublin Core Metadata : http://dublincore.org/ -->
+	<meta name="DC.title" content="Frostbite">
+	<meta name="DC.subject" content="Dragonrealms MUD Frontend">
+	<meta name="DC.creator" content="">
+	
+	<!--  Mobile Viewport Fix
+	j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag 
+	device-width : Occupy full width of the screen in its current orientation
+	initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+	maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
+	-->
+	<!-- Uncomment to use; use thoughtfully!
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	-->
+
+	<link rel="shortcut icon" href="img/favicon.png">
+	<!-- This is the traditional favicon.
+		 - size: 16x16 or 32x32
+		 - transparency is OK
+		 - see wikipedia for info on browser support: http://mky.be/favicon/ -->
+		 
+	<link rel="apple-touch-icon" href="img/favicon.png">
+	<!-- The is the icon for iOS's Web Clip.
+		 - size: 57x57 for older iPhones, 72x72 for iPads, 114x114 for iPhone4's retina display (IMHO, just go ahead and use the biggest one)
+		 - To prevent iOS from applying its styles to the icon name it thusly: apple-touch-icon-precomposed.png
+		 - Transparency is not recommended (iOS will put a black BG behind the icon) -->
+	
+	<!-- CSS: screen, mobile & print are all in the same file -->
+	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+	
+	<!-- all our JS is at the bottom of the page, except for Modernizr. -->
+	<script src="js/modernizr-1.7.min.js"></script>
+
+    <link rel="stylesheet" href="js/highlight/styles/github.css" />
+    <script src="js/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <header>
+        <hgroup>
+            <img src="img/logo.png" /><br/>
+            <h1>Frostbite</h1>
+            <h2 class="">A frontend for Dragonrealms MUD</h2>
+        </hgroup>
+    </header>
+
+    <h2 class="contents_head" id="contents">3.1 Basics</h2>
+    <div class="about">
+        <p>
+            The Frostbite client scripting is based on the Ruby scripting language. Ruby syntax is easy and intuitive
+            to use, it supports multi-paradigm programming and its functions are very powerful. All of which incorporates
+            into a very flexible scripting environment.
+        </p><p>
+            The Descriptions for Ruby functions are available in the Ruby <a href="http://ruby-doc.org/core-1.9.3/">documentation</a>.
+        </p>
+        <p>
+            On top of Ruby tools, the Frostbite frontend offers it's own set of functions which are more specific to the game
+            itself. The API description is available in the <a href="api.html">API</a> section.
+        </p><br/>
+        <h3>Creating and running scripts</h3>
+        <p>
+            Ruby script files are required to be created as <i>".rb"</i> extension files and the script files need to
+            be placed into the client <i>"scripts"</i> folder.
+        </p>
+        <p>
+            The scripts can be executed in the client command line by calling the file name with a <i>"."</i> prefix.
+            For example, running braid.rb: <i>".braid vine"</i>.
+        </p><br/>
+
+        <h3>Stopping scripts</h3>
+        <p>
+            Once the script is running it can be stopped by pressing the ESC key on the keyboard. In the event of any
+            crashes which render the script unable to exit in a normal way, the ESC key has to be pressed once more to
+            terminate the script forcefully.
+        </p>
+        <p>
+           In case of system-wide crashes terminate the ruby executable in the process list. For Windows look for ruby.exe
+           in the task manager, for Linux or Max OS X, Ruby process can be killed on the command line.
+        </p>
+        <br/>
+
+        <h3>Reserved parameter descriptions</h3>
+
+        <br/>
+        <pre><code>$args # array, global variable</code></pre>
+        <p>Contains the arguments passed on to the script in the command line.</p>
+
+        <pre><code>$rt_adjust = 0 # number, global scope variable</code></pre>
+        <p>Enables to regulate the wait times and make the script run faster by tightening the value. </p>
+
+        <pre><code>:match_start and :match_end</code></pre>
+        <p>
+            These are the two reserved match pattern names which can be used to determine additional match start and
+            end conditions.
+        </p>
+        <p>For example:</p>
+        <pre><code>
+{:wait => [/\.\.\.wait|you may only type ahead/],
+:lodged => [/lodged shallowly into/],
+:mites => [/red blood mite/],
+# start matching
+:match_start => [/Your body feels/],
+# match end conditions (will match everything in between)
+:match_end => [/>|no significant injuries/]}
+        </code></pre>
+
+        <br/>
+        <h3>Script structures and blocks</h3>
+        <p>
+            All the Frostbite API driven scripts can be directed to <i>"finally_do"</i> method at script exit. This includes either aborting the
+            script or exiting by natural means. The final block can be avoided by calling Kernel::exit! or Kernel::abort. If the
+            <i>"finally_do"</i> function is not defined in the script, no extra action will be taken at the script exit. Finally block is
+            useful when you want to perform clean up tasks after running the script.
+        </p>
+
+    <pre><code>
+    def finally_do {
+        put "put my #{$args.first} in my backpack"
+    }
+    </code></pre>
+        <br />
+
+        <p>
+            There are different ways to set up the script flow in Ruby. With some additions to the standard library
+            it is possible to create Wizard-like label structures. For labels to work it is required to wrap the label code into
+            <i>"labels_start"</i> and <i>"labels_end" markers</i>.
+        </p>
+
+    <pre><code>
+    labels_start
+
+    label(:study) {
+        put "study my compendium"
+        match = { :study => ["studying", "You continue to study"],
+                  :turn => ["makes sense to you"],
+                  :exit => ["study this chart again"] }
+        match_wait_goto match
+    }
+
+    label(:turn) {
+        put "turn my compendium"
+        wait
+        goto :study
+    }
+
+    labels_end
+    </code></pre>
+        <br/>
+        <p>
+            The match mechanics can also be executed without labels by calling the <i>"match_wait"</i> function instead.
+            This way the keyword (:symbol) for the match will be returned by the function and any further action depends on
+            the decision logic that handles those responses.
+        </p>
+
+    <pre><code>
+    put "go rosewood arch"
+    match = { :second => ["The attendant steps in"],
+              :continue => ["The Dwarven attendant escorts"] }
+    result = match_wait match
+
+    case result
+        when :second
+        move "go ironwood arch"
+    end
+    </code></pre>
+        <br/>
+        <p>
+            For avoiding code repetitions, Ruby enables to create functions and loops to keep the script clean from any
+            redundant code.
+        </p>
+    <pre><code>
+    def juggle
+        put "juggle my " + $args.join(" ")
+        wait_for_roundtime
+    end
+
+    10.times do
+        juggle
+    end
+    </code></pre>
+        <br/>
+        <h3>Observer event module</h3>
+        <p>
+            The observer module can be set up to watch for pattern matches in the game text. It runs in parallel with the
+            script flow and will not be disturbed by any blocking parts of the script, other than the matching mechanics.
+            The observer will wait for any matching to be finished until it can execute the callback method for the specified
+            event or otherwise it is not possible to use the matching mechanics in the callback method's body. Once the
+            observer runs into a specified event, the script flow will be interrupted for the time it takes to execute the
+            callback method.
+        </p>
+        <p>
+            To set up the observer module it is required to register at least one observer event. The observer event
+            contains the name of the callback method and the text match pattern which is being tracked by the observer.
+            Each event has a specified callback method and it has to be defined in the script body or otherwise the script
+            will fail to execute.
+        </p>
+        <p>The observer module is a singleton object and only one instance of the observer object can be created in each
+            script. The singleton instance can be obtained by calling the <i>"instance"</i> method of the observer object.
+            The observer is a lazy initation object, meaning that it will only start running once the <i>"register_event"</i>
+            is called.
+        </p>
+    <pre><code>
+    Observer.instance.register_event({ :on_roundtime =>
+                                       "Roundtime" })
+    Observer.instance.register_event({ :stop_observer =>
+                                       "were you referring" })
+
+    # callback method for first event
+    def on_roundtime
+        echo "Found roundtime!"
+        wait_for_roundtime        # pauses for the duration of roundtime
+        put "look"
+    end
+
+    # callback method for second event
+    def stop_observer
+        Observer.instance.terminate # just to demonstrate how to
+                                    # terminate the observer
+    end
+
+    100.times do
+        put "collect " + $args.join(" ")
+        wait_for_roundtime
+        put "kick pile"
+    end
+
+    </code></pre>
+
+
+        <br/>
+        <h3>Functions and models</h3>
+        <p>
+            The standard API functions have mostly been set up to provide Wizard-like scripting style. Different kind of
+            approaches might need changes or additions to the core API functionality. The full description of the Frostbite
+            core API functions and models can be found from the <a href="api.html">API</a> section.
+        </p>
+        <br/>
+        <h3>Errors in scripting</h3>
+        <p>
+            Error messages coming from scripts are displayed in the Frostbite client main window. Scripts containing
+            any errors in syntax or structure can not be used until they are fixed. The error messages, in most
+            cases, point to the errors by the line number in code to make them easier to find.
+        </p>
+        <p>
+            For example, when calling a function which expects a string type but has not been denoted as such by using
+            quotes. In Ruby, variables can be created using just alphanumeric characters and underscore. In this case
+            the word - hello - will be handled as a variable which has no value assigned, therefore causing an error.
+        </p>
+    <pre><code>
+#script
+echo hello
+
+#=>
+
+#error
+C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello' for main:Object (NameError)
+    </code></pre>
+        <p>
+            Error on line one, undefined local variable. To fix this particular error, the word hello has to be
+            enclosed in quotes -- "hello".
+        </p>
+
+
+
+    <br/>
+    <h3>Regular expressions</h3>
+    <p>
+        The match functions in scripts are based on regular expressions. To use any of the regular expression
+        characters as a literal in a match pattern, they have to be escaped by a backslash.
+    </p>
+
+<pre><code>
+#escaped to match dot characters instead of any single character
+:wait => [/\.\.\.wait/, "only one command"]
+
+#case insensitive, bracets are escaped to match bracet characters
+:canyon => [/\[North Road, Canyon\]/i]
+
+#not containing any regular expression special characters
+:exit => ["study this chart again", "need to be holding"]
+</code></pre>
+    <br/>
+
+    </div>
+	<footer>
+        <p><img class="git-hub-logo" src="img/GitHub-Mark-32px.png" /><small>https://github.com/matoom/frostbite</small></p>
+	</footer>
+</div>
+
+<!-- here comes the javascript -->
+<script src='js/jquery-1.5.1.min.js'></script>
+
+<!-- this is where we put our custom functions -->
+<script src="js/functions.js"></script>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36611098-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+
+</body>
+</html>
