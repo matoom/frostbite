@@ -1,0 +1,11 @@
+title: Frostbite
+logo: /assets/img/logo.png
+favicon: /assets/img/favicon.png
+theme: jekyll-theme-minimal
+remote_theme: pages-themes/minimal@v0.2.0
+plugins:
+  - jekyll-remote-theme
+show_downloads: true
+github:
+  releases: "https://github.com/matoom/frostbite/releases"
+  tar_url: "https://github.com/matoom/frostbite/archive/refs/tags/v1.17.0-beta.tar.gz"
