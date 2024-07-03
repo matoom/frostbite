@@ -12,9 +12,9 @@ Genie Map files are available to download at
 
 To open the map dialog window press right click on the map window and open view maps option.
 
-![Screenshot of map](/assets/img/map.png)
+![Screenshot of map](../assets/img/map.png)
 
-![Map Legend](/assets/img/map_legend.png)
+![Map Legend](../assets/img/map_legend.png)
 
 ### Map movement and functions
 
@@ -33,7 +33,7 @@ To open the map dialog press right click on the map window and open the map dial
 Map node descriptions are only available in map dialog window.
 
 Map data can be accessed through the scripting
-[API](api/models/Map.html").
+[API](../api/models/Map.html").
 It's only possible to find paths between two nodes that are located in the same map zone.
 The movement paths are found using a simple breadth-first search algorithm and do not
 always correlate to best

@@ -1,6 +1,6 @@
 # Getting started
 
-The installation package comes with already pre configured example settings, scripts,
+The default installation comes with already pre-configured example settings, scripts,
 macros and window arrangements.
 To run the application with clean default settings the pre-packaged configuration
 files can be deleted before running the client.
@@ -17,10 +17,10 @@ using the session key, it can open the connection to the game server.
 Connecting to server in four steps: fill in account details, select a game,
 select a character and connect to server.
 
-![Explanatory screenshot](/assets/img/connect1.png)
+![Explanatory screenshot](../assets/img/connect1.png)
 
-![Explanatory screenshot](/assets/img/connect2.png)
+![Explanatory screenshot](../assets/img/connect2.png)
 
-![Explanatory screenshot](/assets/img/connect3.png)
+![Explanatory screenshot](../assets/img/connect3.png)
 
-![Explanatory screenshot](/assets/img/connect4.png)
+![Explanatory screenshot](../assets/img/connect4.png)

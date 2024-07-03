@@ -14,3 +14,5 @@ Install instructions:
 C:\ ruby --version
 ruby 2.2.4p230 (2015-12-16 revision 53155) [i386-mingw32]
 ```
+
+If Ruby is not installed to PATH the script interpreter can be configured in script -> script settings -> script interpreter. 

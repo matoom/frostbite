@@ -2,7 +2,7 @@
 
 > The Frostbite client scripting support is provided by the [Ruby](http://www.ruby-lang.org/en/)
 > scripting engine and will therefore require the [Ruby](http://www.ruby-lang.org/en/) runtime
-> libraries to be [installed](/installation).
+> libraries to be [installed](introduction/installation).
 
 Ruby scripting engine adds a flexible and powerful scripting support for the game client. It is easy to use
 for beginners but still offers more complex scripting possibilities for advanced users.
@@ -29,4 +29,4 @@ The scripting API includes:
 * observer.rb - observer module, reacts to text events;
 * roby_goto.rb - enables label based scripting.
 
-The scripting API functions are described in more detail in the [API](/scripting/api.) section.
+The scripting API functions are described in more detail in the [API](scripting/api) section.

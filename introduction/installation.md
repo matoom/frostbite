@@ -14,8 +14,8 @@ There are two steps to a complete Frosbite installation:
 
 There are two approaches to the installation of Frostbite:
 
-* [Option 1 (Recommended)](/introduction/installing_from_precompiled_binaries): Installing pre-compiled packages
-* [Option 2](/introduction/installing_from_source): Installing from source
+* [Option 1 (Recommended)](../introduction/installing_from_precompiled_binaries): Installing pre-compiled packages
+* [Option 2](../introduction/installing_from_source): Installing from source
 
 > There are currently up to three platform specific pre-compiled binary packages:
 >
@@ -39,6 +39,6 @@ versions 1.9.3 and 2.2.3.
 
 Review the detailed Ruby installation instructions for your platform:
 
-* [Ruby on Windows](/introduction/installing_ruby_on_windows)
-* [Ruby on Ubuntu](/introduction/installing_ruby_on_ubuntu)
-* [Ruby on OSX](/introduction/installing_ruby_on_osx)
+* [Ruby on Windows](../introduction/installing_ruby_on_windows)
+* [Ruby on Ubuntu](../introduction/installing_ruby_on_ubuntu)
+* [Ruby on OSX](../introduction/installing_ruby_on_osx)

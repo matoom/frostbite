@@ -17,7 +17,7 @@ It allows users to change text color, font and background color of game windows.
 Please note that the font selector allows to choose from a large selection of
 system fonts but the game text formatting expects a monospace/fixed-width font to be used.
 
-![Screenshot of appearance dialogue](/assets/img/appearance.png)
+![Screenshot of appearance dialogue](../assets/img/appearance.png)
 
 ### Highlight dialog
 
@@ -29,7 +29,7 @@ The highlight dialog is split up into three subcategories.
 * Text highlighting allows dynamic entries and it also includes timer triggering settings;
 * Alerts tab provides the means to play sound alert on number of predetermined events.
 
-![Screenshot of highlight dialogue](/assets/img/highlight.png)
+![Screenshot of highlight dialogue](../assets/img/highlight.png)
 
 Users can add new highlights by clicking on the add button.
 To change highlight text color click the right mouse button on the highlight
@@ -50,7 +50,7 @@ alteration item to open the menu.
 Text substitutes replace text matched by the regular expression and text ignores can be used to ignore an
 entire line if text match is found.
 
-![Screenshot of text alterations](/assets/img/alter.png)
+![Screenshot of text alterations](../assets/img/alter.png)
 
 Text matching in alterations is based on a Perl-compatible regular expression engine. All invalid regular
 expressions are treated as void entries and displayed as red background on the input field.
@@ -83,10 +83,10 @@ The sequence timer can be configured from the macro dialog.
 * $s - new sequence line (pauses for sequence time and then puts a new line)
 * @  - caret position (only eligible with no trailing $n or $s commands)
 
-![Screenshot of macro sequences](/assets/img/macros.png)
+![Screenshot of macro sequences](../assets/img/macros.png)
 
 ### Quick button actions
 
 Quick button actions can be changed by clicking the right mouse button on the target button.
 
-![Screenshot of quick button](/assets/img/quick_button_edit.png)
+![Screenshot of quick button](../assets/img/quick_button_edit.png)
