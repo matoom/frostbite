@@ -1,6 +1,6 @@
 ## API
 
-Frostbite scripting API specification of the tools that can be used for performing scripting tasks.
+Frostbite scripting API specification that can be used in performing scripting tasks.
 
 The API documentation is generated using [YARD](http://yardoc.org/) documentation engine.
 

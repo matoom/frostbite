@@ -1,14 +1,12 @@
 ## Server-side flags and settings
 
-The Dragonrealms MUD has a number of server-side settings which are specifically created for the official
-game clients. As the Frostbite frontend is based on Stormfront network protocol, it accommodates the
-same shared server-side settings as the Stormfront client and any changes in those settings will be reflected
-in both game clients.
+Changes in server-side flags are shared between all game clients.
 
-The crossed out settings will not have any effect in the Frostbite frontend and it is important to note
-that some of the settings might not affect the GUI but they could still be used by the scripting engine.
-For example the inventory list which cannot be seen in the GUI but it can still be accessed from the scripts
-created for the Frostbite frontend.
+The crossed out settings do not have any effect in the Frostbite frontend. 
+
+It is important to note while changes in some settings might not be immediately apparent in the GUI, disabling them 
+could disrupt data aggregation for the scripting engine that offers on-demand data access 
+in the scripting API.
 
 ### Flags
 
@@ -52,19 +50,19 @@ Syntax - `flag ConciseThoughts on`
 
 Syntax - `set LogOn" or "set !LogOn"`
 
-|Setting|Behaviour for the setting
-|-|-
-|LogOn         |(receive messages when someone logs on)
-|LogOff        |(receive messages when someone logs off)
-|!Disconnect   | (receive messages when someone disconnects)
-|Death         |(receive messages when someone dies)
-|RoomNames     |(displays the name of the room you are in)
-|Description   |(determines if room descriptions are displayed or not)
-|!RoomBrief    | (will shorten the output of the room description)
-|!BattleBrief  | (shortens messages during battle)
-|!CombatBrief  | (leaves your battle messages full while shortening others)
-|!MonsterBold  | (highlights monster names, requires ANSI emulation)
-|!StatusPrompt | (displays status information in front of the prompt)
-|!DesignerNotes| (determines inclusion in this game's mailing lists)
-|!Profession   | (toggles display of your profession)
-|Inactivity    |(increases time before system logs you off when inactive)
+|Setting|Behaviour for the setting|
+|--- |---|
+|LogOn         |(receive messages when someone logs on) |
+|LogOff        |(receive messages when someone logs off)|
+|!Disconnect   | (receive messages when someone disconnects)|
+|Death         |(receive messages when someone dies)|
+|RoomNames     |(displays the name of the room you are in)|
+|Description   |(determines if room descriptions are displayed or not)|
+|!RoomBrief    | (will shorten the output of the room description)|
+|!BattleBrief  | (shortens messages during battle)|
+|!CombatBrief  | (leaves your battle messages full while shortening others)|
+|!MonsterBold  | (highlights monster names, requires ANSI emulation)|
+|!StatusPrompt | (displays status information in front of the prompt)|
+|!DesignerNotes| (determines inclusion in this game's mailing lists)|
+|!Profession   | (toggles display of your profession)|
+|Inactivity    |(increases time before system logs you off when inactive)|

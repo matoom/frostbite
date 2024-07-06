@@ -1,14 +1,14 @@
 ## User Interface
 
-The Frostbite application has a number of GUI elements such as the toolbar, movable game windows,
-navigation compass, round time display and the timer bar. This chapter describes Frostbite client
-GUI in more detail.
+Frostbite has a fully customizable GUI implemented in Qt windowing system. This chapter describes 
+Frostbite client GUI in more detail.
 
 ### Toolbar
 
-The toolbar is located on the top of the main story window by default but can be moved to the bottom of the
-screen and can be completely hidden from the right-click context menu. Toolbar gives a quick overview of the
-character status and provides some control functions for the client.
+Toolbar facilitates numerous easily accessible control functions and displays real time updates to 
+in-game actions. It is located on the top of the main story window by default but can be moved to the bottom of the
+screen or be completely hidden from the right-click menu. Additionally, each individual element on the toolbar 
+can be toggled visible or can be hidden from the main menu. 
 
 #### Items held in left or right hand.
 
@@ -16,16 +16,18 @@ character status and provides some control functions for the client.
 ![Screenshot of right hand item](assets/img/wield-right.png)
 
 
-#### Prepared spells (only visible in a mouse cursor activated tooltip).
+#### Prepared spells
 
 ![Screenshot of spell](assets/img/spell.png)
 
-Spell timer shows the lowest active spell on toolbar and is only fully visible as a list of
+#### Spell timer
+Spell timer shows the lowest active spell on toolbar and is fully visible as a list of
 active spells when hovered over by the mouse cursor.
 
 ![Screenshot of active spells](assets/img/active_spells.png)
 
 #### Status
+All available character statuses.
 
 |![1](assets/img/statusbar_1.png) | ![2](assets/img/statusbar_2.png) | ![3](assets/img/statusbar_3.png) | ![4](assets/img/statusbar_4.png) | ![5](assets/img/statusbar_5.png) | ![6](assets/img/statusbar_6.png) |
 |---------|------|-------|------|--------|--------|
@@ -34,26 +36,33 @@ active spells when hovered over by the mouse cursor.
 |         |      |       |      |dead    |sitting |
 |         |      |       |      |        |prone   |
 
-
-Configurable quick-buttons can be invoked by left mouse click and actions can be edited by 
+#### Quick buttons
+Configurable quick-buttons can be invoked by left mouse click and actions can be edited by
 right-clicking on the buttons.
 
 ![Screenshot of quick action bar](assets/img/quick-button.png)
 
 #### Character vitals
-
 |![Screenshot](assets/img/health.png)|![Screenshot](assets/img/mana.png)|![Screenshot](assets/img/concentration.png)|![Screenshot](assets/img/fatigue.png)|![Screenshot](assets/img/spirit.png)|
 | -------- | ----- | ------------- | ------- | ------ |
 | health   | mana  | concentration | fatigue | spirit |
 
-Full screen button allows to enter into full screen mode to make the full use out of all the
+#### Full screen button
+
+Full screen button allows entering into full screen mode to make the full use out of all the
 available screen space.
 
 ![Screenshot of fullscreen](assets/img/fullscreen.png)
 
-#### Dock windows
+### Vitals bar
+The character vitals can additionally be viewed from the vitals bar located under the story window. The vitals bar can 
+be enabled or hidden from the window menu. 
 
-The detachable dock windows can stream data in the background separately from the main story window to display real 
+![Vitals bar](assets/img/vitals-bar.png)
+
+### Dock windows
+
+The detachable dock windows can stream data in the background separately from the main story window and display real 
 time data such as player experience, conversations, familiars, active spells, room descriptions, etc.
 The information about thoughts, arrivals and deaths are only shown in the dock windows and are not displayed
 anywhere else on the screen. Data for dock windows is always being collected regardless of the windows being
@@ -64,7 +73,7 @@ main window area the dock windows can be placed on top, left or right of the scr
 
 ![Screenshot of quick action bar](assets/img/window.png)
 
-#### Navigation compass
+### Navigation compass
 
 The navigation compass helps to better understand and visualize available movement paths in
 the game. It can be found in the bottom right corner of the main story window.
@@ -76,8 +85,8 @@ status. Active mode is indicated by red color -- meaning that a script is activa
 
 ### Timer bar
 
-The timer bar enables to displays timers for actions that are not regulated by in-game round times. For example
-boat travel or aiming a ranged weapon. Timers can be triggered by any text highlighter event, configured
+The timer bar enables to display timers for actions that are not regulated by in-game round times. For example
+boat travel or aiming a ranged weapon. Timers can be triggered by any text highlighter event that is configured
 from the highlighting menu.
 
 ![Screenshot of timer](assets/img/timer.png)

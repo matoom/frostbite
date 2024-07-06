@@ -3,37 +3,38 @@
 The Frostbite frontend is still a work in progress and not all functions in the
 application can be configured.
 It is currently possible to customize appearance of the game windows, set user macros,
-filter highlighted text, add text substitutions or ignores and set quick button actions.
+filter highlighted text, add text substitutions or ignores and configure quick button actions.
 
-> Please note that some of the client settings are statically configured into
+> Please note that some client settings are hard-coded into
 > the Frostbite application software and can only be changed
 > in the source code.
 > To make changes to the source code refer to the [development](/development) page.
 
 ### Appearance dialog
 
-Can be opened from the main menu (preferences for Max OS X).
-It allows users to change text color, font and background color of game windows.
-Please note that the font selector allows to choose from a large selection of
-system fonts but the game text formatting expects a monospace/fixed-width font to be used.
+Can be opened from the main menu (preferences for Max OS X). Users can change the appearance of 
+window colors and fonts; command line color and fonts; round time and cast time colors. 
+
+Please note that while the font selector has a large selection of system fonts available, the text formatting 
+expects a monospace/fixed-width fonts to be used.
 
 ![Screenshot of appearance dialogue](../assets/img/appearance.png)
 
 ### Highlight dialog
 
-Can be opened from the main menu and it allows to set text color highlighting.
-The highlight dialog is split up into three subcategories.
+Can be opened from the main menu and is used for text color highlighting.
 
-* General highlighting values are statically programmed into the game client
-  and can only be changed in color;
-* Text highlighting allows dynamic entries and it also includes timer triggering settings;
-* Alerts tab provides the means to play sound alert on number of predetermined events.
+The highlight dialog is divided into three subcategories.
+
+* General highlights are static values and can only be changed in color;
+* Text highlights allow dynamic entries and triggers for timers;
+* Alerts can play sounds on predetermined in-game events.
 
 ![Screenshot of highlight dialogue](../assets/img/highlight.png)
 
 Users can add new highlights by clicking on the add button.
 To change highlight text color click the right mouse button on the highlight
-item and choose "Change color" from the context menu.
+item and choose "Change color" from the menu.
 
 ### Text alterations
 
@@ -44,7 +45,7 @@ item and choose "Change color" from the context menu.
 Text alteration dialog is located in the main menu. Alterations can be used to make real time changes to
 the text shown on screen.
 
-To target alterations to specific windows or temporarily disable alterations press right click on the target
+To target alterations to specific windows or temporarily disable alterations press right-click on the target
 alteration item to open the menu.
 
 Text substitutes replace text matched by the regular expression and text ignores can be used to ignore an
@@ -68,13 +69,12 @@ expressions are treated as void entries and displayed as red background on the i
 
 ### Macros/Sequences
 
-Macros allow users to bind game commands to specified key combinations. In addition to macros Frostbite frontend
+Macros let users bind game commands to specified key combinations. In addition to macros Frostbite frontend
 also supports key sequences, meaning that you can delay a predetermined amount of time between each command, which
 makes it possible to enter 3 or more commands in a single sequence (game only supports 2 consecutive commands).
 
 For example running a command sequence - *"look$nlook$slook$n"*,
-will wait before executing the last command for a
-predetermined amount of time.
+will wait before executing the last command for a predetermined amount of time.
 The sequence timer can be configured from the macro dialog.
 
 ### Keywords used in macros

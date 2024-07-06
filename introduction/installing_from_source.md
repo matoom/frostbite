@@ -11,7 +11,7 @@ There are six steps to building your own executable:
 
 ## Detailed Instructions for Fedora 40
 
-> Be sure to subsititute the desired version for [version] in commands below.
+> Be sure to substitute the desired version for [version] in commands below.
 > The current version is `v1.17.0-beta`.
 >
 > Also, if you are copy-pasting, do not include the `$` prompt.
@@ -29,7 +29,7 @@ $ ./Frostbite # This command should launch the newly built binary
 
 ## Detailed Instructions for Ubuntu 23.10
 
-> Be sure to subsititute the desired version for [version] in commands below.
+> Be sure to substitute the desired version for [version] in commands below.
 > The current version is `v1.17.0-beta`.
 >
 > Also, if you are copy-pasting, do not include the `$` prompt.
@@ -51,7 +51,7 @@ For those using the Gnome desktop environment you, may add a branded
 icon triggering the binary by adding a file named
 `frostbite.desktop` to `$HOME/.local/share/applications`:
 
-> Be sure to subsititute the desired the file system location where you extracted the source
+> Be sure to substitute the desired the file system location where you extracted the source
 > code archive for [Full path to the project directory] in commands below.
 
 ```

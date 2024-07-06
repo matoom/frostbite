@@ -1,34 +1,35 @@
 ## Basics
 
-The Frostbite client scripting is based on the Ruby scripting language.
+The native scripting support is provided by the Ruby scripting language.
 Ruby syntax is easy and intuitive to use, it supports multi-paradigm programming
 and its functions are very powerful. All of which incorporates
 into a very flexible scripting environment.
 
 The descriptions for Ruby functions are available in the
-[Ruby documentation](http://ruby-doc.org/core-1.9.3/).
+[Ruby documentation](https://ruby-doc.org/).
 
+On top of Ruby tools the frontend offers its own set of data queries and functions in the API.
 
-On top of Ruby tools, the Frostbite frontend offers it's own set of functions
-which are more specific to the game itself.
-The API description is available in the [API](/scripting/api) section.
+The API description is available in the [API](../scripting/api) section.
 
 ### Creating and running scripts
 
-Ruby script files are required to be created as *".rb"* extension files and
-the script files need to be placed into the client *"scripts"* folder.
+Scripts have to be created with *".rb"* extension (Ruby files) and 
+have to be placed into the client *"scripts"* folder.
 
 The scripts can be executed in the client command line by calling the file name
 with a *"."* prefix.
+
 For example, running braid.rb: *".braid vine"*.
 
 ### Stopping scripts
 
 Once the script is running it can be stopped by pressing the ESC key on the keyboard.
-In the event of any crashes which render the script unable to exit in a normal way,
+In the event of any crashes which render the script unable to exit in a conventional way,
 the ESC key has to be pressed once more to terminate the script forcefully.
 
 In case of system-wide crashes terminate the ruby executable in the process list.
+
 For Windows look for ruby.exe in the task manager, for Linux or Max OS X,
 Ruby process can be killed on the command line.
 
@@ -68,7 +69,7 @@ This includes either aborting the script or exiting by natural means.
 The final block can be avoided by calling `Kernel::exit!` or `Kernel::abort`.
 If the *"finally_do"* function is not defined in the script, no extra action will be taken
 at the script exit.
-Finally block is useful when you want to perform clean up tasks after running the script.
+The *"finally"* block is useful when you want to perform clean up tasks after running the script.
 
 ```ruby
 def finally_do {
@@ -137,26 +138,29 @@ end
 
 ### Observer event module
 
-The observer module can be set up to watch for pattern matches in the game text.
-It runs in parallel with the script flow and will not be disturbed by any blocking
-parts of the script, other than the matching mechanics.
-The observer will wait for any matching to be finished until it can execute
-the callback method for the specified event or otherwise it is not possible
-to use the matching mechanics in the callback method's body.
-Once the observer runs into a specified event, the script flow will be
+The observer module looks for matching patterns in the game text and can 
+execute any arbitrary business logic upon finding a match. It runs in parallel with the 
+rest of script execution logic and will not be disrupted by any other blocking
+parts of the script.
+
+The observer always waits for any other matching logic to be finished before it can execute
+the callback method for the specified event (can cause delays before callback is executed).
+
+Once the observer runs into a specified event, the rest of the script flow is 
 interrupted for the time it takes to execute the callback method.
 
 To set up the observer module it is required to register at least one observer event.
-The observer event contains the name of the callback method and the text match pattern
+The observer event contains the name of the callback method and the text matching pattern
 which is being tracked by the observer.
-Each event has a specified callback method and it has to be defined in the script
+
+Each event has a specified callback method and has to be defined in the script
 body or otherwise the script will fail to execute.
 
 The observer module is a singleton object and only one instance of the observer
 object can be created in each script.
+
 The singleton instance can be obtained by calling the *"instance"* method of the observer object.
-The observer is a lazy initation object, meaning that it will only start running
-once the *"register_event"* is called.
+The observer is a lazily initiated object, meaning that it won't run until the *"register_event"* is called.
 
 ```ruby
 Observer.instance.register_event({
@@ -177,8 +181,8 @@ end
 
 # callback method for second event
 def stop_observer
-    Observer.instance.terminate # just to demonstrate how to
-                                # terminate the observer
+    Observer.instance.terminate # disable observer for the rest of
+                                # script execution
 end
 
 100.times do
@@ -190,10 +194,10 @@ end
 
 ### Functions and models
 
-The standard API functions have mostly been set up to provide Wizard-like scripting style.
-Different kind of approaches might need changes or additions to the core API functionality.
+The standard API functions are designed to provide a Wizard-like scripting style.
+Any different type of approaches might need changes or additions to the core API functionality.
 The full description of the Frostbite core API functions and models can be found from the
-<a href="api.html">API</a> section.
+[API](../scripting/api) section.
 
 ### Errors in scripting
 
@@ -221,11 +225,10 @@ C:/FrostBite/scripts/hello.rb:1:in `': undefined local variable or method `hello
 Error on line one, undefined local variable. To fix this particular error, the word hello has to be
 enclosed in quotes -- "hello".
 
-### Regular expressions
+### Matching functions
 
-The match functions in scripts are based on regular expressions.
-To use any of the regular expression characters as a literal in a match pattern,
-they have to be escaped by a backslash.
+The matching functions use regular expressions. In order to use any of the reserved characters (regular expression) 
+as a literal in a match pattern, they have to be escaped by a backslash.
 
 ```ruby
 #escaped to match dot characters instead of any single character
@@ -236,4 +239,19 @@ they have to be escaped by a backslash.
 
 #not containing any regular expression special characters
 :exit => ["study this chart again", "need to be holding"]
+```
+
+Matching results correlate to pre-defined Ruby symbols in the match patterns and can be used later 
+to execute business logic in the script.
+
+```ruby
+  case match_wait match
+    when :wait
+      pause 0.5
+    when :exit
+      exit  
+    when :canyon
+      put "go canyon"
+      pause 6
+  end
 ```

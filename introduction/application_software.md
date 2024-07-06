@@ -1,26 +1,30 @@
 # Application Software
 
 All necessary libraries required to run the application are included in the software package. This includes runtime libraries 
-needed by the QT framework and other compiler specific libraries. The default installation has all the necessary
-pre-configured settings ready for the first time run but can be changed according to personal preference. 
+needed by the QT framework, platform specific dependencies and other compiler specific libraries. The default 
+installation has all the necessary pre-configured settings ready for the first time run but can be changed according 
+to personal preference. 
 
 The software package does not include Ruby runtime.
 
 Ruby runtime installation is required to run scripts in the frontend however the client is still
-available to use without Ruby or the native scripting support.
+available to use without Ruby and with no native scripting support.
 The installation of ruby runtime is described in more detail in the [installation](/installation) page.
 
 The application software can be downloaded from the [installation](/installation) page.
 
-The mechanics in scripting module implementation restrict from running more than one application per copy.
+The mechanics in scripting module and client settings restrict more than one copy of the client from running at the time.
+In order to start additional instances multiple installations is required.
+ 
+
 
 ## Application Structure and Files
 
-Runtime resources for the application executable come in a pre-defined structure to facilitate its normal
-functions. It is important that the pre-packaged folder structure remains unchanged but configuration
+Runtime resources for the application executable have a pre-defined structure to facilitate its normal
+functions. It is important that the pre-packaged folder structure remains unchanged but all configuration
 and data files can be added or changed.
 
-To view application files On Max OS X right click on the "Frostbite.app" and open "Show Package Contents".
+To view application files On Max OS X right-click on the "Frostbite.app" and open "Show Package Contents".
 From there: Contents > MacOS.
 
 * /..
@@ -32,6 +36,8 @@ From there: Contents > MacOS.
 > Contains client settings profiles
 * ![Small image of a folder](../assets/img/folder.png) scripts
 > Designated folder for application scripts
+* ![Small image of a folder](../assets/img/folder.png) security
+> Authentication verification certificate to prevent man-in-the-middle attacks (valid until Nov 16 22:36:32 3017 GMT)
 * ![Small image of a folder](../assets/img/folder.png) snapshots
 > Snapshots taken in client window (saved as HTML)
 * ![Small image of a folder](../assets/img/folder.png) sounds
