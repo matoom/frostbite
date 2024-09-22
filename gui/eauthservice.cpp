@@ -42,6 +42,7 @@ EAuthService::EAuthService(QObject *parent) : QObject(parent) {
             this, SLOT(socketError(QAbstractSocket::SocketError)));
     connect(sslSocket, SIGNAL(encrypted()), this, SLOT(startSession()));
 
+    verifySSL();
     loadSslCertificate();
 }
 
@@ -57,6 +58,16 @@ void EAuthService::resetSession() {
 void EAuthService::initSession(QString host, QString port) {
     if(sslSocket->state() == QAbstractSocket::UnconnectedState) {
         sslSocket->connectToHostEncrypted(host, port.toInt());
+    }
+}
+
+void EAuthService::verifySSL() {
+    if(!QSslSocket::supportsSsl()) {
+        QString sslNotSupportedMsg = "ERROR: Failed to load SSL library; Authentication methods using eaccess.play.net secure port are unavailable.";
+        #ifdef WIN32
+        sslNotSupportedMsg.append("<br/>* Please ensure that the required Microsoft Visual C++ 2010 Redistributable Package is installed on your system.");
+        #endif
+        emit connectionWarning(sslNotSupportedMsg);
     }
 }
 
