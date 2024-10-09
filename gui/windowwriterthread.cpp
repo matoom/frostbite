@@ -39,7 +39,6 @@ QString WindowWriterThread::process(QString text, QString win) {
 
 void WindowWriterThread::onProcess(const QString& data) {
     if(alter->ignore(data, window->getObjectName())) return;
-
     if(window->stream()) {
         if(data.startsWith("{clear}")) {
             emit clearText();
@@ -51,7 +50,6 @@ void WindowWriterThread::onProcess(const QString& data) {
     } else {
         QString text = "";
         QList<QString> lines = data.split('\n');
-
         int size = lines.size() - 1;
         for(int i = 0; i < size; ++i) {
             text += this->process(lines.at(i), window->getObjectName());

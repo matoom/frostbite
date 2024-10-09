@@ -52,12 +52,11 @@ Highlighter::Entry Highlighter::createEntryFromHighlight(const HighlightSettings
     } else {
         startTag = "<span style=\"color:" % highlight.color.name() % ";\">";
     }
-
     Entry entry {highlight, htmlValue, startTag, endTag, re};
     return entry;
 }
 
-QString Highlighter::highlight(QString text) {        
+QString Highlighter::highlight(QString text) {
     if(!text.isEmpty()) {
         for(size_t i = 0; i < highlightList.size(); ++i) {
             // copy regexp since it is mutable
@@ -73,8 +72,8 @@ QString Highlighter::highlight(QString text) {
                     }
                 } else {
                     int inserted = 0;
-                    for(int i = 1; i < count + 1; i++) {
-                        inserted += this->highlightText(highlightList[i], text, rx.pos(i) + inserted, rx.cap(i).length());
+                    for(int j = 1; j < count + 1; j++) {
+                        inserted += this->highlightText(highlightList[i], text, rx.pos(j) + inserted, rx.cap(j).length());
                     }
                 }
                 this->highlightAlert(highlightList[i].entry);
@@ -86,7 +85,6 @@ QString Highlighter::highlight(QString text) {
 }
 
 int Highlighter::highlightText(const Entry& entry, QString &text, int indexStart, int matchLength) {
-
     int startTagLength = entry.startTag.length();
     int indexEnd = indexStart + startTagLength + matchLength;
     //entire row
@@ -99,7 +97,6 @@ int Highlighter::highlightText(const Entry& entry, QString &text, int indexStart
     }
     text.insert(indexStart, entry.startTag);
     text.insert(indexEnd, entry.endTag);
-
     return startTagLength + entry.endTag.length();
 }
 
