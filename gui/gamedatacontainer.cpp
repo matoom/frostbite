@@ -179,6 +179,14 @@ QStringList GameDataContainer::getContainer() {
     return this->container;
 }
 
+QString GameDataContainer::getNodeHash() {
+    QReadLocker locker(&lock);
+    QString text = TextUtils::extractTitle(this->roomName) +
+            this->roomDesc +
+            this->compassDirections.join("");
+    return TextUtils::toHash(text);
+}
+
 void GameDataContainer::setRoomName(QString name) {
     QWriteLocker locker(&lock);
     this->roomName = name;

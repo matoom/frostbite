@@ -247,19 +247,8 @@ bool XmlParserThread::filterDataTags(QDomElement root, QDomNode n) {
 
             gameDataContainer->setCompassDirections(directions);
 
-            QString text = gameDataContainer->getRoomName() +
-                    TextUtils::stripMapSpecial(gameDataContainer->getRoomDesc())
-                    + directions.join("");
-
-            QString hash = TextUtils::toHash(text);
-
-            /*qDebug() << "====";
-            qDebug() << text;
-            qDebug() << hash;
-            qDebug() << "====";*/
-
             emit updateNavigationDisplay(directions);
-            emit updateMapWindow(hash);
+            emit updateMapWindow(gameDataContainer->getNodeHash());
         } else if (e.tagName() == "clearContainer") {
             QStringList container;
             QDomElement invElem = root.firstChildElement("inv");

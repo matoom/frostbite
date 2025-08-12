@@ -121,6 +121,8 @@ public:
     QStringList getInventory();
     QStringList getContainer();
 
+    QString getNodeHash();
+
     void setActiveSpells(QStringList activeSpells);
     QStringList getActiveSpells();
     void addActiveSpells(QString activeSpell);

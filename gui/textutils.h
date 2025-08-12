@@ -26,7 +26,8 @@ public:
     static void escapeDoubleQuotes(QString& data);
     static void escapeSingleQuotes(QString& data);
 
-    static QString toHash(QString text);
+    static QString extractTitle(QString roomTitle);
+    static QString toHash(QString text);    
     static QString toBrief(QString direction);
     static QString stripMapSpecial(QString text);
     static QString rstrip(const QString& str);

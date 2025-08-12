@@ -65,11 +65,7 @@ void MapWindow::zoomOut() {
 }
 
 void MapWindow::reset() {
-    QString text = GameDataContainer::Instance()->getRoomName() +
-            GameDataContainer::Instance()->getRoomDesc() +
-            GameDataContainer::Instance()->getCompassDirections().join("");
-
-    emit updateMapWindow(TextUtils::toHash(text));
+    emit updateMapWindow(GameDataContainer::Instance()->getNodeHash());
 }
 
 void MapWindow::selectNode(MapZone* zone, int nodeId) {    

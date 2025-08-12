@@ -1209,15 +1209,15 @@ Directions towards Barana's Shipyard: <d cmd="South">South</d>, <d cmd="South">S
 
 A stocky acolyte leads you clockwise.
 <nav/>
-<streamWindow id='main' title='Story' subtitle=" - [The Crossing Temple, Hallway]" location='center' target='drop'/>
-<streamWindow id='room' title='Room' subtitle=" - [The Crossing Temple, Hallway]" location='center' target='drop' ifClosed='' resident='true'/>
+<streamWindow id='main' title='Story' subtitle=" - [The Crossing Temple, Hallway] (1234)" location='center' target='drop'/>
+<streamWindow id='room' title='Room' subtitle=" - [The Crossing Temple, Hallway] (1234)" location='center' target='drop' ifClosed='' resident='true'/>
 <component id='room desc'>Light streams out from a torch set into a pedestal in the center of the room, creating distorted shadows on the curved walls.  Securely mounted along the outer curve is a display of battle-worn weapons, all old but obviously well cared for.  The presence of such items within the peaceful solemnity of the Temple acts as a grim reminder of the dangers in the outside world.</component>
 <component id='room objs'>You also see <pushBold/>a stocky acolyte<popBold/>.</component>
 <component id='room players'></component>
 <component id='room exits'>Obvious paths: clockwise, widdershins.
 <compass></compass></component>
 <component id='room extra'></component>
-<resource picture="0"/><style id="roomName" />[The Crossing Temple, Hallway]
+<resource picture="0"/><style id="roomName" />[The Crossing Temple, Hallway] (1234)
 <style id=""/><preset id='roomDesc'>Light streams out from a torch set into a pedestal in the center of the room, creating distorted shadows on the curved walls.  Securely mounted along the outer curve is a display of battle-worn weapons, all old but obviously well cared for.  The presence of such items within the peaceful solemnity of the Temple acts as a grim reminder of the dangers in the outside world.</preset>  You also see <pushBold/>a stocky acolyte<popBold/>.
 Obvious paths: clockwise, widdershins.
 <compass></compass><component id='room objs'>You also see <pushBold/>a stocky acolyte<popBold/>.</component>

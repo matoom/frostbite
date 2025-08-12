@@ -68,6 +68,12 @@ void TextUtils::escapeSingleQuotes(QString& data) {
     data.replace("\'", "&apos;");
 }
 
+QString TextUtils::extractTitle(QString roomTitle) {
+    int titleEndIndex = roomTitle.indexOf("]");
+    roomTitle.truncate(titleEndIndex + 1);
+    return roomTitle;
+}
+
 QString TextUtils::toHash(QString text) {
     return QString(QCryptographicHash::hash(text.toLocal8Bit(), QCryptographicHash::Md5).toHex());
 }
