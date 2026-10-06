@@ -3,8 +3,12 @@
 
 #include <QtNetwork/QTcpSocket>
 #include <QtNetwork/QNetworkProxy>
+#include <QElapsedTimer>
 #include <QDebug>
 #include <session.h>
+
+#define LICH_CONNECT_TIMEOUT 30000
+#define LICH_CONNECT_RETRY_INTERVAL 500
 
 class ClientSettings;
 class EAuthService;
@@ -51,6 +55,10 @@ private:
     bool apiLich;
     bool isCmgr = false;
     bool useMock = false;
+    bool lichConnecting = false;
+    QElapsedTimer lichConnectTimer;
+
+    void connectToLichListener(QString sessionPort, QString sessionKey);
     
 signals:
     void characterFound(QString, QString);
