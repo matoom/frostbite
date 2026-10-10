@@ -136,9 +136,38 @@ void TcpClient::connectToLich(QString sessionHost, QString sessionPort, QString 
     if(lich->isRunning()) lich->killLich();
     lich->run(sessionHost, sessionPort);
     lich->waitUntilRunning();
-    sessionHost = "127.0.0.1";
 
-    QTimer::singleShot(3000, [=] () {connectToHost(sessionHost, sessionPort, sessionKey);});
+    emit connectAvailable(false);
+    emit connectStarted();
+    this->api = false;
+    commandPrefix = "<c>";
+
+    lichConnecting = true;
+    lichConnectTimer.start();
+    this->connectToLichListener(sessionPort, sessionKey);
+}
+
+// Lich takes a few seconds to start before it opens its listening port, and how
+// long varies by machine and Lich version. Keep retrying refused connections
+// until Lich accepts, exits, or the timeout runs out.
+void TcpClient::connectToLichListener(QString sessionPort, QString sessionKey) {
+    tcpSocket->connectToHost("127.0.0.1", sessionPort.toInt());
+    if(tcpSocket->waitForConnected()) {
+        lichConnecting = false;
+        this->writeCommand(sessionKey);
+        this->writeCommand("/FE:STORMFRONT /VERSION:1.0.1.26 /P:WIN_UNKNOWN /XML");
+        return;
+    }
+
+    bool refused = tcpSocket->error() == QAbstractSocket::ConnectionRefusedError;
+    if(refused && lich->isRunning() && !lichConnectTimer.hasExpired(LICH_CONNECT_TIMEOUT)) {
+        QTimer::singleShot(LICH_CONNECT_RETRY_INTERVAL, [=] () {connectToLichListener(sessionPort, sessionKey);});
+        return;
+    }
+
+    lichConnecting = false;
+    // refused errors were held back while retrying, report the final one
+    if(refused) this->socketError(QAbstractSocket::ConnectionRefusedError);
 }
 
 void TcpClient::connectToLocalPort(QString port) {
@@ -228,6 +257,9 @@ void TcpClient::writeCommand(QString cmd) {
 }
 
 void TcpClient::socketError(QAbstractSocket::SocketError error) {
+    // expected while waiting for lich to open its port, see connectToLichListener
+    if(lichConnecting && error == QAbstractSocket::ConnectionRefusedError) return;
+
     if(error == QAbstractSocket::RemoteHostClosedError) {        
         emit showMessage("Disconnected from server. [" + QTime::currentTime().toString("h:mm ap") + "]");
     } else if (error == QAbstractSocket::ConnectionRefusedError) {
